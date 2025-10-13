@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 8: Gases - CHEM 3A</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+        }
+        
+        .progress-container {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+        
+        .section-header {
+            background: #f8f9fa;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.3s ease;
+        }
+        
+        .section-header:hover {
+            background: #e9ecef;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .section-number {
+            color: #764ba2;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .toggle-icon {
+            font-size: 1.5em;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+        
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        
+        .section-content.open {
+            max-height: 5000px;
+        }
+        
+        .content-inner {
+            padding: 30px;
+        }
+        
+        .text-content {
+            margin-bottom: 25px;
+            line-height: 1.8;
+        }
+        
+        .text-content h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        
+        .text-content p {
+            margin-bottom: 15px;
+        }
+        
+        .text-content ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .text-content li {
+            margin-bottom: 8px;
+        }
+        
+        .text-content strong {
+            color: #667eea;
+        }
+        
+        .video-section {
+            margin: 25px 0;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .open-youtube {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .open-youtube a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .open-youtube a:hover {
+            text-decoration: underline;
+        }
+        
+        .complete-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 20px;
+        }
+        
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .complete-btn.completed {
+            background: #28a745;
+        }
+        
+        .cor-connection {
+            background: #e8f0fe;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .cor-connection strong {
+            color: #667eea;
+        }
+        
+        .key-concepts {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .equation {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Chapter 8: Gases</h1>
+        <p>CHEM 3A - Introductory General Chemistry | Fresno City College</p>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-header">
+            <h3>Your Progress</h3>
+            <span id="progress-text">0 of 10 sections completed</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Introduction -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('intro')">
+                <div>
+                    <span class="section-number">Introduction</span>
+                    <span class="section-title">Chapter Overview</span>
+                </div>
+                <span class="toggle-icon" id="icon-intro">▼</span>
+            </div>
+            <div class="section-content" id="content-intro">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> This chapter addresses course objectives related to kinetic molecular theory, gas laws, solutions, and qualitative and quantitative theories and techniques.
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>Why Study Gases?</h3>
+                        <p>Of the three basic phases of matter—solids, liquids, and gases—only gases have <strong>predictable physical properties</strong> that are independent of their chemical identity. Whether it's helium, oxygen, or sulfur vapors, gases behave similarly under the same conditions.</p>
+                        
+                        <h3>Key Characteristics of Gases:</h3>
+                        <ul>
+                            <li><strong>No definite shape or volume</strong> - gases fill whatever container they're in</li>
+                            <li><strong>Highly compressible and expandable</strong> - can be squeezed or expanded significantly</li>
+                            <li><strong>Extremely low densities</strong> - about 1/1000th the density of liquids or solids</li>
+                            <li><strong>Mix spontaneously</strong> - form homogeneous solutions (like air: mostly N₂ and O₂)</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>What You'll Learn:</strong>
+                            <ul>
+                                <li>Kinetic Molecular Theory - how gas particles behave at the molecular level</li>
+                                <li>Gas Laws - mathematical relationships between pressure, volume, temperature, and amount</li>
+                                <li>The Ideal Gas Law - a powerful equation connecting all gas properties</li>
+                                <li>Gas Mixtures - how different gases interact when combined</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/qcuMu3m77Yw" 
+                                title="Dr. Dan - Chapter 8 Introduction"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=qcuMu3m77Yw" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('intro')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8.1 Solids, Liquids, and Gases -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section1')">
+                <div>
+                    <span class="section-number">8.1</span>
+                    <span class="section-title">Solids, Liquids, and Gases - A Molecular Comparison</span>
+                </div>
+                <span class="toggle-icon" id="icon-section1">▼</span>
+            </div>
+            <div class="section-content" id="content-section1">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> Understand how intermolecular forces influence physical properties (Course Objective #8)
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>Kinetic Molecular Description</h3>
+                        <p>The physical state of matter depends on the balance between <strong>kinetic energy</strong> (keeps molecules apart and moving) and <strong>intermolecular forces</strong> (tries to draw particles together).</p>
+                        
+                        <h3>Properties of Gases:</h3>
+                        <ul>
+                            <li>Widely separated molecules with lots of empty space</li>
+                            <li>Kinetic energy > attractive forces between molecules</li>
+                            <li>No significant attractive forces allow gas to expand and fill container</li>
+                            <li>If attractive forces become large enough, gases show non-ideal behavior</li>
+                        </ul>
+                        
+                        <h3>Properties of Liquids:</h3>
+                        <ul>
+                            <li>Intermolecular forces strong enough to hold molecules close together</li>
+                            <li>More dense and less compressible than gases</li>
+                            <li>Definite volume, independent of container size/shape</li>
+                            <li>Molecules free to move past or slide over one another - can be poured</li>
+                        </ul>
+                        
+                        <h3>Properties of Solids:</h3>
+                        <ul>
+                            <li>Intermolecular forces strong enough to lock molecules in position</li>
+                            <li>Not compressible due to lack of space between molecules</li>
+                            <li>If molecules adopt highly ordered packing: <strong>crystalline</strong></li>
+                            <li>Rigid due to strong intermolecular forces</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>Key Takeaway:</strong> Temperature affects kinetic energy; pressure affects how close molecules are. Changing these conditions can cause phase changes.
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section1')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8.2 Pressure -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section2')">
+                <div>
+                    <span class="section-number">8.2</span>
+                    <span class="section-title">Pressure - The Result of Constant Molecular Collisions</span>
+                </div>
+                <span class="toggle-icon" id="icon-section2">▼</span>
+            </div>
+            <div class="section-content" id="content-section2">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> Apply dimensional analysis and unit conversions (Course Objective #3)
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>What is Pressure?</h3>
+                        <p><strong>Pressure (P)</strong> is the force exerted by gas particles colliding with container walls, distributed over the wall's area:</p>
+                        <div class="equation">pressure = force / area</div>
+                        
+                        <h3>Units of Pressure:</h3>
+                        <ul>
+                            <li><strong>Pascal (Pa)</strong>: SI unit = 1 N/m² (often too small to be practical)</li>
+                            <li><strong>Atmosphere (atm)</strong>: standard atmospheric pressure at sea level</li>
+                            <li><strong>Millimeters of mercury (mmHg)</strong>: pressure from 1 mm column of Hg</li>
+                            <li><strong>Torr</strong>: equivalent to 1 mmHg</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>Important Equivalents:</strong>
+                            <div class="equation">1 atm = 760 mmHg = 760 torr = 101,325 Pa</div>
+                        </div>
+                        
+                        <h3>Practice: Converting Pressure Units</h3>
+                        <p><strong>Example:</strong> Convert 595 torr to atmospheres:</p>
+                        <div class="equation">595 torr × (1 atm / 760 torr) = 0.783 atm</div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section2')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8.3 Kinetic Molecular Theory -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section3')">
+                <div>
+                    <span class="section-number">8.3</span>
+                    <span class="section-title">Kinetic Molecular Theory - A Model for Gases</span>
+                </div>
+                <span class="toggle-icon" id="icon-section3">▼</span>
+            </div>
+            <div class="section-content" id="content-section3">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> Use fundamental laws, principles, and theories to predict gas behavior (Course Objective #8)
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>The Five Principles of Kinetic Molecular Theory:</h3>
+                        <ul>
+                            <li><strong>Gases consist of tiny particles</strong> in constant motion</li>
+                            <li><strong>Collisions are elastic</strong> - no net energy loss</li>
+                            <li><strong>Large distances between particles</strong> - particle size is tiny compared to separation</li>
+                            <li><strong>No interactive forces</strong> between gas particles (no attraction or repulsion)</li>
+                            <li><strong>Average speed depends on temperature</strong> - higher T means faster movement</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>What This Means:</strong>
+                            <ul>
+                                <li>Most of a gas is empty space → low density, easily compressed</li>
+                                <li>Constant motion → gases always mix completely</li>
+                                <li>Elastic collisions → pressure remains constant if conditions don't change</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>Ideal vs. Real Gases</h3>
+                        <p>An <strong>ideal gas</strong> perfectly follows kinetic molecular theory. Real gases deviate slightly, but the theory is still highly accurate for most conditions.</p>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section3')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8.4 Simple Gas Laws -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section4')">
+                <div>
+                    <span class="section-number">8.4</span>
+                    <span class="section-title">Simple Gas Laws (Boyle's, Charles's, Gay-Lussac's)</span>
+                </div>
+                <span class="toggle-icon" id="icon-section4">▼</span>
+            </div>
+            <div class="section-content" id="content-section4">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> Apply kinetic molecular theory and gas laws (Course Objectives #8, #9)
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>Boyle's Law: Pressure and Volume</h3>
+                        <p>At constant temperature and amount, pressure and volume are <strong>inversely related</strong>:</p>
+                        <div class="equation">P₁V₁ = P₂V₂</div>
+                        <p><strong>Meaning:</strong> If volume decreases, pressure increases proportionally.</p>
+                        
+                        <h3>Charles's Law: Volume and Temperature</h3>
+                        <p>At constant pressure and amount, volume and temperature are <strong>directly related</strong>:</p>
+                        <div class="equation">V₁/T₁ = V₂/T₂</div>
+                        <p><strong>Important:</strong> Temperature must be in Kelvin! K = °C + 273</p>
+                        <p><strong>Meaning:</strong> As temperature increases, volume increases proportionally.</p>
+                        
+                        <h3>Gay-Lussac's Law: Pressure and Temperature</h3>
+                        <p>At constant volume and amount, pressure and temperature are <strong>directly related</strong>:</p>
+                        <div class="equation">P₁/T₁ = P₂/T₂</div>
+                        <p><strong>Meaning:</strong> As temperature increases, pressure increases proportionally.</p>
+                        
+                        <h3>Avogadro's Law: Volume and Amount</h3>
+                        <p>At constant temperature and pressure, volume and moles are <strong>directly related</strong>:</p>
+                        <div class="equation">V₁/n₁ = V₂/n₂</div>
+                        <p><strong>Meaning:</strong> More gas molecules = larger volume.</p>
+                        
+                        <div class="key-concepts">
+                            <strong>Remember:</strong> These laws describe relationships between TWO variables while keeping everything else constant.
+                        </div>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/uexlvfNkuhs" 
+                                title="Dr. Dan - Boyle's, Charles's, and Gay-Lussac's Laws"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=uexlvfNkuhs" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section4')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Combined Gas Law -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section4b')">
+                <div>
+                    <span class="section-number">8.4</span>
+                    <span class="section-title">Combined Gas Law</span>
+                </div>
+                <span class="toggle-icon" id="icon-section4b">▼</span>
+            </div>
+            <div class="section-content" id="content-section4b">
+                <div class="content-inner">
+                    <div class="text-content">
+                        <h3>Combining the Simple Gas Laws</h3>
+                        <p>When MORE THAN ONE variable changes (but amount stays constant), use the <strong>Combined Gas Law</strong>:</p>
+                        <div class="equation">P₁V₁/T₁ = P₂V₂/T₂</div>
+                        
+                        <h3>How to Use It:</h3>
+                        <ul>
+                            <li>Identify initial conditions (P₁, V₁, T₁)</li>
+                            <li>Identify final conditions (P₂, V₂, T₂)</li>
+                            <li>Temperature MUST be in Kelvin</li>
+                            <li>Rearrange algebraically to solve for unknown variable</li>
+                            <li>Units for P and V must match on both sides</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>Pro Tip:</strong> The Combined Gas Law includes Boyle's, Charles's, and Gay-Lussac's Laws. If one variable stays constant, it cancels out!
+                        </div>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/_8sGFdLBhRk" 
+                                title="Dr. Dan - Combined Gas Law"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=_8sGFdLBhRk" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section4b')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8.5 Ideal Gas Law -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section5')">
+                <div>
+                    <span class="section-number">8.5</span>
+                    <span class="section-title">The Ideal Gas Law and Applications</span>
+                </div>
+                <span class="toggle-icon" id="icon-section5">▼</span>
+            </div>
+            <div class="section-content" id="content-section5">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> Apply ideal gas law to stoichiometry, density, and molar volumes (Course Objectives #3, #8, #9)
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>The Ideal Gas Law</h3>
+                        <p>The most important gas equation relates ALL FOUR independent properties:</p>
+                        <div class="equation">PV = nRT</div>
+                        <p>Where:</p>
+                        <ul>
+                            <li><strong>P</strong> = pressure (atm, torr, Pa, etc.)</li>
+                            <li><strong>V</strong> = volume (L)</li>
+                            <li><strong>n</strong> = moles of gas</li>
+                            <li><strong>R</strong> = ideal gas constant</li>
+                            <li><strong>T</strong> = temperature (MUST be in Kelvin)</li>
+                        </ul>
+                        
+                        <h3>Values of R (Gas Constant):</h3>
+                        <ul>
+                            <li>R = 0.08206 L·atm/(mol·K)</li>
+                            <li>R = 62.36 L·torr/(mol·K)</li>
+                            <li>R = 8.314 J/(mol·K)</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>Key Advantage:</strong> The Ideal Gas Law doesn't require comparing two sets of conditions - you can calculate any property if you know the other three!
+                        </div>
+                        
+                        <h3>Standard Temperature and Pressure (STP)</h3>
+                        <ul>
+                            <li><strong>T</strong> = 0°C = 273 K</li>
+                            <li><strong>P</strong> = 1 atm</li>
+                            <li><strong>Molar Volume</strong> at STP = 22.4 L/mol</li>
+                        </ul>
+                        
+                        <h3>Applications:</h3>
+                        <ul>
+                            <li>Calculate density of gases</li>
+                            <li>Determine molar mass from gas measurements</li>
+                            <li>Stoichiometry with gaseous reactants/products</li>
+                            <li>Gas mixture calculations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/T0fOuTmNY6g" 
+                                title="Dr. Dan - Ideal Gas Law"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=T0fOuTmNY6g" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section5')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8.6 Mixtures of Gases -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('section6')">
+                <div>
+                    <span class="section-number">8.6</span>
+                    <span class="section-title">Mixtures of Gases - Dalton's Law</span>
+                </div>
+                <span class="toggle-icon" id="icon-section6">▼</span>
+            </div>
+            <div class="section-content" id="content-section6">
+                <div class="content-inner">
+                    <div class="cor-connection">
+                        <strong>COR Connection:</strong> Apply gas laws to gas mixtures and laboratory applications (Course Objectives #8, #11)
+                    </div>
+                    
+                    <div class="text-content">
+                        <h3>Dalton's Law of Partial Pressures</h3>
+                        <p>In a gas mixture, each gas exerts pressure independently. The <strong>total pressure</strong> equals the sum of all <strong>partial pressures</strong>:</p>
+                        <div class="equation">P<sub>total</sub> = P₁ + P₂ + P₃ + ...</div>
+                        
+                        <h3>Partial Pressure</h3>
+                        <p>The <strong>partial pressure</strong> is the contribution one gas makes to total pressure in a mixture.</p>
+                        
+                        <p><strong>Example:</strong> Air is ~78% N₂ and ~21% O₂</p>
+                        <ul>
+                            <li>If atmospheric pressure = 1.00 atm</li>
+                            <li>P<sub>N₂</sub> = 0.78 atm</li>
+                            <li>P<sub>O₂</sub> = 0.21 atm</li>
+                            <li>P<sub>total</sub> = 0.78 + 0.21 = 0.99 atm (other gases make up remaining 0.01 atm)</li>
+                        </ul>
+                        
+                        <h3>Collecting Gases Over Water</h3>
+                        <p>Common laboratory technique:</p>
+                        <ul>
+                            <li>Gas is collected in tube filled with water</li>
+                            <li>Gas displaces the water as it's produced</li>
+                            <li>Collected gas is mixed with water vapor</li>
+                            <li>Must account for vapor pressure of water</li>
+                        </ul>
+                        <div class="equation">P<sub>gas</sub> = P<sub>total</sub> - P<sub>H₂O</sub></div>
+                        
+                        <div class="key-concepts">
+                            <strong>Lab Application:</strong> Always subtract water vapor pressure from total pressure to get the actual pressure of your collected gas!
+                        </div>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/gpjC3C_zkoE" 
+                                title="Dr. Dan - Dalton's Law of Partial Pressures"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=gpjC3C_zkoE" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('section6')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bonus: Empirical Formula -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('bonus1')">
+                <div>
+                    <span class="section-number">Bonus</span>
+                    <span class="section-title">Gas Laws and Empirical Formulas</span>
+                </div>
+                <span class="toggle-icon" id="icon-bonus1">▼</span>
+            </div>
+            <div class="section-content" id="content-bonus1">
+                <div class="content-inner">
+                    <div class="text-content">
+                        <h3>Using Gas Laws to Determine Molecular Formulas</h3>
+                        <p>The Ideal Gas Law can help determine the molar mass and empirical formula of unknown gases:</p>
+                        
+                        <h3>Method:</h3>
+                        <ul>
+                            <li>Measure mass of gas sample</li>
+                            <li>Measure P, V, and T conditions</li>
+                            <li>Use PV = nRT to find moles (n)</li>
+                            <li>Calculate molar mass = mass/moles</li>
+                            <li>Use molar mass to determine molecular formula</li>
+                        </ul>
+                        
+                        <div class="key-concepts">
+                            <strong>Application:</strong> This technique connects stoichiometry, empirical formulas, and gas laws together - a common exam topic!
+                        </div>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/UteEh5Vgvv8" 
+                                title="Dr. Dan - Gas Laws and Empirical Formulas"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=UteEh5Vgvv8" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('bonus1')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bonus: Tips and Tricks -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('bonus2')">
+                <div>
+                    <span class="section-number">Study Guide</span>
+                    <span class="section-title">Tips and Tricks for Gas Law Problems</span>
+                </div>
+                <span class="toggle-icon" id="icon-bonus2">▼</span>
+            </div>
+            <div class="section-content" id="content-bonus2">
+                <div class="content-inner">
+                    <div class="text-content">
+                        <h3>Success Strategies for Chapter 8</h3>
+                        
+                        <div class="key-concepts">
+                            <strong>Before You Start Any Problem:</strong>
+                            <ul>
+                                <li>Convert temperature to Kelvin (K = °C + 273)</li>
+                                <li>Make sure pressure units match</li>
+                                <li>Make sure volume units match</li>
+                                <li>Identify which variables are constant vs. changing</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>Choosing the Right Equation:</h3>
+                        <ul>
+                            <li><strong>Two conditions, amount constant?</strong> → Use Combined Gas Law or simple gas law</li>
+                            <li><strong>Only one set of conditions?</strong> → Use Ideal Gas Law (PV = nRT)</li>
+                            <li><strong>Gas mixture?</strong> → Use Dalton's Law</li>
+                            <li><strong>At STP?</strong> → Use 22.4 L/mol molar volume</li>
+                        </ul>
+                        
+                        <h3>Common Mistakes to Avoid:</h3>
+                        <ul>
+                            <li>Forgetting to convert °C to K</li>
+                            <li>Using different units for P₁ and P₂</li>
+                            <li>Forgetting to subtract water vapor pressure</li>
+                            <li>Using wrong value of R for your pressure units</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-section">
+                        <h3 style="color: #667eea; margin-bottom: 15px;">Video Lecture with Dr. Dan</h3>
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/efgNeWjlsGY" 
+                                title="Dr. Dan - Tips and Tricks for Gas Laws"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="open-youtube">
+                            <a href="https://www.youtube.com/watch?v=efgNeWjlsGY" target="_blank">🔗 Open in YouTube</a>
+                        </div>
+                    </div>
+                    
+                    <button class="complete-btn" onclick="markComplete('bonus2')">Mark as Complete</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script>
+        // Track completion status
+        const completionStatus = {
+            intro: false,
+            section1: false,
+            section2: false,
+            section3: false,
+            section4: false,
+            section4b: false,
+            section5: false,
+            section6: false,
+            bonus1: false,
+            bonus2: false
+        };
+        
+        // Load saved progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('ch8Progress');
+            if (saved) {
+                Object.assign(completionStatus, JSON.parse(saved));
+                updateButtons();
+                updateProgressBar();
+            }
+        }
+        
+        function toggleSection(sectionId) {
+            const content = document.getElementById('content-' + sectionId);
+            const icon = document.getElementById('icon-' + sectionId);
+            
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+        
+        function markComplete(sectionId) {
+            completionStatus[sectionId] = !completionStatus[sectionId];
+            
+            const button = event.target;
+            if (completionStatus[sectionId]) {
+                button.textContent = '✓ Completed';
+                button.classList.add('completed');
+                
+                // Auto-close the section after marking complete
+                const content = document.getElementById('content-' + sectionId);
+                const icon = document.getElementById('icon-' + sectionId);
+                if (content && icon) {
+                    content.classList.remove('open');
+                    icon.classList.remove('open');
+                }
+                
+                // Scroll to top of page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                button.textContent = 'Mark as Complete';
+                button.classList.remove('completed');
+            }
+            
+            // Save progress
+            localStorage.setItem('ch8Progress', JSON.stringify(completionStatus));
+            updateProgressBar();
+        }
+        
+        function updateProgressBar() {
+            const total = Object.keys(completionStatus).length;
+            const completed = Object.values(completionStatus).filter(v => v).length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+            progressText.textContent = `${completed} of ${total} sections completed`;
+        }
+        
+        function updateButtons() {
+            Object.keys(completionStatus).forEach(sectionId => {
+                const button = document.querySelector(`#content-${sectionId} .complete-btn`);
+                if (button && completionStatus[sectionId]) {
+                    button.textContent = '✓ Completed';
+                    button.classList.add('completed');
+                }
+            });
+        }
+        
+        // Load progress on page load
+        loadProgress();
+    </script>
+</body>
+</html>
