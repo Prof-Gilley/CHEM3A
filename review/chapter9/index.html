@@ -186,6 +186,119 @@
             margin-top: 30px;
         }
         
+        .progress-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-header h3 {
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .progress-stats {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #764ba2;
+        }
+        
+        .progress-bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .reset-button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .reset-button:hover {
+            background: #ee5a52;
+            transform: scale(1.05);
+        }
+        
+        .complete-checkbox {
+            display: flex;
+            align-items: center;
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .complete-checkbox:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+        
+        .complete-checkbox input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+        
+        .complete-checkbox label {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .complete-checkbox.checked {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+        
+        .complete-checkbox.checked label {
+            color: #2e7d32;
+        }
+        
+        nav a.completed {
+            background: #4caf50;
+            color: white;
+        }
+        
+        nav a.completed::after {
+            content: " ✓";
+            font-weight: bold;
+        }
+        
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.8em;
@@ -198,15 +311,129 @@
             .section {
                 padding: 20px;
             }
+            
+            .progress-header {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <script>
+        // Progress tracking functionality
+        const STORAGE_KEY = 'chem3a_ch9_progress';
+        
+        function initializeProgress() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const progress = JSON.parse(saved);
+                Object.keys(progress).forEach(sectionId => {
+                    if (progress[sectionId]) {
+                        const checkbox = document.getElementById(sectionId);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            updateCheckboxStyle(checkbox);
+                        }
+                    }
+                });
+            }
+            updateProgress();
+            updateNavigation();
+        }
+        
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('.section-checkbox');
+            const progress = {};
+            checkboxes.forEach(cb => {
+                progress[cb.id] = cb.checked;
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        }
+        
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.section-checkbox');
+            const total = checkboxes.length;
+            const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            document.getElementById('progress-percentage').textContent = percentage + '%';
+            document.getElementById('progress-stats').textContent = `${completed}/${total} sections`;
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-bar').textContent = percentage + '%';
+        }
+        
+        function updateNavigation() {
+            const checkboxes = document.querySelectorAll('.section-checkbox');
+            checkboxes.forEach(cb => {
+                const sectionNum = cb.id.replace('complete-section', '');
+                const navLink = document.querySelector(`a[href="#section${sectionNum}"]`);
+                if (navLink) {
+                    if (cb.checked) {
+                        navLink.classList.add('completed');
+                    } else {
+                        navLink.classList.remove('completed');
+                    }
+                }
+            });
+        }
+        
+        function handleCheckboxChange(checkbox) {
+            updateCheckboxStyle(checkbox);
+            saveProgress();
+            updateProgress();
+            updateNavigation();
+        }
+        
+        function updateCheckboxStyle(checkbox) {
+            const container = checkbox.closest('.complete-checkbox');
+            if (checkbox.checked) {
+                container.classList.add('checked');
+            } else {
+                container.classList.remove('checked');
+            }
+        }
+        
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                const checkboxes = document.querySelectorAll('.section-checkbox');
+                checkboxes.forEach(cb => {
+                    cb.checked = false;
+                    updateCheckboxStyle(cb);
+                });
+                updateProgress();
+                updateNavigation();
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeProgress);
+    </script>
     <div class="container">
         <header>
             <h1>Chapter 9: Aqueous Solutions</h1>
             <p>CHEM 3A - Fresno City College</p>
         </header>
+        
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <h3>📊 Your Progress</h3>
+                <div>
+                    <span class="progress-stats" id="progress-stats">0/8 sections</span>
+                    <button class="reset-button" onclick="resetProgress()">Reset Progress</button>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%;">
+                    <span id="progress-percentage">0%</span>
+                </div>
+            </div>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                ✨ Check off sections as you complete them. Your progress is automatically saved!
+            </p>
+        </div>
         
         <nav>
             <h3>📚 Chapter Navigation</h3>
@@ -253,6 +480,11 @@
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 74:</strong> Aqueous Systems and Solutions - Understanding homogeneous mixtures, effect of intermolecular forces on solubility, hydrogen bonding, and polar/nonpolar solutes in polar solvents.</p>
             </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section1" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section1">✓ Mark this section as complete</label>
+            </div>
         </div>
 
         <!-- Section 2: Electrolytes -->
@@ -294,6 +526,11 @@
             <div class="cor-connection">
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 74:</strong> Understanding polar solvents and electrolyte solutes, and applying solubility rules for ionic compounds.</p>
+            </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section2" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section2">✓ Mark this section as complete</label>
             </div>
         </div>
 
@@ -343,6 +580,11 @@
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 71 & 74:</strong> Stoichiometry concepts with molarity, using chemical formulas as conversion factors, and primary unit of solution concentration (molarity) applications.</p>
             </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section3" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section3">✓ Mark this section as complete</label>
+            </div>
         </div>
 
         <!-- Section 4: Solution Dilution -->
@@ -389,6 +631,11 @@
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 74:</strong> Preparing solutions to specific concentrations by dilution of more concentrated solutions.</p>
             </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section4" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section4">✓ Mark this section as complete</label>
+            </div>
         </div>
 
         <!-- Section 5: Stoichiometry with Solutions -->
@@ -430,6 +677,11 @@
             <div class="cor-connection">
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Sections 71 & 74:</strong> Stoichiometry calculations, mole ratios, titration methods for determining concentrations, and analysis of solutions.</p>
+            </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section5" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section5">✓ Mark this section as complete</label>
             </div>
         </div>
 
@@ -473,6 +725,11 @@
             <div class="cor-connection">
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 74:</strong> Colligative properties of solutions including unique properties of homogeneous mixtures.</p>
+            </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section6" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section6">✓ Mark this section as complete</label>
             </div>
         </div>
 
@@ -530,6 +787,11 @@
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 74:</strong> Colligative properties - boiling point elevation and freezing point depression.</p>
             </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section7" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section7">✓ Mark this section as complete</label>
+            </div>
         </div>
 
         <!-- Section 8: Osmosis -->
@@ -585,6 +847,11 @@
             <div class="cor-connection">
                 <h4>📋 COR Connection</h4>
                 <p><strong>From COR Section 74:</strong> Colligative properties - osmotic pressure and its biological applications.</p>
+            </div>
+            
+            <div class="complete-checkbox">
+                <input type="checkbox" id="complete-section8" class="section-checkbox" onchange="handleCheckboxChange(this)">
+                <label for="complete-section8">✓ Mark this section as complete</label>
             </div>
         </div>
 
