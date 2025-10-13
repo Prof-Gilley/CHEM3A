@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEM 3A Chapter 9: Aqueous Solutions Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        nav {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        nav h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        nav a {
+            display: block;
+            padding: 10px 15px;
+            background: #f0f0f0;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .key-concepts {
+            background: #f8f9ff;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .key-concepts h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .key-concepts ul {
+            margin-left: 20px;
+        }
+        
+        .key-concepts li {
+            margin-bottom: 8px;
+        }
+        
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .example {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .example h4 {
+            color: #2196F3;
+            margin-bottom: 10px;
+        }
+        
+        .cor-connection {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .cor-connection h4 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            nav ul {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chapter 9: Aqueous Solutions</h1>
+            <p>CHEM 3A - Fresno City College</p>
+        </header>
+        
+        <nav>
+            <h3>📚 Chapter Navigation</h3>
+            <ul>
+                <li><a href="#section1">Solutions & Solubility</a></li>
+                <li><a href="#section2">Electrolytes</a></li>
+                <li><a href="#section3">Molarity</a></li>
+                <li><a href="#section4">Solution Dilution</a></li>
+                <li><a href="#section5">Stoichiometry</a></li>
+                <li><a href="#section6">Colligative Properties</a></li>
+                <li><a href="#section7">Freezing/Boiling Points</a></li>
+                <li><a href="#section8">Osmosis</a></li>
+            </ul>
+        </nav>
+
+        <!-- Section 1: Solutions and Solubility -->
+        <div class="section" id="section1">
+            <h2>1. Solutions - Homogeneous Mixtures</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/drIkMSVAE0A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li><strong>Solvent:</strong> The substance that doesn't change phase or is the major component (usually water)</li>
+                    <li><strong>Solute:</strong> The substance that changes phase or is the minor component</li>
+                    <li><strong>"Like dissolves like":</strong> Polar solvents dissolve polar solutes; nonpolar solvents dissolve nonpolar solutes</li>
+                    <li><strong>Intermolecular forces</strong> determine solubility</li>
+                </ul>
+            </div>
+            
+            <h3>How Solutions Form</h3>
+            <p>Solutions form when solute particles are surrounded by solvent molecules through:</p>
+            <ul>
+                <li><strong>Ion-dipole forces:</strong> For ionic compounds in polar solvents</li>
+                <li><strong>Hydrogen bonding:</strong> For polar molecules with H-O, H-N, or H-F bonds</li>
+                <li><strong>Dipole-dipole forces:</strong> For polar molecules</li>
+                <li><strong>London dispersion forces:</strong> For nonpolar molecules</li>
+            </ul>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 74:</strong> Aqueous Systems and Solutions - Understanding homogeneous mixtures, effect of intermolecular forces on solubility, hydrogen bonding, and polar/nonpolar solutes in polar solvents.</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Electrolytes -->
+        <div class="section" id="section2">
+            <h2>2. Electrolytes and Nonelectrolytes</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/-PeAGG6s6nY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li><strong>Strong electrolytes:</strong> Ionic compounds that dissociate completely (e.g., NaCl, KBr)</li>
+                    <li><strong>Weak electrolytes:</strong> Compounds that partially dissociate (e.g., acetic acid)</li>
+                    <li><strong>Nonelectrolytes:</strong> Molecular compounds that don't dissociate (e.g., sugar, ethanol)</li>
+                    <li>Electrolytes conduct electricity due to mobile ions in solution</li>
+                </ul>
+            </div>
+            
+            <div class="example">
+                <h4>💡 Example</h4>
+                <p>When NaCl dissolves in water:</p>
+                <div class="formula">NaCl(s) → Na⁺(aq) + Cl⁻(aq)</div>
+                <p>The ions are hydrated (surrounded by water molecules) and can move freely, conducting electricity.</p>
+            </div>
+            
+            <h3>Solubility Rules</h3>
+            <p>Important solubility generalizations:</p>
+            <ul>
+                <li>Group 1 (alkali metals) and NH₄⁺ compounds are <strong>always soluble</strong></li>
+                <li>Nitrate (NO₃⁻) and acetate (C₂H₃O₂⁻) compounds are <strong>always soluble</strong></li>
+                <li>Most halides (Cl⁻, Br⁻, I⁻) are soluble <strong>except</strong> with Ag⁺, Pb²⁺, Hg₂²⁺</li>
+                <li>Most sulfates (SO₄²⁻) are soluble <strong>except</strong> with Ca²⁺, Ba²⁺, Sr²⁺, Pb²⁺</li>
+                <li>Most hydroxides (OH⁻) are <strong>insoluble except</strong> Group 1 and Ca²⁺, Ba²⁺, Sr²⁺</li>
+                <li>Most carbonates (CO₃²⁻), phosphates (PO₄³⁻), and sulfides (S²⁻) are <strong>insoluble except</strong> Group 1 and NH₄⁺</li>
+            </ul>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 74:</strong> Understanding polar solvents and electrolyte solutes, and applying solubility rules for ionic compounds.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Molarity -->
+        <div class="section" id="section3">
+            <h2>3. Solution Concentration - Molarity</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/dtdiKtrVQ5Y" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li><strong>Molarity (M):</strong> moles of solute per liter of solution</li>
+                    <li>Most common concentration unit in chemistry</li>
+                    <li>Used as a conversion factor between moles and volume</li>
+                    <li>Remember: volume of <em>solution</em>, not just solvent!</li>
+                </ul>
+            </div>
+            
+            <div class="formula">
+                <strong>Molarity Formula:</strong><br>
+                M = moles of solute / liters of solution<br><br>
+                or<br><br>
+                M = n / V
+            </div>
+            
+            <div class="example">
+                <h4>💡 Example</h4>
+                <p>Calculate the molarity of a solution containing 42.23 g NH₄Cl in 500.0 mL solution:</p>
+                <ol>
+                    <li>Convert grams to moles: 42.23 g ÷ 53.50 g/mol = 0.7893 mol</li>
+                    <li>Convert mL to L: 500.0 mL = 0.5000 L</li>
+                    <li>Calculate molarity: M = 0.7893 mol / 0.5000 L = 1.579 M</li>
+                </ol>
+            </div>
+            
+            <h3>Other Concentration Units</h3>
+            <ul>
+                <li><strong>Percent by mass:</strong> (mass solute / mass solution) × 100%</li>
+                <li><strong>Percent by volume:</strong> (volume solute / volume solution) × 100%</li>
+                <li><strong>Molality (m):</strong> moles solute / kg solvent (used for colligative properties)</li>
+            </ul>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 71 & 74:</strong> Stoichiometry concepts with molarity, using chemical formulas as conversion factors, and primary unit of solution concentration (molarity) applications.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Solution Dilution -->
+        <div class="section" id="section4">
+            <h2>4. Solution Dilution</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/sadO3B7s_UY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li><strong>Dilution:</strong> Adding solvent to decrease concentration</li>
+                    <li>Moles of solute remain constant during dilution</li>
+                    <li>Volume increases, molarity decreases</li>
+                    <li><strong>Stock solution:</strong> Concentrated solution used to prepare dilute solutions</li>
+                </ul>
+            </div>
+            
+            <div class="formula">
+                <strong>Dilution Formula:</strong><br>
+                M₁V₁ = M₂V₂<br><br>
+                Where:<br>
+                M₁ = initial molarity<br>
+                V₁ = initial volume<br>
+                M₂ = final molarity<br>
+                V₂ = final volume
+            </div>
+            
+            <div class="example">
+                <h4>💡 Example</h4>
+                <p>How much 16 M HNO₃ is needed to make 8.00 L of 0.50 M solution?</p>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>Use M₁V₁ = M₂V₂</li>
+                    <li>(16 M)(V₁) = (0.50 M)(8.00 L)</li>
+                    <li>V₁ = 0.25 L = 250 mL</li>
+                </ol>
+                <p>Take 250 mL of 16 M HNO₃ and dilute with water to 8.00 L total volume.</p>
+            </div>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 74:</strong> Preparing solutions to specific concentrations by dilution of more concentrated solutions.</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Stoichiometry with Solutions -->
+        <div class="section" id="section5">
+            <h2>5. Using Molarity in Stoichiometry</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/-G1zjTVpkgU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li>Molarity serves as a conversion factor between moles and volume</li>
+                    <li>Apply stoichiometry principles to solution reactions</li>
+                    <li><strong>Titration:</strong> Technique to determine unknown concentration</li>
+                    <li>Combine mole ratios with molarity calculations</li>
+                </ul>
+            </div>
+            
+            <h3>Titration Applications</h3>
+            <ul>
+                <li>Determining concentration of acid/base solutions</li>
+                <li>Finding purity of samples</li>
+                <li>Analyzing composition of mixtures</li>
+            </ul>
+            
+            <div class="example">
+                <h4>💡 Example: Titration</h4>
+                <p>What volume of 3.44 M HCl will react with 5.33 mol of CaCO₃?</p>
+                <p><strong>Reaction:</strong> 2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂</p>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>Use mole ratio: 5.33 mol CaCO₃ × (2 mol HCl / 1 mol CaCO₃) = 10.66 mol HCl</li>
+                    <li>Convert to volume: 10.66 mol ÷ 3.44 M = 3.10 L</li>
+                </ol>
+            </div>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Sections 71 & 74:</strong> Stoichiometry calculations, mole ratios, titration methods for determining concentrations, and analysis of solutions.</p>
+            </div>
+        </div>
+
+        <!-- Section 6: Colligative Properties -->
+        <div class="section" id="section6">
+            <h2>6. Colligative Properties</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/oLCLggs3Zmw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li><strong>Colligative properties:</strong> Properties that depend only on the <em>number</em> of solute particles, not their identity</li>
+                    <li>Four main colligative properties: vapor pressure lowering, boiling point elevation, freezing point depression, osmotic pressure</li>
+                    <li><strong>van't Hoff factor (i):</strong> Number of particles a compound produces when dissolved</li>
+                    <li>Ionic compounds have i > 1; molecular compounds have i = 1</li>
+                </ul>
+            </div>
+            
+            <h3>van't Hoff Factor (i)</h3>
+            <ul>
+                <li><strong>NaCl:</strong> i = 2 (Na⁺ + Cl⁻)</li>
+                <li><strong>CaCl₂:</strong> i = 3 (Ca²⁺ + 2Cl⁻)</li>
+                <li><strong>Al₂(SO₄)₃:</strong> i = 5 (2Al³⁺ + 3SO₄²⁻)</li>
+                <li><strong>Glucose (C₆H₁₂O₆):</strong> i = 1 (stays as molecules)</li>
+            </ul>
+            
+            <div class="example">
+                <h4>💡 Example</h4>
+                <p>Compare freezing points: 0.1 m NaCl, 0.1 m C₆H₁₂O₆, 0.1 m CaI₂</p>
+                <ul>
+                    <li>NaCl: 0.1 m × 2 = 0.2 m effective concentration</li>
+                    <li>C₆H₁₂O₆: 0.1 m × 1 = 0.1 m effective concentration</li>
+                    <li>CaI₂: 0.1 m × 3 = 0.3 m effective concentration</li>
+                </ul>
+                <p><strong>Order (lowest to highest freezing point):</strong> CaI₂ < NaCl < C₆H₁₂O₆</p>
+            </div>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 74:</strong> Colligative properties of solutions including unique properties of homogeneous mixtures.</p>
+            </div>
+        </div>
+
+        <!-- Section 7: Freezing Point Depression and Boiling Point Elevation -->
+        <div class="section" id="section7">
+            <h2>7. Freezing Point Depression & Boiling Point Elevation</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/qwkB_gLdg6s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li>Solutions have <strong>higher boiling points</strong> than pure solvents</li>
+                    <li>Solutions have <strong>lower freezing points</strong> than pure solvents</li>
+                    <li>Change depends on molality (m) and van't Hoff factor (i)</li>
+                    <li><strong>Real-world applications:</strong> Antifreeze, salting icy roads, cooking</li>
+                </ul>
+            </div>
+            
+            <div class="formula">
+                <strong>Boiling Point Elevation:</strong><br>
+                ΔT<sub>b</sub> = K<sub>b</sub> × m × i<br><br>
+                K<sub>b</sub> (water) = 0.512 °C/m<br><br>
+                
+                <strong>Freezing Point Depression:</strong><br>
+                ΔT<sub>f</sub> = K<sub>f</sub> × m × i<br><br>
+                K<sub>f</sub> (water) = 1.86 °C/m
+            </div>
+            
+            <div class="example">
+                <h4>💡 Example: Antifreeze</h4>
+                <p>What is the concentration of ethylene glycol needed to lower the freezing point by 2.64°C?</p>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>ΔT<sub>f</sub> = K<sub>f</sub> × m × i</li>
+                    <li>2.64°C = (1.86 °C/m) × m × 1</li>
+                    <li>m = 2.64 / 1.86 = 1.42 m</li>
+                </ol>
+            </div>
+            
+            <div class="example">
+                <h4>💡 Example: Salt Water Boiling</h4>
+                <p>10.0 g NaCl in 100.0 g water. What's the boiling point?</p>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>Molality: (10.0 g / 58.45 g/mol) / 0.100 kg = 1.71 m</li>
+                    <li>ΔT<sub>b</sub> = 0.512 °C/m × 1.71 m × 2 = 1.75°C</li>
+                    <li>New boiling point: 100.00°C + 1.75°C = 101.75°C</li>
+                </ol>
+            </div>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 74:</strong> Colligative properties - boiling point elevation and freezing point depression.</p>
+            </div>
+        </div>
+
+        <!-- Section 8: Osmosis -->
+        <div class="section" id="section8">
+            <h2>8. Osmotic Pressure</h2>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/efD7e2XiNsM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <div class="key-concepts">
+                <h4>🎯 Key Concepts</h4>
+                <ul>
+                    <li><strong>Osmosis:</strong> Movement of solvent through a semipermeable membrane from low to high solute concentration</li>
+                    <li><strong>Semipermeable membrane:</strong> Allows solvent but not solute to pass through</li>
+                    <li><strong>Osmotic pressure (Π):</strong> Pressure needed to prevent osmosis</li>
+                    <li><strong>Biological importance:</strong> IV fluids, cell function, plant water transport</li>
+                </ul>
+            </div>
+            
+            <div class="formula">
+                <strong>Osmotic Pressure Formula:</strong><br>
+                Π = MRT<br><br>
+                Where:<br>
+                Π = osmotic pressure (atm)<br>
+                M = molarity (mol/L)<br>
+                R = 0.08206 L·atm/(mol·K)<br>
+                T = temperature (K)
+            </div>
+            
+            <h3>Biological Applications</h3>
+            <ul>
+                <li><strong>Isotonic solutions:</strong> Same concentration as body fluids (0.9% NaCl)</li>
+                <li><strong>Hypertonic solutions:</strong> Higher concentration than cells → cells shrink</li>
+                <li><strong>Hypotonic solutions:</strong> Lower concentration than cells → cells swell</li>
+                <li><strong>IV fluids:</strong> Must be isotonic to prevent cell damage</li>
+                <li><strong>Why you can't drink seawater:</strong> Hypertonic - pulls water from cells</li>
+            </ul>
+            
+            <div class="example">
+                <h4>💡 Example</h4>
+                <p>Calculate osmotic pressure of 0.333 M C₆H₁₂O₆ at 25°C:</p>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li>Convert temperature: T = 25 + 273 = 298 K</li>
+                    <li>Π = MRT</li>
+                    <li>Π = (0.333 M)(0.08206 L·atm/mol·K)(298 K)</li>
+                    <li>Π = 8.14 atm</li>
+                </ol>
+                <p>This is equivalent to a column of water 84 m tall!</p>
+            </div>
+            
+            <div class="cor-connection">
+                <h4>📋 COR Connection</h4>
+                <p><strong>From COR Section 74:</strong> Colligative properties - osmotic pressure and its biological applications.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>CHEM 3A - Introductory General Chemistry</strong></p>
+            <p>Fresno City College | Chapter 9 Review</p>
+            <p>Videos courtesy of Dr. Dan (It's Dr. Dan)</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                💡 <strong>Study Tips:</strong> Watch each video, review the key concepts, work through the examples, and connect to the COR objectives for comprehensive understanding.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
