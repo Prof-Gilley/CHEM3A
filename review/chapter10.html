@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 10: Chemical Reactions - Review Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: rgba(103, 126, 234, 0.1);
+            padding: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: white;
+            border-radius: 25px;
+            transition: all 0.3s;
+            display: inline-block;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin: 25px 0 15px;
+            font-size: 1.5em;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin: 30px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .key-concepts {
+            background: linear-gradient(135deg, rgba(103, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .key-concepts h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .key-concepts ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-concepts li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .key-concepts li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .example-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .example-box h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .equation {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #dee2e6;
+            text-align: center;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .warning strong {
+            color: #856404;
+        }
+        
+        .libretexts-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .libretexts-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 2px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chapter 10: Chemical Reactions</h1>
+            <p class="subtitle">Complete Review with DrDan Video Tutorials</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#word-equations">Word Equations</a></li>
+                <li><a href="#chemical-equations">Chemical Equations</a></li>
+                <li><a href="#balancing">Balancing Equations</a></li>
+                <li><a href="#combination">Combination</a></li>
+                <li><a href="#decomposition">Decomposition</a></li>
+                <li><a href="#combustion">Combustion</a></li>
+                <li><a href="#single-displacement">Single Displacement</a></li>
+                <li><a href="#double-displacement">Double Displacement</a></li>
+            </ul>
+        </nav>
+        
+        <div class="content">
+            <!-- Section 10.1: Word Equations -->
+            <section id="word-equations" class="section">
+                <h2>10.1: Word Equations</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Chemical reactions convert reactants into products</li>
+                        <li>Word equations describe reactions using names instead of formulas</li>
+                        <li>General format: Reactants → Products</li>
+                        <li>Word equations are useful for description but not for quantitative work</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <div class="equation">Silver + Sulfur → Silver sulfide</div>
+                    <div class="equation">Methane + Oxygen → Carbon dioxide + Water</div>
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/DPH8NZF_99I" 
+                            title="DrDan: Word Equations" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.2: Chemical Equations -->
+            <section id="chemical-equations" class="section">
+                <h2>10.2: Chemical Equations</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Chemical equations use formulas instead of words</li>
+                        <li>Skeleton equations show formulas with no relative amounts</li>
+                        <li>Physical states: (s) solid, (l) liquid, (g) gas, (aq) aqueous</li>
+                        <li>Reactants on left, products on right of yield arrow (→)</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Example - Methane Combustion:</h4>
+                    <div class="equation">CH₄(g) + O₂(g) → CO₂(g) + H₂O(l)</div>
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/t65x7RaFeFY" 
+                            title="DrDan: Chemical Equations" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.3: Balancing Equations -->
+            <section id="balancing" class="section">
+                <h2>10.3: Balancing Chemical Equations</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Law of Conservation of Mass must be followed</li>
+                        <li>Atoms cannot be created or destroyed in chemical reactions</li>
+                        <li>Balance by adding coefficients, never change subscripts</li>
+                        <li>Count atoms on both sides to verify balance</li>
+                    </ul>
+                </div>
+                
+                <h3>Steps for Balancing:</h3>
+                <ol style="padding-left: 30px;">
+                    <li>Write correct formulas for all reactants and products</li>
+                    <li>Write the skeleton equation</li>
+                    <li>Count atoms of each element on both sides</li>
+                    <li>Add coefficients to balance each element</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4>Example - Balancing Methane Formation:</h4>
+                    <div class="equation">Unbalanced: C + H₂ → CH₄</div>
+                    <div class="equation">Balanced: C + 2H₂ → CH₄</div>
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/2MsgPQYwsjA" 
+                            title="DrDan: Balancing Chemical Equations" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.4.1: Combination Reactions -->
+            <section id="combination" class="section">
+                <h2>10.4.1: Combination Reactions</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Two or more reactants combine to form one product</li>
+                        <li>General pattern: A + B → AB</li>
+                        <li>Also called synthesis reactions</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <div class="equation">2H₂ + O₂ → 2H₂O</div>
+                    <div class="equation">4Na + O₂ → 2Na₂O</div>
+                    <div class="equation">CaO + CO₂ → CaCO₃</div>
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/YqZjFTpnHjc" 
+                            title="DrDan: Combination Reactions" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.4.2: Decomposition Reactions -->
+            <section id="decomposition" class="section">
+                <h2>10.4.2: Decomposition Reactions</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>One reactant breaks down into two or more products</li>
+                        <li>General pattern: AB → A + B</li>
+                        <li>Often requires heat or electricity</li>
+                        <li>Opposite of combination reactions</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <div class="equation">2H₂O → 2H₂ + O₂</div>
+                    <div class="equation">CaCO₃ → CaO + CO₂</div>
+                    <div class="equation">2KClO₃ → 2KCl + 3O₂</div>
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/7Qf_7T3XDns" 
+                            title="DrDan: Decomposition Reactions" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.4.3: Combustion Reactions -->
+            <section id="combustion" class="section">
+                <h2>10.4.3: Combustion Reactions</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Fuel reacts with oxygen gas</li>
+                        <li>Products typically include CO₂ and H₂O</li>
+                        <li>Releases heat and light energy</li>
+                        <li>Hydrocarbons produce CO₂ and H₂O when burned completely</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <div class="equation">CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+                    <div class="equation">C₃H₈ + 5O₂ → 3CO₂ + 4H₂O</div>
+                    <div class="equation">2C₂H₆ + 7O₂ → 4CO₂ + 6H₂O</div>
+                </div>
+                
+                <div class="warning">
+                    <strong>Note:</strong> Incomplete combustion can produce CO (carbon monoxide) instead of CO₂
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/RsPUbM1DivA" 
+                            title="DrDan: Combustion Reactions" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.4.4: Single Displacement Reactions -->
+            <section id="single-displacement" class="section">
+                <h2>10.4.4: Single Displacement/Replacement Reactions</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>One element replaces another in a compound</li>
+                        <li>General pattern: A + BC → AC + B</li>
+                        <li>Activity series predicts if reaction will occur</li>
+                        <li>More reactive elements displace less reactive ones</li>
+                    </ul>
+                </div>
+                
+                <h3>Predicting Single Displacement Reactions:</h3>
+                <ol style="padding-left: 30px;">
+                    <li>Check activity series to see if reaction occurs</li>
+                    <li>Identify which element is being replaced</li>
+                    <li>Write formulas with correct charge balance</li>
+                    <li>Balance the equation</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <div class="equation">Zn + CuSO₄ → ZnSO₄ + Cu</div>
+                    <div class="equation">2Al + 3CuCl₂ → 2AlCl₃ + 3Cu</div>
+                    <div class="equation">Mg + 2HCl → MgCl₂ + H₂</div>
+                </div>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/IsypcIC7XqA" 
+                            title="DrDan: Single Displacement Reactions" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Section 10.4.5: Double Displacement Reactions -->
+            <section id="double-displacement" class="section">
+                <h2>10.4.5: Double Displacement/Replacement Reactions</h2>
+                
+                <div class="key-concepts">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li>Cations and anions exchange partners</li>
+                        <li>General pattern: AB + CD → AD + CB</li>
+                        <li>Common types: precipitation, acid-base, gas evolution</li>
+                        <li>Products must have correct charge balance</li>
+                    </ul>
+                </div>
+                
+                <h3>Steps for Predicting Double Displacement:</h3>
+                <ol style="padding-left: 30px;">
+                    <li>Switch the partners (cations with new anions)</li>
+                    <li>Correct formulas based on ion charges</li>
+                    <li>Balance the equation</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <div class="equation">BaCl₂ + Li₂SO₄ → BaSO₄ + 2LiCl</div>
+                    <div class="equation">AgNO₃ + NaCl → AgCl + NaNO₃</div>
+                    <div class="equation">HCl + NaOH → NaCl + H₂O</div>
+                </div>
+                
+                <h3>Types of Double Displacement:</h3>
+                <ul style="padding-left: 30px;">
+                    <li><strong>Precipitation:</strong> Forms a solid product (precipitate)</li>
+                    <li><strong>Acid-Base:</strong> Acid + Base → Salt + Water</li>
+                    <li><strong>Gas Evolution:</strong> Produces a gas product</li>
+                </ul>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/IsypcIC7XqA" 
+                            title="DrDan: Double Displacement Reactions" 
+                            allowfullscreen></iframe>
+                </div>
+            </section>
+            
+            <!-- Additional Resources -->
+            <section class="section">
+                <h2>Additional Study Resources</h2>
+                
+                <div class="key-concepts">
+                    <h4>Practice Problems Available in:</h4>
+                    <ul>
+                        <li>Section 10.E: Chemical Reactions (Exercises)</li>
+                        <li>End-of-chapter review questions</li>
+                        <li>Online practice problems on LibreTexts</li>
+                    </ul>
+                </div>
+                
+                <a href="https://chem.libretexts.org/Courses/Fresno_City_College/Introductory_Chemistry_Atoms_First_for_FCC/10%3A_Chemical_Reactions" 
+                   class="libretexts-link" 
+                   target="_blank">
+                    Access Full Chapter on LibreTexts →
+                </a>
+                
+                <div class="warning">
+                    <strong>Study Tips:</strong>
+                    <ul style="padding-left: 20px;">
+                        <li>Practice balancing equations daily</li>
+                        <li>Memorize common polyatomic ions</li>
+                        <li>Learn to recognize reaction patterns quickly</li>
+                        <li>Work through all practice problems</li>
+                        <li>Watch videos multiple times if needed</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>Chapter 10: Chemical Reactions - Review Page</p>
+            <p>Videos by DrDan | Content from LibreTexts</p>
+            <p>© 2024 Chemistry Review Materials</p>
+        </footer>
+    </div>
+</body>
+</html>
