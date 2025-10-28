@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="bank6_titrations_energy" title="Chapter 11 - Question Bank 6: Titrations & Energy">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>bank_title</fieldlabel>
+        <fieldentry>Ch 11 Bank 6: Titrations & Energy</fieldentry>
+      </qtimetadatafield>
+      <qtimetadatafield>
+        <fieldlabel>outcome_cor_alignment</fieldlabel>
+        <fieldentry>COR 71.6: Molarity; 72.2-4: Energy & Chemistry</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    
+    <!-- Question 1: HCl Titration -->
+    <section ident="titration_1" title="Question 1">
+      <item ident="titration_q1" title="HCl Titration with NaOH">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>In a titration, 25.00 mL of HCl requires 23.45 mL of 0.1050 M NaOH. What is [HCl]?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">0.0845 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">0.0986 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">0.1120 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">0.1315 M</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 2: H2SO4 Titration -->
+    <section ident="titration_2" title="Question 2">
+      <item ident="titration_q2" title="Sulfuric Acid Titration">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>20.0 mL of H₂SO₄ requires 31.65 mL of 0.200 M NaOH for complete neutralization. What is [H₂SO₄]?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                H₂SO₄(aq) + 2NaOH(aq) → Na₂SO₄(aq) + 2H₂O(l)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">0.0633 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">0.0792 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">0.158 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">0.317 M</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 3: H3PO4 Neutralization -->
+    <section ident="titration_3" title="Question 3">
+      <item ident="titration_q3" title="Phosphoric Acid Neutralization">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>What volume of 0.250 M H₃PO₄ neutralizes 30.0 mL of 0.250 M NaOH?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                H₃PO₄(aq) + 3NaOH(aq) → Na₃PO₄(aq) + 3H₂O(l)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">5.00 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">10.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">15.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">30.0 mL</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 4: Sodium Carbonate Purity -->
+    <section ident="titration_4" title="Question 4">
+      <item ident="titration_q4" title="Sodium Carbonate Purity Analysis">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>A 0.500 g impure Na₂CO₃ sample requires 18.75 mL of 0.493 M HCl. What is the % purity?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                Na₂CO₃(s) + 2HCl(aq) → 2NaCl(aq) + H₂O(l) + CO₂(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">24.5%</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">49.0%</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">73.5%</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">98.0%</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 5: Methane Combustion Energy -->
+    <section ident="energy_5" title="Question 5">
+      <item ident="energy_q5" title="Methane Combustion Energy">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>How much heat is released when 4.00 g CH₄ combusts? (ΔH = −890.3 kJ/mol)</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(l)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">111 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">223 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">445 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">890 kJ</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 6: Hydrogen Peroxide Decomposition -->
+    <section ident="energy_6" title="Question 6">
+      <item ident="energy_q6" title="Hydrogen Peroxide Decomposition Energy">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>What mass of H₂O₂ decomposes to release 49.0 kJ? (ΔH = −196.0 kJ/mol H₂O₂)</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                2H₂O₂(l) → 2H₂O(l) + O₂(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">8.50 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">12.3 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">17.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">34.0 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">C</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 7: Redox Titration -->
+    <section ident="titration_7" title="Question 7">
+      <item ident="titration_q7" title="Iron(II) Permanganate Titration">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>25.00 mL of Fe²⁺ solution requires 10.45 mL of 0.0315 M KMnO₄. What is [Fe²⁺]?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                5Fe²⁺ + MnO₄⁻ + 8H⁺ → 5Fe³⁺ + Mn²⁺ + 4H₂O
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">0.0131 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">0.0329 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">0.0658 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">0.164 M</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">C</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 8: CaCO3 Decomposition Energy -->
+    <section ident="energy_8" title="Question 8">
+      <item ident="energy_q8" title="Calcium Carbonate Decomposition Energy">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>How much heat is absorbed when 14.0 g CaCO₃ decomposes? (ΔH = +178.3 kJ/mol)</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                CaCO₃(s) → CaO(s) + CO₂(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">12.5 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">16.3 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">25.0 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">50.0 kJ</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 9: Vinegar Titration -->
+    <section ident="titration_9" title="Question 9">
+      <item ident="titration_q9" title="Vinegar Concentration Analysis">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>10.00 mL of vinegar (HC₂H₃O₂) requires 18.50 mL of 0.240 M NaOH. What is the concentration in g/L?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                HC₂H₃O₂(aq) + NaOH(aq) → NaC₂H₃O₂(aq) + H₂O(l)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">13.3 g/L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">26.6 g/L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">53.3 g/L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">60.0 g/L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 10: Thermite Reaction -->
+    <section ident="energy_10" title="Question 10">
+      <item ident="energy_q10" title="Thermite Reaction Energy">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.3, 12.1-12.3 | COR 71.6; 72.2-4]</strong></p>
+              <p>How much heat is released when 10.0 g Al reacts with Fe₂O₃? (ΔH = −851.5 kJ/mol Fe₂O₃)</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                2Al(s) + Fe₂O₃(s) → Al₂O₃(s) + 2Fe(s)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">79.0 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">158 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">316 kJ</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">426 kJ</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+  </assessment>
+</questestinterop>
