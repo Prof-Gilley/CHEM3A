@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="bank3_gas_stoichiometry" title="Chapter 11 - Question Bank 3: Gas Stoichiometry">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>qmd_timelimit</fieldlabel>
+        <fieldentry></fieldentry>
+      </qtimetadatafield>
+      <qtimetadatafield>
+        <fieldlabel>cc_maxattempts</fieldlabel>
+        <fieldentry>1</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    <section ident="root_section">
+      
+      <!-- Question 1 -->
+      <item ident="q001" title="Question 1">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of O₂ at STP is produced from the decomposition of 24.5 g of KClO₃?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2 KClO₃(s) → 2 KCl(s) + 3 O₂(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="1000">
+                <material>
+                  <mattext texttype="text/plain">2.24 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1001">
+                <material>
+                  <mattext texttype="text/plain">4.48 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1002">
+                <material>
+                  <mattext texttype="text/plain">6.72 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1003">
+                <material>
+                  <mattext texttype="text/plain">8.96 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">1002</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 2 -->
+      <item ident="q002" title="Question 2">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of H₂ at 25°C and 1.00 atm is produced when 13.1 g of Zn reacts with excess HCl?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Zn(s) + 2 HCl(aq) → ZnCl₂(aq) + H₂(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="2000">
+                <material>
+                  <mattext texttype="text/plain">2.45 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2001">
+                <material>
+                  <mattext texttype="text/plain">4.89 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2002">
+                <material>
+                  <mattext texttype="text/plain">9.78 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2003">
+                <material>
+                  <mattext texttype="text/plain">19.6 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">2001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Remaining 8 questions follow same pattern - I'll add them all -->
+      
+      <!-- Question 3 -->
+      <item ident="q003" title="Question 3">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What mass of CaCO₃ is needed to produce 5.60 L of CO₂ at STP?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CaCO₃(s) → CaO(s) + CO₂(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="3000">
+                <material>
+                  <mattext texttype="text/plain">12.5 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3001">
+                <material>
+                  <mattext texttype="text/plain">25.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3002">
+                <material>
+                  <mattext texttype="text/plain">50.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3003">
+                <material>
+                  <mattext texttype="text/plain">100 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">3001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 4 -->
+      <item ident="q004" title="Question 4">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of O₂ at 27°C and 0.985 atm is produced from the decomposition of 17.0 g of H₂O₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2 H₂O₂(l) → 2 H₂O(l) + O₂(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="4000">
+                <material>
+                  <mattext texttype="text/plain">3.13 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="4001">
+                <material>
+                  <mattext texttype="text/plain">6.26 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="4002">
+                <material>
+                  <mattext texttype="text/plain">12.5 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="4003">
+                <material>
+                  <mattext texttype="text/plain">25.0 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">4001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 5 -->
+      <item ident="q005" title="Question 5">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of NH₃ at STP can be produced from 14.0 g of N₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;N₂(g) + 3 H₂(g) → 2 NH₃(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="5000">
+                <material>
+                  <mattext texttype="text/plain">11.2 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5001">
+                <material>
+                  <mattext texttype="text/plain">22.4 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5002">
+                <material>
+                  <mattext texttype="text/plain">33.6 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5003">
+                <material>
+                  <mattext texttype="text/plain">44.8 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">5001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 6 -->
+      <item ident="q006" title="Question 6">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of CO₂ at 30°C and 1.05 atm is produced from combustion of 11.0 g of C₃H₈?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;C₃H₈(g) + 5 O₂(g) → 3 CO₂(g) + 4 H₂O(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="6000">
+                <material>
+                  <mattext texttype="text/plain">5.54 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6001">
+                <material>
+                  <mattext texttype="text/plain">9.23 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6002">
+                <material>
+                  <mattext texttype="text/plain">16.6 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6003">
+                <material>
+                  <mattext texttype="text/plain">18.5 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">6001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 7 -->
+      <item ident="q007" title="Question 7">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What mass of NaN₃ is needed to produce 55.0 L of N₂ at 25°C and 1.00 atm?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2 NaN₃(s) → 2 Na(s) + 3 N₂(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="7000">
+                <material>
+                  <mattext texttype="text/plain">48.8 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7001">
+                <material>
+                  <mattext texttype="text/plain">73.2 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7002">
+                <material>
+                  <mattext texttype="text/plain">88.8 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7003">
+                <material>
+                  <mattext texttype="text/plain">146 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">7002</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 8 -->
+      <item ident="q008" title="Question 8">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;In the reaction below, what volume of NO is produced when 10.0 L of NH₃ reacts at STP?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4 NH₃(g) + 5 O₂(g) → 4 NO(g) + 6 H₂O(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="8000">
+                <material>
+                  <mattext texttype="text/plain">6.00 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8001">
+                <material>
+                  <mattext texttype="text/plain">10.0 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8002">
+                <material>
+                  <mattext texttype="text/plain">12.5 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8003">
+                <material>
+                  <mattext texttype="text/plain">15.0 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">8001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 9 -->
+      <item ident="q009" title="Question 9">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of O₂ at 25°C and 0.950 atm is required to combust 8.00 g of CH₄?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CH₄(g) + 2 O₂(g) → CO₂(g) + 2 H₂O(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="9000">
+                <material>
+                  <mattext texttype="text/plain">12.3 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9001">
+                <material>
+                  <mattext texttype="text/plain">24.5 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9002">
+                <material>
+                  <mattext texttype="text/plain">25.8 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9003">
+                <material>
+                  <mattext texttype="text/plain">51.5 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">9001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 10 -->
+      <item ident="q010" title="Question 10">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What total volume (at 30°C, 1.10 atm) of gaseous products forms from combustion of 15.0 g of C₂H₆?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2 C₂H₆(g) + 7 O₂(g) → 4 CO₂(g) + 6 H₂O(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="10000">
+                <material>
+                  <mattext texttype="text/plain">20.6 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="10001">
+                <material>
+                  <mattext texttype="text/plain">41.3 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="10002">
+                <material>
+                  <mattext texttype="text/plain">58.2 L</mattext>
+                </material>
+              </response_label>
+              <response_label ident="10003">
+                <material>
+                  <mattext texttype="text/plain">82.6 L</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">10001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+    </section>
+  </assessment>
+</questestinterop>
