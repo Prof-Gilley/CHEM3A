@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="bank4_limiting_reactants" title="Chapter 11 - Question Bank 4: Limiting Reactants">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>bank_title</fieldlabel>
+        <fieldentry>Ch 11 Bank 4: Limiting Reactants</fieldentry>
+      </qtimetadatafield>
+      <qtimetadatafield>
+        <fieldlabel>outcome_cor_alignment</fieldlabel>
+        <fieldentry>COR 71.9: Limiting Reactant Calculations</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    
+    <!-- Question 1: Ammonia Production with N2 and H2 -->
+    <section ident="limiting_1" title="Question 1">
+      <item ident="limiting_q1" title="Ammonia Production - N2 + H2">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 14.0 g of N₂ reacts with 6.00 g of H₂, which is limiting and how much NH₃ is produced?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                N₂(g) + 3H₂(g) → 2NH₃(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">N₂ limiting; 8.50 g NH₃</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">H₂ limiting; 17.0 g NH₃</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">N₂ limiting; 17.0 g NH₃</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">H₂ limiting; 34.0 g NH₃</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">C</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 2: Aluminum Chloride Formation -->
+    <section ident="limiting_2" title="Question 2">
+      <item ident="limiting_q2" title="Aluminum Chloride Formation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 5.40 g Al reacts with 21.3 g Cl₂, what mass of AlCl₃ forms?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                2Al(s) + 3Cl₂(g) → 2AlCl₃(s)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">13.3 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">26.7 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">40.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">53.3 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 3: Iron and Sulfur Reaction -->
+    <section ident="limiting_3" title="Question 3">
+      <item ident="limiting_q3" title="Iron and Sulfur - Excess Calculation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 11.2 g Fe reacts with 8.00 g S, how many grams of S remain unreacted?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                Fe(s) + S(s) → FeS(s)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">1.58 g S</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">3.16 g S</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">4.74 g S</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">6.42 g S</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 4: Ethylene Combustion -->
+    <section ident="limiting_4" title="Question 4">
+      <item ident="limiting_q4" title="Ethylene Combustion">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 14.0 g C₂H₄ reacts with 48.0 g O₂, which is limiting and what mass of CO₂ forms?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                C₂H₄(g) + 3O₂(g) → 2CO₂(g) + 2H₂O(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">C₂H₄ limiting; 44.0 g CO₂</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">O₂ limiting; 44.0 g CO₂</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">C₂H₄ limiting; 22.0 g CO₂</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">O₂ limiting; 88.0 g CO₂</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">A</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 5: Copper Oxide Reduction -->
+    <section ident="limiting_5" title="Question 5">
+      <item ident="limiting_q5" title="Copper Oxide Reduction">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 15.9 g CuO reacts with 0.500 g H₂, what mass of Cu is produced?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                CuO(s) + H₂(g) → Cu(s) + H₂O(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">6.35 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">12.7 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">15.9 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">31.8 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">C</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 6: Sodium and Chlorine -->
+    <section ident="limiting_6" title="Question 6">
+      <item ident="limiting_q6" title="Sodium and Chlorine - Excess Reactant">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 23.0 g Na reacts with 17.8 g Cl₂, which reactant is in excess?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                2Na(s) + Cl₂(g) → 2NaCl(s)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">Na is in excess</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">Cl₂ is in excess</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">Both are limiting</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">Neither is in excess</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">D</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 7: Calcium Phosphate Formation -->
+    <section ident="limiting_7" title="Question 7">
+      <item ident="limiting_q7" title="Calcium Phosphate Formation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 22.2 g Ca(OH)₂ reacts with 19.6 g H₃PO₄, what mass of Ca₃(PO₄)₂ forms?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                3Ca(OH)₂(aq) + 2H₃PO₄(aq) → Ca₃(PO₄)₂(s) + 6H₂O(l)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">15.5 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">31.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">46.5 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">62.0 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 8: Iron Oxidation -->
+    <section ident="limiting_8" title="Question 8">
+      <item ident="limiting_q8" title="Iron Oxidation - Percent Unreacted">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 27.9 g Fe reacts with 12.0 g O₂, what percent of Fe remains unreacted?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                4Fe(s) + 3O₂(g) → 2Fe₂O₃(s)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">0%</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">25%</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">50%</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">75%</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">A</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 9: Zinc and Silver Nitrate -->
+    <section ident="limiting_9" title="Question 9">
+      <item ident="limiting_q9" title="Zinc and Silver Nitrate">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 6.54 g Zn reacts with 17.0 g AgNO₃, how many grams of Ag are produced?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                Zn(s) + 2AgNO₃(aq) → Zn(NO₃)₂(aq) + 2Ag(s)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">5.40 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">10.8 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">16.2 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">21.6 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">A</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+    <!-- Question 10: Hydrogen Sulfide Combustion -->
+    <section ident="limiting_10" title="Question 10">
+      <item ident="limiting_q10" title="Hydrogen Sulfide Combustion">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[
+              <p><strong>[Burdge Ch. 11.5 | COR 71.9]</strong></p>
+              <p>When 17.0 g H₂S reacts with 24.0 g O₂, what mass of SO₂ forms?</p>
+              <p style="text-align:center; background-color:#f0f0f0; padding:10px; font-family:monospace;">
+                2H₂S(g) + 3O₂(g) → 2SO₂(g) + 2H₂O(g)
+              </p>
+            ]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material>
+                  <mattext texttype="text/plain">16.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="B">
+                <material>
+                  <mattext texttype="text/plain">32.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="C">
+                <material>
+                  <mattext texttype="text/plain">48.0 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="D">
+                <material>
+                  <mattext texttype="text/plain">64.0 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">B</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+    
+  </assessment>
+</questestinterop>
