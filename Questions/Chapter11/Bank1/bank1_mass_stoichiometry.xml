@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assessmentTest xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd"
+                identifier="bank1_mass_stoichiometry"
+                title="Chapter 11 - Question Bank 1: Mass-Mass Stoichiometry">
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float"/>
+    
+    <timeLimits maxTime="3600" allowLateSubmission="false"/>
+    
+    <testPart identifier="part1" navigationMode="linear" submissionMode="individual">
+        <assessmentSection identifier="section1" title="Mass-Mass Stoichiometry" visible="true">
+            
+            <!-- Question 1 -->
+            <assessmentItemRef identifier="q1" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 2 -->
+            <assessmentItemRef identifier="q2" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 3 -->
+            <assessmentItemRef identifier="q3" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 4 -->
+            <assessmentItemRef identifier="q4" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 5 -->
+            <assessmentItemRef identifier="q5" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 6 -->
+            <assessmentItemRef identifier="q6" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 7 -->
+            <assessmentItemRef identifier="q7" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 8 -->
+            <assessmentItemRef identifier="q8" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 9 -->
+            <assessmentItemRef identifier="q9" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+            <!-- Question 10 -->
+            <assessmentItemRef identifier="q10" required="true" fixed="false">
+                <weight identifier="SCORE" value="1.0"/>
+            </assessmentItemRef>
+            
+        </assessmentSection>
+    </testPart>
+    
+    <outcomeProcessing>
+        <setOutcomeValue identifier="SCORE">
+            <sum>
+                <testVariables variableIdentifier="SCORE"/>
+            </sum>
+        </setOutcomeValue>
+    </outcomeProcessing>
+    
+</assessmentTest>
+
+<!-- Individual Assessment Items -->
+
+<!-- Question 1 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q1"
+                title="Mass-Mass Stoichiometry Q1"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>D</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Consider the following balanced equation:</p>
+        <p><strong>2 Al(s) + 3 CuSO₄(aq) → Al₂(SO₄)₃(aq) + 3 Cu(s)</strong></p>
+        <p>What mass of copper can be produced from the complete reaction of 8.10 g of aluminum?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">9.53 g</simpleChoice>
+            <simpleChoice identifier="B">14.3 g</simpleChoice>
+            <simpleChoice identifier="C">19.1 g</simpleChoice>
+            <simpleChoice identifier="D">28.6 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 2 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q2"
+                title="Mass-Mass Stoichiometry Q2"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Iron(III) oxide reacts with carbon monoxide according to the equation:</p>
+        <p><strong>Fe₂O₃(s) + 3 CO(g) → 2 Fe(s) + 3 CO₂(g)</strong></p>
+        <p>How many grams of Fe₂O₃ are required to produce 100.0 g of iron?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">71.5 g</simpleChoice>
+            <simpleChoice identifier="B">95.3 g</simpleChoice>
+            <simpleChoice identifier="C">143 g</simpleChoice>
+            <simpleChoice identifier="D">286 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 3 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q3"
+                title="Mass-Mass Stoichiometry Q3"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Calcium carbonate decomposes according to the equation:</p>
+        <p><strong>CaCO₃(s) → CaO(s) + CO₂(g)</strong></p>
+        <p>What mass of CO₂ is produced from the complete decomposition of 25.0 g of CaCO₃?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">5.50 g</simpleChoice>
+            <simpleChoice identifier="B">8.79 g</simpleChoice>
+            <simpleChoice identifier="C">11.0 g</simpleChoice>
+            <simpleChoice identifier="D">44.0 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 4 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q4"
+                title="Mass-Mass Stoichiometry Q4"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Ammonia reacts with oxygen to form nitrogen monoxide:</p>
+        <p><strong>4 NH₃(g) + 5 O₂(g) → 4 NO(g) + 6 H₂O(g)</strong></p>
+        <p>What mass of NO can be produced from 34.0 g of NH₃?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">30.0 g</simpleChoice>
+            <simpleChoice identifier="B">45.0 g</simpleChoice>
+            <simpleChoice identifier="C">60.0 g</simpleChoice>
+            <simpleChoice identifier="D">75.0 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 5 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q5"
+                title="Mass-Mass Stoichiometry Q5"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Phosphorus reacts with chlorine gas:</p>
+        <p><strong>P₄(s) + 10 Cl₂(g) → 4 PCl₅(s)</strong></p>
+        <p>How many grams of PCl₅ can be produced from 15.5 g of P₄?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">26.0 g</simpleChoice>
+            <simpleChoice identifier="B">52.1 g</simpleChoice>
+            <simpleChoice identifier="C">104 g</simpleChoice>
+            <simpleChoice identifier="D">208 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 6 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q6"
+                title="Mass-Mass Stoichiometry Q6"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Sodium reacts with water according to:</p>
+        <p><strong>2 Na(s) + 2 H₂O(l) → 2 NaOH(aq) + H₂(g)</strong></p>
+        <p>What mass of NaOH is produced when 11.5 g of Na reacts completely?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">10.0 g</simpleChoice>
+            <simpleChoice identifier="B">15.0 g</simpleChoice>
+            <simpleChoice identifier="C">20.0 g</simpleChoice>
+            <simpleChoice identifier="D">40.0 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 7 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q7"
+                title="Mass-Mass Stoichiometry Q7"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Propane combustion:</p>
+        <p><strong>C₃H₈(g) + 5 O₂(g) → 3 CO₂(g) + 4 H₂O(g)</strong></p>
+        <p>What mass of water is produced from the combustion of 22.0 g of C₃H₈?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">18.0 g</simpleChoice>
+            <simpleChoice identifier="B">27.0 g</simpleChoice>
+            <simpleChoice identifier="C">36.0 g</simpleChoice>
+            <simpleChoice identifier="D">72.0 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 8 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q8"
+                title="Mass-Mass Stoichiometry Q8"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Hydrogen peroxide decomposes:</p>
+        <p><strong>2 H₂O₂(l) → 2 H₂O(l) + O₂(g)</strong></p>
+        <p>What mass of oxygen is produced from 68.0 g of H₂O₂?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">8.00 g</simpleChoice>
+            <simpleChoice identifier="B">16.0 g</simpleChoice>
+            <simpleChoice identifier="C">32.0 g</simpleChoice>
+            <simpleChoice identifier="D">64.0 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 9 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q9"
+                title="Mass-Mass Stoichiometry Q9"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Magnesium reacts with hydrochloric acid:</p>
+        <p><strong>Mg(s) + 2 HCl(aq) → MgCl₂(aq) + H₂(g)</strong></p>
+        <p>What mass of MgCl₂ is produced from 12.2 g of Mg?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">23.8 g</simpleChoice>
+            <simpleChoice identifier="B">35.6 g</simpleChoice>
+            <simpleChoice identifier="C">47.6 g</simpleChoice>
+            <simpleChoice identifier="D">95.2 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
+
+<!-- Question 10 -->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                identifier="q10"
+                title="Mass-Mass Stoichiometry Q10"
+                adaptive="false"
+                timeDependent="false">
+    
+    <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+        <correctResponse>
+            <value>C</value>
+        </correctResponse>
+    </responseDeclaration>
+    
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    
+    <itemBody>
+        <p>Sulfur dioxide reacts with oxygen:</p>
+        <p><strong>2 SO₂(g) + O₂(g) → 2 SO₃(g)</strong></p>
+        <p>What mass of SO₃ can be produced from 32.1 g of SO₂?</p>
+        
+        <choiceInteraction responseIdentifier="RESPONSE" shuffle="false" maxChoices="1">
+            <simpleChoice identifier="A">20.0 g</simpleChoice>
+            <simpleChoice identifier="B">30.0 g</simpleChoice>
+            <simpleChoice identifier="C">40.0 g</simpleChoice>
+            <simpleChoice identifier="D">80.0 g</simpleChoice>
+        </choiceInteraction>
+    </itemBody>
+    
+    <responseProcessing>
+        <responseCondition>
+            <responseIf>
+                <match>
+                    <variable identifier="RESPONSE"/>
+                    <correct identifier="RESPONSE"/>
+                </match>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">1.0</baseValue>
+                </setOutcomeValue>
+            </responseIf>
+            <responseElse>
+                <setOutcomeValue identifier="SCORE">
+                    <baseValue baseType="float">0.0</baseValue>
+                </setOutcomeValue>
+            </responseElse>
+        </responseCondition>
+    </responseProcessing>
+</assessmentItem>
