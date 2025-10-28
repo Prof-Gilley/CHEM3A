@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="bank2_solution_stoichiometry" title="Chapter 11 - Question Bank 2: Solution Stoichiometry">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>qmd_timelimit</fieldlabel>
+        <fieldentry></fieldentry>
+      </qtimetadatafield>
+      <qtimetadatafield>
+        <fieldlabel>cc_maxattempts</fieldlabel>
+        <fieldentry>1</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    <section ident="root_section">
+      
+      <!-- Question 1 -->
+      <item ident="q001" title="Question 1">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;How many milliliters of 0.250 M HCl are needed to react completely with 25.0 mL of 0.150 M Ba(OH)₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2 HCl(aq) + Ba(OH)₂(aq) → BaCl₂(aq) + 2 H₂O(l)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="1000">
+                <material>
+                  <mattext texttype="text/plain">15.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1001">
+                <material>
+                  <mattext texttype="text/plain">30.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1002">
+                <material>
+                  <mattext texttype="text/plain">37.5 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1003">
+                <material>
+                  <mattext texttype="text/plain">50.0 mL</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">1001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 2 -->
+      <item ident="q002" title="Question 2">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of 0.500 M AgNO₃ is needed to precipitate all the chloride from 50.0 mL of 0.200 M CaCl₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2 AgNO₃(aq) + CaCl₂(aq) → 2 AgCl(s) + Ca(NO₃)₂(aq)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="2000">
+                <material>
+                  <mattext texttype="text/plain">20.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2001">
+                <material>
+                  <mattext texttype="text/plain">30.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2002">
+                <material>
+                  <mattext texttype="text/plain">40.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2003">
+                <material>
+                  <mattext texttype="text/plain">50.0 mL</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">2002</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 3 -->
+      <item ident="q003" title="Question 3">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;How many grams of BaSO₄ precipitate form when 50.0 mL of 0.150 M Na₂SO₄ reacts with excess BaCl₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Na₂SO₄(aq) + BaCl₂(aq) → BaSO₄(s) + 2 NaCl(aq)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="3000">
+                <material>
+                  <mattext texttype="text/plain">0.875 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3001">
+                <material>
+                  <mattext texttype="text/plain">1.75 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3002">
+                <material>
+                  <mattext texttype="text/plain">3.50 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3003">
+                <material>
+                  <mattext texttype="text/plain">7.00 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">3001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 4 -->
+      <item ident="q004" title="Question 4">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of 0.400 M KI is needed to precipitate all the lead from 25.0 mL of 0.250 M Pb(NO₃)₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pb(NO₃)₂(aq) + 2 KI(aq) → PbI₂(s) + 2 KNO₃(aq)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="4000">
+                <material>
+                  <mattext texttype="text/plain">15.6 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="4001">
+                <material>
+                  <mattext texttype="text/plain">31.3 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="4002">
+                <material>
+                  <mattext texttype="text/plain">62.5 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="4003">
+                <material>
+                  <mattext texttype="text/plain">125 mL</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">4001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 5 -->
+      <item ident="q005" title="Question 5">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What mass of Na₂CO₃ is needed to neutralize 50.0 mL of 0.400 M HCl?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Na₂CO₃(s) + 2 HCl(aq) → 2 NaCl(aq) + H₂O(l) + CO₂(g)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="5000">
+                <material>
+                  <mattext texttype="text/plain">0.530 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5001">
+                <material>
+                  <mattext texttype="text/plain">1.06 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5002">
+                <material>
+                  <mattext texttype="text/plain">2.12 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5003">
+                <material>
+                  <mattext texttype="text/plain">4.24 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">5001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 6 -->
+      <item ident="q006" title="Question 6">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What is the concentration of Al₂(SO₄)₃ if 30.0 mL reacts completely with 45.0 mL of 0.200 M Ba(OH)₂?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Al₂(SO₄)₃(aq) + 3 Ba(OH)₂(aq) → 2 Al(OH)₃(s) + 3 BaSO₄(s)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="6000">
+                <material>
+                  <mattext texttype="text/plain">0.100 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6001">
+                <material>
+                  <mattext texttype="text/plain">0.150 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6002">
+                <material>
+                  <mattext texttype="text/plain">0.200 M</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6003">
+                <material>
+                  <mattext texttype="text/plain">0.300 M</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">6000</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 7 -->
+      <item ident="q007" title="Question 7">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What volume of 0.100 M KMnO₄ is required to oxidize 25.0 mL of 0.100 M FeSO₄ in acidic solution?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5 FeSO₄ + MnO₄⁻ + 8 H⁺ → 5 Fe³⁺ + Mn²⁺ + 4 H₂O + 5 SO₄²⁻&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="7000">
+                <material>
+                  <mattext texttype="text/plain">5.00 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7001">
+                <material>
+                  <mattext texttype="text/plain">10.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7002">
+                <material>
+                  <mattext texttype="text/plain">25.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7003">
+                <material>
+                  <mattext texttype="text/plain">125 mL</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">7000</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 8 -->
+      <item ident="q008" title="Question 8">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What mass of AgCl precipitate forms when 50.0 mL of 0.100 M AgNO₃ is mixed with excess NaCl?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="8000">
+                <material>
+                  <mattext texttype="text/plain">0.358 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8001">
+                <material>
+                  <mattext texttype="text/plain">0.717 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8002">
+                <material>
+                  <mattext texttype="text/plain">1.43 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8003">
+                <material>
+                  <mattext texttype="text/plain">2.87 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">8001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 9 -->
+      <item ident="q009" title="Question 9">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;How many milliliters of 0.150 M NaOH are required to neutralize 20.0 mL of 0.100 M H₃PO₄?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;H₃PO₄(aq) + 3 NaOH(aq) → Na₃PO₄(aq) + 3 H₂O(l)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="9000">
+                <material>
+                  <mattext texttype="text/plain">13.3 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9001">
+                <material>
+                  <mattext texttype="text/plain">20.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9002">
+                <material>
+                  <mattext texttype="text/plain">30.0 mL</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9003">
+                <material>
+                  <mattext texttype="text/plain">40.0 mL</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">9003</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+      <!-- Question 10 -->
+      <item ident="q010" title="Question 10">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;p&gt;What mass of zinc is needed to displace all the copper from 100.0 mL of 0.250 M CuSO₄?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Zn(s) + CuSO₄(aq) → ZnSO₄(aq) + Cu(s)&lt;/strong&gt;&lt;/p&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="10000">
+                <material>
+                  <mattext texttype="text/plain">0.816 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="10001">
+                <material>
+                  <mattext texttype="text/plain">1.63 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="10002">
+                <material>
+                  <mattext texttype="text/plain">3.27 g</mattext>
+                </material>
+              </response_label>
+              <response_label ident="10003">
+                <material>
+                  <mattext texttype="text/plain">6.54 g</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">10001</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      
+    </section>
+  </assessment>
+</questestinterop>
