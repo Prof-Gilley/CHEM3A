@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="bank1_mass_stoichiometry_manifest" version="1"
+          xmlns="http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1"
+          xmlns:imsmd="http://ltsc.ieee.org/xsd/imsccv1p1/LOM/manifest"
+          xmlns:imsqti="http://www.imsglobal.org/xsd/imsqti_v2p1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1 
+                              http://www.imsglobal.org/profile/cc/ccv1p1/ccv1p1_imscp_v1p2_v1p0.xsd
+                              http://ltsc.ieee.org/xsd/imsccv1p1/LOM/manifest
+                              http://www.imsglobal.org/profile/cc/ccv1p1/LOM/ccv1p1_lommanifest_v1p0.xsd
+                              http://www.imsglobal.org/xsd/imsqti_v2p1
+                              http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd">
+    
+    <metadata>
+        <schema>IMS Common Cartridge</schema>
+        <schemaversion>1.1.0</schemaversion>
+        <imsmd:lom>
+            <imsmd:general>
+                <imsmd:title>
+                    <imsmd:string language="en">Chapter 11 - Question Bank 1: Mass-Mass Stoichiometry</imsmd:string>
+                </imsmd:title>
+                <imsmd:description>
+                    <imsmd:string language="en">ACS-style multiple choice questions covering mass-mass stoichiometry calculations. Aligned with Burdge Ch. 11.1-11.2 and COR 71.1-8 (Mole Concepts &amp; Reaction Mole Ratio). Part of CHEM3A course at Fresno City College.</imsmd:string>
+                </imsmd:description>
+                <imsmd:keyword>
+                    <imsmd:string language="en">stoichiometry</imsmd:string>
+                </imsmd:keyword>
+                <imsmd:keyword>
+                    <imsmd:string language="en">mass-mass calculations</imsmd:string>
+                </imsmd:keyword>
+                <imsmd:keyword>
+                    <imsmd:string language="en">mole ratios</imsmd:string>
+                </imsmd:keyword>
+                <imsmd:keyword>
+                    <imsmd:string language="en">chemical equations</imsmd:string>
+                </imsmd:keyword>
+            </imsmd:general>
+            <imsmd:lifecycle>
+                <imsmd:version>
+                    <imsmd:string>1.0</imsmd:string>
+                </imsmd:version>
+                <imsmd:status>
+                    <imsmd:source>LOMv1.0</imsmd:source>
+                    <imsmd:value>final</imsmd:value>
+                </imsmd:status>
+                <imsmd:contribute>
+                    <imsmd:role>
+                        <imsmd:source>LOMv1.0</imsmd:source>
+                        <imsmd:value>author</imsmd:value>
+                    </imsmd:role>
+                    <imsmd:entity>Prof. Gilley</imsmd:entity>
+                    <imsmd:date>
+                        <imsmd:datetime>2025-01-01</imsmd:datetime>
+                    </imsmd:date>
+                </imsmd:contribute>
+            </imsmd:lifecycle>
+            <imsmd:technical>
+                <imsmd:format>text/xml</imsmd:format>
+            </imsmd:technical>
+            <imsmd:educational>
+                <imsmd:learningresourcetype>
+                    <imsmd:source>LOMv1.0</imsmd:source>
+                    <imsmd:value>exam</imsmd:value>
+                </imsmd:learningresourcetype>
+                <imsmd:intendedEndUserRole>
+                    <imsmd:source>LOMv1.0</imsmd:source>
+                    <imsmd:value>learner</imsmd:value>
+                </imsmd:intendedEndUserRole>
+                <imsmd:context>
+                    <imsmd:source>LOMv1.0</imsmd:source>
+                    <imsmd:value>higher education</imsmd:value>
+                </imsmd:context>
+                <imsmd:typicalLearningTime>
+                    <imsmd:duration>PT30M</imsmd:duration>
+                </imsmd:typicalLearningTime>
+                <imsmd:difficulty>
+                    <imsmd:source>LOMv1.0</imsmd:source>
+                    <imsmd:value>medium</imsmd:value>
+                </imsmd:difficulty>
+            </imsmd:educational>
+            <imsmd:rights>
+                <imsmd:copyrightandotherrestrictions>
+                    <imsmd:source>LOMv1.0</imsmd:source>
+                    <imsmd:value>yes</imsmd:value>
+                </imsmd:copyrightandotherrestrictions>
+                <imsmd:description>
+                    <imsmd:string language="en">© Fresno City College - CHEM3A Course Materials</imsmd:string>
+                </imsmd:description>
+            </imsmd:rights>
+        </imsmd:lom>
+    </metadata>
+    
+    <organizations>
+        <organization identifier="org_1" structure="rooted-hierarchy">
+            <item identifier="root_item">
+                <title>Mass-Mass Stoichiometry Question Bank</title>
+                <item identifier="item_bank1" identifierref="resource_bank1">
+                    <title>Question Bank 1: Mass-Mass Stoichiometry (10 Questions)</title>
+                    <metadata>
+                        <imsmd:lom>
+                            <imsmd:general>
+                                <imsmd:description>
+                                    <imsmd:string>10 multiple-choice questions on mass-mass stoichiometry</imsmd:string>
+                                </imsmd:description>
+                            </imsmd:general>
+                        </imsmd:lom>
+                    </metadata>
+                </item>
+            </item>
+        </organization>
+    </organizations>
+    
+    <resources>
+        <resource identifier="resource_bank1" type="imsqti_v2p1_xmlv2p1" href="bank1_mass_stoichiometry.xml">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Mass-Mass Stoichiometry Assessment</imsmd:string>
+                        </imsmd:title>
+                        <imsmd:description>
+                            <imsmd:string>QTI 2.1 assessment containing 10 questions on mass-mass stoichiometry</imsmd:string>
+                        </imsmd:description>
+                    </imsmd:general>
+                    <imsmd:technical>
+                        <imsmd:format>application/xml</imsmd:format>
+                    </imsmd:technical>
+                </imsmd:lom>
+                <imsqti:qtiMetadata>
+                    <imsqti:timeDependent>false</imsqti:timeDependent>
+                    <imsqti:interactionType>choiceInteraction</imsqti:interactionType>
+                    <imsqti:feedbackType>none</imsqti:feedbackType>
+                    <imsqti:solutionAvailable>false</imsqti:solutionAvailable>
+                    <imsqti:toolName>Chemistry Assessment Generator</imsqti:toolName>
+                    <imsqti:toolVersion>1.0</imsqti:toolVersion>
+                </imsqti:qtiMetadata>
+            </metadata>
+            <file href="bank1_mass_stoichiometry.xml"/>
+        </resource>
+        
+        <!-- Individual Question Resources -->
+        <resource identifier="q1_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q1">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 1: Aluminum and Copper Sulfate Reaction</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q2_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q2">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 2: Iron(III) Oxide Reduction</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q3_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q3">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 3: Calcium Carbonate Decomposition</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q4_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q4">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 4: Ammonia Oxidation</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q5_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q5">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 5: Phosphorus Chlorination</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q6_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q6">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 6: Sodium and Water Reaction</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q7_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q7">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 7: Propane Combustion</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q8_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q8">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 8: Hydrogen Peroxide Decomposition</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q9_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q9">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 9: Magnesium and HCl Reaction</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+        
+        <resource identifier="q10_resource" type="imsqti_item_xmlv2p1" href="bank1_mass_stoichiometry.xml#q10">
+            <metadata>
+                <imsmd:lom>
+                    <imsmd:general>
+                        <imsmd:title>
+                            <imsmd:string>Question 10: Sulfur Dioxide Oxidation</imsmd:string>
+                        </imsmd:title>
+                    </imsmd:general>
+                </imsmd:lom>
+            </metadata>
+        </resource>
+    </resources>
+</manifest>
