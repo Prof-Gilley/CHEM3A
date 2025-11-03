@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
-  <assessment ident="bank3_assessment" title="Question Bank 3: Identifying Conjugate Acid-Base Pairs">
+  <assessment ident="bank3_assessment" title="Question Bank 3: Conjugate Acids and Bases">
     <qtimetadata>
       <qtimetadatafield>
         <fieldlabel>cc_maxattempts</fieldlabel>
@@ -25,28 +25,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HCl + H₂O ⇌ H₃O⁺ + Cl⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">What is the conjugate base of H₂SO₄?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HCl/Cl⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">HSO₄⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HCl/H₂O and H₃O⁺/Cl⁻</mattext>
+                  <mattext texttype="text/plain">SO₄²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HCl/H₃O⁺ and H₂O/Cl⁻</mattext>
+                  <mattext texttype="text/plain">H₂SO₃</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">HCl/Cl⁻ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">H₃SO₄⁺</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -81,28 +81,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: NH₃ + H₂O ⇌ NH₄⁺ + OH⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">What is the conjugate acid of NH₃?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">NH₃/NH₄⁺ and H₂O/OH⁻</mattext>
+                  <mattext texttype="text/plain">NH₂⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">NH₃/OH⁻ and H₂O/NH₄⁺</mattext>
+                  <mattext texttype="text/plain">NH₄⁺</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">NH₃/H₂O and NH₄⁺/OH⁻</mattext>
+                  <mattext texttype="text/plain">N₂H₄</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">NH₄⁺/NH₃ and OH⁻/H₂O</mattext>
+                  <mattext texttype="text/plain">NH₄OH</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -114,7 +114,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">b</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -137,28 +137,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: CH₃COOH + H₂O ⇌ H₃O⁺ + CH₃COO⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">In the reaction HCO₃⁻ + H₂O ⇌ H₂CO₃ + OH⁻, what is the conjugate acid of HCO₃⁻?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">CH₃COOH/CH₃COO⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">CO₃²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">CH₃COOH/H₃O⁺ and H₂O/CH₃COO⁻</mattext>
+                  <mattext texttype="text/plain">H₃O⁺</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">CH₃COOH/H₂O and H₃O⁺/CH₃COO⁻</mattext>
+                  <mattext texttype="text/plain">H₂CO₃</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">CH₃COO⁻/CH₃COOH and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">OH⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -170,7 +170,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">c</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -193,28 +193,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HNO₃ + H₂O ⇌ H₃O⁺ + NO₃⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">If HPO₄²⁻ accepts a proton, what species is formed?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HNO₃/NO₃⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">PO₄³⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HNO₃/H₃O⁺ and H₂O/NO₃⁻</mattext>
+                  <mattext texttype="text/plain">H₃PO₄</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HNO₃/H₂O and H₃O⁺/NO₃⁻</mattext>
+                  <mattext texttype="text/plain">H₂PO₄⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">NO₃⁻/HNO₃ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">HPO₃⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -226,7 +226,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">c</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -249,28 +249,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HSO₄⁻ + H₂O ⇌ H₃O⁺ + SO₄²⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">What is the conjugate base of HSO₃⁻?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HSO₄⁻/SO₄²⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">H₂SO₃</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HSO₄⁻/H₃O⁺ and H₂O/SO₄²⁻</mattext>
+                  <mattext texttype="text/plain">SO₃²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HSO₄⁻/H₂O and H₃O⁺/SO₄²⁻</mattext>
+                  <mattext texttype="text/plain">HSO₄⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">SO₄²⁻/HSO₄⁻ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">SO₄²⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -282,7 +282,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">b</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -305,28 +305,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: H₂PO₄⁻ + OH⁻ ⇌ H₂O + HPO₄²⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">In the pair H₂O/OH⁻, which species is the acid?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">H₂PO₄⁻/HPO₄²⁻ and OH⁻/H₂O</mattext>
+                  <mattext texttype="text/plain">OH⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">H₂PO₄⁻/H₂O and OH⁻/HPO₄²⁻</mattext>
+                  <mattext texttype="text/plain">H₂O</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">H₂PO₄⁻/OH⁻ and H₂O/HPO₄²⁻</mattext>
+                  <mattext texttype="text/plain">Both equally</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">HPO₄²⁻/H₂PO₄⁻ and H₂O/OH⁻</mattext>
+                  <mattext texttype="text/plain">Neither</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -338,7 +338,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">b</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -361,28 +361,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HF + NH₃ ⇌ NH₄⁺ + F⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">If CH₃COO⁻ gains a proton, what compound is formed?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HF/F⁻ and NH₃/NH₄⁺</mattext>
+                  <mattext texttype="text/plain">CH₃COOH</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HF/NH₄⁺ and NH₃/F⁻</mattext>
+                  <mattext texttype="text/plain">CH₂COO⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HF/NH₃ and NH₄⁺/F⁻</mattext>
+                  <mattext texttype="text/plain">CH₃COO²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">F⁻/HF and NH₄⁺/NH₃</mattext>
+                  <mattext texttype="text/plain">CH₄COO⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -417,28 +417,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HCO₃⁻ + H₂O ⇌ H₃O⁺ + CO₃²⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">What is the conjugate acid of H₂O?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HCO₃⁻/CO₃²⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">OH⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HCO₃⁻/H₃O⁺ and H₂O/CO₃²⁻</mattext>
+                  <mattext texttype="text/plain">H₂O₂</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HCO₃⁻/H₂O and H₃O⁺/CO₃²⁻</mattext>
+                  <mattext texttype="text/plain">H₃O⁺</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">CO₃²⁻/HCO₃⁻ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">HO₂⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -450,7 +450,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">c</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -473,28 +473,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: H₃PO₄ + OH⁻ ⇌ H₂O + H₂PO₄⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">In the reaction NH₄⁺ + OH⁻ ⇌ NH₃ + H₂O, what is the conjugate base of NH₄⁺?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">H₃PO₄/H₂PO₄⁻ and OH⁻/H₂O</mattext>
+                  <mattext texttype="text/plain">NH₃</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">H₃PO₄/H₂O and OH⁻/H₂PO₄⁻</mattext>
+                  <mattext texttype="text/plain">NH₂⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">H₃PO₄/OH⁻ and H₂O/H₂PO₄⁻</mattext>
+                  <mattext texttype="text/plain">OH⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">H₂PO₄⁻/H₃PO₄ and H₂O/OH⁻</mattext>
+                  <mattext texttype="text/plain">H₂O</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -529,28 +529,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: C₅H₅N + H₂O ⇌ C₅H₅NH⁺ + OH⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">What is the conjugate base of HNO₃?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">C₅H₅N/C₅H₅NH⁺ and H₂O/OH⁻</mattext>
+                  <mattext texttype="text/plain">NO₃⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">C₅H₅N/OH⁻ and H₂O/C₅H₅NH⁺</mattext>
+                  <mattext texttype="text/plain">NO₂⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">C₅H₅N/H₂O and C₅H₅NH⁺/OH⁻</mattext>
+                  <mattext texttype="text/plain">HNO₂</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">C₅H₅NH⁺/C₅H₅N and OH⁻/H₂O</mattext>
+                  <mattext texttype="text/plain">N₂O₃</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -585,28 +585,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HPO₄²⁻ + H₂O ⇌ H₃O⁺ + PO₄³⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">If HS⁻ loses a proton, what ion is formed?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HPO₄²⁻/PO₄³⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">H₂S</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HPO₄²⁻/H₃O⁺ and H₂O/PO₄³⁻</mattext>
+                  <mattext texttype="text/plain">S²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HPO₄²⁻/H₂O and H₃O⁺/PO₄³⁻</mattext>
+                  <mattext texttype="text/plain">HSO⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">PO₄³⁻/HPO₄²⁻ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">S⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -618,7 +618,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">b</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -641,28 +641,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: H₂SO₃ + H₂O ⇌ H₃O⁺ + HSO₃⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">In the pair HCN/CN⁻, which species is the base?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">H₂SO₃/HSO₃⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">HCN</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">H₂SO₃/H₃O⁺ and H₂O/HSO₃⁻</mattext>
+                  <mattext texttype="text/plain">CN⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">H₂SO₃/H₂O and H₃O⁺/HSO₃⁻</mattext>
+                  <mattext texttype="text/plain">Both equally</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">HSO₃⁻/H₂SO₃ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">Neither</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -674,7 +674,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">b</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -697,28 +697,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: CN⁻ + H₂O ⇌ HCN + OH⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">What is the conjugate acid of PO₄³⁻?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">CN⁻/HCN and H₂O/OH⁻</mattext>
+                  <mattext texttype="text/plain">HPO₄²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">CN⁻/OH⁻ and H₂O/HCN</mattext>
+                  <mattext texttype="text/plain">H₂PO₄⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">CN⁻/H₂O and HCN/OH⁻</mattext>
+                  <mattext texttype="text/plain">H₃PO₄</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">HCN/CN⁻ and OH⁻/H₂O</mattext>
+                  <mattext texttype="text/plain">PO₃³⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -753,28 +753,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: HClO + NH₃ ⇌ NH₄⁺ + ClO⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">In the reaction H₂PO₄⁻ + H₂O ⇌ H₃O⁺ + HPO₄²⁻, what is the conjugate base of H₂PO₄⁻?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">HClO/ClO⁻ and NH₃/NH₄⁺</mattext>
+                  <mattext texttype="text/plain">H₃PO₄</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">HClO/NH₄⁺ and NH₃/ClO⁻</mattext>
+                  <mattext texttype="text/plain">PO₄³⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">HClO/NH₃ and NH₄⁺/ClO⁻</mattext>
+                  <mattext texttype="text/plain">HPO₄²⁻</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">ClO⁻/HClO and NH₄⁺/NH₃</mattext>
+                  <mattext texttype="text/plain">H₃O⁺</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -786,7 +786,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">c</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
@@ -809,28 +809,28 @@
         </itemmetadata>
         <presentation>
           <material>
-            <mattext texttype="text/html">In the reaction: H₂C₂O₄ + H₂O ⇌ H₃O⁺ + HC₂O₄⁻<br/>What are the conjugate acid-base pairs?</mattext>
+            <mattext texttype="text/html">If F⁻ accepts a proton, what molecule is formed?</mattext>
           </material>
           <response_lid ident="response1" rcardinality="Single">
             <render_choice>
               <response_label ident="a">
                 <material>
-                  <mattext texttype="text/plain">H₂C₂O₄/HC₂O₄⁻ and H₂O/H₃O⁺</mattext>
+                  <mattext texttype="text/plain">F₂</mattext>
                 </material>
               </response_label>
               <response_label ident="b">
                 <material>
-                  <mattext texttype="text/plain">H₂C₂O₄/H₃O⁺ and H₂O/HC₂O₄⁻</mattext>
+                  <mattext texttype="text/plain">HF</mattext>
                 </material>
               </response_label>
               <response_label ident="c">
                 <material>
-                  <mattext texttype="text/plain">H₂C₂O₄/H₂O and H₃O⁺/HC₂O₄⁻</mattext>
+                  <mattext texttype="text/plain">H₂F</mattext>
                 </material>
               </response_label>
               <response_label ident="d">
                 <material>
-                  <mattext texttype="text/plain">HC₂O₄⁻/H₂C₂O₄ and H₃O⁺/H₂O</mattext>
+                  <mattext texttype="text/plain">HF⁻</mattext>
                 </material>
               </response_label>
             </render_choice>
@@ -842,7 +842,7 @@
           </outcomes>
           <respcondition continue="No">
             <conditionvar>
-              <varequal respident="response1">a</varequal>
+              <varequal respident="response1">b</varequal>
             </conditionvar>
             <setvar action="Set" varname="SCORE">100</setvar>
           </respcondition>
