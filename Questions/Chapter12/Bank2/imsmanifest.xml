@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="bank2_manifest" xmlns="http://www.imsglobal.org/xsd/imscp_v1p1" xmlns:lom="http://ltsc.ieee.org/xsd/imsmd_v1p2" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd http://ltsc.ieee.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p2.xsd">
+  <metadata>
+    <schema>IMS Content</schema>
+    <schemaversion>1.1.3</schemaversion>
+    <imsmd:lom>
+      <imsmd:general>
+        <imsmd:title>
+          <imsmd:langstring xml:lang="en">Question Bank 2: Calculating pH from [OH-]</imsmd:langstring>
+        </imsmd:title>
+      </imsmd:general>
+    </imsmd:lom>
+  </metadata>
+  <organizations/>
+  <resources>
+    <resource identifier="bank2_questions" type="imsqti_xmlv1p2/imscc_xmlv1p0/assessment" href="bank2_questions.xml">
+      <file href="bank2_questions.xml"/>
+      <metadata>
+        <imsmd:lom>
+          <imsmd:general>
+            <imsmd:title>
+              <imsmd:langstring xml:lang="en">Question Bank 2: pH from Base Concentration</imsmd:langstring>
+            </imsmd:title>
+          </imsmd:general>
+        </imsmd:lom>
+      </metadata>
+    </resource>
+  </resources>
+</manifest>
