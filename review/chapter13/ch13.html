@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Equilibrium Review - Chemistry 3A</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+
+        function ChemicalEquilibriumReview() {
+            const [activeSection, setActiveSection] = useState('overview');
+            const [progress, setProgress] = useState({
+                videos: [false, false, false, false, false, false],
+                topics: {
+                    collision: false,
+                    equilibrium: false,
+                    kExpression: false,
+                    leChatelierConc: false,
+                    leChatelierTemp: false,
+                    leChatelierPress: false,
+                    specialEquilibria: false
+                },
+                practice: {}
+            });
+
+            const videos = [
+                { id: '-ie15qDdHjE', title: 'Introduction to Chemical Equilibrium', topic: 'Introduction' },
+                { id: 'qatdA_ALnx8', title: 'Equilibrium Constants', topic: 'K Expressions' },
+                { id: 'JbkiO-RLx6A', title: 'Calculating K', topic: 'Calculations' },
+                { id: 'JMRz9TRVUQg', title: 'Le Chatelier\'s Principle', topic: 'Le Chatelier' },
+                { id: 'tGqiUbBxqec', title: 'Temperature Effects', topic: 'Temperature' },
+                { id: 'ZojNOgXleJA', title: 'Equilibrium Applications', topic: 'Applications' }
+            ];
+
+            const topics = [
+                { id: 'collision', name: 'Collision Theory', key: 'collision' },
+                { id: 'equilibrium', name: 'Dynamic Equilibrium', key: 'equilibrium' },
+                { id: 'kExpression', name: 'K Expressions', key: 'kExpression' },
+                { id: 'leChatelierConc', name: 'Le Chatelier - Concentration', key: 'leChatelierConc' },
+                { id: 'leChatelierTemp', name: 'Le Chatelier - Temperature', key: 'leChatelierTemp' },
+                { id: 'leChatelierPress', name: 'Le Chatelier - Pressure', key: 'leChatelierPress' },
+                { id: 'specialEquilibria', name: 'Special Equilibria (Ka, Kb, Ksp)', key: 'specialEquilibria' }
+            ];
+
+            const practiceProblems = [
+                {
+                    id: 1,
+                    question: "Write the equilibrium expression for: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g)",
+                    answer: "K = [SO₃]² / ([SO₂]²[O₂])",
+                    topic: "kExpression"
+                },
+                {
+                    id: 2,
+                    question: "For N₂(g) + 3H₂(g) ⇌ 2NH₃(g), what happens when N₂ is added?",
+                    answer: "Equilibrium shifts RIGHT (toward products) to consume the added N₂",
+                    topic: "leChatelierConc"
+                },
+                {
+                    id: 3,
+                    question: "For an exothermic reaction at equilibrium, what happens when temperature increases?",
+                    answer: "Equilibrium shifts LEFT (toward reactants) because heat is a product",
+                    topic: "leChatelierTemp"
+                },
+                {
+                    id: 4,
+                    question: "If K = 1.5 × 10⁻⁸, are products or reactants favored?",
+                    answer: "Reactants are heavily favored (K << 1)",
+                    topic: "kExpression"
+                },
+                {
+                    id: 5,
+                    question: "For 2NO₂(g) ⇌ N₂O₄(g), what happens when pressure increases?",
+                    answer: "Equilibrium shifts RIGHT toward fewer moles (2 moles → 1 mole)",
+                    topic: "leChatelierPress"
+                }
+            ];
+
+            const toggleVideo = (index) => {
+                const newVideos = [...progress.videos];
+                newVideos[index] = !newVideos[index];
+                setProgress({ ...progress, videos: newVideos });
+            };
+
+            const toggleTopic = (key) => {
+                setProgress({
+                    ...progress,
+                    topics: { ...progress.topics, [key]: !progress.topics[key] }
+                });
+            };
+
+            const togglePractice = (id) => {
+                setProgress({
+                    ...progress,
+                    practice: { ...progress.practice, [id]: !progress.practice[id] }
+                });
+            };
+
+            const calculateProgress = () => {
+                const videoProgress = progress.videos.filter(v => v).length / videos.length;
+                const topicProgress = Object.values(progress.topics).filter(t => t).length / topics.length;
+                const practiceProgress = Object.keys(progress.practice).length / practiceProblems.length;
+                return Math.round(((videoProgress + topicProgress + practiceProgress) / 3) * 100);
+            };
+
+            const VideoSection = () => (
+                <div className="space-y-6">
+                    <ChapterBanner />
+                    <h2 className="text-3xl font-bold text-blue-900 mb-4">DrDan Video Lectures</h2>
+                    <div className="grid gap-6 md:grid-cols-2">
+                        {videos.map((video, index) => (
+                            <div key={video.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                                <div className="video-container">
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${video.id}`}
+                                        title={video.title}
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                                <div className="p-4">
+                                    <h3 className="font-semibold text-lg mb-2">{video.title}</h3>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-gray-600">{video.topic}</span>
+                                        <label className="flex items-center cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={progress.videos[index]}
+                                                onChange={() => toggleVideo(index)}
+                                                className="w-5 h-5 text-blue-600"
+                                            />
+                                            <span className="ml-2 text-sm">Watched</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const TopicSection = ({ topic }) => {
+                const content = {
+                    collision: {
+                        title: "Collision Theory & Reaction Rates",
+                        points: [
+                            "Particles must collide with sufficient energy (activation energy) and proper orientation",
+                            "Factors affecting rates: concentration, temperature, surface area, catalysts",
+                            "Higher temperature = faster particles = more energetic collisions"
+                        ]
+                    },
+                    equilibrium: {
+                        title: "Dynamic Equilibrium",
+                        points: [
+                            "Forward and reverse reactions occur at equal rates",
+                            "Macroscopic properties remain constant",
+                            "Reactions continue - NOT a static state!",
+                            "Can be approached from either direction"
+                        ]
+                    },
+                    kExpression: {
+                        title: "Equilibrium Constant (K) Expressions",
+                        points: [
+                            "For aA + bB ⇌ cC + dD: K = [C]^c[D]^d / [A]^a[B]^b",
+                            "Products in numerator, reactants in denominator",
+                            "Coefficients become exponents",
+                            "Pure solids and liquids are OMITTED",
+                            "K >> 1 means products favored; K << 1 means reactants favored"
+                        ]
+                    },
+                    leChatelierConc: {
+                        title: "Le Chatelier's Principle - Concentration Changes",
+                        points: [
+                            "Add reactant or remove product → shifts RIGHT",
+                            "Add product or remove reactant → shifts LEFT",
+                            "System counteracts the stress to re-establish equilibrium"
+                        ]
+                    },
+                    leChatelierTemp: {
+                        title: "Le Chatelier's Principle - Temperature Changes",
+                        points: [
+                            "Endothermic (ΔH > 0): heat is a REACTANT",
+                            "  - Increase T → shifts RIGHT",
+                            "  - Decrease T → shifts LEFT",
+                            "Exothermic (ΔH < 0): heat is a PRODUCT",
+                            "  - Increase T → shifts LEFT",
+                            "  - Decrease T → shifts RIGHT"
+                        ]
+                    },
+                    leChatelierPress: {
+                        title: "Le Chatelier's Principle - Pressure Changes",
+                        points: [
+                            "Applies to GAS-PHASE reactions only",
+                            "Increase pressure → shifts toward FEWER moles of gas",
+                            "Decrease pressure → shifts toward MORE moles of gas",
+                            "No shift if equal moles on both sides"
+                        ]
+                    },
+                    specialEquilibria: {
+                        title: "Special Equilibria Types",
+                        points: [
+                            "Ka (acid dissociation): Ka = [H⁺][A⁻]/[HA]",
+                            "Kb (base dissociation): Kb = [BH⁺][OH⁻]/[B]",
+                            "Kw (water autoionization): Kw = [H⁺][OH⁻] = 1.0×10⁻¹⁴ at 25°C",
+                            "Ksp (solubility product): For AgCl(s) ⇌ Ag⁺ + Cl⁻, Ksp = [Ag⁺][Cl⁻]"
+                        ]
+                    }
+                };
+
+                const topicData = content[topic];
+                const topicInfo = topics.find(t => t.key === topic);
+
+                return (
+                    <div className="space-y-6">
+                        <ChapterBanner />
+                        <div className="bg-white rounded-lg shadow-md p-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-2xl font-bold text-blue-900">{topicData.title}</h2>
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={progress.topics[topic]}
+                                    onChange={() => toggleTopic(topic)}
+                                    className="w-5 h-5 text-blue-600"
+                                />
+                                <span className="ml-2">Reviewed</span>
+                            </label>
+                        </div>
+                        <ul className="space-y-2">
+                            {topicData.points.map((point, index) => (
+                                <li key={index} className="flex items-start">
+                                    <span className="text-blue-600 mr-2">•</span>
+                                    <span>{point}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            );
+            
+            const PracticeSection = () => {
+                const [showAnswers, setShowAnswers] = useState({});
+
+                const toggleAnswer = (id) => {
+                    setShowAnswers({ ...showAnswers, [id]: !showAnswers[id] });
+                };
+
+                return (
+                    <div className="space-y-6">
+                        <ChapterBanner />
+                        <div className="space-y-4">
+                            <h2 className="text-3xl font-bold text-blue-900 mb-4">Practice Problems</h2>
+                        {practiceProblems.map((problem) => (
+                            <div key={problem.id} className="bg-white rounded-lg shadow-md p-6">
+                                <div className="flex items-start justify-between mb-3">
+                                    <p className="font-semibold text-lg flex-1">
+                                        {problem.id}. {problem.question}
+                                    </p>
+                                    <label className="flex items-center cursor-pointer ml-4">
+                                        <input
+                                            type="checkbox"
+                                            checked={progress.practice[problem.id]}
+                                            onChange={() => togglePractice(problem.id)}
+                                            className="w-5 h-5 text-blue-600"
+                                        />
+                                        <span className="ml-2 text-sm">Done</span>
+                                    </label>
+                                </div>
+                                <button
+                                    onClick={() => toggleAnswer(problem.id)}
+                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                                >
+                                    {showAnswers[problem.id] ? 'Hide' : 'Show'} Answer
+                                </button>
+                                {showAnswers[problem.id] && (
+                                    <div className="mt-3 p-4 bg-green-50 rounded border-l-4 border-green-600">
+                                        <p className="font-semibold text-green-800">{problem.answer}</p>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                        </div>
+                    </div>
+                );
+            };
+
+            const ChapterBanner = () => (
+                <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-8 shadow-xl mb-6">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h1 className="text-4xl font-bold mb-2">Chemical Equilibrium</h1>
+                            <p className="text-xl mb-1">Chemistry 3A - Chapter 13</p>
+                            <p className="text-lg opacity-90">Fresno City College</p>
+                        </div>
+                        <div className="mt-4 md:mt-0 md:text-right">
+                            <p className="text-2xl font-semibold">Prof. Gilley</p>
+                            <p className="text-sm opacity-75">Interactive Review Page</p>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const OverviewSection = () => (
+                <div className="space-y-6">
+                    <ChapterBanner />
+
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <h2 className="text-2xl font-bold text-blue-900 mb-4">Your Progress</h2>
+                        <div className="space-y-3">
+                            <div>
+                                <div className="flex justify-between mb-1">
+                                    <span>Overall Completion</span>
+                                    <span className="font-bold text-blue-600">{calculateProgress()}%</span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-4">
+                                    <div
+                                        className="bg-blue-600 h-4 rounded-full transition-all duration-500"
+                                        style={{ width: `${calculateProgress()}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 mt-4">
+                                <div className="text-center p-3 bg-blue-50 rounded">
+                                    <p className="text-2xl font-bold text-blue-600">
+                                        {progress.videos.filter(v => v).length}/{videos.length}
+                                    </p>
+                                    <p className="text-sm text-gray-600">Videos</p>
+                                </div>
+                                <div className="text-center p-3 bg-green-50 rounded">
+                                    <p className="text-2xl font-bold text-green-600">
+                                        {Object.values(progress.topics).filter(t => t).length}/{topics.length}
+                                    </p>
+                                    <p className="text-sm text-gray-600">Topics</p>
+                                </div>
+                                <div className="text-center p-3 bg-purple-50 rounded">
+                                    <p className="text-2xl font-bold text-purple-600">
+                                        {Object.keys(progress.practice).length}/{practiceProblems.length}
+                                    </p>
+                                    <p className="text-sm text-gray-600">Practice</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <h2 className="text-2xl font-bold text-blue-900 mb-4">Quick Start Guide</h2>
+                        <ol className="space-y-2">
+                            <li className="flex items-start">
+                                <span className="font-bold text-blue-600 mr-2">1.</span>
+                                <span>Watch the DrDan videos in order (or jump to specific topics)</span>
+                            </li>
+                            <li className="flex items-start">
+                                <span className="font-bold text-blue-600 mr-2">2.</span>
+                                <span>Review each topic section and check them off as you go</span>
+                            </li>
+                            <li className="flex items-start">
+                                <span className="font-bold text-blue-600 mr-2">3.</span>
+                                <span>Test your knowledge with practice problems</span>
+                            </li>
+                            <li className="flex items-start">
+                                <span className="font-bold text-blue-600 mr-2">4.</span>
+                                <span>Track your progress and identify areas that need more review</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-gray-100">
+                    <div className="flex flex-col lg:flex-row">
+                        {/* Sidebar Navigation */}
+                        <nav className="lg:w-64 bg-blue-900 text-white p-6 lg:min-h-screen">
+                            <h2 className="text-xl font-bold mb-6">Navigation</h2>
+                            <ul className="space-y-2">
+                                <li>
+                                    <button
+                                        onClick={() => setActiveSection('overview')}
+                                        className={`w-full text-left px-4 py-2 rounded transition ${
+                                            activeSection === 'overview' ? 'bg-blue-700' : 'hover:bg-blue-800'
+                                        }`}
+                                    >
+                                        Overview
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => setActiveSection('videos')}
+                                        className={`w-full text-left px-4 py-2 rounded transition ${
+                                            activeSection === 'videos' ? 'bg-blue-700' : 'hover:bg-blue-800'
+                                        }`}
+                                    >
+                                        Videos
+                                    </button>
+                                </li>
+                                <li className="pt-2 pb-1">
+                                    <p className="text-sm font-semibold text-blue-300 px-4">Topics</p>
+                                </li>
+                                {topics.map((topic) => (
+                                    <li key={topic.id}>
+                                        <button
+                                            onClick={() => setActiveSection(topic.key)}
+                                            className={`w-full text-left px-4 py-2 rounded text-sm transition ${
+                                                activeSection === topic.key ? 'bg-blue-700' : 'hover:bg-blue-800'
+                                            }`}
+                                        >
+                                            {progress.topics[topic.key] && <span className="mr-2">✓</span>}
+                                            {topic.name}
+                                        </button>
+                                    </li>
+                                ))}
+                                <li className="pt-4">
+                                    <button
+                                        onClick={() => setActiveSection('practice')}
+                                        className={`w-full text-left px-4 py-2 rounded transition ${
+                                            activeSection === 'practice' ? 'bg-blue-700' : 'hover:bg-blue-800'
+                                        }`}
+                                    >
+                                        Practice Problems
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        {/* Main Content */}
+                        <main className="flex-1 p-6 lg:p-10">
+                            {activeSection === 'overview' && <OverviewSection />}
+                            {activeSection === 'videos' && <VideoSection />}
+                            {activeSection === 'practice' && <PracticeSection />}
+                            {topics.map(topic => 
+                                activeSection === topic.key && <TopicSection key={topic.key} topic={topic.key} />
+                            )}
+                        </main>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<ChemicalEquilibriumReview />, document.getElementById('root'));
+    </script>
+</body>
+</html>
