@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemical Equilibrium Review - Prof. Gilley - Fresno City College</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>Chemical Equilibrium - Complete Review - Prof. Gilley</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .video-container {
@@ -14,6 +11,8 @@
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
         }
         .video-container iframe {
             position: absolute;
@@ -22,442 +21,889 @@
             width: 100%;
             height: 100%;
         }
+        .practice-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .practice-answer.show {
+            max-height: 500px;
+        }
     </style>
 </head>
-<body>
-    <div id="root"></div>
-    
-    <script type="text/babel">
-        const { useState } = React;
+<body class="bg-gray-50">
+    <!-- Chapter Banner -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h1 class="text-5xl font-bold mb-2">Chemical Equilibrium</h1>
+                    <p class="text-2xl mb-1">Chemistry 3A - Chapter 13</p>
+                    <p class="text-xl opacity-90">Fresno City College</p>
+                </div>
+                <div class="mt-4 md:mt-0 md:text-right">
+                    <p class="text-3xl font-semibold">Prof. Gilley</p>
+                    <p class="text-base opacity-75">Complete Review Guide</p>
+                </div>
+            </div>
+        </div>
+    </header>
 
-        function ChemicalEquilibriumReview() {
-            const [activeSection, setActiveSection] = useState('overview');
-            const [progress, setProgress] = useState({
-                videos: [false, false, false, false, false, false],
-                topics: {
-                    collision: false,
-                    equilibrium: false,
-                    kExpression: false,
-                    leChatelierConc: false,
-                    leChatelierTemp: false,
-                    leChatelierPress: false,
-                    specialEquilibria: false
-                },
-                practice: {}
-            });
+    <main class="container mx-auto px-6 py-12 max-w-5xl">
+        
+        <!-- Introduction Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-4">Welcome to Your Complete Equilibrium Review</h2>
+                <p class="text-lg text-gray-700 mb-4">
+                    This page is your one-stop resource for mastering Chemical Equilibrium. Scroll through to find integrated video lectures, 
+                    detailed explanations, worked examples, and practice problems—everything you need to succeed in Chemistry 3A.
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mb-4">
+                    <p class="font-semibold text-blue-900">Learning Outcomes for This Chapter:</p>
+                    <ul class="list-disc ml-6 mt-2 text-gray-700">
+                        <li>Apply dynamic equilibrium concepts to evaluate the equilibrium distribution of reactants and products</li>
+                        <li>Write and interpret equilibrium constant expressions</li>
+                        <li>Perform equilibrium calculations</li>
+                        <li>Apply Le Chatelier's Principle to predict system responses to stress</li>
+                    </ul>
+                </div>
+            </div>
 
-            const videos = [
-                { id: '-ie15qDdHjE', title: 'Introduction to Chemical Equilibrium', topic: 'Introduction' },
-                { id: 'qatdA_ALnx8', title: 'Equilibrium Constants', topic: 'K Expressions' },
-                { id: 'JbkiO-RLx6A', title: 'Calculating K', topic: 'Calculations' },
-                { id: 'JMRz9TRVUQg', title: 'Le Chatelier\'s Principle', topic: 'Le Chatelier' },
-                { id: 'tGqiUbBxqec', title: 'Temperature Effects', topic: 'Temperature' },
-                { id: 'ZojNOgXleJA', title: 'Equilibrium Applications', topic: 'Applications' }
-            ];
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 1: Introduction to Chemical Equilibrium</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/-ie15qDdHjE" 
+                            title="Introduction to Chemical Equilibrium" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="text-gray-600 italic">Watch this video first to get an overview of equilibrium concepts</p>
+            </div>
+        </section>
 
-            const topics = [
-                { id: 'collision', name: 'Collision Theory', key: 'collision' },
-                { id: 'equilibrium', name: 'Dynamic Equilibrium', key: 'equilibrium' },
-                { id: 'kExpression', name: 'K Expressions', key: 'kExpression' },
-                { id: 'leChatelierConc', name: 'Le Chatelier - Concentration', key: 'leChatelierConc' },
-                { id: 'leChatelierTemp', name: 'Le Chatelier - Temperature', key: 'leChatelierTemp' },
-                { id: 'leChatelierPress', name: 'Le Chatelier - Pressure', key: 'leChatelierPress' },
-                { id: 'specialEquilibria', name: 'Special Equilibria (Ka, Kb, Ksp)', key: 'specialEquilibria' }
-            ];
+        <!-- Collision Theory Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    1. Collision Theory and Reaction Rates
+                </h2>
+                
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4">What Makes Reactions Happen?</h3>
+                <p class="text-lg text-gray-700 mb-4">
+                    For a chemical reaction to occur, particles must collide with:
+                </p>
+                <ul class="list-disc ml-8 text-gray-700 mb-6 space-y-2">
+                    <li><strong>Sufficient energy</strong> - Must meet or exceed the activation energy (Ea)</li>
+                    <li><strong>Proper orientation</strong> - Molecules must be aligned correctly</li>
+                </ul>
 
-            const practiceProblems = [
-                {
-                    id: 1,
-                    question: "Write the equilibrium expression for: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g)",
-                    answer: "K = [SO₃]² / ([SO₂]²[O₂])",
-                    topic: "kExpression"
-                },
-                {
-                    id: 2,
-                    question: "For N₂(g) + 3H₂(g) ⇌ 2NH₃(g), what happens when N₂ is added?",
-                    answer: "Equilibrium shifts RIGHT (toward products) to consume the added N₂",
-                    topic: "leChatelierConc"
-                },
-                {
-                    id: 3,
-                    question: "For an exothermic reaction at equilibrium, what happens when temperature increases?",
-                    answer: "Equilibrium shifts LEFT (toward reactants) because heat is a product",
-                    topic: "leChatelierTemp"
-                },
-                {
-                    id: 4,
-                    question: "If K = 1.5 × 10⁻⁸, are products or reactants favored?",
-                    answer: "Reactants are heavily favored (K << 1)",
-                    topic: "kExpression"
-                },
-                {
-                    id: 5,
-                    question: "For 2NO₂(g) ⇌ N₂O₄(g), what happens when pressure increases?",
-                    answer: "Equilibrium shifts RIGHT toward fewer moles (2 moles → 1 mole)",
-                    topic: "leChatelierPress"
-                }
-            ];
-
-            const toggleVideo = (index) => {
-                const newVideos = [...progress.videos];
-                newVideos[index] = !newVideos[index];
-                setProgress({ ...progress, videos: newVideos });
-            };
-
-            const toggleTopic = (key) => {
-                setProgress({
-                    ...progress,
-                    topics: { ...progress.topics, [key]: !progress.topics[key] }
-                });
-            };
-
-            const togglePractice = (id) => {
-                setProgress({
-                    ...progress,
-                    practice: { ...progress.practice, [id]: !progress.practice[id] }
-                });
-            };
-
-            const calculateProgress = () => {
-                const videoProgress = progress.videos.filter(v => v).length / videos.length;
-                const topicProgress = Object.values(progress.topics).filter(t => t).length / topics.length;
-                const practiceProgress = Object.keys(progress.practice).length / practiceProblems.length;
-                return Math.round(((videoProgress + topicProgress + practiceProgress) / 3) * 100);
-            };
-
-            const ChapterBanner = () => (
-                <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-8 shadow-xl mb-6">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                        <div>
-                            <h1 className="text-4xl font-bold mb-2">Chemical Equilibrium</h1>
-                            <p className="text-xl mb-1">Chemistry 3A - Chapter 13</p>
-                            <p className="text-lg opacity-90">Fresno City College</p>
+                <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Factors Affecting Reaction Rates:</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded shadow">
+                            <h5 class="font-bold text-blue-800 mb-2">1. Concentration</h5>
+                            <p class="text-gray-700">More particles = more collisions per unit time</p>
                         </div>
-                        <div className="mt-4 md:mt-0 md:text-right">
-                            <p className="text-2xl font-semibold">Prof. Gilley</p>
-                            <p className="text-sm opacity-75">Interactive Review Page</p>
+                        <div class="bg-white p-4 rounded shadow">
+                            <h5 class="font-bold text-blue-800 mb-2">2. Temperature</h5>
+                            <p class="text-gray-700">Higher T = faster moving particles = more energetic collisions</p>
+                        </div>
+                        <div class="bg-white p-4 rounded shadow">
+                            <h5 class="font-bold text-blue-800 mb-2">3. Surface Area</h5>
+                            <p class="text-gray-700">More exposed surface = more collision sites</p>
+                        </div>
+                        <div class="bg-white p-4 rounded shadow">
+                            <h5 class="font-bold text-blue-800 mb-2">4. Catalysts</h5>
+                            <p class="text-gray-700">Lower the activation energy required</p>
                         </div>
                     </div>
                 </div>
-            );
 
-            const VideoSection = () => (
-                <div className="space-y-6">
-                    <ChapterBanner />
-                    <h2 className="text-3xl font-bold text-blue-900 mb-4">DrDan Video Lectures</h2>
-                    <div className="grid gap-6 md:grid-cols-2">
-                        {videos.map((video, index) => (
-                            <div key={video.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                                <div className="video-container">
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${video.id}`}
-                                        title={video.title}
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                    ></iframe>
-                                </div>
-                                <div className="p-4">
-                                    <h3 className="font-semibold text-lg mb-2">{video.title}</h3>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-600">{video.topic}</span>
-                                        <label className="flex items-center cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                checked={progress.videos[index]}
-                                                onChange={() => toggleVideo(index)}
-                                                className="w-5 h-5 text-blue-600"
-                                            />
-                                            <span className="ml-2 text-sm">Watched</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6">
+                    <p class="font-semibold text-yellow-900 mb-2">📝 Example: Temperature Effects</p>
+                    <p class="text-gray-700">
+                        At 25°C, average particle speed ≈ 500 m/s<br>
+                        At 50°C, average particle speed ≈ 550 m/s<br>
+                        <strong>Result:</strong> More particles exceed activation energy threshold → faster reaction
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Equilibrium Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    2. Dynamic Equilibrium
+                </h2>
+                
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4">What is Equilibrium?</h3>
+                <p class="text-lg text-gray-700 mb-4">
+                    Chemical equilibrium occurs when the forward and reverse reactions proceed at equal rates. 
+                    At this point:
+                </p>
+                <ul class="list-disc ml-8 text-gray-700 mb-6 space-y-2">
+                    <li>Macroscopic properties (concentrations, color, pressure) remain <strong>constant</strong></li>
+                    <li>Both forward and reverse reactions continue - equilibrium is <strong>dynamic, not static!</strong></li>
+                    <li>Can be approached from either direction</li>
+                    <li>Requires a <strong>closed system</strong></li>
+                </ul>
+
+                <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Reversible Reactions</h4>
+                    <p class="text-gray-700 mb-3">Consider the reaction between hydrogen and iodine:</p>
+                    <div class="text-center bg-white p-4 rounded text-xl font-mono mb-3">
+                        H₂(g) + I₂(g) ⇌ 2HI(g)
+                    </div>
+                    <p class="text-gray-700">
+                        The double arrow (⇌) indicates this is a <strong>reversible reaction</strong>. Both the forward 
+                        reaction (forming HI) and reverse reaction (decomposing HI) occur simultaneously.
+                    </p>
+                </div>
+
+                <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Reaching Equilibrium:</h4>
+                    <p class="text-gray-700 mb-3"><strong>Initially:</strong></p>
+                    <ul class="list-disc ml-8 text-gray-700 mb-4">
+                        <li>Forward rate is fast (lots of reactants)</li>
+                        <li>Reverse rate is slow (few products)</li>
+                    </ul>
+                    <p class="text-gray-700 mb-3"><strong>As reaction proceeds:</strong></p>
+                    <ul class="list-disc ml-8 text-gray-700 mb-4">
+                        <li>Forward rate decreases (fewer reactants)</li>
+                        <li>Reverse rate increases (more products)</li>
+                    </ul>
+                    <p class="text-gray-700 mb-3"><strong>At equilibrium:</strong></p>
+                    <ul class="list-disc ml-8 text-gray-700">
+                        <li>Rate<sub>forward</sub> = Rate<sub>reverse</sub></li>
+                        <li>Concentrations stop changing (but reactions continue!)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 2: Equilibrium Constants</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/qatdA_ALnx8" 
+                            title="Equilibrium Constants" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="text-gray-600 italic">This video covers writing and interpreting equilibrium expressions</p>
+            </div>
+        </section>
+
+        <!-- Equilibrium Constant Expressions Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    3. The Equilibrium Constant Expression (K)
+                </h2>
+                
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4">Writing K Expressions</h3>
+                <p class="text-lg text-gray-700 mb-4">
+                    For a general reaction:
+                </p>
+                <div class="text-center bg-gray-100 p-4 rounded text-xl font-mono mb-4">
+                    aA + bB ⇌ cC + dD
+                </div>
+                <p class="text-lg text-gray-700 mb-4">
+                    The equilibrium constant expression is:
+                </p>
+                <div class="text-center bg-blue-50 p-6 rounded text-2xl font-mono mb-6 border-2 border-blue-600">
+                    K = [C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup>
+                </div>
+
+                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-yellow-900 mb-3">🎯 Key Rules:</h4>
+                    <ul class="list-disc ml-8 text-gray-700 space-y-2">
+                        <li><strong>Products</strong> in the numerator</li>
+                        <li><strong>Reactants</strong> in the denominator</li>
+                        <li>Coefficients become <strong>exponents</strong></li>
+                        <li><strong>Pure solids and liquids are OMITTED</strong> (their concentration is constant)</li>
+                        <li>Only gases (g) and aqueous (aq) species are included</li>
+                    </ul>
+                </div>
+
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4 mt-8">Worked Examples</h3>
+                
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-2">Example 1: Write K for:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
+                        2SO₂(g) + O₂(g) ⇌ 2SO₃(g)
+                    </div>
+                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
+                    <div class="bg-green-50 p-4 rounded text-lg font-mono">
+                        K = [SO₃]² / [SO₂]²[O₂]
                     </div>
                 </div>
-            );
 
-            const TopicSection = ({ topic }) => {
-                const content = {
-                    collision: {
-                        title: "Collision Theory & Reaction Rates",
-                        points: [
-                            "Particles must collide with sufficient energy (activation energy) and proper orientation",
-                            "Factors affecting rates: concentration, temperature, surface area, catalysts",
-                            "Higher temperature = faster particles = more energetic collisions"
-                        ]
-                    },
-                    equilibrium: {
-                        title: "Dynamic Equilibrium",
-                        points: [
-                            "Forward and reverse reactions occur at equal rates",
-                            "Macroscopic properties remain constant",
-                            "Reactions continue - NOT a static state!",
-                            "Can be approached from either direction"
-                        ]
-                    },
-                    kExpression: {
-                        title: "Equilibrium Constant (K) Expressions",
-                        points: [
-                            "For aA + bB ⇌ cC + dD: K = [C]^c[D]^d / [A]^a[B]^b",
-                            "Products in numerator, reactants in denominator",
-                            "Coefficients become exponents",
-                            "Pure solids and liquids are OMITTED",
-                            "K >> 1 means products favored; K << 1 means reactants favored"
-                        ]
-                    },
-                    leChatelierConc: {
-                        title: "Le Chatelier's Principle - Concentration Changes",
-                        points: [
-                            "Add reactant or remove product → shifts RIGHT",
-                            "Add product or remove reactant → shifts LEFT",
-                            "System counteracts the stress to re-establish equilibrium"
-                        ]
-                    },
-                    leChatelierTemp: {
-                        title: "Le Chatelier's Principle - Temperature Changes",
-                        points: [
-                            "Endothermic (ΔH > 0): heat is a REACTANT",
-                            "  - Increase T → shifts RIGHT",
-                            "  - Decrease T → shifts LEFT",
-                            "Exothermic (ΔH < 0): heat is a PRODUCT",
-                            "  - Increase T → shifts LEFT",
-                            "  - Decrease T → shifts RIGHT"
-                        ]
-                    },
-                    leChatelierPress: {
-                        title: "Le Chatelier's Principle - Pressure Changes",
-                        points: [
-                            "Applies to GAS-PHASE reactions only",
-                            "Increase pressure → shifts toward FEWER moles of gas",
-                            "Decrease pressure → shifts toward MORE moles of gas",
-                            "No shift if equal moles on both sides"
-                        ]
-                    },
-                    specialEquilibria: {
-                        title: "Special Equilibria Types",
-                        points: [
-                            "Ka (acid dissociation): Ka = [H⁺][A⁻]/[HA]",
-                            "Kb (base dissociation): Kb = [BH⁺][OH⁻]/[B]",
-                            "Kw (water autoionization): Kw = [H⁺][OH⁻] = 1.0×10⁻¹⁴ at 25°C",
-                            "Ksp (solubility product): For AgCl(s) ⇌ Ag⁺ + Cl⁻, Ksp = [Ag⁺][Cl⁻]"
-                        ]
-                    }
-                };
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-2">Example 2: Write K for:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
+                        CaCO₃(s) ⇌ CaO(s) + CO₂(g)
+                    </div>
+                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
+                    <div class="bg-green-50 p-4 rounded mb-3">
+                        <p class="text-lg font-mono">K = [CO₂]</p>
+                        <p class="text-gray-700 mt-2"><em>Note: Solids CaCO₃ and CaO are omitted!</em></p>
+                    </div>
+                </div>
 
-                const topicData = content[topic];
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-2">Example 3: Write K for:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
+                        NH₃(aq) + H₂O(l) ⇌ NH₄⁺(aq) + OH⁻(aq)
+                    </div>
+                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
+                    <div class="bg-green-50 p-4 rounded mb-3">
+                        <p class="text-lg font-mono">K = [NH₄⁺][OH⁻] / [NH₃]</p>
+                        <p class="text-gray-700 mt-2"><em>Note: H₂O(l) is omitted (pure liquid solvent)</em></p>
+                    </div>
+                </div>
 
-                return (
-                    <div className="space-y-6">
-                        <ChapterBanner />
-                        <div className="bg-white rounded-lg shadow-md p-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-2xl font-bold text-blue-900">{topicData.title}</h2>
-                                <label className="flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={progress.topics[topic]}
-                                        onChange={() => toggleTopic(topic)}
-                                        className="w-5 h-5 text-blue-600"
-                                    />
-                                    <span className="ml-2">Reviewed</span>
-                                </label>
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4 mt-8">Interpreting K Values</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full border-collapse border-2 border-blue-600">
+                        <thead class="bg-blue-600 text-white">
+                            <tr>
+                                <th class="border border-blue-400 p-3 text-left">K Value</th>
+                                <th class="border border-blue-400 p-3 text-left">Meaning</th>
+                                <th class="border border-blue-400 p-3 text-left">Position of Equilibrium</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            <tr>
+                                <td class="border border-blue-300 p-3 font-mono">K >> 1 (e.g., K = 10⁵)</td>
+                                <td class="border border-blue-300 p-3">Products heavily favored</td>
+                                <td class="border border-blue-300 p-3">Far right</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-blue-300 p-3 font-mono">K ≈ 1</td>
+                                <td class="border border-blue-300 p-3">Neither favored significantly</td>
+                                <td class="border border-blue-300 p-3">Middle</td>
+                            </tr>
+                            <tr>
+                                <td class="border border-blue-300 p-3 font-mono">K << 1 (e.g., K = 10⁻⁵)</td>
+                                <td class="border border-blue-300 p-3">Reactants heavily favored</td>
+                                <td class="border border-blue-300 p-3">Far left</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculating K Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    4. Calculating Equilibrium Constants
+                </h2>
+                
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example: Calculate K</p>
+                    <p class="text-gray-700 mb-3">At equilibrium for the reaction:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
+                        H₂(g) + I₂(g) ⇌ 2HI(g)
+                    </div>
+                    <p class="text-gray-700 mb-3">The equilibrium concentrations are:</p>
+                    <ul class="list-disc ml-8 text-gray-700 mb-4">
+                        <li>[H₂] = 0.20 M</li>
+                        <li>[I₂] = 0.20 M</li>
+                        <li>[HI] = 1.60 M</li>
+                    </ul>
+                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
+                    <div class="bg-green-50 p-4 rounded space-y-2">
+                        <p class="font-mono">K = [HI]² / [H₂][I₂]</p>
+                        <p class="font-mono">K = (1.60)² / (0.20)(0.20)</p>
+                        <p class="font-mono">K = 2.56 / 0.04</p>
+                        <p class="font-mono text-xl font-bold text-green-800">K = 64</p>
+                        <p class="text-gray-700 mt-3"><em>Since K >> 1, products are heavily favored</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 3: Calculating K</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/JbkiO-RLx6A" 
+                            title="Calculating K" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="text-gray-600 italic">Watch for more examples of equilibrium calculations</p>
+            </div>
+        </section>
+
+        <!-- Le Chatelier's Principle Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    5. Le Chatelier's Principle
+                </h2>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-6 mb-6">
+                    <p class="text-xl font-semibold text-blue-900 mb-2">Le Chatelier's Principle:</p>
+                    <p class="text-lg text-gray-700">
+                        <em>"When a chemical system at equilibrium is disturbed by a stress, the system will respond in order to 
+                        relieve the stress."</em>
+                    </p>
+                </div>
+
+                <p class="text-lg text-gray-700 mb-4">Types of stresses that affect equilibrium:</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-yellow-50 p-4 rounded shadow border-l-4 border-yellow-600">
+                        <h4 class="font-bold text-yellow-900 mb-2">1. Concentration Changes</h4>
+                        <p class="text-gray-700 text-sm">Adding or removing reactants or products</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded shadow border-l-4 border-red-600">
+                        <h4 class="font-bold text-red-900 mb-2">2. Temperature Changes</h4>
+                        <p class="text-gray-700 text-sm">Heating or cooling the system</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded shadow border-l-4 border-green-600">
+                        <h4 class="font-bold text-green-900 mb-2">3. Pressure/Volume Changes</h4>
+                        <p class="text-gray-700 text-sm">For gas-phase reactions only</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 4: Le Chatelier's Principle</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/JMRz9TRVUQg" 
+                            title="Le Chatelier's Principle" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="text-gray-600 italic">Understand how systems respond to stress</p>
+            </div>
+        </section>
+
+        <!-- Le Chatelier - Concentration Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-yellow-600 pl-4">
+                    Effect of Concentration Changes
+                </h3>
+                
+                <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-blue-900 mb-3">General Rules:</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-3 text-xl">→</span>
+                            <span class="text-gray-700"><strong>Add reactant</strong> or <strong>remove product</strong> → shifts <strong>RIGHT</strong> (toward products)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-3 text-xl">←</span>
+                            <span class="text-gray-700"><strong>Add product</strong> or <strong>remove reactant</strong> → shifts <strong>LEFT</strong> (toward reactants)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example: The Haber-Bosch Process</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-4">
+                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g)
+                    </div>
+                    <div class="space-y-3">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <p class="font-semibold text-blue-900">Add N₂:</p>
+                            <p class="text-gray-700">Equilibrium shifts <strong>RIGHT</strong> → more NH₃ produced</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded">
+                            <p class="font-semibold text-blue-900">Remove NH₃:</p>
+                            <p class="text-gray-700">Equilibrium shifts <strong>RIGHT</strong> → more NH₃ produced to replace it</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded">
+                            <p class="font-semibold text-blue-900">Add NH₃:</p>
+                            <p class="text-gray-700">Equilibrium shifts <strong>LEFT</strong> → more N₂ and H₂ produced</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6">
+                    <p class="font-semibold text-yellow-900 mb-2">💡 Industrial Application:</p>
+                    <p class="text-gray-700">
+                        In the Haber-Bosch process, NH₃ is continuously removed from the system. This shifts equilibrium 
+                        to the right, maximizing ammonia production!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Le Chatelier - Temperature Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-red-600 pl-4">
+                    Effect of Temperature Changes
+                </h3>
+                
+                <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Key Concept: Treat heat as a substance!</h4>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-red-50 p-4 rounded shadow">
+                            <h5 class="font-bold text-red-900 mb-2">Endothermic (ΔH > 0)</h5>
+                            <p class="text-gray-700 mb-2">Heat is a REACTANT:</p>
+                            <div class="font-mono text-sm bg-white p-2 rounded mb-2">
+                                heat + reactants ⇌ products
                             </div>
-                            <ul className="space-y-2">
-                                {topicData.points.map((point, index) => (
-                                    <li key={index} className="flex items-start">
-                                        <span className="text-blue-600 mr-2">•</span>
-                                        <span>{point}</span>
-                                    </li>
-                                ))}
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Increase T → shifts RIGHT</li>
+                                <li>• Decrease T → shifts LEFT</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded shadow">
+                            <h5 class="font-bold text-blue-900 mb-2">Exothermic (ΔH < 0)</h5>
+                            <p class="text-gray-700 mb-2">Heat is a PRODUCT:</p>
+                            <div class="font-mono text-sm bg-white p-2 rounded mb-2">
+                                reactants ⇌ products + heat
+                            </div>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Increase T → shifts LEFT</li>
+                                <li>• Decrease T → shifts RIGHT</li>
                             </ul>
                         </div>
                     </div>
-                );
-            };
+                </div>
 
-            const PracticeSection = () => {
-                const [showAnswers, setShowAnswers] = useState({});
-
-                const toggleAnswer = (id) => {
-                    setShowAnswers({ ...showAnswers, [id]: !showAnswers[id] });
-                };
-
-                return (
-                    <div className="space-y-6">
-                        <ChapterBanner />
-                        <h2 className="text-3xl font-bold text-blue-900 mb-4">Practice Problems</h2>
-                        {practiceProblems.map((problem) => (
-                            <div key={problem.id} className="bg-white rounded-lg shadow-md p-6">
-                                <div className="flex items-start justify-between mb-3">
-                                    <p className="font-semibold text-lg flex-1">
-                                        {problem.id}. {problem.question}
-                                    </p>
-                                    <label className="flex items-center cursor-pointer ml-4">
-                                        <input
-                                            type="checkbox"
-                                            checked={progress.practice[problem.id]}
-                                            onChange={() => togglePractice(problem.id)}
-                                            className="w-5 h-5 text-blue-600"
-                                        />
-                                        <span className="ml-2 text-sm">Done</span>
-                                    </label>
-                                </div>
-                                <button
-                                    onClick={() => toggleAnswer(problem.id)}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                                >
-                                    {showAnswers[problem.id] ? 'Hide' : 'Show'} Answer
-                                </button>
-                                {showAnswers[problem.id] && (
-                                    <div className="mt-3 p-4 bg-green-50 rounded border-l-4 border-green-600">
-                                        <p className="font-semibold text-green-800">{problem.answer}</p>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example: N₂O₄/NO₂ Equilibrium</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-4">
+                        N₂O₄(g) ⇌ 2NO₂(g)     ΔH = +57 kJ
                     </div>
-                );
-            };
+                    <p class="text-gray-700 mb-3">
+                        This is <strong>endothermic</strong> (absorbs heat)
+                    </p>
+                    <div class="space-y-3">
+                        <div class="bg-red-50 p-4 rounded">
+                            <p class="font-semibold text-red-900">Increase temperature (add heat):</p>
+                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> → more brown NO₂ gas</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded">
+                            <p class="font-semibold text-blue-900">Decrease temperature (remove heat):</p>
+                            <p class="text-gray-700">Shifts <strong>LEFT</strong> → more colorless N₂O₄ gas</p>
+                        </div>
+                    </div>
+                </div>
 
-            const OverviewSection = () => (
-                <div className="space-y-6">
-                    <ChapterBanner />
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example: Haber Process (Exothermic)</p>
+                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-4">
+                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + 91 kJ
+                    </div>
+                    <p class="text-gray-700 mb-3">
+                        This is <strong>exothermic</strong> (releases heat)
+                    </p>
+                    <div class="space-y-3">
+                        <div class="bg-red-50 p-4 rounded">
+                            <p class="font-semibold text-red-900">Increase temperature:</p>
+                            <p class="text-gray-700">Shifts <strong>LEFT</strong> → less NH₃ produced</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded">
+                            <p class="font-semibold text-blue-900">Decrease temperature:</p>
+                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> → more NH₃ produced</p>
+                        </div>
+                    </div>
+                </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6">
-                        <h2 className="text-2xl font-bold text-blue-900 mb-4">Your Progress</h2>
-                        <div className="space-y-3">
-                            <div>
-                                <div className="flex justify-between mb-1">
-                                    <span>Overall Completion</span>
-                                    <span className="font-bold text-blue-600">{calculateProgress()}%</span>
-                                </div>
-                                <div className="w-full bg-gray-200 rounded-full h-4">
-                                    <div
-                                        className="bg-blue-600 h-4 rounded-full transition-all duration-500"
-                                        style={{ width: `${calculateProgress()}%` }}
-                                    ></div>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-3 gap-4 mt-4">
-                                <div className="text-center p-3 bg-blue-50 rounded">
-                                    <p className="text-2xl font-bold text-blue-600">
-                                        {progress.videos.filter(v => v).length}/{videos.length}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Videos</p>
-                                </div>
-                                <div className="text-center p-3 bg-green-50 rounded">
-                                    <p className="text-2xl font-bold text-green-600">
-                                        {Object.values(progress.topics).filter(t => t).length}/{topics.length}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Topics</p>
-                                </div>
-                                <div className="text-center p-3 bg-purple-50 rounded">
-                                    <p className="text-2xl font-bold text-purple-600">
-                                        {Object.keys(progress.practice).length}/{practiceProblems.length}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Practice</p>
-                                </div>
+                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6">
+                    <p class="font-semibold text-yellow-900 mb-2">⚗️ Important Note:</p>
+                    <p class="text-gray-700">
+                        Temperature changes actually change the value of K! This is different from concentration and 
+                        pressure changes, which don't affect K's value.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 5: Temperature Effects on Equilibrium</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/tGqiUbBxqec" 
+                            title="Temperature Effects" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="text-gray-600 italic">See temperature effects demonstrated</p>
+            </div>
+        </section>
+
+        <!-- Le Chatelier - Pressure Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-green-600 pl-4">
+                    Effect of Pressure Changes
+                </h3>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6">
+                    <p class="font-semibold text-yellow-900 mb-2">⚠️ Critical: Applies to GAS-PHASE reactions ONLY!</p>
+                    <p class="text-gray-700">
+                        Liquids and solids are essentially incompressible, so pressure changes don't affect them.
+                    </p>
+                </div>
+
+                <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                    <h4 class="text-xl font-semibold text-blue-900 mb-3">General Rules:</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-3 text-xl">↑</span>
+                            <span class="text-gray-700"><strong>Increase pressure</strong> → shifts toward <strong>FEWER moles</strong> of gas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-3 text-xl">↓</span>
+                            <span class="text-gray-700"><strong>Decrease pressure</strong> → shifts toward <strong>MORE moles</strong> of gas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-3 text-xl">═</span>
+                            <span class="text-gray-700"><strong>Equal moles on both sides</strong> → <strong>NO SHIFT</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example 1:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded mb-3">
+                        <p class="text-lg font-mono mb-2">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
+                        <p class="text-sm text-gray-600">4 moles gas → 2 moles gas</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="bg-green-50 p-4 rounded">
+                            <p class="font-semibold text-green-900">Increase pressure:</p>
+                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> (4 moles → 2 moles relieves pressure)</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <p class="font-semibold text-green-900">Decrease pressure:</p>
+                            <p class="text-gray-700">Shifts <strong>LEFT</strong> (2 moles → 4 moles)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example 2:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded mb-3">
+                        <p class="text-lg font-mono mb-2">H₂(g) + I₂(g) ⇌ 2HI(g)</p>
+                        <p class="text-sm text-gray-600">2 moles → 2 moles</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded">
+                        <p class="font-semibold text-gray-900">Change pressure:</p>
+                        <p class="text-gray-700"><strong>NO SHIFT</strong> (equal moles on both sides)</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-blue-300 rounded-lg p-6">
+                    <p class="font-semibold text-blue-900 mb-3">Example 3:</p>
+                    <div class="text-center bg-gray-50 p-3 rounded mb-3">
+                        <p class="text-lg font-mono mb-2">CaCO₃(s) ⇌ CaO(s) + CO₂(g)</p>
+                        <p class="text-sm text-gray-600">0 moles gas → 1 mole gas</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="bg-green-50 p-4 rounded">
+                            <p class="font-semibold text-green-900">Increase pressure:</p>
+                            <p class="text-gray-700">Shifts <strong>LEFT</strong> (reduces gas moles)</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <p class="font-semibold text-green-900">Decrease pressure:</p>
+                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> (increases gas moles)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Applications Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    6. Real-World Applications
+                </h2>
+                
+                <div class="bg-blue-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-2xl font-semibold text-blue-900 mb-4">The Haber-Bosch Process</h3>
+                    <div class="text-center bg-white p-4 rounded text-xl font-mono mb-4">
+                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Industrial production of ammonia (for fertilizers). How do we maximize NH₃ production?
+                    </p>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <span><strong>High pressure (200 atm)</strong> - shifts right (fewer moles)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <span><strong>Moderate temperature (450°C)</strong> - compromise between rate and equilibrium position</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <span><strong>Iron catalyst</strong> - speeds up reaction without changing equilibrium</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <span><strong>Remove NH₃ continuously</strong> - shifts right to replace removed product</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-green-50 rounded-lg p-6">
+                    <h3 class="text-2xl font-semibold text-green-900 mb-4">Oxygen Transport in Blood</h3>
+                    <div class="text-center bg-white p-4 rounded font-mono mb-4">
+                        hemoglobin + O₂ ⇌ oxyhemoglobin
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        <strong>In the lungs:</strong> High O₂ concentration shifts equilibrium RIGHT → hemoglobin binds O₂
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>In the tissues:</strong> Low O₂ concentration shifts equilibrium LEFT → O₂ is released to cells
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 6: Equilibrium Applications</h3>
+                <div class="video-container mb-4">
+                    <iframe src="https://www.youtube.com/embed/ZojNOgXleJA" 
+                            title="Equilibrium Applications" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <p class="text-gray-600 italic">See real-world applications of equilibrium principles</p>
+            </div>
+        </section>
+
+        <!-- Practice Problems Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
+                    7. Practice Problems
+                </h2>
+                
+                <p class="text-lg text-gray-700 mb-6">
+                    Test your understanding with these practice problems. Click "Show Answer" to check your work.
+                </p>
+
+                <!-- Problem 1 -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
+                    <p class="font-semibold text-blue-900 mb-3">Problem 1: Write the equilibrium expression</p>
+                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-4">
+                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g)
+                    </div>
+                    <button onclick="toggleAnswer('answer1')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                        Show Answer
+                    </button>
+                    <div id="answer1" class="practice-answer mt-4">
+                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                            <p class="font-semibold text-green-800 mb-2">Answer:</p>
+                            <p class="font-mono text-lg">K = [NH₃]² / [N₂][H₂]³</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
+                    <p class="font-semibold text-blue-900 mb-3">Problem 2: Le Chatelier's Principle</p>
+                    <p class="text-gray-700 mb-3">For the equilibrium:</p>
+                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-3">
+                        2NO(g) + Cl₂(g) ⇌ 2NOCl(g) + heat
+                    </div>
+                    <p class="text-gray-700 mb-4">Predict the shift for:</p>
+                    <ul class="list-disc ml-8 mb-4 text-gray-700">
+                        <li>a) Adding NO</li>
+                        <li>b) Removing NOCl</li>
+                        <li>c) Increasing temperature</li>
+                        <li>d) Increasing pressure</li>
+                    </ul>
+                    <button onclick="toggleAnswer('answer2')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                        Show Answer
+                    </button>
+                    <div id="answer2" class="practice-answer mt-4">
+                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                            <p class="font-semibold text-green-800 mb-2">Answers:</p>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>a) Shifts <strong>RIGHT</strong> (added reactant)</li>
+                                <li>b) Shifts <strong>RIGHT</strong> (removed product)</li>
+                                <li>c) Shifts <strong>LEFT</strong> (exothermic - heat is product)</li>
+                                <li>d) Shifts <strong>RIGHT</strong> (3 moles gas → 2 moles gas)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
+                    <p class="font-semibold text-blue-900 mb-3">Problem 3: Calculate K</p>
+                    <p class="text-gray-700 mb-3">At equilibrium for the reaction:</p>
+                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-3">
+                        2NO(g) + Cl₂(g) ⇌ 2NOCl(g)
+                    </div>
+                    <p class="text-gray-700 mb-4">The equilibrium concentrations are:</p>
+                    <ul class="list-disc ml-8 mb-4 text-gray-700">
+                        <li>[NO] = 0.20 M</li>
+                        <li>[Cl₂] = 0.10 M</li>
+                        <li>[NOCl] = 0.60 M</li>
+                    </ul>
+                    <button onclick="toggleAnswer('answer3')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                        Show Answer
+                    </button>
+                    <div id="answer3" class="practice-answer mt-4">
+                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                            <p class="font-semibold text-green-800 mb-2">Solution:</p>
+                            <div class="space-y-2 font-mono">
+                                <p>K = [NOCl]² / [NO]²[Cl₂]</p>
+                                <p>K = (0.60)² / (0.20)²(0.10)</p>
+                                <p>K = 0.36 / 0.004</p>
+                                <p class="text-xl font-bold text-green-800">K = 90</p>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6">
-                        <h2 className="text-2xl font-bold text-blue-900 mb-4">Quick Start Guide</h2>
-                        <ol className="space-y-2">
-                            <li className="flex items-start">
-                                <span className="font-bold text-blue-600 mr-2">1.</span>
-                                <span>Watch the DrDan videos in order (or jump to specific topics)</span>
-                            </li>
-                            <li className="flex items-start">
-                                <span className="font-bold text-blue-600 mr-2">2.</span>
-                                <span>Review each topic section and check them off as you go</span>
-                            </li>
-                            <li className="flex items-start">
-                                <span className="font-bold text-blue-600 mr-2">3.</span>
-                                <span>Test your knowledge with practice problems</span>
-                            </li>
-                            <li className="flex items-start">
-                                <span className="font-bold text-blue-600 mr-2">4.</span>
-                                <span>Track your progress and identify areas that need more review</span>
-                            </li>
-                        </ol>
+                <!-- Problem 4 -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
+                    <p class="font-semibold text-blue-900 mb-3">Problem 4: Interpreting K</p>
+                    <p class="text-gray-700 mb-4">
+                        If K = 1.5 × 10⁻⁸ for a reaction, are products or reactants favored at equilibrium?
+                    </p>
+                    <button onclick="toggleAnswer('answer4')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                        Show Answer
+                    </button>
+                    <div id="answer4" class="practice-answer mt-4">
+                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                            <p class="font-semibold text-green-800 mb-2">Answer:</p>
+                            <p class="text-gray-700">
+                                <strong>Reactants are heavily favored</strong> because K << 1. The equilibrium position 
+                                lies far to the left, meaning very little product forms.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            );
 
-            return (
-                <div className="min-h-screen bg-gray-100">
-                    <div className="flex flex-col lg:flex-row">
-                        {/* Sidebar Navigation */}
-                        <nav className="lg:w-64 bg-blue-900 text-white p-6 lg:min-h-screen">
-                            <h2 className="text-xl font-bold mb-6">Navigation</h2>
-                            <ul className="space-y-2">
-                                <li>
-                                    <button
-                                        onClick={() => setActiveSection('overview')}
-                                        className={`w-full text-left px-4 py-2 rounded transition ${
-                                            activeSection === 'overview' ? 'bg-blue-700' : 'hover:bg-blue-800'
-                                        }`}
-                                    >
-                                        Overview
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={() => setActiveSection('videos')}
-                                        className={`w-full text-left px-4 py-2 rounded transition ${
-                                            activeSection === 'videos' ? 'bg-blue-700' : 'hover:bg-blue-800'
-                                        }`}
-                                    >
-                                        Videos
-                                    </button>
-                                </li>
-                                <li className="pt-2 pb-1">
-                                    <p className="text-sm font-semibold text-blue-300 px-4">Topics</p>
-                                </li>
-                                {topics.map((topic) => (
-                                    <li key={topic.id}>
-                                        <button
-                                            onClick={() => setActiveSection(topic.key)}
-                                            className={`w-full text-left px-4 py-2 rounded text-sm transition ${
-                                                activeSection === topic.key ? 'bg-blue-700' : 'hover:bg-blue-800'
-                                            }`}
-                                        >
-                                            {progress.topics[topic.key] && <span className="mr-2">✓</span>}
-                                            {topic.name}
-                                        </button>
-                                    </li>
-                                ))}
-                                <li className="pt-4">
-                                    <button
-                                        onClick={() => setActiveSection('practice')}
-                                        className={`w-full text-left px-4 py-2 rounded transition ${
-                                            activeSection === 'practice' ? 'bg-blue-700' : 'hover:bg-blue-800'
-                                        }`}
-                                    >
-                                        Practice Problems
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
-
-                        {/* Main Content */}
-                        <main className="flex-1 p-6 lg:p-10">
-                            {activeSection === 'overview' && <OverviewSection />}
-                            {activeSection === 'videos' && <VideoSection />}
-                            {activeSection === 'practice' && <PracticeSection />}
-                            {topics.map(topic => 
-                                activeSection === topic.key && <TopicSection key={topic.key} topic={topic.key} />
-                            )}
-                        </main>
+                <!-- Problem 5 -->
+                <div class="bg-gray-50 rounded-lg p-6 border-l-4 border-blue-600">
+                    <p class="font-semibold text-blue-900 mb-3">Problem 5: Pressure effects</p>
+                    <p class="text-gray-700 mb-3">For the equilibrium:</p>
+                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-4">
+                        2NO₂(g) ⇌ N₂O₄(g)
+                    </div>
+                    <p class="text-gray-700 mb-4">What happens when pressure increases?</p>
+                    <button onclick="toggleAnswer('answer5')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+                        Show Answer
+                    </button>
+                    <div id="answer5" class="practice-answer mt-4">
+                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
+                            <p class="font-semibold text-green-800 mb-2">Answer:</p>
+                            <p class="text-gray-700">
+                                Equilibrium shifts <strong>RIGHT</strong> toward N₂O₄. The system responds by shifting toward 
+                                fewer moles of gas (2 moles → 1 mole) to relieve the pressure stress.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            );
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-6">Quick Reference Summary</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-3">Writing K Expressions</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Products in numerator</li>
+                            <li>✓ Reactants in denominator</li>
+                            <li>✓ Coefficients → exponents</li>
+                            <li>✓ Omit pure solids & liquids</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-3">Interpreting K</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>K >> 1 → Products favored</li>
+                            <li>K ≈ 1 → Neither favored</li>
+                            <li>K << 1 → Reactants favored</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-3">Le Chatelier: Concentration</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>Add reactant → shifts RIGHT</li>
+                            <li>Remove product → shifts RIGHT</li>
+                            <li>Add product → shifts LEFT</li>
+                            <li>Remove reactant → shifts LEFT</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-3">Le Chatelier: Temperature</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>Endothermic: ↑T shifts RIGHT</li>
+                            <li>Endothermic: ↓T shifts LEFT</li>
+                            <li>Exothermic: ↑T shifts LEFT</li>
+                            <li>Exothermic: ↓T shifts RIGHT</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-3">Le Chatelier: Pressure</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>↑P → shifts to fewer moles</li>
+                            <li>↓P → shifts to more moles</li>
+                            <li>Equal moles → no shift</li>
+                            <li>Only for GASES!</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-3">Key Concepts</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Equilibrium is dynamic</li>
+                            <li>✓ K depends on temperature</li>
+                            <li>✓ Catalysts don't affect K</li>
+                            <li>✓ System relieves stress</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 text-gray-600">
+            <p class="text-lg mb-2">Chemistry 3A - Chemical Equilibrium Review</p>
+            <p>Prof. Gilley | Fresno City College</p>
+            <p class="mt-4 text-sm">Good luck with your studies! 🧪</p>
+        </footer>
+    </main>
+
+    <script>
+        function toggleAnswer(id) {
+            const answer = document.getElementById(id);
+            answer.classList.toggle('show');
+            
+            const button = answer.previousElementSibling;
+            if (answer.classList.contains('show')) {
+                button.textContent = 'Hide Answer';
+            } else {
+                button.textContent = 'Show Answer';
+            }
         }
-
-        ReactDOM.render(<ChemicalEquilibriumReview />, document.getElementById('root'));
     </script>
 </body>
 </html>
