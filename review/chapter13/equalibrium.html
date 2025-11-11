@@ -3,906 +3,911 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemical Equilibrium - Complete Review - Prof. Gilley</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Interactive Chapter 13 Chemical Equilibrium review for CHEM3A at Fresno City College with embedded DrDan videos and progress tracking">
+    <meta name="author" content="Prof. Gilley, Fresno City College">
+    <meta name="keywords" content="chemical equilibrium, chemistry, CHEM3A, Fresno City College, DrDan">
+    <title>Chapter 13: Chemical Equilibrium - CHEM3A Review</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .course-info {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .progress-container {
+            background: #ecf0f1;
+            padding: 20px;
+            border-bottom: 2px solid #bdc3c7;
+        }
+        
+        .progress-bar {
+            background: #ddd;
+            border-radius: 20px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            border-left: 4px solid #3498db;
+            padding-left: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-number {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .completion-checkbox {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            accent-color: #4CAF50;
+        }
+        
+        .section-content {
+            margin-top: 15px;
+            display: block;
+        }
+        
+        .learning-objectives {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .learning-objectives h3 {
+            color: #27ae60;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .learning-objectives ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .learning-objectives li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .learning-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .cor-alignment {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ffc107;
+        }
+        
+        .cor-alignment h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
         .video-container {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #b3d9e8;
+        }
+        
+        .video-container h3 {
+            color: #0077be;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .video-embed {
             position: relative;
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            max-width: 800px;
-            margin: 0 auto;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
-        .video-container iframe {
+        
+        .video-embed iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            border: none;
+            border-radius: 8px;
         }
-        .practice-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
+        
+        .key-concepts {
+            background: #e8f8f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #a8e6cf;
         }
-        .practice-answer.show {
-            max-height: 500px;
+        
+        .key-concepts h3 {
+            color: #16a085;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .key-concepts ul {
+            list-style-type: disc;
+            padding-left: 25px;
+        }
+        
+        .key-concepts li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .practice-problems {
+            background: #fef5e7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #f9e79f;
+        }
+        
+        .practice-problems h3 {
+            color: #d68910;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .example-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #3498db;
+        }
+        
+        .example-box h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .reset-button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(231,76,60,0.3);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .section h2 {
+                font-size: 1.3em;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Chapter Banner -->
-    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                <div>
-                    <h1 class="text-5xl font-bold mb-2">Chemical Equilibrium</h1>
-                    <p class="text-2xl mb-1">Chemistry 3A - Chapter 13</p>
-                    <p class="text-xl opacity-90">Fresno City College</p>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chapter 13: Chemical Equilibrium</h1>
+            <div class="course-info">CHEM3A • Fresno City College • Prof. Gilley</div>
+        </header>
+        
+        <div class="progress-container">
+            <h2 style="margin-bottom: 10px; color: #2c3e50;">Overall Progress</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number" id="completedSections">0</div>
+                    <div class="stat-label">Sections Completed</div>
                 </div>
-                <div class="mt-4 md:mt-0 md:text-right">
-                    <p class="text-3xl font-semibold">Prof. Gilley</p>
-                    <p class="text-base opacity-75">Complete Review Guide</p>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalSections">7</div>
+                    <div class="stat-label">Total Sections</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="timeSpent">0</div>
+                    <div class="stat-label">Minutes Studied</div>
                 </div>
             </div>
         </div>
-    </header>
-
-    <main class="container mx-auto px-6 py-12 max-w-5xl">
         
-        <!-- Introduction Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-4">Welcome to Your Complete Equilibrium Review</h2>
-                <p class="text-lg text-gray-700 mb-4">
-                    This page is your one-stop resource for mastering Chemical Equilibrium. Scroll through to find integrated video lectures, 
-                    detailed explanations, worked examples, and practice problems—everything you need to succeed in Chemistry 3A.
-                </p>
-                <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mb-4">
-                    <p class="font-semibold text-blue-900">Learning Outcomes for This Chapter:</p>
-                    <ul class="list-disc ml-6 mt-2 text-gray-700">
-                        <li>Apply dynamic equilibrium concepts to evaluate the equilibrium distribution of reactants and products</li>
-                        <li>Write and interpret equilibrium constant expressions</li>
-                        <li>Perform equilibrium calculations</li>
-                        <li>Apply Le Chatelier's Principle to predict system responses to stress</li>
-                    </ul>
+        <div class="content">
+            <!-- Section 13.1 Collision Theory -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.1</span> Collision Theory and Reaction Rates</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.1">
                 </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 1: Introduction to Chemical Equilibrium</h3>
-                <div class="video-container mb-4">
-                    <iframe src="https://www.youtube.com/embed/-ie15qDdHjE" 
-                            title="Introduction to Chemical Equilibrium" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-gray-600 italic">Watch this video first to get an overview of equilibrium concepts</p>
-            </div>
-        </section>
-
-        <!-- Collision Theory Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    1. Collision Theory and Reaction Rates
-                </h2>
-                
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4">What Makes Reactions Happen?</h3>
-                <p class="text-lg text-gray-700 mb-4">
-                    For a chemical reaction to occur, particles must collide with:
-                </p>
-                <ul class="list-disc ml-8 text-gray-700 mb-6 space-y-2">
-                    <li><strong>Sufficient energy</strong> - Must meet or exceed the activation energy (Ea)</li>
-                    <li><strong>Proper orientation</strong> - Molecules must be aligned correctly</li>
-                </ul>
-
-                <div class="bg-gray-100 rounded-lg p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Factors Affecting Reaction Rates:</h4>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="bg-white p-4 rounded shadow">
-                            <h5 class="font-bold text-blue-800 mb-2">1. Concentration</h5>
-                            <p class="text-gray-700">More particles = more collisions per unit time</p>
-                        </div>
-                        <div class="bg-white p-4 rounded shadow">
-                            <h5 class="font-bold text-blue-800 mb-2">2. Temperature</h5>
-                            <p class="text-gray-700">Higher T = faster moving particles = more energetic collisions</p>
-                        </div>
-                        <div class="bg-white p-4 rounded shadow">
-                            <h5 class="font-bold text-blue-800 mb-2">3. Surface Area</h5>
-                            <p class="text-gray-700">More exposed surface = more collision sites</p>
-                        </div>
-                        <div class="bg-white p-4 rounded shadow">
-                            <h5 class="font-bold text-blue-800 mb-2">4. Catalysts</h5>
-                            <p class="text-gray-700">Lower the activation energy required</p>
-                        </div>
+                <div class="section-content">
+                    <div class="cor-alignment">
+                        <h3>📋 COR Alignment</h3>
+                        <p>Qualitative overview of collision theory | Effect of concentration and temperature on reaction rates</p>
                     </div>
-                </div>
-
-                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6">
-                    <p class="font-semibold text-yellow-900 mb-2">📝 Example: Temperature Effects</p>
-                    <p class="text-gray-700">
-                        At 25°C, average particle speed ≈ 500 m/s<br>
-                        At 50°C, average particle speed ≈ 550 m/s<br>
-                        <strong>Result:</strong> More particles exceed activation energy threshold → faster reaction
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dynamic Equilibrium Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    2. Dynamic Equilibrium
-                </h2>
-                
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4">What is Equilibrium?</h3>
-                <p class="text-lg text-gray-700 mb-4">
-                    Chemical equilibrium occurs when the forward and reverse reactions proceed at equal rates. 
-                    At this point:
-                </p>
-                <ul class="list-disc ml-8 text-gray-700 mb-6 space-y-2">
-                    <li>Macroscopic properties (concentrations, color, pressure) remain <strong>constant</strong></li>
-                    <li>Both forward and reverse reactions continue - equilibrium is <strong>dynamic, not static!</strong></li>
-                    <li>Can be approached from either direction</li>
-                    <li>Requires a <strong>closed system</strong></li>
-                </ul>
-
-                <div class="bg-blue-50 rounded-lg p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Reversible Reactions</h4>
-                    <p class="text-gray-700 mb-3">Consider the reaction between hydrogen and iodine:</p>
-                    <div class="text-center bg-white p-4 rounded text-xl font-mono mb-3">
-                        H₂(g) + I₂(g) ⇌ 2HI(g)
-                    </div>
-                    <p class="text-gray-700">
-                        The double arrow (⇌) indicates this is a <strong>reversible reaction</strong>. Both the forward 
-                        reaction (forming HI) and reverse reaction (decomposing HI) occur simultaneously.
-                    </p>
-                </div>
-
-                <div class="bg-gray-100 rounded-lg p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Reaching Equilibrium:</h4>
-                    <p class="text-gray-700 mb-3"><strong>Initially:</strong></p>
-                    <ul class="list-disc ml-8 text-gray-700 mb-4">
-                        <li>Forward rate is fast (lots of reactants)</li>
-                        <li>Reverse rate is slow (few products)</li>
-                    </ul>
-                    <p class="text-gray-700 mb-3"><strong>As reaction proceeds:</strong></p>
-                    <ul class="list-disc ml-8 text-gray-700 mb-4">
-                        <li>Forward rate decreases (fewer reactants)</li>
-                        <li>Reverse rate increases (more products)</li>
-                    </ul>
-                    <p class="text-gray-700 mb-3"><strong>At equilibrium:</strong></p>
-                    <ul class="list-disc ml-8 text-gray-700">
-                        <li>Rate<sub>forward</sub> = Rate<sub>reverse</sub></li>
-                        <li>Concentrations stop changing (but reactions continue!)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 2: Equilibrium Constants</h3>
-                <div class="video-container mb-4">
-                    <iframe src="https://www.youtube.com/embed/qatdA_ALnx8" 
-                            title="Equilibrium Constants" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-gray-600 italic">This video covers writing and interpreting equilibrium expressions</p>
-            </div>
-        </section>
-
-        <!-- Equilibrium Constant Expressions Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    3. The Equilibrium Constant Expression (K)
-                </h2>
-                
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4">Writing K Expressions</h3>
-                <p class="text-lg text-gray-700 mb-4">
-                    For a general reaction:
-                </p>
-                <div class="text-center bg-gray-100 p-4 rounded text-xl font-mono mb-4">
-                    aA + bB ⇌ cC + dD
-                </div>
-                <p class="text-lg text-gray-700 mb-4">
-                    The equilibrium constant expression is:
-                </p>
-                <div class="text-center bg-blue-50 p-6 rounded text-2xl font-mono mb-6 border-2 border-blue-600">
-                    K = [C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup>
-                </div>
-
-                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-yellow-900 mb-3">🎯 Key Rules:</h4>
-                    <ul class="list-disc ml-8 text-gray-700 space-y-2">
-                        <li><strong>Products</strong> in the numerator</li>
-                        <li><strong>Reactants</strong> in the denominator</li>
-                        <li>Coefficients become <strong>exponents</strong></li>
-                        <li><strong>Pure solids and liquids are OMITTED</strong> (their concentration is constant)</li>
-                        <li>Only gases (g) and aqueous (aq) species are included</li>
-                    </ul>
-                </div>
-
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4 mt-8">Worked Examples</h3>
-                
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-2">Example 1: Write K for:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
-                        2SO₂(g) + O₂(g) ⇌ 2SO₃(g)
-                    </div>
-                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
-                    <div class="bg-green-50 p-4 rounded text-lg font-mono">
-                        K = [SO₃]² / [SO₂]²[O₂]
-                    </div>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-2">Example 2: Write K for:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
-                        CaCO₃(s) ⇌ CaO(s) + CO₂(g)
-                    </div>
-                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
-                    <div class="bg-green-50 p-4 rounded mb-3">
-                        <p class="text-lg font-mono">K = [CO₂]</p>
-                        <p class="text-gray-700 mt-2"><em>Note: Solids CaCO₃ and CaO are omitted!</em></p>
-                    </div>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-2">Example 3: Write K for:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
-                        NH₃(aq) + H₂O(l) ⇌ NH₄⁺(aq) + OH⁻(aq)
-                    </div>
-                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
-                    <div class="bg-green-50 p-4 rounded mb-3">
-                        <p class="text-lg font-mono">K = [NH₄⁺][OH⁻] / [NH₃]</p>
-                        <p class="text-gray-700 mt-2"><em>Note: H₂O(l) is omitted (pure liquid solvent)</em></p>
-                    </div>
-                </div>
-
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4 mt-8">Interpreting K Values</h3>
-                <div class="overflow-x-auto mb-6">
-                    <table class="w-full border-collapse border-2 border-blue-600">
-                        <thead class="bg-blue-600 text-white">
-                            <tr>
-                                <th class="border border-blue-400 p-3 text-left">K Value</th>
-                                <th class="border border-blue-400 p-3 text-left">Meaning</th>
-                                <th class="border border-blue-400 p-3 text-left">Position of Equilibrium</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white">
-                            <tr>
-                                <td class="border border-blue-300 p-3 font-mono">K >> 1 (e.g., K = 10⁵)</td>
-                                <td class="border border-blue-300 p-3">Products heavily favored</td>
-                                <td class="border border-blue-300 p-3">Far right</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="border border-blue-300 p-3 font-mono">K ≈ 1</td>
-                                <td class="border border-blue-300 p-3">Neither favored significantly</td>
-                                <td class="border border-blue-300 p-3">Middle</td>
-                            </tr>
-                            <tr>
-                                <td class="border border-blue-300 p-3 font-mono">K << 1 (e.g., K = 10⁻⁵)</td>
-                                <td class="border border-blue-300 p-3">Reactants heavily favored</td>
-                                <td class="border border-blue-300 p-3">Far left</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- Calculating K Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    4. Calculating Equilibrium Constants
-                </h2>
-                
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example: Calculate K</p>
-                    <p class="text-gray-700 mb-3">At equilibrium for the reaction:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-3">
-                        H₂(g) + I₂(g) ⇌ 2HI(g)
-                    </div>
-                    <p class="text-gray-700 mb-3">The equilibrium concentrations are:</p>
-                    <ul class="list-disc ml-8 text-gray-700 mb-4">
-                        <li>[H₂] = 0.20 M</li>
-                        <li>[I₂] = 0.20 M</li>
-                        <li>[HI] = 1.60 M</li>
-                    </ul>
-                    <p class="font-semibold text-green-800 mb-2">Solution:</p>
-                    <div class="bg-green-50 p-4 rounded space-y-2">
-                        <p class="font-mono">K = [HI]² / [H₂][I₂]</p>
-                        <p class="font-mono">K = (1.60)² / (0.20)(0.20)</p>
-                        <p class="font-mono">K = 2.56 / 0.04</p>
-                        <p class="font-mono text-xl font-bold text-green-800">K = 64</p>
-                        <p class="text-gray-700 mt-3"><em>Since K >> 1, products are heavily favored</em></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 3: Calculating K</h3>
-                <div class="video-container mb-4">
-                    <iframe src="https://www.youtube.com/embed/JbkiO-RLx6A" 
-                            title="Calculating K" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-gray-600 italic">Watch for more examples of equilibrium calculations</p>
-            </div>
-        </section>
-
-        <!-- Le Chatelier's Principle Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    5. Le Chatelier's Principle
-                </h2>
-                
-                <div class="bg-blue-50 border-l-4 border-blue-600 p-6 mb-6">
-                    <p class="text-xl font-semibold text-blue-900 mb-2">Le Chatelier's Principle:</p>
-                    <p class="text-lg text-gray-700">
-                        <em>"When a chemical system at equilibrium is disturbed by a stress, the system will respond in order to 
-                        relieve the stress."</em>
-                    </p>
-                </div>
-
-                <p class="text-lg text-gray-700 mb-4">Types of stresses that affect equilibrium:</p>
-                <div class="grid md:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-yellow-50 p-4 rounded shadow border-l-4 border-yellow-600">
-                        <h4 class="font-bold text-yellow-900 mb-2">1. Concentration Changes</h4>
-                        <p class="text-gray-700 text-sm">Adding or removing reactants or products</p>
-                    </div>
-                    <div class="bg-red-50 p-4 rounded shadow border-l-4 border-red-600">
-                        <h4 class="font-bold text-red-900 mb-2">2. Temperature Changes</h4>
-                        <p class="text-gray-700 text-sm">Heating or cooling the system</p>
-                    </div>
-                    <div class="bg-green-50 p-4 rounded shadow border-l-4 border-green-600">
-                        <h4 class="font-bold text-green-900 mb-2">3. Pressure/Volume Changes</h4>
-                        <p class="text-gray-700 text-sm">For gas-phase reactions only</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 4: Le Chatelier's Principle</h3>
-                <div class="video-container mb-4">
-                    <iframe src="https://www.youtube.com/embed/JMRz9TRVUQg" 
-                            title="Le Chatelier's Principle" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-gray-600 italic">Understand how systems respond to stress</p>
-            </div>
-        </section>
-
-        <!-- Le Chatelier - Concentration Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-yellow-600 pl-4">
-                    Effect of Concentration Changes
-                </h3>
-                
-                <div class="bg-gray-100 rounded-lg p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-blue-900 mb-3">General Rules:</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <span class="text-blue-600 mr-3 text-xl">→</span>
-                            <span class="text-gray-700"><strong>Add reactant</strong> or <strong>remove product</strong> → shifts <strong>RIGHT</strong> (toward products)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-600 mr-3 text-xl">←</span>
-                            <span class="text-gray-700"><strong>Add product</strong> or <strong>remove reactant</strong> → shifts <strong>LEFT</strong> (toward reactants)</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example: The Haber-Bosch Process</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-4">
-                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g)
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-blue-900">Add N₂:</p>
-                            <p class="text-gray-700">Equilibrium shifts <strong>RIGHT</strong> → more NH₃ produced</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-blue-900">Remove NH₃:</p>
-                            <p class="text-gray-700">Equilibrium shifts <strong>RIGHT</strong> → more NH₃ produced to replace it</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-blue-900">Add NH₃:</p>
-                            <p class="text-gray-700">Equilibrium shifts <strong>LEFT</strong> → more N₂ and H₂ produced</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6">
-                    <p class="font-semibold text-yellow-900 mb-2">💡 Industrial Application:</p>
-                    <p class="text-gray-700">
-                        In the Haber-Bosch process, NH₃ is continuously removed from the system. This shifts equilibrium 
-                        to the right, maximizing ammonia production!
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Le Chatelier - Temperature Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-red-600 pl-4">
-                    Effect of Temperature Changes
-                </h3>
-                
-                <div class="bg-gray-100 rounded-lg p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-blue-900 mb-3">Key Concept: Treat heat as a substance!</h4>
                     
-                    <div class="grid md:grid-cols-2 gap-4 mt-4">
-                        <div class="bg-red-50 p-4 rounded shadow">
-                            <h5 class="font-bold text-red-900 mb-2">Endothermic (ΔH > 0)</h5>
-                            <p class="text-gray-700 mb-2">Heat is a REACTANT:</p>
-                            <div class="font-mono text-sm bg-white p-2 rounded mb-2">
-                                heat + reactants ⇌ products
-                            </div>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>• Increase T → shifts RIGHT</li>
-                                <li>• Decrease T → shifts LEFT</li>
-                            </ul>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded shadow">
-                            <h5 class="font-bold text-blue-900 mb-2">Exothermic (ΔH < 0)</h5>
-                            <p class="text-gray-700 mb-2">Heat is a PRODUCT:</p>
-                            <div class="font-mono text-sm bg-white p-2 rounded mb-2">
-                                reactants ⇌ products + heat
-                            </div>
-                            <ul class="text-sm text-gray-700 space-y-1">
-                                <li>• Increase T → shifts LEFT</li>
-                                <li>• Decrease T → shifts RIGHT</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example: N₂O₄/NO₂ Equilibrium</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-4">
-                        N₂O₄(g) ⇌ 2NO₂(g)     ΔH = +57 kJ
-                    </div>
-                    <p class="text-gray-700 mb-3">
-                        This is <strong>endothermic</strong> (absorbs heat)
-                    </p>
-                    <div class="space-y-3">
-                        <div class="bg-red-50 p-4 rounded">
-                            <p class="font-semibold text-red-900">Increase temperature (add heat):</p>
-                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> → more brown NO₂ gas</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-blue-900">Decrease temperature (remove heat):</p>
-                            <p class="text-gray-700">Shifts <strong>LEFT</strong> → more colorless N₂O₄ gas</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example: Haber Process (Exothermic)</p>
-                    <div class="text-center bg-gray-50 p-3 rounded text-lg font-mono mb-4">
-                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + 91 kJ
-                    </div>
-                    <p class="text-gray-700 mb-3">
-                        This is <strong>exothermic</strong> (releases heat)
-                    </p>
-                    <div class="space-y-3">
-                        <div class="bg-red-50 p-4 rounded">
-                            <p class="font-semibold text-red-900">Increase temperature:</p>
-                            <p class="text-gray-700">Shifts <strong>LEFT</strong> → less NH₃ produced</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-blue-900">Decrease temperature:</p>
-                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> → more NH₃ produced</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6">
-                    <p class="font-semibold text-yellow-900 mb-2">⚗️ Important Note:</p>
-                    <p class="text-gray-700">
-                        Temperature changes actually change the value of K! This is different from concentration and 
-                        pressure changes, which don't affect K's value.
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 5: Temperature Effects on Equilibrium</h3>
-                <div class="video-container mb-4">
-                    <iframe src="https://www.youtube.com/embed/tGqiUbBxqec" 
-                            title="Temperature Effects" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-gray-600 italic">See temperature effects demonstrated</p>
-            </div>
-        </section>
-
-        <!-- Le Chatelier - Pressure Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-semibold text-blue-800 mb-4 border-l-4 border-green-600 pl-4">
-                    Effect of Pressure Changes
-                </h3>
-                
-                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6">
-                    <p class="font-semibold text-yellow-900 mb-2">⚠️ Critical: Applies to GAS-PHASE reactions ONLY!</p>
-                    <p class="text-gray-700">
-                        Liquids and solids are essentially incompressible, so pressure changes don't affect them.
-                    </p>
-                </div>
-
-                <div class="bg-gray-100 rounded-lg p-6 mb-6">
-                    <h4 class="text-xl font-semibold text-blue-900 mb-3">General Rules:</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <span class="text-green-600 mr-3 text-xl">↑</span>
-                            <span class="text-gray-700"><strong>Increase pressure</strong> → shifts toward <strong>FEWER moles</strong> of gas</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-600 mr-3 text-xl">↓</span>
-                            <span class="text-gray-700"><strong>Decrease pressure</strong> → shifts toward <strong>MORE moles</strong> of gas</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-600 mr-3 text-xl">═</span>
-                            <span class="text-gray-700"><strong>Equal moles on both sides</strong> → <strong>NO SHIFT</strong></span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example 1:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded mb-3">
-                        <p class="text-lg font-mono mb-2">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
-                        <p class="text-sm text-gray-600">4 moles gas → 2 moles gas</p>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-green-50 p-4 rounded">
-                            <p class="font-semibold text-green-900">Increase pressure:</p>
-                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> (4 moles → 2 moles relieves pressure)</p>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded">
-                            <p class="font-semibold text-green-900">Decrease pressure:</p>
-                            <p class="text-gray-700">Shifts <strong>LEFT</strong> (2 moles → 4 moles)</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6 mb-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example 2:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded mb-3">
-                        <p class="text-lg font-mono mb-2">H₂(g) + I₂(g) ⇌ 2HI(g)</p>
-                        <p class="text-sm text-gray-600">2 moles → 2 moles</p>
-                    </div>
-                    <div class="bg-gray-100 p-4 rounded">
-                        <p class="font-semibold text-gray-900">Change pressure:</p>
-                        <p class="text-gray-700"><strong>NO SHIFT</strong> (equal moles on both sides)</p>
-                    </div>
-                </div>
-
-                <div class="bg-white border-2 border-blue-300 rounded-lg p-6">
-                    <p class="font-semibold text-blue-900 mb-3">Example 3:</p>
-                    <div class="text-center bg-gray-50 p-3 rounded mb-3">
-                        <p class="text-lg font-mono mb-2">CaCO₃(s) ⇌ CaO(s) + CO₂(g)</p>
-                        <p class="text-sm text-gray-600">0 moles gas → 1 mole gas</p>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-green-50 p-4 rounded">
-                            <p class="font-semibold text-green-900">Increase pressure:</p>
-                            <p class="text-gray-700">Shifts <strong>LEFT</strong> (reduces gas moles)</p>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded">
-                            <p class="font-semibold text-green-900">Decrease pressure:</p>
-                            <p class="text-gray-700">Shifts <strong>RIGHT</strong> (increases gas moles)</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Applications Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    6. Real-World Applications
-                </h2>
-                
-                <div class="bg-blue-50 rounded-lg p-6 mb-6">
-                    <h3 class="text-2xl font-semibold text-blue-900 mb-4">The Haber-Bosch Process</h3>
-                    <div class="text-center bg-white p-4 rounded text-xl font-mono mb-4">
-                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat
-                    </div>
-                    <p class="text-gray-700 mb-4">
-                        Industrial production of ammonia (for fertilizers). How do we maximize NH₃ production?
-                    </p>
-                    <ul class="space-y-2 text-gray-700">
-                        <li class="flex items-start">
-                            <span class="text-blue-600 mr-2">✓</span>
-                            <span><strong>High pressure (200 atm)</strong> - shifts right (fewer moles)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-600 mr-2">✓</span>
-                            <span><strong>Moderate temperature (450°C)</strong> - compromise between rate and equilibrium position</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-600 mr-2">✓</span>
-                            <span><strong>Iron catalyst</strong> - speeds up reaction without changing equilibrium</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-blue-600 mr-2">✓</span>
-                            <span><strong>Remove NH₃ continuously</strong> - shifts right to replace removed product</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-green-50 rounded-lg p-6">
-                    <h3 class="text-2xl font-semibold text-green-900 mb-4">Oxygen Transport in Blood</h3>
-                    <div class="text-center bg-white p-4 rounded font-mono mb-4">
-                        hemoglobin + O₂ ⇌ oxyhemoglobin
-                    </div>
-                    <p class="text-gray-700 mb-4">
-                        <strong>In the lungs:</strong> High O₂ concentration shifts equilibrium RIGHT → hemoglobin binds O₂
-                    </p>
-                    <p class="text-gray-700">
-                        <strong>In the tissues:</strong> Low O₂ concentration shifts equilibrium LEFT → O₂ is released to cells
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h3 class="text-2xl font-bold text-blue-900 mb-4">📺 Video 6: Equilibrium Applications</h3>
-                <div class="video-container mb-4">
-                    <iframe src="https://www.youtube.com/embed/ZojNOgXleJA" 
-                            title="Equilibrium Applications" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <p class="text-gray-600 italic">See real-world applications of equilibrium principles</p>
-            </div>
-        </section>
-
-        <!-- Practice Problems Section -->
-        <section class="mb-16">
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-3xl font-bold text-blue-900 mb-6 border-b-4 border-blue-600 pb-2">
-                    7. Practice Problems
-                </h2>
-                
-                <p class="text-lg text-gray-700 mb-6">
-                    Test your understanding with these practice problems. Click "Show Answer" to check your work.
-                </p>
-
-                <!-- Problem 1 -->
-                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
-                    <p class="font-semibold text-blue-900 mb-3">Problem 1: Write the equilibrium expression</p>
-                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-4">
-                        N₂(g) + 3H₂(g) ⇌ 2NH₃(g)
-                    </div>
-                    <button onclick="toggleAnswer('answer1')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                        Show Answer
-                    </button>
-                    <div id="answer1" class="practice-answer mt-4">
-                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
-                            <p class="font-semibold text-green-800 mb-2">Answer:</p>
-                            <p class="font-mono text-lg">K = [NH₃]² / [N₂][H₂]³</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Problem 2 -->
-                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
-                    <p class="font-semibold text-blue-900 mb-3">Problem 2: Le Chatelier's Principle</p>
-                    <p class="text-gray-700 mb-3">For the equilibrium:</p>
-                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-3">
-                        2NO(g) + Cl₂(g) ⇌ 2NOCl(g) + heat
-                    </div>
-                    <p class="text-gray-700 mb-4">Predict the shift for:</p>
-                    <ul class="list-disc ml-8 mb-4 text-gray-700">
-                        <li>a) Adding NO</li>
-                        <li>b) Removing NOCl</li>
-                        <li>c) Increasing temperature</li>
-                        <li>d) Increasing pressure</li>
-                    </ul>
-                    <button onclick="toggleAnswer('answer2')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                        Show Answer
-                    </button>
-                    <div id="answer2" class="practice-answer mt-4">
-                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
-                            <p class="font-semibold text-green-800 mb-2">Answers:</p>
-                            <ul class="space-y-2 text-gray-700">
-                                <li>a) Shifts <strong>RIGHT</strong> (added reactant)</li>
-                                <li>b) Shifts <strong>RIGHT</strong> (removed product)</li>
-                                <li>c) Shifts <strong>LEFT</strong> (exothermic - heat is product)</li>
-                                <li>d) Shifts <strong>RIGHT</strong> (3 moles gas → 2 moles gas)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Problem 3 -->
-                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
-                    <p class="font-semibold text-blue-900 mb-3">Problem 3: Calculate K</p>
-                    <p class="text-gray-700 mb-3">At equilibrium for the reaction:</p>
-                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-3">
-                        2NO(g) + Cl₂(g) ⇌ 2NOCl(g)
-                    </div>
-                    <p class="text-gray-700 mb-4">The equilibrium concentrations are:</p>
-                    <ul class="list-disc ml-8 mb-4 text-gray-700">
-                        <li>[NO] = 0.20 M</li>
-                        <li>[Cl₂] = 0.10 M</li>
-                        <li>[NOCl] = 0.60 M</li>
-                    </ul>
-                    <button onclick="toggleAnswer('answer3')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                        Show Answer
-                    </button>
-                    <div id="answer3" class="practice-answer mt-4">
-                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
-                            <p class="font-semibold text-green-800 mb-2">Solution:</p>
-                            <div class="space-y-2 font-mono">
-                                <p>K = [NOCl]² / [NO]²[Cl₂]</p>
-                                <p>K = (0.60)² / (0.20)²(0.10)</p>
-                                <p>K = 0.36 / 0.004</p>
-                                <p class="text-xl font-bold text-green-800">K = 90</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Problem 4 -->
-                <div class="bg-gray-50 rounded-lg p-6 mb-6 border-l-4 border-blue-600">
-                    <p class="font-semibold text-blue-900 mb-3">Problem 4: Interpreting K</p>
-                    <p class="text-gray-700 mb-4">
-                        If K = 1.5 × 10⁻⁸ for a reaction, are products or reactants favored at equilibrium?
-                    </p>
-                    <button onclick="toggleAnswer('answer4')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                        Show Answer
-                    </button>
-                    <div id="answer4" class="practice-answer mt-4">
-                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
-                            <p class="font-semibold text-green-800 mb-2">Answer:</p>
-                            <p class="text-gray-700">
-                                <strong>Reactants are heavily favored</strong> because K << 1. The equilibrium position 
-                                lies far to the left, meaning very little product forms.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Problem 5 -->
-                <div class="bg-gray-50 rounded-lg p-6 border-l-4 border-blue-600">
-                    <p class="font-semibold text-blue-900 mb-3">Problem 5: Pressure effects</p>
-                    <p class="text-gray-700 mb-3">For the equilibrium:</p>
-                    <div class="text-center bg-white p-3 rounded text-lg font-mono mb-4">
-                        2NO₂(g) ⇌ N₂O₄(g)
-                    </div>
-                    <p class="text-gray-700 mb-4">What happens when pressure increases?</p>
-                    <button onclick="toggleAnswer('answer5')" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                        Show Answer
-                    </button>
-                    <div id="answer5" class="practice-answer mt-4">
-                        <div class="bg-green-50 border-l-4 border-green-600 p-4">
-                            <p class="font-semibold text-green-800 mb-2">Answer:</p>
-                            <p class="text-gray-700">
-                                Equilibrium shifts <strong>RIGHT</strong> toward N₂O₄. The system responds by shifting toward 
-                                fewer moles of gas (2 moles → 1 mole) to relieve the pressure stress.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Summary Section -->
-        <section class="mb-16">
-            <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg shadow-lg p-8">
-                <h2 class="text-3xl font-bold mb-6">Quick Reference Summary</h2>
-                
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-3">Writing K Expressions</h3>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Products in numerator</li>
-                            <li>✓ Reactants in denominator</li>
-                            <li>✓ Coefficients → exponents</li>
-                            <li>✓ Omit pure solids & liquids</li>
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>Understand collision theory and activation energy</li>
+                            <li>Explain how concentration affects reaction rates</li>
+                            <li>Describe how temperature influences reaction rates</li>
+                            <li>Identify factors that affect collision frequency and energy</li>
                         </ul>
                     </div>
                     
-                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-3">Interpreting K</h3>
-                        <ul class="space-y-2 text-sm">
-                            <li>K >> 1 → Products favored</li>
-                            <li>K ≈ 1 → Neither favored</li>
-                            <li>K << 1 → Reactants favored</li>
+                    <div class="video-container">
+                        <h3>📹 DrDan Video Resources</h3>
+                        <div class="video-embed">
+                            <iframe src="https://www.youtube.com/embed/-ie15qDdHjE" 
+                                    title="Introduction to Chemical Equilibrium - DrDan" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Key Concepts</h3>
+                        <ul>
+                            <li>Particles must collide with sufficient energy (activation energy) and proper orientation</li>
+                            <li>Higher concentration = more particles = more collisions per unit time</li>
+                            <li>Higher temperature = faster moving particles = more energetic collisions</li>
+                            <li>Surface area and catalysts also affect reaction rates</li>
                         </ul>
                     </div>
                     
-                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-3">Le Chatelier: Concentration</h3>
-                        <ul class="space-y-2 text-sm">
-                            <li>Add reactant → shifts RIGHT</li>
-                            <li>Remove product → shifts RIGHT</li>
-                            <li>Add product → shifts LEFT</li>
-                            <li>Remove reactant → shifts LEFT</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-3">Le Chatelier: Temperature</h3>
-                        <ul class="space-y-2 text-sm">
-                            <li>Endothermic: ↑T shifts RIGHT</li>
-                            <li>Endothermic: ↓T shifts LEFT</li>
-                            <li>Exothermic: ↑T shifts LEFT</li>
-                            <li>Exothermic: ↓T shifts RIGHT</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-3">Le Chatelier: Pressure</h3>
-                        <ul class="space-y-2 text-sm">
-                            <li>↑P → shifts to fewer moles</li>
-                            <li>↓P → shifts to more moles</li>
-                            <li>Equal moles → no shift</li>
-                            <li>Only for GASES!</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                        <h3 class="text-xl font-bold mb-3">Key Concepts</h3>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Equilibrium is dynamic</li>
-                            <li>✓ K depends on temperature</li>
-                            <li>✓ Catalysts don't affect K</li>
-                            <li>✓ System relieves stress</li>
-                        </ul>
+                    <div class="example-box">
+                        <h4>Example: Temperature Effects</h4>
+                        <p>At 25°C: average particle speed ≈ 500 m/s</p>
+                        <p>At 50°C: average particle speed ≈ 550 m/s</p>
+                        <p><strong>Result:</strong> More particles exceed activation energy → faster reaction</p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Footer -->
-        <footer class="text-center py-8 text-gray-600">
-            <p class="text-lg mb-2">Chemistry 3A - Chemical Equilibrium Review</p>
-            <p>Prof. Gilley | Fresno City College</p>
-            <p class="mt-4 text-sm">Good luck with your studies! 🧪</p>
+            <!-- Section 13.2 Dynamic Equilibrium -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.2</span> Dynamic Equilibrium</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.2">
+                </div>
+                <div class="section-content">
+                    <div class="cor-alignment">
+                        <h3>📋 COR Alignment</h3>
+                        <p>Introduction to the concept of dynamic equilibrium | Reversible reactions</p>
+                    </div>
+                    
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>Define chemical equilibrium and recognize equilibrium conditions</li>
+                            <li>Explain why equilibrium is dynamic, not static</li>
+                            <li>Understand that equilibrium can be approached from either direction</li>
+                            <li>Recognize the double arrow (⇌) notation for reversible reactions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Key Concepts</h3>
+                        <ul>
+                            <li>At equilibrium: Rate<sub>forward</sub> = Rate<sub>reverse</sub></li>
+                            <li>Macroscopic properties (concentrations, color, pressure) remain constant</li>
+                            <li>Both forward and reverse reactions continue - equilibrium is DYNAMIC!</li>
+                            <li>Requires a closed system</li>
+                            <li>Same equilibrium position regardless of starting point</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>Example: H₂ + I₂ ⇌ 2HI</h4>
+                        <p>Initially: Forward rate is fast (lots of reactants), reverse rate is slow (few products)</p>
+                        <p>As reaction proceeds: Forward rate decreases, reverse rate increases</p>
+                        <p>At equilibrium: Both rates are equal, concentrations stop changing</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13.3 Equilibrium Constant -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.3</span> The Equilibrium Constant Expression</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.3">
+                </div>
+                <div class="section-content">
+                    <div class="cor-alignment">
+                        <h3>📋 COR Alignment</h3>
+                        <p>Equilibrium constants and writing equilibrium expressions | Qualitative interpretation of equilibrium expressions</p>
+                    </div>
+                    
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>Write equilibrium constant (K) expressions from balanced equations</li>
+                            <li>Understand the rules for writing K expressions</li>
+                            <li>Interpret the meaning of K values (K >> 1, K ≈ 1, K << 1)</li>
+                            <li>Calculate K from equilibrium concentrations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <h3>📹 DrDan Video Resources</h3>
+                        <div class="video-embed">
+                            <iframe src="https://www.youtube.com/embed/qatdA_ALnx8" 
+                                    title="Equilibrium Constants - DrDan" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="video-embed">
+                            <iframe src="https://www.youtube.com/embed/JbkiO-RLx6A" 
+                                    title="Calculating K - DrDan" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Key Rules for Writing K</h3>
+                        <ul>
+                            <li>For aA + bB ⇌ cC + dD: K = [C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup></li>
+                            <li>Products in numerator, reactants in denominator</li>
+                            <li>Coefficients become exponents</li>
+                            <li><strong>Pure solids and liquids are OMITTED</strong></li>
+                            <li>Only gases (g) and aqueous (aq) species included</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>Example 1: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g)</h4>
+                        <p><strong>K = [SO₃]² / [SO₂]²[O₂]</strong></p>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>Example 2: CaCO₃(s) ⇌ CaO(s) + CO₂(g)</h4>
+                        <p><strong>K = [CO₂]</strong></p>
+                        <p><em>Note: Solids CaCO₃ and CaO are omitted!</em></p>
+                    </div>
+                    
+                    <div class="practice-problems">
+                        <h3>Interpreting K Values</h3>
+                        <p><strong>K >> 1 (e.g., 10⁵):</strong> Products heavily favored, equilibrium far right</p>
+                        <p><strong>K ≈ 1:</strong> Neither favored significantly, equilibrium in middle</p>
+                        <p><strong>K << 1 (e.g., 10⁻⁵):</strong> Reactants heavily favored, equilibrium far left</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13.4 Le Chatelier's Principle -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.4</span> Le Chatelier's Principle</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.4">
+                </div>
+                <div class="section-content">
+                    <div class="cor-alignment">
+                        <h3>📋 COR Alignment</h3>
+                        <p>Effect of changes in equilibrium concentrations | Le Chatelier's principle</p>
+                    </div>
+                    
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>State Le Chatelier's Principle</li>
+                            <li>Predict equilibrium shifts from concentration changes</li>
+                            <li>Predict equilibrium shifts from temperature changes</li>
+                            <li>Predict equilibrium shifts from pressure/volume changes</li>
+                            <li>Apply Le Chatelier's Principle to real-world systems</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <h3>📹 DrDan Video Resources</h3>
+                        <div class="video-embed">
+                            <iframe src="https://www.youtube.com/embed/JMRz9TRVUQg" 
+                                    title="Le Chatelier's Principle - DrDan" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="video-embed">
+                            <iframe src="https://www.youtube.com/embed/tGqiUbBxqec" 
+                                    title="Temperature Effects on Equilibrium - DrDan" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Le Chatelier's Principle</h3>
+                        <ul>
+                            <li><strong>Principle:</strong> When a stress is applied to a system at equilibrium, the system shifts to relieve the stress</li>
+                            <li><strong>Concentration:</strong> Add reactant/remove product → shift RIGHT; Add product/remove reactant → shift LEFT</li>
+                            <li><strong>Temperature:</strong> Endothermic (heat = reactant): ↑T shifts RIGHT; Exothermic (heat = product): ↑T shifts LEFT</li>
+                            <li><strong>Pressure:</strong> ↑P shifts toward fewer moles of gas; ↓P shifts toward more moles of gas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>Example: N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat</h4>
+                        <p><strong>Add N₂:</strong> Shifts RIGHT → more NH₃ produced</p>
+                        <p><strong>Remove NH₃:</strong> Shifts RIGHT → more NH₃ produced</p>
+                        <p><strong>Increase T:</strong> Shifts LEFT (exothermic, heat is product)</p>
+                        <p><strong>Increase P:</strong> Shifts RIGHT (4 moles → 2 moles)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13.4.1 Concentration Changes -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.4.1</span> Effect of Concentration Changes</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.4.1">
+                </div>
+                <div class="section-content">
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>Predict equilibrium shifts when reactants are added or removed</li>
+                            <li>Predict equilibrium shifts when products are added or removed</li>
+                            <li>Understand that K value remains constant with concentration changes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>General Rules</h3>
+                        <ul>
+                            <li>Add reactant → equilibrium shifts RIGHT (toward products)</li>
+                            <li>Remove reactant → equilibrium shifts LEFT (toward reactants)</li>
+                            <li>Add product → equilibrium shifts LEFT (toward reactants)</li>
+                            <li>Remove product → equilibrium shifts RIGHT (toward products)</li>
+                            <li>The system responds to minimize the disturbance</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="practice-problems">
+                        <h3>Industrial Application: Haber-Bosch Process</h3>
+                        <p>N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</p>
+                        <p>NH₃ is continuously removed → equilibrium shifts RIGHT → maximizes ammonia production!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13.4.2 Temperature and Pressure Effects -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.4.2</span> Temperature and Pressure Effects</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.4.2">
+                </div>
+                <div class="section-content">
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>Distinguish between endothermic and exothermic reactions</li>
+                            <li>Predict temperature effects on equilibrium position</li>
+                            <li>Apply pressure changes to gas-phase equilibria</li>
+                            <li>Understand when pressure changes have no effect</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Temperature Effects</h3>
+                        <ul>
+                            <li><strong>Endothermic (ΔH > 0):</strong> heat + reactants ⇌ products</li>
+                            <li>↑T shifts RIGHT (adding heat = adding reactant)</li>
+                            <li>↓T shifts LEFT</li>
+                            <li><strong>Exothermic (ΔH < 0):</strong> reactants ⇌ products + heat</li>
+                            <li>↑T shifts LEFT (adding heat = adding product)</li>
+                            <li>↓T shifts RIGHT</li>
+                            <li><strong>Important:</strong> Temperature changes actually change K value!</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Pressure Effects (GAS-PHASE ONLY!)</h3>
+                        <ul>
+                            <li>Increase pressure → shifts toward FEWER moles of gas</li>
+                            <li>Decrease pressure → shifts toward MORE moles of gas</li>
+                            <li>Equal moles on both sides → NO SHIFT</li>
+                            <li>Liquids and solids are incompressible - pressure doesn't affect them</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="example-box">
+                        <h4>Example: 2NO₂(g) ⇌ N₂O₄(g)</h4>
+                        <p>2 moles gas → 1 mole gas</p>
+                        <p><strong>Increase P:</strong> Shifts RIGHT toward fewer moles (N₂O₄)</p>
+                        <p><strong>Decrease P:</strong> Shifts LEFT toward more moles (NO₂)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 13.5 Applications -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><span class="section-number">13.5</span> Special Types & Applications of Equilibria</h2>
+                    <input type="checkbox" class="completion-checkbox" data-section="13.5">
+                </div>
+                <div class="section-content">
+                    <div class="cor-alignment">
+                        <h3>📋 COR Alignment</h3>
+                        <p>Special equilibria applications | Real-world equilibrium systems</p>
+                    </div>
+                    
+                    <div class="learning-objectives">
+                        <h3>Learning Objectives</h3>
+                        <ul>
+                            <li>Understand Ka (acid dissociation constant)</li>
+                            <li>Understand Kb (base dissociation constant)</li>
+                            <li>Understand Kw (water autoionization)</li>
+                            <li>Understand Ksp (solubility product)</li>
+                            <li>Apply equilibrium principles to industrial processes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="video-container">
+                        <h3>📹 DrDan Video Resources</h3>
+                        <div class="video-embed">
+                            <iframe src="https://www.youtube.com/embed/ZojNOgXleJA" 
+                                    title="Equilibrium Applications - DrDan" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="key-concepts">
+                        <h3>Special Equilibria Types</h3>
+                        <ul>
+                            <li><strong>Ka (acid dissociation):</strong> HA ⇌ H⁺ + A⁻, Ka = [H⁺][A⁻]/[HA]</li>
+                            <li><strong>Kb (base dissociation):</strong> B + H₂O ⇌ BH⁺ + OH⁻, Kb = [BH⁺][OH⁻]/[B]</li>
+                            <li><strong>Kw (water autoionization):</strong> H₂O ⇌ H⁺ + OH⁻, Kw = [H⁺][OH⁻] = 1.0×10⁻¹⁴ at 25°C</li>
+                            <li><strong>Ksp (solubility product):</strong> AgCl(s) ⇌ Ag⁺ + Cl⁻, Ksp = [Ag⁺][Cl⁻]</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="practice-problems">
+                        <h3>Industrial Application: Haber-Bosch Process</h3>
+                        <p><strong>Reaction:</strong> N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + heat</p>
+                        <p><strong>Optimization Strategy:</strong></p>
+                        <ul>
+                            <li>✓ High pressure (200 atm) - shifts right</li>
+                            <li>✓ Moderate temperature (450°C) - compromise between rate and yield</li>
+                            <li>✓ Iron catalyst - speeds reaction without changing equilibrium</li>
+                            <li>✓ Remove NH₃ continuously - shifts right</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="practice-problems">
+                        <h3>Biological Application: Oxygen Transport</h3>
+                        <p><strong>Reaction:</strong> hemoglobin + O₂ ⇌ oxyhemoglobin</p>
+                        <p><strong>In lungs:</strong> High [O₂] → shifts RIGHT → O₂ binds to hemoglobin</p>
+                        <p><strong>In tissues:</strong> Low [O₂] → shifts LEFT → O₂ released to cells</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+        
+        <footer>
+            <p>CHEM3A Chapter 13 Review • Fresno City College</p>
+            <p>Created for Prof. Gilley's CHEM3A Course • Aligned with Course Outline of Record</p>
+            <p style="font-size: 0.9em; opacity: 0.8;">📍 GitHub Pages Compatible • Embedded DrDan Videos • Progress Saved Locally</p>
         </footer>
-    </main>
+    </div>
 
     <script>
-        function toggleAnswer(id) {
-            const answer = document.getElementById(id);
-            answer.classList.toggle('show');
+        // Initialize from localStorage
+        let progressData = JSON.parse(localStorage.getItem('chapter13Progress')) || {
+            completedSections: [],
+            timeSpent: 0,
+            lastVisit: new Date().toISOString()
+        };
+
+        // Track time spent
+        let startTime = Date.now();
+        
+        // Update time spent every minute
+        setInterval(() => {
+            progressData.timeSpent += 1;
+            localStorage.setItem('chapter13Progress', JSON.stringify(progressData));
+            updateStats();
+        }, 60000);
+
+        // Handle checkbox changes
+        document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
+            const section = checkbox.getAttribute('data-section');
             
-            const button = answer.previousElementSibling;
-            if (answer.classList.contains('show')) {
-                button.textContent = 'Hide Answer';
-            } else {
-                button.textContent = 'Show Answer';
+            // Set initial state from saved data
+            if (progressData.completedSections.includes(section)) {
+                checkbox.checked = true;
             }
+            
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    if (!progressData.completedSections.includes(section)) {
+                        progressData.completedSections.push(section);
+                        showCompletionMessage(section);
+                    }
+                } else {
+                    progressData.completedSections = progressData.completedSections.filter(s => s !== section);
+                }
+                
+                localStorage.setItem('chapter13Progress', JSON.stringify(progressData));
+                updateProgressBar();
+                updateStats();
+            });
+        });
+
+        function updateProgressBar() {
+            const totalSections = 7;
+            const completed = progressData.completedSections.length;
+            const percentage = Math.round((completed / totalSections) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+            
+            // Change color based on progress
+            if (percentage < 33) {
+                progressBar.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)';
+            } else if (percentage < 66) {
+                progressBar.style.background = 'linear-gradient(90deg, #f39c12, #d68910)';
+            } else {
+                progressBar.style.background = 'linear-gradient(90deg, #27ae60, #229954)';
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('completedSections').textContent = progressData.completedSections.length;
+            document.getElementById('timeSpent').textContent = progressData.timeSpent;
+        }
+
+        function showCompletionMessage(section) {
+            const messages = {
+                '13.1': 'Great start! Collision theory understood!',
+                '13.2': 'Excellent! Dynamic equilibrium mastered!',
+                '13.3': 'You\'re doing great! K expressions complete!',
+                '13.4': 'Le Chatelier\'s Principle - well done!',
+                '13.4.1': 'Concentration effects understood!',
+                '13.4.2': 'Temperature and pressure effects complete!',
+                '13.5': 'Chapter 13 complete! You\'re ready for the exam!'
+            };
+            
+            if (messages[section]) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #27ae60;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    z-index: 1000;
+                    animation: slideIn 0.5s ease;
+                `;
+                notification.textContent = messages[section];
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.5s ease';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 500);
+                }, 3000);
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                progressData = {
+                    completedSections: [],
+                    timeSpent: 0,
+                    lastVisit: new Date().toISOString()
+                };
+                localStorage.setItem('chapter13Progress', JSON.stringify(progressData));
+                
+                document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                updateProgressBar();
+                updateStats();
+                
+                alert('Progress has been reset!');
+            }
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize on page load
+        updateProgressBar();
+        updateStats();
+        
+        // Welcome message for new users
+        if (progressData.completedSections.length === 0 && progressData.timeSpent === 0) {
+            setTimeout(() => {
+                alert('Welcome to Chapter 13: Chemical Equilibrium!\n\nCheck off each section as you complete it to track your progress. Your progress is automatically saved.\n\nGood luck with your studies!');
+            }, 1000);
         }
     </script>
 </body>
