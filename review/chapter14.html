@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 14: Radioactivity - Complete Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: visible;
+            transition: all 0.3s;
+        }
+        
+        /* Progress Tracker styling */
+        .progress-tracker {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 25px;
+            margin: 0;
+            border-bottom: 3px solid #667eea;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .tracker-item {
+            padding: 15px 10px;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.9em;
+            border: 2px solid #e0e0e0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: default;
+        }
+        
+        .tracker-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tracker-item.completed {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border-color: #4CAF50;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.2);
+        }
+        
+        .tracker-item .icon {
+            font-size: 1.5em;
+            margin-bottom: 2px;
+        }
+        
+        .tracker-item span:not(.icon) {
+            font-size: 0.85em;
+            line-height: 1.2;
+        }
+        
+        .tracker-item small {
+            font-size: 0.75em;
+            opacity: 0.8;
+            font-weight: normal;
+        }
+        
+        .tracker-item.completed small {
+            opacity: 0.9;
+        }
+        
+        /* Screen shake animation for epic effect */
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-10px, 5px) rotate(0.5deg); }
+            20% { transform: translate(10px, -5px) rotate(-0.5deg); }
+            30% { transform: translate(-5px, 10px) rotate(0.5deg); }
+            40% { transform: translate(5px, -10px) rotate(-0.5deg); }
+            50% { transform: translate(-10px, 10px) rotate(0.5deg); }
+            60% { transform: translate(10px, 0) rotate(-0.5deg); }
+            70% { transform: translate(-5px, -10px) rotate(0.5deg); }
+            80% { transform: translate(0, 5px) rotate(-0.5deg); }
+            90% { transform: translate(5px, -5px) rotate(0.5deg); }
+        }
+        
+        .shake-screen {
+            animation: screenShake 1s ease-in-out;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .progress-container {
+            background: rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.4);
+            height: 45px;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
+            height: 100%;
+            width: 0%;
+            transition: width 0.8s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            letter-spacing: 1px;
+        }
+        
+        .progress-fill.complete {
+            animation: rainbowPulse 2s linear infinite;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        @keyframes rainbowPulse {
+            0% { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00); }
+            33% { background: linear-gradient(90deg, #00ff00, #0000ff, #4b0082); }
+            66% { background: linear-gradient(90deg, #9400d3, #ff1493, #00ced1); }
+            100% { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00); }
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .section-divider {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .section-divider h2 {
+            background: white;
+            display: inline-block;
+            padding: 0 20px;
+            color: #667eea;
+            font-size: 1.8em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            z-index: 1;
+        }
+        
+        .concept-section {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .concept-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+            transition: width 0.5s ease;
+            z-index: 0;
+        }
+        
+        .concept-section.completed:before {
+            width: 100%;
+        }
+        
+        .concept-section > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .concept-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .concept-section.completed {
+            border-left-color: #4CAF50;
+            background: #f0f8f0;
+        }
+        
+        .concept-section.completed h3 {
+            color: #4CAF50;
+        }
+        
+        .key-points {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .key-points li:before {
+            content: "☢️";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+        
+        .equation-box {
+            background: linear-gradient(135deg, #fff3cd, #ffecb3);
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 1.2em;
+            box-shadow: 0 3px 10px rgba(255, 193, 7, 0.2);
+        }
+        
+        .video-section {
+            background: linear-gradient(135deg, #e8f5e9, #ffffff);
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+        }
+        
+        .video-section h4 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .complete-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .complete-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .complete-btn.completed {
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .complete-btn.completed:before {
+            content: "✓ ";
+            font-size: 1.2em;
+        }
+        
+        .definition-card {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        }
+        
+        .definition-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #fff3cd, #ffe8a1);
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(255, 193, 7, 0.15);
+        }
+        
+        .alert-box strong {
+            color: #856404;
+            font-size: 1.1em;
+        }
+        
+
+        /* EPIC Confetti Bomb Animation */
+        .confetti-piece {
+            position: fixed;
+            z-index: 100000;
+            pointer-events: none;
+        }
+        
+        @keyframes confetti-spin {
+            0% {
+                transform: translate(0, 0) rotate3d(1, 1, 1, 0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--end-x), var(--end-y)) rotate3d(1, 1, 1, 1440deg) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes confetti-burst {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                transform: translate(-50%, -50%) scale(2) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--burst-x)), calc(-50% + var(--burst-y))) scale(0) rotate(1080deg);
+                opacity: 0;
+            }
+        }
+        
+        .emoji-explosion {
+            position: fixed;
+            font-size: 60px;
+            z-index: 100001;
+            pointer-events: none;
+            animation: emoji-fly 2s ease-out forwards;
+        }
+        
+        @keyframes emoji-fly {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--fly-x)), calc(-50% + var(--fly-y))) scale(0) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: none;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: overlayFade 0.5s forwards;
+        }
+        
+        @keyframes overlayFade {
+            to {
+                background: rgba(0, 0, 0, 0.8);
+            }
+        }
+        
+        .success-message {
+            background: linear-gradient(45deg, 
+                #ff0000, #ff7f00, #ffff00, #00ff00, 
+                #0000ff, #4b0082, #9400d3, #ff0000);
+            background-size: 400% 400%;
+            color: white;
+            padding: 60px 80px;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 3em;
+            font-weight: bold;
+            animation: epicPulse 2s infinite, gradientShift 3s ease infinite;
+            box-shadow: 0 0 100px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transform: scale(0);
+        }
+        
+        .success-message.show {
+            animation: epicEntrance 1s forwards, epicPulse 2s 1s infinite, gradientShift 3s ease infinite;
+        }
+        
+        @keyframes epicEntrance {
+            0% {
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.3) rotate(180deg);
+            }
+            75% {
+                transform: scale(0.9) rotate(270deg);
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+            }
+        }
+        
+        @keyframes epicPulse {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg); 
+                box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+            }
+            25% {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
+            }
+            50% { 
+                transform: scale(1.1) rotate(-2deg); 
+                box-shadow: 0 0 150px rgba(255, 255, 255, 1);
+            }
+            75% {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
+            }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .firework {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            z-index: 100002;
+            pointer-events: none;
+        }
+        
+        @keyframes firework-launch {
+            0% {
+                transform: translateY(100vh) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(var(--explode-y)) scale(0.5);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes firework-explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--particle-x), var(--particle-y)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .completion-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 30px rgba(76, 175, 80, 0.4);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .completion-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .reset-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+            transition: all 0.3s;
+            z-index: 98;
+        }
+        
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .concept-section {
+                padding: 15px;
+            }
+            
+            .success-message {
+                font-size: 2em;
+                padding: 40px;
+            }
+            
+            .tracker-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .tracker-item {
+                padding: 10px 5px;
+            }
+            
+            .tracker-item .icon {
+                font-size: 1.2em;
+            }
+            
+            .tracker-item span:not(.icon) {
+                font-size: 0.75em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tracker-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <header>
+            <h1>⚛️ Chapter 14: Radioactivity</h1>
+            <p class="subtitle">Complete Interactive Review Guide</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar">0%</div>
+                </div>
+                <p style="margin-top: 10px;" id="progressMessage">Complete all sections to trigger the EPIC CONFETTI BOMB! 🎉</p>
+            </div>
+        </header>
+        
+        <!-- Progress Tracker Grid -->
+        <div class="progress-tracker">
+            <div class="tracker-grid">
+                <div class="tracker-item" id="track-section-basics">
+                    <span class="icon">🔬</span>
+                    <span>Fundamentals<br><small>(+2 videos)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-halflife">
+                    <span class="icon">⏱️</span>
+                    <span>Half-Life<br><small>(+1 video)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-fission">
+                    <span class="icon">💥</span>
+                    <span>Fission</span>
+                </div>
+                <div class="tracker-item" id="track-section-fusion">
+                    <span class="icon">☀️</span>
+                    <span>Fusion</span>
+                </div>
+                <div class="tracker-item" id="track-section-applications">
+                    <span class="icon">🏥</span>
+                    <span>Applications<br><small>(+1 video)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-safety">
+                    <span class="icon">⚠️</span>
+                    <span>Safety</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- Section 1: Fundamentals with Video -->
+            <div class="concept-section" id="section-basics">
+                <h3>🔬 1. Fundamentals of Radioactivity</h3>
+                
+                <div class="definition-card">
+                    <h4>What is Radioactivity?</h4>
+                    <p><strong>Radioactivity</strong> is the spontaneous emission of particles and electromagnetic radiation from nuclei of unstable atoms.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Three Types of Nuclear Radiation:</h4>
+                    <ul>
+                        <li><strong>Alpha (α) Particles:</strong> 2 protons + 2 neutrons (He-4 nucleus)</li>
+                        <li><strong>Beta (β) Particles:</strong> High-energy electrons emitted from nucleus</li>
+                        <li><strong>Gamma (γ) Rays:</strong> High-energy electromagnetic radiation</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Alpha Decay Example:</strong><br>
+                    ²³⁸U → ²³⁴Th + ⁴He (α particle)<br><br>
+                    <strong>Beta Decay Example:</strong><br>
+                    ¹⁴C → ¹⁴N + β⁻ + ν̄ₑ
+                </div>
+                
+                <!-- Integrated Video 1 & 2 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Introduction to Nuclear Chemistry</h4>
+                    <p>Watch this comprehensive introduction to understand the fundamentals:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/WDBiyaeivFY" 
+                                title="Introduction to Nuclear Chemistry" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Types of Radiation</h4>
+                    <p>Deep dive into alpha, beta, and gamma radiation:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/tjAebD_t8PA" 
+                                title="Types of Radiation" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>⚠️ Penetrating Power Comparison:</strong><br><br>
+                    <span style="font-size: 1.3em;">α &lt; β &lt; γ</span><br><br>
+                    📄 Paper stops α particles<br>
+                    🔩 Aluminum stops β particles<br>
+                    🧱 Lead/concrete stops γ rays
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-basics')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 2: Half-Life with Video -->
+            <div class="concept-section" id="section-halflife">
+                <h3>⏱️ 2. Half-Life and Decay</h3>
+                
+                <div class="definition-card">
+                    <h4>Half-Life (t₁/₂)</h4>
+                    <p>The time required for half of a radioactive sample to decay. This is a constant for each radioisotope.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Key Half-Life Concepts:</h4>
+                    <ul>
+                        <li>Each radioisotope has a unique, constant half-life</li>
+                        <li>After n half-lives: (1/2)ⁿ of original sample remains</li>
+                        <li>Used for radiocarbon dating (C-14: t₁/₂ = 5,730 years)</li>
+                        <li>Medical isotopes chosen based on half-life (I-131: 8 days)</li>
+                        <li>Independent of temperature, pressure, or chemical state</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Half-Life Calculation:</strong><br><br>
+                    N = N₀ × (1/2)ⁿ<br><br>
+                    Where:<br>
+                    N = Amount remaining<br>
+                    N₀ = Initial amount<br>
+                    n = Number of half-lives elapsed
+                </div>
+                
+                <!-- Integrated Video 3 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Half-Life and Decay</h4>
+                    <p>Master half-life calculations with this detailed explanation:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/g--JowvBqM8" 
+                                title="Half-Life and Decay" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-halflife')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 3: Fission -->
+            <div class="concept-section" id="section-fission">
+                <h3>💥 3. Nuclear Fission & Chain Reactions</h3>
+                
+                <div class="definition-card">
+                    <h4>Nuclear Fission</h4>
+                    <p>The splitting of a heavy nucleus into two or more smaller fragments, releasing enormous energy (E=mc²).</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Fission Essentials:</h4>
+                    <ul>
+                        <li><strong>Fissionable isotopes:</strong> U-235, Pu-239</li>
+                        <li><strong>Chain reaction:</strong> Released neutrons trigger more fissions</li>
+                        <li><strong>Critical mass:</strong> Minimum mass needed for sustained reaction</li>
+                        <li><strong>Control rods:</strong> Absorb neutrons to control reaction rate</li>
+                        <li><strong>Moderator:</strong> Slows neutrons to increase fission probability</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Typical Fission Reaction:</strong><br><br>
+                    ²³⁵U + n → ⁹²Kr + ¹⁴¹Ba + 3n + Energy (~200 MeV)<br><br>
+                    Energy released: ~2 million times more than chemical reactions!
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-fission')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 4: Fusion -->
+            <div class="concept-section" id="section-fusion">
+                <h3>☀️ 4. Nuclear Fusion</h3>
+                
+                <div class="definition-card">
+                    <h4>Nuclear Fusion</h4>
+                    <p>The combining of light nuclei to form heavier nuclei, releasing energy - the power source of stars!</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Fusion Facts:</h4>
+                    <ul>
+                        <li>Requires extreme temperatures (100 million °C)</li>
+                        <li>Hydrogen isotopes (deuterium, tritium) fuse to form helium</li>
+                        <li>Clean energy source (no long-lived radioactive waste)</li>
+                        <li>Challenge: Magnetic or inertial confinement on Earth</li>
+                        <li>4× more energy per mass than fission</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Sun's Fusion Reaction (Proton-Proton Chain):</strong><br><br>
+                    4¹H → ⁴He + 2e⁺ + 2νₑ + Energy (26.7 MeV)<br><br>
+                    <strong>Fusion on Earth (D-T Reaction):</strong><br>
+                    ²H + ³H → ⁴He + n + 17.6 MeV
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-fusion')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 5: Applications with Video -->
+            <div class="concept-section" id="section-applications">
+                <h3>🏥 5. Applications of Nuclear Chemistry</h3>
+                
+                <div class="key-points">
+                    <h4>Medical Applications:</h4>
+                    <ul>
+                        <li><strong>Radioiodine Therapy:</strong> I-131 for thyroid treatment (8-day half-life)</li>
+                        <li><strong>PET Scans:</strong> F-18 fluorodeoxyglucose for cancer detection</li>
+                        <li><strong>External Beam Therapy:</strong> Co-60 gamma rays for tumor treatment</li>
+                        <li><strong>Brachytherapy:</strong> Radioactive seeds implanted near tumors</li>
+                        <li><strong>Technetium-99m:</strong> Most used medical isotope for imaging</li>
+                    </ul>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Other Applications:</h4>
+                    <ul>
+                        <li><strong>Carbon-14 Dating:</strong> Artifacts up to 50,000 years old</li>
+                        <li><strong>Nuclear Power:</strong> ~10% of world's electricity</li>
+                        <li><strong>Food Irradiation:</strong> Cobalt-60 kills bacteria</li>
+                        <li><strong>Smoke Detectors:</strong> Americium-241 ionization</li>
+                        <li><strong>Industrial Gauging:</strong> Thickness measurements</li>
+                    </ul>
+                </div>
+                
+                <!-- Integrated Video 4 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Applications of Nuclear Chemistry</h4>
+                    <p>Discover real-world applications from medicine to energy:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/bZHo3kHvGi0" 
+                                title="Applications of Nuclear Chemistry" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-applications')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 6: Safety -->
+            <div class="concept-section" id="section-safety">
+                <h3>⚠️ 6. Radiation Safety & Detection</h3>
+                
+                <div class="definition-card">
+                    <h4>Radiation Measurement Units</h4>
+                    <p><strong>Gray (Gy):</strong> Energy absorbed per kg of tissue (1 Gy = 100 rad)<br>
+                    <strong>Sievert (Sv):</strong> Biological effect of radiation (1 Sv = 100 rem)<br>
+                    <strong>Becquerel (Bq):</strong> Radioactive decays per second<br>
+                    <strong>RBE:</strong> Relative Biological Effectiveness factor</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Detection Methods:</h4>
+                    <ul>
+                        <li><strong>Geiger-Müller Counter:</strong> Clicks for each particle detected</li>
+                        <li><strong>Scintillation Counter:</strong> Light flashes converted to electrical signals</li>
+                        <li><strong>Film Badge Dosimeter:</strong> Personal cumulative exposure</li>
+                        <li><strong>Thermoluminescent Dosimeter:</strong> Crystal stores energy from radiation</li>
+                    </ul>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>ALARA Principle - As Low As Reasonably Achievable:</strong><br><br>
+                    ⏱️ <strong>Time:</strong> Minimize exposure duration<br>
+                    📏 <strong>Distance:</strong> Intensity ∝ 1/r² (inverse square law)<br>
+                    🛡️ <strong>Shielding:</strong> Use appropriate materials
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-safety')">Complete This Section</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-message" id="successMessage">
+            🎊 LEGENDARY! 🎊<br>
+            YOU'RE A RADIOACTIVITY MASTER!<br>
+            <span style="font-size: 0.5em;">Click anywhere to keep celebrating...</span>
+        </div>
+    </div>
+    
+    <!-- Completion Toast Notification -->
+    <div class="completion-toast" id="completionToast">
+        ✓ Section Completed! Great Job!
+    </div>
+    
+    <!-- Reset Button -->
+    <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
+    
+    <script>
+        // Initialize completed sections from localStorage
+        let completedSections = JSON.parse(localStorage.getItem('radioactivityProgressEpic')) || [];
+        
+        // Apply completed status on load
+        window.onload = function() {
+            completedSections.forEach(section => {
+                applyCompletedStatus(section);
+            });
+            updateProgress();
+        };
+        
+        function markComplete(sectionId) {
+            if (!completedSections.includes(sectionId)) {
+                completedSections.push(sectionId);
+                localStorage.setItem('radioactivityProgressEpic', JSON.stringify(completedSections));
+                
+                // Show completion toast
+                showCompletionToast();
+            }
+            
+            applyCompletedStatus(sectionId);
+            updateProgress();
+            
+            // Scroll to top smoothly to show progress update (with slight delay)
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 300);
+            
+            // Add a visual pulse to the progress bar to draw attention
+            setTimeout(() => {
+                const progressBar = document.getElementById('progressBar');
+                progressBar.style.transition = 'all 0.3s';
+                progressBar.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    progressBar.style.transform = 'scale(1)';
+                }, 300);
+            }, 800);
+            
+            // Check if all sections are complete
+            if (completedSections.length === 6) { // 6 concept sections (videos integrated)
+                setTimeout(() => {
+                    epicConfettiBomb();
+                }, 2000); // Delay to allow scroll and toast to finish
+            }
+        }
+        
+        function showCompletionToast() {
+            const toast = document.getElementById('completionToast');
+            const completed = completedSections.length;
+            const total = 6;
+            
+            // Update toast message based on progress
+            if (completed === total) {
+                toast.innerHTML = '🎉 ALL SECTIONS COMPLETE! GET READY... 🎉';
+                toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+            } else if (completed === total - 1) {
+                toast.innerHTML = `🔥 ONE MORE TO GO! (${completed}/${total}) 🔥`;
+                toast.style.background = 'linear-gradient(135deg, #FF6347, #FF4500)';
+            } else {
+                toast.innerHTML = `✓ Section Completed! (${completed}/${total})`;
+                toast.style.background = 'linear-gradient(135deg, #4CAF50, #8BC34A)';
+            }
+            
+            toast.classList.add('show');
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function applyCompletedStatus(sectionId) {
+            // Update button
+            const btn = document.querySelector(`#${sectionId} .complete-btn`);
+            if (btn) {
+                btn.classList.add('completed');
+                btn.textContent = 'Section Completed!';
+            }
+            
+            // Update section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('completed');
+            }
+            
+            // Update tracker
+            const tracker = document.getElementById('track-' + sectionId);
+            if (tracker) {
+                tracker.classList.add('completed');
+                const icon = tracker.querySelector('.icon');
+                if (icon && !icon.textContent.includes('✓')) {
+                    icon.textContent = '✓';
+                }
+            }
+        }
+        
+        function updateProgress() {
+            const totalSections = 6;
+            const completed = completedSections.length;
+            const percentage = Math.round((completed / totalSections) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressMessage = document.getElementById('progressMessage');
+            
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+            
+            // Update motivational message based on progress
+            if (completed === 0) {
+                progressMessage.textContent = 'Complete all sections to trigger the EPIC CONFETTI BOMB! 🎉';
+            } else if (completed === 1) {
+                progressMessage.textContent = 'Great start! Keep going! 🚀';
+            } else if (completed === 2) {
+                progressMessage.textContent = 'You\'re on fire! 1/3 of the way there! 🔥';
+            } else if (completed === 3) {
+                progressMessage.textContent = 'HALFWAY THERE! Don\'t stop now! 💪';
+            } else if (completed === 4) {
+                progressMessage.textContent = 'Almost there! Just 2 more sections! ⚡';
+            } else if (completed === 5) {
+                progressMessage.textContent = 'ONE MORE! The confetti bomb is armed and ready! 🎯';
+            } else if (completed === 6) {
+                progressMessage.textContent = '🎊 LEGENDARY STATUS ACHIEVED! 🎊';
+                progressBar.classList.add('complete');
+            }
+            
+            // Add glow effect as progress increases
+            if (percentage >= 50) {
+                progressBar.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.5)';
+            }
+            if (percentage >= 80) {
+                progressBar.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.6)';
+            }
+        }
+        
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                completedSections = [];
+                localStorage.removeItem('radioactivityProgressEpic');
+                
+                // Remove all completed classes
+                document.querySelectorAll('.completed').forEach(element => {
+                    element.classList.remove('completed');
+                });
+                
+                // Reset all buttons
+                document.querySelectorAll('.complete-btn').forEach(btn => {
+                    btn.textContent = 'Complete This Section';
+                });
+                
+                // Reset tracker icons
+                document.querySelectorAll('.tracker-item').forEach(item => {
+                    const icon = item.querySelector('.icon');
+                    if (icon.textContent === '✓') {
+                        const parent = item.id.replace('track-', '');
+                        if (parent.includes('basics')) icon.textContent = '🔬';
+                        else if (parent.includes('halflife')) icon.textContent = '⏱️';
+                        else if (parent.includes('fission')) icon.textContent = '💥';
+                        else if (parent.includes('fusion')) icon.textContent = '☀️';
+                        else if (parent.includes('applications')) icon.textContent = '🏥';
+                        else if (parent.includes('safety')) icon.textContent = '⚠️';
+                    }
+                });
+                
+                // Reset progress bar and message
+                document.getElementById('progressBar').classList.remove('complete');
+                document.getElementById('progressBar').style.boxShadow = 'none';
+                document.getElementById('progressMessage').textContent = 'Complete all sections to trigger the EPIC CONFETTI BOMB! 🎉';
+                updateProgress();
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function epicConfettiBomb() {
+            // Play sound effect (commented out, but you can add an actual sound file)
+            // const audio = new Audio('explosion.mp3');
+            // audio.play();
+            
+            // Shake the entire screen
+            document.getElementById('mainContainer').classList.add('shake-screen');
+            setTimeout(() => {
+                document.getElementById('mainContainer').classList.remove('shake-screen');
+            }, 1000);
+            
+            // Show success overlay with epic message
+            const overlay = document.getElementById('successOverlay');
+            const message = document.getElementById('successMessage');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                message.classList.add('show');
+            }, 100);
+            
+            // WAVE 1: Initial explosion - center burst
+            const colors = [
+                '#ff0000', '#ff4500', '#ff8c00', '#ffd700', '#ffff00',
+                '#00ff00', '#00ffff', '#0000ff', '#8a2be2', '#ff00ff',
+                '#ff1493', '#ff69b4', '#ffa500', '#32cd32', '#1e90ff'
+            ];
+            
+            // Create 500 confetti pieces in the first wave
+            for (let i = 0; i < 500; i++) {
+                setTimeout(() => {
+                    createConfettiPiece(window.innerWidth / 2, window.innerHeight / 2, colors);
+                }, i * 3);
+            }
+            
+            // WAVE 2: Corner explosions
+            setTimeout(() => {
+                // Top left corner
+                for (let i = 0; i < 100; i++) {
+                    createConfettiPiece(0, 0, colors);
+                }
+                // Top right corner
+                for (let i = 0; i < 100; i++) {
+                    createConfettiPiece(window.innerWidth, 0, colors);
+                }
+                // Bottom left corner
+                for (let i = 0; i < 100; i++) {
+                    createConfettiPiece(0, window.innerHeight, colors);
+                }
+                // Bottom right corner
+                for (let i = 0; i < 100; i++) {
+                    createConfettiPiece(window.innerWidth, window.innerHeight, colors);
+                }
+            }, 800);
+            
+            // WAVE 3: Random fireworks
+            for (let j = 0; j < 10; j++) {
+                setTimeout(() => {
+                    launchFirework(colors);
+                }, 1500 + (j * 300));
+            }
+            
+            // WAVE 4: Emoji explosion
+            const emojis = ['🎉', '🎊', '🎈', '🎆', '🎇', '✨', '💫', '⭐', '🌟', '🏆', '🥇', '👏', '🙌', '💪', '🔥', '💯', '🚀', '🌈', '🦄', '🎯'];
+            
+            setTimeout(() => {
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        createEmojiExplosion(emojis);
+                    }, i * 50);
+                }
+            }, 2000);
+            
+            // WAVE 5: Continuous sparkles for dramatic effect
+            let sparkleInterval = setInterval(() => {
+                createSparkle();
+            }, 50);
+            
+            setTimeout(() => {
+                clearInterval(sparkleInterval);
+            }, 5000);
+            
+            // Hide overlay on click (after initial celebration)
+            setTimeout(() => {
+                overlay.addEventListener('click', function() {
+                    this.style.display = 'none';
+                });
+            }, 3000);
+        }
+        
+        function createConfettiPiece(startX, startY, colors) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti-piece';
+            
+            // Random properties
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 20 + 10;
+            const shape = Math.random() > 0.5 ? '50%' : '0';
+            
+            // Random end position
+            const endX = (Math.random() - 0.5) * window.innerWidth * 2;
+            const endY = (Math.random() - 0.5) * window.innerHeight * 2;
+            
+            confetti.style.width = size + 'px';
+            confetti.style.height = size + 'px';
+            confetti.style.backgroundColor = color;
+            confetti.style.borderRadius = shape;
+            confetti.style.left = startX + 'px';
+            confetti.style.top = startY + 'px';
+            confetti.style.setProperty('--end-x', endX + 'px');
+            confetti.style.setProperty('--end-y', endY + 'px');
+            
+            confetti.style.animation = `confetti-spin ${2 + Math.random() * 2}s ease-out forwards`;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 4000);
+        }
+        
+        function launchFirework(colors) {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight * 0.5;
+            
+            // Launch trail
+            const trail = document.createElement('div');
+            trail.className = 'firework';
+            trail.style.background = 'linear-gradient(to top, transparent, #ffffff, #ffff00)';
+            trail.style.width = '3px';
+            trail.style.height = '30px';
+            trail.style.left = x + 'px';
+            trail.style.setProperty('--explode-y', y + 'px');
+            trail.style.animation = 'firework-launch 1s ease-out forwards';
+            
+            document.body.appendChild(trail);
+            
+            // Explosion after launch
+            setTimeout(() => {
+                trail.remove();
+                
+                // Create explosion particles
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'firework';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
+                    
+                    const particleX = (Math.random() - 0.5) * 400;
+                    const particleY = (Math.random() - 0.5) * 400;
+                    
+                    particle.style.setProperty('--particle-x', particleX + 'px');
+                    particle.style.setProperty('--particle-y', particleY + 'px');
+                    particle.style.animation = 'firework-explode 1.5s ease-out forwards';
+                    
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 1500);
+                }
+            }, 1000);
+        }
+        
+        function createEmojiExplosion(emojis) {
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-explosion';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            
+            emoji.style.left = x + 'px';
+            emoji.style.top = y + 'px';
+            
+            const flyX = (Math.random() - 0.5) * 600;
+            const flyY = (Math.random() - 0.5) * 600;
+            
+            emoji.style.setProperty('--fly-x', flyX + 'px');
+            emoji.style.setProperty('--fly-y', flyY + 'px');
+            
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => emoji.remove(), 2000);
+        }
+        
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.width = Math.random() * 8 + 4 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            sparkle.style.backgroundColor = '#ffffff';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.boxShadow = '0 0 ' + (Math.random() * 20 + 10) + 'px #ffffff';
+            sparkle.style.zIndex = '100003';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.animation = 'twinkle 0.8s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 800);
+        }
+        
+        // Add twinkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes twinkle {
+                0% { opacity: 0; transform: scale(0) rotate(0deg); }
+                50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+                100% { opacity: 0; transform: scale(0) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
