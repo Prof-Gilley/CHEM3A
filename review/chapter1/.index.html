@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Basics of Measurement - Complete Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: visible;
+            transition: all 0.3s;
+        }
+        
+        /* Progress Tracker styling */
+        .progress-tracker {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 25px;
+            margin: 0;
+            border-bottom: 3px solid #667eea;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .tracker-item {
+            padding: 15px 10px;
+            border-radius: 12px;
+            background: white;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.9em;
+            border: 2px solid #e0e0e0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        
+        .tracker-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #f0f0ff;
+        }
+        
+        .tracker-item.completed {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border-color: #4CAF50;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.2);
+        }
+        
+        .tracker-item .icon {
+            font-size: 1.5em;
+            margin-bottom: 2px;
+        }
+        
+        .tracker-item span:not(.icon) {
+            font-size: 0.85em;
+            line-height: 1.2;
+        }
+        
+        .tracker-item small {
+            font-size: 0.75em;
+            opacity: 0.8;
+            font-weight: normal;
+        }
+        
+        .tracker-item.completed small {
+            opacity: 0.9;
+        }
+        
+        /* Screen shake animation for epic effect */
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-10px, 5px) rotate(0.5deg); }
+            20% { transform: translate(10px, -5px) rotate(-0.5deg); }
+            30% { transform: translate(-5px, 10px) rotate(0.5deg); }
+            40% { transform: translate(5px, -10px) rotate(-0.5deg); }
+            50% { transform: translate(-10px, 10px) rotate(0.5deg); }
+            60% { transform: translate(10px, 0) rotate(-0.5deg); }
+            70% { transform: translate(-5px, -10px) rotate(0.5deg); }
+            80% { transform: translate(0, 5px) rotate(-0.5deg); }
+            90% { transform: translate(5px, -5px) rotate(0.5deg); }
+        }
+        
+        .shake-screen {
+            animation: screenShake 1s ease-in-out;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .progress-container {
+            background: rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.4);
+            height: 45px;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
+            height: 100%;
+            width: 0%;
+            transition: width 0.8s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            letter-spacing: 1px;
+        }
+        
+        .progress-fill.complete {
+            animation: rainbowPulse 2s linear infinite;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        @keyframes rainbowPulse {
+            0% { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00); }
+            33% { background: linear-gradient(90deg, #00ff00, #0000ff, #4b0082); }
+            66% { background: linear-gradient(90deg, #9400d3, #ff1493, #00ced1); }
+            100% { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00); }
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .section-divider {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .section-divider h2 {
+            background: white;
+            display: inline-block;
+            padding: 0 20px;
+            color: #667eea;
+            font-size: 1.8em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            z-index: 1;
+        }
+        
+        .concept-section {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            scroll-margin-top: 20px;
+        }
+        
+        .concept-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+            transition: width 0.5s ease;
+            z-index: 0;
+        }
+        
+        .concept-section.completed:before {
+            width: 100%;
+        }
+        
+        .concept-section > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .concept-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .concept-section.completed {
+            border-left-color: #4CAF50;
+            background: #f0f8f0;
+        }
+        
+        .concept-section.completed h3 {
+            color: #4CAF50;
+        }
+        
+        .key-points {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .key-points li:before {
+            content: "📐";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+        
+        .equation-box {
+            background: linear-gradient(135deg, #fff3cd, #ffecb3);
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 1.2em;
+            box-shadow: 0 3px 10px rgba(255, 193, 7, 0.2);
+        }
+        
+        .video-section {
+            background: linear-gradient(135deg, #e8f5e9, #ffffff);
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+        }
+        
+        .video-section h4 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .complete-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin: 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .complete-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .complete-btn.completed {
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .complete-btn.completed:before {
+            content: "✓ ";
+            font-size: 1.2em;
+        }
+        
+        .definition-card {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.1);
+        }
+        
+        .definition-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #fff3cd, #ffe8a1);
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(255, 193, 7, 0.15);
+        }
+        
+        .alert-box strong {
+            color: #856404;
+            font-size: 1.1em;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #e3f2fd, #ffffff);
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.15);
+        }
+        
+        .example-box h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        /* EPIC Confetti Bomb Animation */
+        .confetti-piece {
+            position: fixed;
+            z-index: 100000;
+            pointer-events: none;
+        }
+        
+        @keyframes confetti-spin {
+            0% {
+                transform: translate(0, 0) rotate3d(1, 1, 1, 0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--end-x), var(--end-y)) rotate3d(1, 1, 1, 1440deg) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes confetti-burst {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                transform: translate(-50%, -50%) scale(2) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--burst-x)), calc(-50% + var(--burst-y))) scale(0) rotate(1080deg);
+                opacity: 0;
+            }
+        }
+        
+        .emoji-explosion {
+            position: fixed;
+            font-size: 60px;
+            z-index: 100001;
+            pointer-events: none;
+            animation: emoji-fly 2s ease-out forwards;
+        }
+        
+        @keyframes emoji-fly {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--fly-x)), calc(-50% + var(--fly-y))) scale(0) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: none;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: overlayFade 0.5s forwards;
+        }
+        
+        @keyframes overlayFade {
+            to {
+                background: rgba(0, 0, 0, 0.8);
+            }
+        }
+        
+        .success-message {
+            background: linear-gradient(45deg, 
+                #ff0000, #ff7f00, #ffff00, #00ff00, 
+                #0000ff, #4b0082, #9400d3, #ff0000);
+            background-size: 400% 400%;
+            color: white;
+            padding: 60px 80px;
+            border-radius: 30px;
+            text-align: center;
+            font-size: 3em;
+            font-weight: bold;
+            animation: epicPulse 2s infinite, gradientShift 3s ease infinite;
+            box-shadow: 0 0 100px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transform: scale(0);
+        }
+        
+        .success-message.show {
+            animation: epicEntrance 1s forwards, epicPulse 2s 1s infinite, gradientShift 3s ease infinite;
+        }
+        
+        @keyframes epicEntrance {
+            0% {
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.3) rotate(180deg);
+            }
+            75% {
+                transform: scale(0.9) rotate(270deg);
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+            }
+        }
+        
+        @keyframes epicPulse {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg); 
+                box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+            }
+            25% {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
+            }
+            50% { 
+                transform: scale(1.1) rotate(-2deg); 
+                box-shadow: 0 0 150px rgba(255, 255, 255, 1);
+            }
+            75% {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
+            }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .firework {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            z-index: 100002;
+            pointer-events: none;
+        }
+        
+        @keyframes firework-launch {
+            0% {
+                transform: translateY(100vh) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(var(--explode-y)) scale(0.5);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes firework-explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--particle-x), var(--particle-y)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .completion-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 30px rgba(76, 175, 80, 0.4);
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .completion-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .reset-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+            transition: all 0.3s;
+            z-index: 98;
+        }
+        
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        
+        .update-notice {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .concept-section {
+                padding: 15px;
+            }
+            
+            .success-message {
+                font-size: 2em;
+                padding: 40px;
+            }
+            
+            .tracker-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .tracker-item {
+                padding: 10px 5px;
+            }
+            
+            .tracker-item .icon {
+                font-size: 1.2em;
+            }
+            
+            .tracker-item span:not(.icon) {
+                font-size: 0.75em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tracker-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <header>
+            <h1>📐 Chapter 1: Basics of Measurement</h1>
+            <p class="subtitle">Complete Interactive Review Guide</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar">0%</div>
+                </div>
+                <p style="margin-top: 10px;" id="progressMessage">Complete all sections to trigger the EPIC CONFETTI BOMB! 🎉</p>
+            </div>
+        </header>
+        
+        <!-- Progress Tracker Grid -->
+        <div class="progress-tracker">
+            <div class="tracker-grid">
+                <div class="tracker-item" id="track-section-notation" onclick="scrollToSection('section-notation')">
+                    <span class="icon">🔢</span>
+                    <span>Scientific Notation<br><small>(+2 videos)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-si-units" onclick="scrollToSection('section-si-units')">
+                    <span class="icon">📏</span>
+                    <span>SI Units<br><small>(+3 videos)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-sigfigs" onclick="scrollToSection('section-sigfigs')">
+                    <span class="icon">🎯</span>
+                    <span>Significant Figures<br><small>(+3 videos)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-conversions" onclick="scrollToSection('section-conversions')">
+                    <span class="icon">🔄</span>
+                    <span>Unit Conversions<br><small>(+3 videos)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-density" onclick="scrollToSection('section-density')">
+                    <span class="icon">⚖️</span>
+                    <span>Density<br><small>(+2 videos)</small></span>
+                </div>
+                <div class="tracker-item" id="track-section-temperature" onclick="scrollToSection('section-temperature')">
+                    <span class="icon">🌡️</span>
+                    <span>Temperature<br><small>(+1 video)</small></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- Section 1: Scientific Notation -->
+            <div class="concept-section" id="section-notation">
+                <h3>🔢 1. Scientific Notation - Writing Large and Small Numbers</h3>
+                
+                <div class="definition-card">
+                    <h4>What is Scientific Notation?</h4>
+                    <p><strong>Scientific Notation</strong> is a method of expressing very large or very small numbers as a product of a number between 1 and 10 and a power of 10. This notation makes calculations easier and helps avoid errors when dealing with extreme values.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Key Concepts:</h4>
+                    <ul>
+                        <li><strong>General Form:</strong> N × 10<sup>n</sup> where 1 ≤ N < 10 and n is an integer</li>
+                        <li><strong>Large Numbers:</strong> Positive exponents (6.02 × 10²³)</li>
+                        <li><strong>Small Numbers:</strong> Negative exponents (1.60 × 10⁻¹⁹)</li>
+                        <li><strong>Moving Decimal Right:</strong> Exponent decreases</li>
+                        <li><strong>Moving Decimal Left:</strong> Exponent increases</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Converting to Scientific Notation:</strong><br><br>
+                    602,000,000,000,000,000,000,000 = 6.02 × 10²³<br>
+                    (Avogadro's Number)<br><br>
+                    0.000000000000000000160 = 1.60 × 10⁻¹⁹<br>
+                    (Charge of electron in coulombs)
+                </div>
+                
+                <div class="example-box">
+                    <h4>📝 Example: Converting to Scientific Notation</h4>
+                    <p><strong>Problem:</strong> Convert 450,000 to scientific notation</p>
+                    <p><strong>Solution:</strong></p>
+                    <ol>
+                        <li>Move decimal to get number between 1 and 10: 4.50</li>
+                        <li>Count decimal places moved: 5 places left</li>
+                        <li>Answer: 4.50 × 10⁵</li>
+                    </ol>
+                </div>
+                
+                <!-- Integrated Videos 1 & 2 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Introduction to Scientific Notation</h4>
+                    <p>Learn the fundamentals of expressing numbers in scientific notation:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/ARE5_CgcxW4" 
+                                title="Introduction to Scientific Notation" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Calculations with Scientific Notation</h4>
+                    <p>Master multiplication, division, addition, and subtraction with scientific notation:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/sCmUQWVB90Q" 
+                                title="Calculations with Scientific Notation" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>⚠️ Common Mistakes to Avoid:</strong><br><br>
+                    ❌ Writing 45.0 × 10³ (coefficient must be between 1 and 10)<br>
+                    ✅ Correct: 4.50 × 10⁴<br><br>
+                    ❌ Confusing positive/negative exponents<br>
+                    ✅ Remember: Large = Positive, Small = Negative
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-notation')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 2: SI Units & Measurement Systems -->
+            <div class="concept-section" id="section-si-units">
+                <h3>📏 2. SI Units & Measurement Systems</h3>
+                
+                <div class="definition-card">
+                    <h4>The International System of Units (SI)</h4>
+                    <p>The <strong>SI System</strong> (Système International d'Unités) is the modern form of the metric system and the world's most widely used system of measurement. It is based on seven fundamental base units from which all other units are derived.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Seven SI Base Units:</h4>
+                    <ul>
+                        <li><strong>Length:</strong> meter (m)</li>
+                        <li><strong>Mass:</strong> kilogram (kg)</li>
+                        <li><strong>Time:</strong> second (s)</li>
+                        <li><strong>Temperature:</strong> kelvin (K)</li>
+                        <li><strong>Amount of Substance:</strong> mole (mol)</li>
+                        <li><strong>Electric Current:</strong> ampere (A)</li>
+                        <li><strong>Luminous Intensity:</strong> candela (cd)</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Common SI Prefixes:</strong><br><br>
+                    <table style="width: 100%; text-align: left; font-size: 0.9em;">
+                        <tr><td><strong>mega (M)</strong></td><td>10⁶</td><td>1,000,000</td></tr>
+                        <tr><td><strong>kilo (k)</strong></td><td>10³</td><td>1,000</td></tr>
+                        <tr><td><strong>deci (d)</strong></td><td>10⁻¹</td><td>0.1</td></tr>
+                        <tr><td><strong>centi (c)</strong></td><td>10⁻²</td><td>0.01</td></tr>
+                        <tr><td><strong>milli (m)</strong></td><td>10⁻³</td><td>0.001</td></tr>
+                        <tr><td><strong>micro (μ)</strong></td><td>10⁻⁶</td><td>0.000001</td></tr>
+                        <tr><td><strong>nano (n)</strong></td><td>10⁻⁹</td><td>0.000000001</td></tr>
+                    </table>
+                </div>
+                
+                <div class="example-box">
+                    <h4>📝 Example: Working with SI Prefixes</h4>
+                    <p><strong>Problem:</strong> Convert 2.5 km to meters</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Since kilo = 10³, we have:<br>
+                    2.5 km = 2.5 × 10³ m = 2,500 m</p>
+                </div>
+                
+                <!-- Integrated Videos 3, 4, 5 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Introduction to Units of Measurement</h4>
+                    <p>Understand the importance of units and measurement systems:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/QsFEWZz-Uj0" 
+                                title="Introduction to Units of Measurement" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: The Metric System and SI Units</h4>
+                    <p>Deep dive into the metric system and base units:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/c3m2L5Ni3wk" 
+                                title="Metric System and SI Units" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: SI Unit Prefixes</h4>
+                    <p>Master the prefixes that modify SI base units:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/SsLd_YRnLtw" 
+                                title="SI Unit Prefixes" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>💡 Why SI Units?</strong><br><br>
+                    The SI system is used worldwide in science because:<br>
+                    • All units based on powers of 10 (easy conversions)<br>
+                    • Universally accepted and understood<br>
+                    • Reduces errors in international collaboration<br>
+                    • Simplifies calculations
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-si-units')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 3: Significant Figures -->
+            <div class="concept-section" id="section-sigfigs">
+                <h3>🎯 3. Significant Figures - Precision in Measurements</h3>
+                
+                <div class="definition-card">
+                    <h4>What are Significant Figures?</h4>
+                    <p><strong>Significant Figures</strong> (sig figs) are the digits in a measurement that carry meaningful information about its precision. They indicate the reliability and accuracy of a measured or calculated value.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Rules for Identifying Significant Figures:</h4>
+                    <ul>
+                        <li><strong>All non-zero digits</strong> are significant (123 has 3 sig figs)</li>
+                        <li><strong>Zeros between non-zero digits</strong> are significant (1005 has 4 sig figs)</li>
+                        <li><strong>Leading zeros</strong> are NOT significant (0.0025 has 2 sig figs)</li>
+                        <li><strong>Trailing zeros after decimal</strong> are significant (2.500 has 4 sig figs)</li>
+                        <li><strong>Trailing zeros without decimal</strong> are ambiguous (use scientific notation!)</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Sig Figs in Calculations:</strong><br><br>
+                    <strong>Multiplication/Division:</strong><br>
+                    Result has same sig figs as measurement with FEWEST sig figs<br>
+                    Example: 2.5 × 3.42 = 8.6 (not 8.55)<br><br>
+                    <strong>Addition/Subtraction:</strong><br>
+                    Result has same decimal places as measurement with FEWEST decimal places<br>
+                    Example: 12.11 + 18.0 = 30.1 (not 30.11)
+                </div>
+                
+                <div class="example-box">
+                    <h4>📝 Example: Sig Figs in Multiplication</h4>
+                    <p><strong>Problem:</strong> Calculate (4.56 m)(1.4 m)</p>
+                    <p><strong>Solution:</strong></p>
+                    <ol>
+                        <li>Perform calculation: 4.56 × 1.4 = 6.384</li>
+                        <li>4.56 has 3 sig figs, 1.4 has 2 sig figs</li>
+                        <li>Use fewest (2 sig figs)</li>
+                        <li><strong>Answer: 6.4 m²</strong></li>
+                    </ol>
+                </div>
+                
+                <!-- Integrated Videos 6, 7, 8 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Introduction to Significant Figures</h4>
+                    <p>Learn how to identify significant figures in measurements:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/UCQq22qA-vo" 
+                                title="Introduction to Significant Figures" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Significant Figures in Calculations</h4>
+                    <p>Master the rules for calculations with significant figures:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/ewjg7JtM_cA" 
+                                title="Significant Figures in Calculations" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Rounding with Significant Figures</h4>
+                    <p>Perfect your rounding techniques for proper precision:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/s7Dr7FSQ4R8" 
+                                title="Rounding with Significant Figures" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>⚠️ Common Sig Fig Mistakes:</strong><br><br>
+                    ❌ Keeping all calculator digits (5.386429)<br>
+                    ✅ Round to appropriate sig figs (5.39)<br><br>
+                    ❌ Treating exact numbers as measured (12 eggs = 1 dozen)<br>
+                    ✅ Exact numbers have infinite sig figs
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-sigfigs')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 4: Unit Conversions & Dimensional Analysis -->
+            <div class="concept-section" id="section-conversions">
+                <h3>🔄 4. Unit Conversions & Dimensional Analysis</h3>
+                
+                <div class="definition-card">
+                    <h4>What is Dimensional Analysis?</h4>
+                    <p><strong>Dimensional Analysis</strong> (also called the factor-label method or unit-factor method) is a problem-solving technique that uses conversion factors to change from one unit to another. The key is that units cancel algebraically just like numbers.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Steps for Dimensional Analysis:</h4>
+                    <ul>
+                        <li><strong>Step 1:</strong> Identify the given quantity and desired unit</li>
+                        <li><strong>Step 2:</strong> Find conversion factor(s) relating the units</li>
+                        <li><strong>Step 3:</strong> Set up so unwanted units cancel</li>
+                        <li><strong>Step 4:</strong> Multiply across numerators, divide by denominators</li>
+                        <li><strong>Step 5:</strong> Check that units make sense and round appropriately</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Conversion Factor Approach:</strong><br><br>
+                    Given × (Conversion Factor) = Desired<br><br>
+                    <strong>Example:</strong> Convert 5.0 km to meters<br>
+                    5.0 km × (1000 m / 1 km) = 5000 m<br>
+                    <em>(Note: km cancels, leaving m)</em>
+                </div>
+                
+                <div class="example-box">
+                    <h4>📝 Example: Multi-Step Conversion</h4>
+                    <p><strong>Problem:</strong> Convert 65 miles per hour to meters per second</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>65 mi/hr × (1.609 km/1 mi) × (1000 m/1 km) × (1 hr/3600 s)</p>
+                    <p>= 29 m/s</p>
+                    <p><em>Chain multiple conversions together!</em></p>
+                </div>
+                
+                <!-- Integrated Videos 9, 10, 11 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Introduction to Unit Conversions</h4>
+                    <p>Learn the fundamentals of converting between units:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/ilqm5Quaggc" 
+                                title="Introduction to Unit Conversions" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Dimensional Analysis Method</h4>
+                    <p>Master the powerful technique of dimensional analysis:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/USaNyE1y6gE" 
+                                title="Dimensional Analysis Method" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Multi-Step Conversion Problems</h4>
+                    <p>Tackle complex conversions with multiple steps:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/p1vMT2wxsBc" 
+                                title="Multi-Step Conversion Problems" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>💡 Pro Tips for Conversions:</strong><br><br>
+                    ✅ Always write units in your calculations<br>
+                    ✅ Make sure unwanted units cancel<br>
+                    ✅ Check if answer makes sense (bigger or smaller?)<br>
+                    ✅ Keep track of significant figures throughout
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-conversions')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 5: Density -->
+            <div class="concept-section" id="section-density">
+                <h3>⚖️ 5. Density - Mass per Unit Volume</h3>
+                
+                <div class="definition-card">
+                    <h4>What is Density?</h4>
+                    <p><strong>Density</strong> is the ratio of an object's mass to its volume. It is an intensive property (independent of amount) that helps identify substances and predict whether objects will float or sink.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Key Density Concepts:</h4>
+                    <ul>
+                        <li><strong>Formula:</strong> Density = Mass / Volume (D = m/V)</li>
+                        <li><strong>Common Units:</strong> g/cm³, g/mL, kg/m³</li>
+                        <li><strong>Water's Density:</strong> 1.00 g/mL (at 4°C)</li>
+                        <li><strong>Objects less dense than water:</strong> Float</li>
+                        <li><strong>Objects more dense than water:</strong> Sink</li>
+                        <li><strong>Temperature Effects:</strong> Most substances expand when heated (density decreases)</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Density Triangle:</strong><br><br>
+                    <div style="text-align: center; font-size: 1.5em; margin: 20px 0;">
+                        <div style="border: 3px solid #ffc107; width: 150px; height: 150px; margin: 0 auto; position: relative;">
+                            <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%);">m</div>
+                            <div style="position: absolute; bottom: 20px; left: 25%;">D</div>
+                            <div style="position: absolute; bottom: 20px; right: 25%;">V</div>
+                            <div style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: #ffc107;"></div>
+                        </div>
+                    </div>
+                    <strong>m = D × V</strong> | <strong>D = m / V</strong> | <strong>V = m / D</strong>
+                </div>
+                
+                <div class="example-box">
+                    <h4>📝 Example: Calculating Density</h4>
+                    <p><strong>Problem:</strong> A sample has mass 45.0 g and volume 20.0 mL. What is its density?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>D = m / V = 45.0 g / 20.0 mL = 2.25 g/mL</p>
+                    <p><em>This substance is more dense than water and would sink.</em></p>
+                </div>
+                
+                <!-- Integrated Videos 12, 13 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Introduction to Density</h4>
+                    <p>Understand the concept and calculation of density:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/gVI0NWuv9VU" 
+                                title="Introduction to Density" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <h4>📺 Dr. Dan Explains: Density Problems and Applications</h4>
+                    <p>Solve complex density problems and real-world applications:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/FEl475fUSqY" 
+                                title="Density Problems and Applications" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>🌊 Interesting Density Facts:</strong><br><br>
+                    • Ice is less dense than liquid water (which is unusual!)<br>
+                    • Gold: 19.3 g/cm³ (very dense)<br>
+                    • Aluminum: 2.70 g/cm³ (relatively light metal)<br>
+                    • Air: ~0.0012 g/cm³ (very low density)<br>
+                    • Osmium is the densest naturally occurring element: 22.6 g/cm³
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-density')">Complete This Section</button>
+            </div>
+            
+            <!-- Section 6: Temperature -->
+            <div class="concept-section" id="section-temperature">
+                <h3>🌡️ 6. Temperature - Random Motion of Molecules</h3>
+                
+                <div class="definition-card">
+                    <h4>What is Temperature?</h4>
+                    <p><strong>Temperature</strong> is a measure of the average kinetic energy of particles in a substance. It indicates how hot or cold something is and determines the direction of heat flow between objects.</p>
+                </div>
+                
+                <div class="key-points">
+                    <h4>Three Temperature Scales:</h4>
+                    <ul>
+                        <li><strong>Celsius (°C):</strong> Water freezes at 0°C, boils at 100°C</li>
+                        <li><strong>Fahrenheit (°F):</strong> Water freezes at 32°F, boils at 212°F</li>
+                        <li><strong>Kelvin (K):</strong> Absolute scale, 0 K = absolute zero (-273.15°C)</li>
+                        <li><strong>Absolute Zero:</strong> Lowest possible temperature (0 K = -273.15°C)</li>
+                        <li><strong>Kelvin is SI Unit:</strong> No negative temperatures on Kelvin scale</li>
+                    </ul>
+                </div>
+                
+                <div class="equation-box">
+                    <strong>Temperature Conversion Formulas:</strong><br><br>
+                    <strong>Celsius ↔ Kelvin:</strong><br>
+                    K = °C + 273.15<br>
+                    °C = K - 273.15<br><br>
+                    <strong>Celsius ↔ Fahrenheit:</strong><br>
+                    °F = (9/5)°C + 32<br>
+                    °C = (5/9)(°F - 32)<br><br>
+                    <strong>Fahrenheit ↔ Kelvin:</strong><br>
+                    K = (5/9)(°F - 32) + 273.15
+                </div>
+                
+                <div class="example-box">
+                    <h4>📝 Example: Temperature Conversion</h4>
+                    <p><strong>Problem:</strong> Convert 25°C to Kelvin and Fahrenheit</p>
+                    <p><strong>Solution:</strong></p>
+                    <p><strong>To Kelvin:</strong> K = 25 + 273.15 = 298.15 K ≈ 298 K</p>
+                    <p><strong>To Fahrenheit:</strong> °F = (9/5)(25) + 32 = 45 + 32 = 77°F</p>
+                </div>
+                
+                <!-- Integrated Video 14 -->
+                <div class="video-section">
+                    <h4>📺 Dr. Dan Explains: Temperature Scales and Conversions</h4>
+                    <p>Master temperature scales and conversion calculations:</p>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/W1fKRtt0CZc" 
+                                title="Temperature Scales and Conversions" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                
+                <div class="alert-box">
+                    <strong>⚠️ Important Temperature Notes:</strong><br><br>
+                    • Kelvin scale has NO degree symbol (298 K, not 298°K)<br>
+                    • Room temperature ≈ 20-25°C = 293-298 K = 68-77°F<br>
+                    • Body temperature ≈ 37°C = 310 K = 98.6°F<br>
+                    • Always use Kelvin in gas law calculations!
+                </div>
+                
+                <button class="complete-btn" onclick="markComplete('section-temperature')">Complete This Section</button>
+            </div>
+        </div>
+        
+        <!-- Update Notice -->
+        <div class="update-notice">
+            <strong>Last Updated:</strong> January 12, 2026 | <strong>Version:</strong> 1.0<br>
+            Chapter 1: Basics of Measurement - Interactive Review Guide<br>
+            <em>This review page contains embedded educational videos and interactive progress tracking.</em>
+        </div>
+    </div>
+    
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-message" id="successMessage">
+            🎊 LEGENDARY! 🎊<br>
+            YOU'VE MASTERED MEASUREMENT!<br>
+            <span style="font-size: 0.5em;">Click anywhere to keep celebrating...</span>
+        </div>
+    </div>
+    
+    <!-- Completion Toast Notification -->
+    <div class="completion-toast" id="completionToast">
+        ✓ Section Completed! Great Job!
+    </div>
+    
+    <!-- Reset Button -->
+    <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
+    
+    <script>
+        // Initialize completed sections from localStorage
+        let completedSections = JSON.parse(localStorage.getItem('measurementProgressEpic')) || [];
+        
+        // Apply completed status on load
+        window.onload = function() {
+            completedSections.forEach(section => {
+                applyCompletedStatus(section);
+            });
+            updateProgress();
+        };
+        
+        // Scroll to section when tracker item clicked
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function markComplete(sectionId) {
+            if (!completedSections.includes(sectionId)) {
+                completedSections.push(sectionId);
+                localStorage.setItem('measurementProgressEpic', JSON.stringify(completedSections));
+                
+                // Show completion toast
+                showCompletionToast();
+                
+                // Trigger small confetti for this section
+                smallConfetti();
+            }
+            
+            applyCompletedStatus(sectionId);
+            updateProgress();
+            
+            // Scroll to top smoothly to show progress update
+            setTimeout(() => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }, 300);
+            
+            // Add a visual pulse to the progress bar
+            setTimeout(() => {
+                const progressBar = document.getElementById('progressBar');
+                progressBar.style.transition = 'all 0.3s';
+                progressBar.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    progressBar.style.transform = 'scale(1)';
+                }, 300);
+            }, 800);
+            
+            // Check if all sections are complete
+            if (completedSections.length === 6) {
+                setTimeout(() => {
+                    epicConfettiBomb();
+                }, 2000);
+            }
+        }
+        
+        function smallConfetti() {
+            // Create 100 confetti pieces for section completion
+            const colors = [
+                '#ff0000', '#ff4500', '#ff8c00', '#ffd700', '#ffff00',
+                '#00ff00', '#00ffff', '#0000ff', '#8a2be2', '#ff00ff'
+            ];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createConfettiPiece(window.innerWidth / 2, window.innerHeight / 2, colors);
+                }, i * 5);
+            }
+        }
+        
+        function showCompletionToast() {
+            const toast = document.getElementById('completionToast');
+            const completed = completedSections.length;
+            const total = 6;
+            
+            // Update toast message based on progress
+            if (completed === total) {
+                toast.innerHTML = '🎉 ALL SECTIONS COMPLETE! GET READY... 🎉';
+                toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+            } else if (completed === total - 1) {
+                toast.innerHTML = `🔥 ONE MORE TO GO! (${completed}/${total}) 🔥`;
+                toast.style.background = 'linear-gradient(135deg, #FF6347, #FF4500)';
+            } else {
+                toast.innerHTML = `✓ Section Completed! (${completed}/${total})`;
+                toast.style.background = 'linear-gradient(135deg, #4CAF50, #8BC34A)';
+            }
+            
+            toast.classList.add('show');
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function applyCompletedStatus(sectionId) {
+            // Update button
+            const btn = document.querySelector(`#${sectionId} .complete-btn`);
+            if (btn) {
+                btn.classList.add('completed');
+                btn.textContent = 'Section Completed!';
+            }
+            
+            // Update section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('completed');
+            }
+            
+            // Update tracker
+            const tracker = document.getElementById('track-' + sectionId);
+            if (tracker) {
+                tracker.classList.add('completed');
+                const icon = tracker.querySelector('.icon');
+                if (icon && !icon.textContent.includes('✓')) {
+                    icon.textContent = '✓';
+                }
+            }
+        }
+        
+        function updateProgress() {
+            const totalSections = 6;
+            const completed = completedSections.length;
+            const percentage = Math.round((completed / totalSections) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressMessage = document.getElementById('progressMessage');
+            
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+            
+            // Update motivational message based on progress
+            if (completed === 0) {
+                progressMessage.textContent = 'Complete all sections to trigger the EPIC CONFETTI BOMB! 🎉';
+            } else if (completed === 1) {
+                progressMessage.textContent = 'Great start! Keep going! 🚀';
+            } else if (completed === 2) {
+                progressMessage.textContent = 'You\'re on fire! 1/3 of the way there! 🔥';
+            } else if (completed === 3) {
+                progressMessage.textContent = 'HALFWAY THERE! Don\'t stop now! 💪';
+            } else if (completed === 4) {
+                progressMessage.textContent = 'Almost there! Just 2 more sections! ⚡';
+            } else if (completed === 5) {
+                progressMessage.textContent = 'ONE MORE! The confetti bomb is armed and ready! 🎯';
+            } else if (completed === 6) {
+                progressMessage.textContent = '🎊 LEGENDARY STATUS ACHIEVED! 🎊';
+                progressBar.classList.add('complete');
+            }
+            
+            // Add glow effect as progress increases
+            if (percentage >= 50) {
+                progressBar.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.5)';
+            }
+            if (percentage >= 80) {
+                progressBar.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.6)';
+            }
+        }
+        
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                completedSections = [];
+                localStorage.removeItem('measurementProgressEpic');
+                
+                // Remove all completed classes
+                document.querySelectorAll('.completed').forEach(element => {
+                    element.classList.remove('completed');
+                });
+                
+                // Reset all buttons
+                document.querySelectorAll('.complete-btn').forEach(btn => {
+                    btn.textContent = 'Complete This Section';
+                });
+                
+                // Reset tracker icons
+                const icons = {
+                    'track-section-notation': '🔢',
+                    'track-section-si-units': '📏',
+                    'track-section-sigfigs': '🎯',
+                    'track-section-conversions': '🔄',
+                    'track-section-density': '⚖️',
+                    'track-section-temperature': '🌡️'
+                };
+                
+                Object.keys(icons).forEach(id => {
+                    const tracker = document.getElementById(id);
+                    if (tracker) {
+                        const icon = tracker.querySelector('.icon');
+                        if (icon) {
+                            icon.textContent = icons[id];
+                        }
+                    }
+                });
+                
+                // Reset progress bar and message
+                document.getElementById('progressBar').classList.remove('complete');
+                document.getElementById('progressBar').style.boxShadow = 'none';
+                updateProgress();
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function epicConfettiBomb() {
+            // Shake the entire screen
+            document.getElementById('mainContainer').classList.add('shake-screen');
+            setTimeout(() => {
+                document.getElementById('mainContainer').classList.remove('shake-screen');
+            }, 1000);
+            
+            // Show success overlay with epic message
+            const overlay = document.getElementById('successOverlay');
+            const message = document.getElementById('successMessage');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                message.classList.add('show');
+            }, 100);
+            
+            // WAVE 1: Initial explosion - center burst
+            const colors = [
+                '#ff0000', '#ff4500', '#ff8c00', '#ffd700', '#ffff00',
+                '#00ff00', '#00ffff', '#0000ff', '#8a2be2', '#ff00ff',
+                '#ff1493', '#ff69b4', '#ffa500', '#32cd32', '#1e90ff'
+            ];
+            
+            // Create 500 confetti pieces in the first wave
+            for (let i = 0; i < 500; i++) {
+                setTimeout(() => {
+                    createConfettiPiece(window.innerWidth / 2, window.innerHeight / 2, colors);
+                }, i * 3);
+            }
+            
+            // WAVE 2: Corner explosions
+            setTimeout(() => {
+                for (let i = 0; i < 100; i++) {
+                    createConfettiPiece(0, 0, colors);
+                    createConfettiPiece(window.innerWidth, 0, colors);
+                    createConfettiPiece(0, window.innerHeight, colors);
+                    createConfettiPiece(window.innerWidth, window.innerHeight, colors);
+                }
+            }, 800);
+            
+            // WAVE 3: Random fireworks
+            for (let j = 0; j < 10; j++) {
+                setTimeout(() => {
+                    launchFirework(colors);
+                }, 1500 + (j * 300));
+            }
+            
+            // WAVE 4: Emoji explosion
+            const emojis = ['🎉', '🎊', '🎈', '🎆', '🎇', '✨', '💫', '⭐', '🌟', '🏆', '🥇', '👏', '🙌', '💪', '🔥', '💯', '🚀', '🌈', '📐', '🎯'];
+            
+            setTimeout(() => {
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        createEmojiExplosion(emojis);
+                    }, i * 50);
+                }
+            }, 2000);
+            
+            // WAVE 5: Continuous sparkles
+            let sparkleInterval = setInterval(() => {
+                createSparkle();
+            }, 50);
+            
+            setTimeout(() => {
+                clearInterval(sparkleInterval);
+            }, 5000);
+            
+            // Hide overlay on click
+            setTimeout(() => {
+                overlay.addEventListener('click', function() {
+                    this.style.display = 'none';
+                });
+            }, 3000);
+        }
+        
+        function createConfettiPiece(startX, startY, colors) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti-piece';
+            
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 20 + 10;
+            const shape = Math.random() > 0.5 ? '50%' : '0';
+            
+            const endX = (Math.random() - 0.5) * window.innerWidth * 2;
+            const endY = (Math.random() - 0.5) * window.innerHeight * 2;
+            
+            confetti.style.width = size + 'px';
+            confetti.style.height = size + 'px';
+            confetti.style.backgroundColor = color;
+            confetti.style.borderRadius = shape;
+            confetti.style.left = startX + 'px';
+            confetti.style.top = startY + 'px';
+            confetti.style.setProperty('--end-x', endX + 'px');
+            confetti.style.setProperty('--end-y', endY + 'px');
+            
+            confetti.style.animation = `confetti-spin ${2 + Math.random() * 2}s ease-out forwards`;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 4000);
+        }
+        
+        function launchFirework(colors) {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight * 0.5;
+            
+            const trail = document.createElement('div');
+            trail.className = 'firework';
+            trail.style.background = 'linear-gradient(to top, transparent, #ffffff, #ffff00)';
+            trail.style.width = '3px';
+            trail.style.height = '30px';
+            trail.style.left = x + 'px';
+            trail.style.setProperty('--explode-y', y + 'px');
+            trail.style.animation = 'firework-launch 1s ease-out forwards';
+            
+            document.body.appendChild(trail);
+            
+            setTimeout(() => {
+                trail.remove();
+                
+                for (let i = 0; i < 30; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'firework';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
+                    
+                    const particleX = (Math.random() - 0.5) * 400;
+                    const particleY = (Math.random() - 0.5) * 400;
+                    
+                    particle.style.setProperty('--particle-x', particleX + 'px');
+                    particle.style.setProperty('--particle-y', particleY + 'px');
+                    particle.style.animation = 'firework-explode 1.5s ease-out forwards';
+                    
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 1500);
+                }
+            }, 1000);
+        }
+        
+        function createEmojiExplosion(emojis) {
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-explosion';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            
+            emoji.style.left = x + 'px';
+            emoji.style.top = y + 'px';
+            
+            const flyX = (Math.random() - 0.5) * 600;
+            const flyY = (Math.random() - 0.5) * 600;
+            
+            emoji.style.setProperty('--fly-x', flyX + 'px');
+            emoji.style.setProperty('--fly-y', flyY + 'px');
+            
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => emoji.remove(), 2000);
+        }
+        
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.width = Math.random() * 8 + 4 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            sparkle.style.backgroundColor = '#ffffff';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.boxShadow = '0 0 ' + (Math.random() * 20 + 10) + 'px #ffffff';
+            sparkle.style.zIndex = '100003';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.animation = 'twinkle 0.8s ease-out forwards';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 800);
+        }
+        
+        // Add twinkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes twinkle {
+                0% { opacity: 0; transform: scale(0) rotate(0deg); }
+                50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+                100% { opacity: 0; transform: scale(0) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
