@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 3: Light, Electrons, and the Periodic Table - Complete Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #48c6ef 0%, #6f86d6 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            text-align: center;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .tracker-tile {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tracker-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .tracker-tile.completed {
+            border-color: #48c774;
+            background: linear-gradient(135deg, #f0fff4 0%, #e8f5e9 100%);
+        }
+
+        .tracker-tile.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #48c774;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .tracker-icon {
+            font-size: 2em;
+            margin-bottom: 6px;
+        }
+
+        .tracker-title {
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .tracker-count {
+            color: #667eea;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            scroll-margin-top: 20px;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+        }
+
+        .definition-card {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+        }
+
+        .definition-card h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .key-points {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .key-points h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        .key-points li::before {
+            content: '⚛️';
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .equation-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(253, 203, 110, 0.3);
+        }
+
+        .equation-box h3 {
+            color: #d63031;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .equation {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2d3436;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .example-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .alert-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .video-container {
+            margin: 30px 0;
+        }
+
+        .video-title {
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .complete-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .complete-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .complete-button:active {
+            transform: translateY(0);
+        }
+
+        .update-notice {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .reset-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .reset-button:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.6);
+        }
+
+        .toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #48c774 0%, #38a169 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(72, 199, 116, 0.4);
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 10000;
+            transition: top 0.5s ease;
+        }
+
+        .toast.show {
+            top: 30px;
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(102, 126, 234, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: rainbow-pulse 2s infinite;
+        }
+
+        @keyframes rainbow-pulse {
+            0%, 100% { background: rgba(102, 126, 234, 0.95); }
+            25% { background: rgba(118, 75, 162, 0.95); }
+            50% { background: rgba(72, 198, 239, 0.95); }
+            75% { background: rgba(111, 134, 214, 0.95); }
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-message {
+            text-align: center;
+            color: white;
+        }
+
+        .success-message h2 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .success-message p {
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear;
+            z-index: 10001;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .section-header h2 {
+                font-size: 1.5em;
+            }
+
+            .tracker-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 15px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tracker-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .tracker-tile {
+                padding: 12px;
+            }
+            
+            .tracker-icon {
+                font-size: 1.8em;
+            }
+            
+            .tracker-title {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .tracker-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚛️ Chapter 3: Light, Electrons, and the Periodic Table</h1>
+            <p>Complete Interactive Review Guide</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
+                </div>
+                <div class="progress-text" id="progressText">Get started on your quantum journey! 🚀</div>
+            </div>
+        </div>
+
+        <div class="tracker-grid">
+            <div class="tracker-tile" onclick="scrollToSection('section1')" id="tile1">
+                <div class="tracker-icon">⚡</div>
+                <div class="tracker-title">Electromagnetic Radiation</div>
+                <div class="tracker-count">2 videos</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section2')" id="tile2">
+                <div class="tracker-icon">🔬</div>
+                <div class="tracker-title">Atomic Models</div>
+                <div class="tracker-count">Concepts</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section3')" id="tile3">
+                <div class="tracker-icon">📝</div>
+                <div class="tracker-title">Electron Configurations</div>
+                <div class="tracker-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section4')" id="tile4">
+                <div class="tracker-icon">📊</div>
+                <div class="tracker-title">Orbital Diagrams</div>
+                <div class="tracker-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section5')" id="tile5">
+                <div class="tracker-icon">💎</div>
+                <div class="tracker-title">Valence Electrons</div>
+                <div class="tracker-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section6')" id="tile6">
+                <div class="tracker-icon">📈</div>
+                <div class="tracker-title">Periodic Trends</div>
+                <div class="tracker-count">1 video</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- SECTION 1: Electromagnetic Radiation -->
+            <div class="section" id="section1">
+                <div class="section-header">
+                    <span style="font-size: 1.5em;">⚡</span>
+                    <h2>Section 1: Electromagnetic Radiation & Light</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What is Electromagnetic Radiation?</h3>
+                    <p>Electromagnetic radiation is energy that travels through space as waves. All electromagnetic radiation travels at the speed of light (c = 3.00 × 10⁸ m/s) but differs in wavelength and frequency. The electromagnetic spectrum includes radio waves, microwaves, infrared, visible light, ultraviolet, X-rays, and gamma rays.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li><strong>Wavelength (λ):</strong> The distance between two consecutive peaks or troughs in a wave, measured in meters (m) or nanometers (nm)</li>
+                        <li><strong>Frequency (ν):</strong> The number of wave cycles that pass a point per second, measured in hertz (Hz) or s⁻¹</li>
+                        <li><strong>Inverse relationship:</strong> As wavelength increases, frequency decreases (and vice versa)</li>
+                        <li><strong>Energy and frequency:</strong> Higher frequency radiation carries more energy per photon</li>
+                        <li><strong>Visible light:</strong> Represents only a tiny portion of the electromagnetic spectrum (400-700 nm)</li>
+                        <li><strong>Color and wavelength:</strong> Violet light has the shortest wavelength (~400 nm) and highest energy in visible spectrum; red light has the longest wavelength (~700 nm) and lowest energy</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Essential Equations:</h3>
+                    <div class="equation">c = λν</div>
+                    <p style="margin: 10px 0;">Speed of light = wavelength × frequency</p>
+                    <div class="equation">E = hν = hc/λ</div>
+                    <p style="margin: 10px 0;">Energy of a photon (h = 6.626 × 10⁻³⁴ J·s)</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem:</h3>
+                    <p><strong>Question:</strong> Calculate the frequency of red light with a wavelength of 650 nm.</p>
+                    <p style="margin-top: 15px;"><strong>Solution:</strong></p>
+                    <p>1. Convert wavelength to meters: 650 nm = 6.50 × 10⁻⁷ m</p>
+                    <p>2. Use c = λν to solve for frequency: ν = c/λ</p>
+                    <p>3. ν = (3.00 × 10⁸ m/s) / (6.50 × 10⁻⁷ m) = 4.62 × 10¹⁴ Hz</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ Important Tip:</h3>
+                    <p>Energy, frequency, and wavelength are all related! Remember that ROYGBIV shows increasing energy (and frequency) from red to violet. When wavelength goes down, both frequency and energy go up!</p>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Video 1: Electromagnetic Radiation - Part 1 (Wavelength, Frequency, Energy)</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/AgKAXoYLRBA" 
+                                title="Electromagnetic Radiation Part 1"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Video 2: Electromagnetic Radiation - Part 2 (Quantum & Atomic Spectroscopy)</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/2QWO4oGxvfA" 
+                                title="Electromagnetic Radiation Part 2"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-button" onclick="completeSection(1)">✓ Complete Section 1</button>
+            </div>
+
+            <!-- SECTION 2: Atomic Models -->
+            <div class="section" id="section2">
+                <div class="section-header">
+                    <span style="font-size: 1.5em;">🔬</span>
+                    <h2>Section 2: Atomic Models (Bohr vs. Quantum-Mechanical)</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Two Models of the Atom:</h3>
+                    <p>Scientists have developed two major models to describe where electrons are located in atoms. The Bohr model (1913) describes electrons in fixed circular orbits, while the quantum-mechanical model (1920s) describes electrons in probability regions called orbitals. Both models help us understand atomic behavior, but the quantum-mechanical model is more accurate.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Bohr Model - Atoms with Orbits:</h3>
+                    <ul>
+                        <li><strong>Fixed paths:</strong> Electrons travel in circular orbits at specific distances from the nucleus</li>
+                        <li><strong>Quantized energy:</strong> Only certain energy levels are allowed (n = 1, 2, 3...)</li>
+                        <li><strong>Emission spectra:</strong> When electrons drop from higher to lower energy levels, light is emitted</li>
+                        <li><strong>Absorption spectra:</strong> When electrons absorb energy, they jump to higher energy levels</li>
+                        <li><strong>Limitation:</strong> Only works well for hydrogen; fails for multi-electron atoms</li>
+                    </ul>
+                </div>
+
+                <div class="key-points">
+                    <h3>Quantum-Mechanical Model - Atoms with Orbitals:</h3>
+                    <ul>
+                        <li><strong>Probability regions:</strong> Electrons exist in 3D regions called orbitals, not fixed paths</li>
+                        <li><strong>Wave-particle duality:</strong> Electrons behave as both particles and waves</li>
+                        <li><strong>Heisenberg Uncertainty:</strong> Cannot know exact position and momentum simultaneously</li>
+                        <li><strong>Quantum numbers:</strong> Four quantum numbers (n, ℓ, mₗ, mₛ) describe each electron</li>
+                        <li><strong>Success:</strong> Accurately predicts behavior of all atoms, not just hydrogen</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Rydberg Equation (Bohr Model):</h3>
+                    <div class="equation">1/λ = R(1/n₁² - 1/n₂²)</div>
+                    <p style="margin: 10px 0;">R = Rydberg constant (1.097 × 10⁷ m⁻¹)</p>
+                    <p>Used to calculate wavelengths of light emitted by hydrogen</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Comparing the Models:</h3>
+                    <p><strong>Bohr Model:</strong> "The electron is in the third orbit" (like planets around the sun)</p>
+                    <p style="margin-top: 10px;"><strong>Quantum Model:</strong> "The electron is most likely found in the 3s orbital" (probability cloud)</p>
+                    <p style="margin-top: 15px;">Think of it this way: Bohr's model is like a race track with defined lanes, while the quantum model is like a probability map showing where you're most likely to find someone in a large room.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>💡 Key Insight:</h3>
+                    <p>The Bohr model is simpler and great for understanding energy levels and spectroscopy. The quantum-mechanical model is more complex but necessary for understanding chemical bonding and the true behavior of electrons. You'll use both models depending on the question!</p>
+                </div>
+
+                <button class="complete-button" onclick="completeSection(2)">✓ Complete Section 2</button>
+            </div>
+
+            <!-- SECTION 3: Electron Configurations -->
+            <div class="section" id="section3">
+                <div class="section-header">
+                    <span style="font-size: 1.5em;">📝</span>
+                    <h2>Section 3: Electron Configurations</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What is Electron Configuration?</h3>
+                    <p>Electron configuration is a shorthand notation that shows how electrons are distributed among the various atomic orbitals. It uses numbers to indicate energy levels (shells), letters to indicate sublevel types (s, p, d, f), and superscripts to show how many electrons are in each sublevel. Example: Oxygen is 1s²2s²2p⁴</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li><strong>Energy levels (n):</strong> Principal quantum number (n = 1, 2, 3, 4...) indicates the shell</li>
+                        <li><strong>Sublevels:</strong> s (holds 2e⁻), p (holds 6e⁻), d (holds 10e⁻), f (holds 14e⁻)</li>
+                        <li><strong>Aufbau principle:</strong> Fill orbitals in order of increasing energy (1s, 2s, 2p, 3s, 3p, 4s, 3d, 4p...)</li>
+                        <li><strong>Reading from periodic table:</strong> The periodic table is organized by electron configuration blocks (s-block, p-block, d-block, f-block)</li>
+                        <li><strong>Shorthand notation:</strong> Use noble gas cores to abbreviate: [Ne]3s²3p⁵ for chlorine instead of writing from 1s²</li>
+                        <li><strong>Exceptions:</strong> Chromium and copper (and others) have slightly irregular configurations for added stability</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Aufbau Fill Order (Diagonal Rule):</h3>
+                    <div class="equation">1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p → 5s → 4d → 5p → 6s → 4f → 5d → 6p → 7s → 5f → 6d</div>
+                    <p style="margin: 10px 0; font-size: 0.9em;">Note: 4s fills before 3d! Use the periodic table as your guide.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem:</h3>
+                    <p><strong>Question:</strong> Write the full electron configuration for calcium (Ca, atomic number 20).</p>
+                    <p style="margin-top: 15px;"><strong>Solution:</strong></p>
+                    <p>1. Calcium has 20 electrons</p>
+                    <p>2. Fill in order: 1s²2s²2p⁶3s²3p⁶4s²</p>
+                    <p>3. Check: 2+2+6+2+6+2 = 20 electrons ✓</p>
+                    <p>4. Shorthand: [Ar]4s²</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>🎯 Pro Tip:</h3>
+                    <p>The periodic table IS your electron configuration cheat sheet! Row number = highest energy level. Column tells you which sublevel you're filling. Groups 1-2 are s-block, groups 13-18 are p-block, groups 3-12 are d-block (but remember d-block is one row behind!), and lanthanides/actinides are f-block.</p>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Video 3: How to Write Electron Configuration Using the Periodic Table</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/a73T36_j0Xg" 
+                                title="Electron Configuration"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-button" onclick="completeSection(3)">✓ Complete Section 3</button>
+            </div>
+
+            <!-- SECTION 4: Orbital Diagrams -->
+            <div class="section" id="section4">
+                <div class="section-header">
+                    <span style="font-size: 1.5em;">📊</span>
+                    <h2>Section 4: Orbital Diagrams</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What are Orbital Diagrams?</h3>
+                    <p>Orbital diagrams (also called orbital filling diagrams or box diagrams) provide a visual representation of how electrons are arranged in orbitals. Each box represents one orbital, and arrows inside the boxes represent electrons with their spins. Arrows pointing up (↑) and down (↓) indicate opposite spins.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Three Rules for Filling Orbital Diagrams:</h3>
+                    <ul>
+                        <li><strong>Aufbau Principle:</strong> Fill orbitals in order of increasing energy (same order as electron configurations)</li>
+                        <li><strong>Pauli Exclusion Principle:</strong> Each orbital can hold a maximum of 2 electrons with opposite spins</li>
+                        <li><strong>Hund's Rule:</strong> When filling orbitals of equal energy (like the three 2p orbitals), place one electron in each orbital before pairing any electrons</li>
+                        <li><strong>Why Hund's Rule?</strong> Electrons repel each other, so they prefer to be in separate orbitals (with the same spin) to minimize repulsion</li>
+                        <li><strong>Diagonal method:</strong> Visual way to remember fill order by following diagonals through s, p, d, f blocks</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example: Nitrogen (N, 7 electrons)</h3>
+                    <p><strong>Electron configuration:</strong> 1s²2s²2p³</p>
+                    <p style="margin-top: 15px;"><strong>Orbital diagram:</strong></p>
+                    <pre style="font-size: 1.2em; margin: 15px 0; font-family: monospace;">
+1s:  [↑↓]
+2s:  [↑↓]
+2p:  [↑][↑][↑]
+                    </pre>
+                    <p>Notice how the 2p electrons follow Hund's Rule - one electron in each of the three 2p orbitals, all with the same spin (all arrows up).</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example: Oxygen (O, 8 electrons)</h3>
+                    <p><strong>Electron configuration:</strong> 1s²2s²2p⁴</p>
+                    <p style="margin-top: 15px;"><strong>Orbital diagram:</strong></p>
+                    <pre style="font-size: 1.2em; margin: 15px 0; font-family: monospace;">
+1s:  [↑↓]
+2s:  [↑↓]
+2p:  [↑↓][↑][↑]
+                    </pre>
+                    <p>The fourth 2p electron must pair up in one of the orbitals (with opposite spin), following the Pauli Exclusion Principle.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ Common Mistake:</h3>
+                    <p>Don't pair electrons in p, d, or f orbitals until you've placed one electron in each orbital of that sublevel first! For example, carbon's 2p² should be [↑][↑][  ], NOT [↑↓][  ][  ]. Hund's Rule must be followed!</p>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Video 4: Orbital Diagrams (Aufbau, Pauli-Exclusion, Hund's Rule)</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/84sL9kEAVmQ" 
+                                title="Orbital Diagrams"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-button" onclick="completeSection(4)">✓ Complete Section 4</button>
+            </div>
+
+            <!-- SECTION 5: Valence Electrons & Lewis Structures -->
+            <div class="section" id="section5">
+                <div class="section-header">
+                    <span style="font-size: 1.5em;">💎</span>
+                    <h2>Section 5: Valence Electrons & Lewis Dot Structures</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What are Valence Electrons?</h3>
+                    <p>Valence electrons are the electrons in the outermost energy level (highest n value) of an atom. These are the electrons that participate in chemical bonding. Core electrons are all the inner electrons that are not valence electrons. For main-group elements, the number of valence electrons equals the group number (with some adjustments).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li><strong>Finding valence electrons:</strong> For main-group elements, look at the group number. Groups 1-2 have 1-2 valence e⁻; Groups 13-18 have 3-8 valence e⁻</li>
+                        <li><strong>Lewis dot structures:</strong> Show only valence electrons as dots around the element symbol</li>
+                        <li><strong>Octet rule:</strong> Atoms tend to gain, lose, or share electrons to achieve 8 valence electrons (like noble gases)</li>
+                        <li><strong>Cations (positive ions):</strong> Form when atoms lose valence electrons. Lewis structure has fewer dots</li>
+                        <li><strong>Anions (negative ions):</strong> Form when atoms gain valence electrons. Lewis structure has more dots (often with brackets and charge)</li>
+                        <li><strong>Pairing electrons:</strong> In Lewis structures, pair up electrons after placing one in each position (similar to Hund's rule)</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example: Carbon (C, Group 14)</h3>
+                    <p><strong>Electron configuration:</strong> 1s²2s²2p²</p>
+                    <p><strong>Valence electrons:</strong> 4 (the 2s²2p² electrons)</p>
+                    <p><strong>Lewis dot structure:</strong></p>
+                    <pre style="font-size: 1.5em; margin: 15px 0; text-align: center;">
+  ·C·
+ ·  ·
+                    </pre>
+                    <p>Notice: One dot on each side first, following the same principle as Hund's Rule!</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example: Chloride Ion (Cl⁻)</h3>
+                    <p><strong>Chlorine atom:</strong> 7 valence electrons [Group 17]</p>
+                    <p><strong>Chloride ion:</strong> Gains 1 electron → 8 valence electrons</p>
+                    <p><strong>Lewis dot structure:</strong></p>
+                    <pre style="font-size: 1.5em; margin: 15px 0; text-align: center;">
+  [:Cl:]⁻
+ :  :
+                    </pre>
+                    <p>Brackets and charge shown for ions. All electrons paired (complete octet).</p>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Quick Reference - Valence Electrons by Group:</h3>
+                    <div style="text-align: left; padding: 10px;">
+                        <p><strong>Group 1:</strong> 1 valence e⁻ (H, Li, Na, K...)</p>
+                        <p><strong>Group 2:</strong> 2 valence e⁻ (Be, Mg, Ca...)</p>
+                        <p><strong>Group 13:</strong> 3 valence e⁻ (B, Al, Ga...)</p>
+                        <p><strong>Group 14:</strong> 4 valence e⁻ (C, Si, Ge...)</p>
+                        <p><strong>Group 15:</strong> 5 valence e⁻ (N, P, As...)</p>
+                        <p><strong>Group 16:</strong> 6 valence e⁻ (O, S, Se...)</p>
+                        <p><strong>Group 17:</strong> 7 valence e⁻ (F, Cl, Br...)</p>
+                        <p><strong>Group 18:</strong> 8 valence e⁻ (Ne, Ar, Kr...)</p>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>💡 Important Note:</h3>
+                    <p>Valence electrons determine an element's chemical behavior! Elements in the same group have the same number of valence electrons, which is why they have similar chemical properties. This is the fundamental reason why the periodic table is organized the way it is!</p>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Video 5: Counting Valence Electrons & Drawing Lewis Structures</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/oxbd7aS8ROg" 
+                                title="Valence Electrons and Lewis Structures"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-button" onclick="completeSection(5)">✓ Complete Section 5</button>
+            </div>
+
+            <!-- SECTION 6: Periodic Trends -->
+            <div class="section" id="section6">
+                <div class="section-header">
+                    <span style="font-size: 1.5em;">📈</span>
+                    <h2>Section 6: Periodic Trends</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What are Periodic Trends?</h3>
+                    <p>Periodic trends are patterns in the properties of elements that repeat as you move across periods (rows) and down groups (columns) in the periodic table. These trends are directly related to electron configurations and how strongly the nucleus attracts electrons. Understanding these trends helps predict chemical behavior and reactivity.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Major Periodic Trends:</h3>
+                    <ul>
+                        <li><strong>Atomic Radius:</strong> Size of the atom. INCREASES down a group (more shells), DECREASES across a period (stronger nuclear pull)</li>
+                        <li><strong>Ionic Radius:</strong> Cations are smaller than their atoms (lost electrons). Anions are larger than their atoms (gained electrons)</li>
+                        <li><strong>Ionization Energy:</strong> Energy needed to remove an electron. INCREASES across a period, DECREASES down a group</li>
+                        <li><strong>Electron Affinity:</strong> Energy change when an atom gains an electron. Generally becomes more negative (releases more energy) across a period</li>
+                        <li><strong>Metallic Character:</strong> Tendency to lose electrons and form cations. INCREASES down a group, DECREASES across a period</li>
+                        <li><strong>Effective Nuclear Charge:</strong> The net positive charge experienced by valence electrons. Increases across a period due to poor shielding by electrons in the same shell</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Trend Directions - Quick Summary:</h3>
+                    <div style="text-align: left; padding: 10px;">
+                        <p><strong>Atomic Radius:</strong> ↑ down groups | ← across periods (largest at bottom left)</p>
+                        <p><strong>Ionization Energy:</strong> ↓ down groups | → across periods (highest at top right)</p>
+                        <p><strong>Electron Affinity:</strong> ↓ down groups | → across periods (most negative at top right)</p>
+                        <p><strong>Metallic Character:</strong> ↑ down groups | ← across periods (most metallic at bottom left)</p>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9em;"><em>Note: Noble gases are exceptions to many trends due to their stable electron configurations</em></p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example: Comparing Atomic Radii</h3>
+                    <p><strong>Question:</strong> Arrange these elements in order of increasing atomic radius: F, Cl, Br</p>
+                    <p style="margin-top: 15px;"><strong>Solution:</strong></p>
+                    <p>1. All three are in Group 17 (halogens)</p>
+                    <p>2. As you go down a group, atomic radius increases</p>
+                    <p>3. F is smallest (Period 2), Cl is medium (Period 3), Br is largest (Period 4)</p>
+                    <p><strong>Answer:</strong> F < Cl < Br</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example: Comparing Ionization Energies</h3>
+                    <p><strong>Question:</strong> Which has a higher first ionization energy: Na or Mg?</p>
+                    <p style="margin-top: 15px;"><strong>Solution:</strong></p>
+                    <p>1. Both are in Period 3</p>
+                    <p>2. Moving left to right across a period, ionization energy increases</p>
+                    <p>3. Mg has more protons → stronger nuclear attraction → harder to remove electron</p>
+                    <p><strong>Answer:</strong> Mg has higher ionization energy than Na</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>🎯 Memory Trick:</h3>
+                    <p><strong>For atomic radius, think "bigger down, smaller across":</strong> Adding shells makes atoms bigger going down. More protons (with no new shells) pulls electrons tighter going across, making atoms smaller.</p>
+                    <p style="margin-top: 10px;"><strong>For ionization energy, think "harder to remove when held tighter":</strong> Small atoms with high nuclear charge hold electrons tightly, requiring more energy to remove them. That's why IE is highest at top right (except noble gases).</p>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Video 6: Periodic Table Trends (Atomic Radius, Ionization Energy, Metallic Character)</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/T6j9Gw1EyPU" 
+                                title="Periodic Trends"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-button" onclick="completeSection(6)">✓ Complete Section 6</button>
+            </div>
+        </div>
+
+        <div class="update-notice">
+            <p><strong>Last Updated:</strong> January 19, 2026 | <strong>Version:</strong> 1.0</p>
+            <p>Interactive review page for general chemistry education</p>
+        </div>
+    </div>
+
+    <button class="reset-button" onclick="resetProgress()">🔄 Reset Progress</button>
+
+    <div class="toast" id="toast"></div>
+    <div class="success-overlay" id="successOverlay" onclick="closeSuccess()">
+        <div class="success-message">
+            <h2>🎉 CHAPTER 3 COMPLETE! 🎉</h2>
+            <p>You've mastered Light, Electrons, and the Periodic Table!</p>
+            <p style="margin-top: 20px; font-size: 1.5em;">Click anywhere to continue</p>
+        </div>
+    </div>
+
+    <script>
+        // Load progress from localStorage
+        let progress = JSON.parse(localStorage.getItem('chapter3ProgressEpic') || '{}');
+        
+        // Initialize progress object
+        if (!progress.sections) {
+            progress = { sections: [false, false, false, false, false, false], percentage: 0 };
+        }
+
+        // Update UI on page load
+        updateProgress();
+
+        function updateProgress() {
+            const completed = progress.sections.filter(s => s).length;
+            const percentage = Math.round((completed / 6) * 100);
+            progress.percentage = percentage;
+
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = percentage + '%';
+
+            // Update progress text
+            const progressText = document.getElementById('progressText');
+            if (percentage === 0) {
+                progressText.textContent = 'Get started on your quantum journey! 🚀';
+            } else if (percentage < 50) {
+                progressText.textContent = 'Great start! Keep going! 💪';
+            } else if (percentage < 100) {
+                progressText.textContent = 'You\'re more than halfway there! 🌟';
+            } else {
+                progressText.textContent = 'Perfect! You\'ve mastered Chapter 3! 🏆';
+            }
+
+            // Update tracker tiles
+            for (let i = 1; i <= 6; i++) {
+                const tile = document.getElementById('tile' + i);
+                if (progress.sections[i - 1]) {
+                    tile.classList.add('completed');
+                } else {
+                    tile.classList.remove('completed');
+                }
+            }
+
+            // Save to localStorage
+            localStorage.setItem('chapter3ProgressEpic', JSON.stringify(progress));
+        }
+
+        function completeSection(sectionNum) {
+            if (!progress.sections[sectionNum - 1]) {
+                progress.sections[sectionNum - 1] = true;
+                updateProgress();
+
+                // Show toast
+                showToast(`Section ${sectionNum} complete! ✨`);
+
+                // Small confetti for this section
+                createConfetti(100);
+
+                // Check if all sections complete
+                if (progress.sections.every(s => s)) {
+                    setTimeout(epicCelebration, 1000);
+                }
+
+                // Scroll to top smoothly
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 500);
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const yOffset = -20;
+            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function createConfetti(count) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe', '#fd79a8'];
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.width = confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function epicCelebration() {
+            const overlay = document.getElementById('successOverlay');
+            overlay.classList.add('show');
+            document.body.classList.add('shake');
+
+            // Wave 1: 500 confetti from center
+            createConfetti(500);
+
+            // Wave 2: Corner explosions
+            setTimeout(() => {
+                for (let i = 0; i < 4; i++) {
+                    createConfetti(100);
+                }
+            }, 300);
+
+            // Wave 3: Fireworks
+            setTimeout(() => {
+                for (let i = 0; i < 10; i++) {
+                    createFirework();
+                }
+            }, 600);
+
+            // Wave 4: Emoji explosions
+            setTimeout(() => {
+                createEmojiExplosion(['⚛️', '⚡', '🔬', '📝', '📊', '💎', '📈', '🎯', '✨', '💫'], 50);
+            }, 900);
+
+            // Wave 5: Continuous sparkles
+            const sparkleInterval = setInterval(() => {
+                createConfetti(20);
+            }, 200);
+
+            setTimeout(() => {
+                clearInterval(sparkleInterval);
+                document.body.classList.remove('shake');
+            }, 5000);
+        }
+
+        function createFirework() {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight * 0.5;
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = Math.random() * 100 + 50;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                particle.style.setProperty('--vx', vx + 'px');
+                particle.style.setProperty('--vy', vy + 'px');
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        function createEmojiExplosion(emojis, count) {
+            for (let i = 0; i < count; i++) {
+                const emoji = document.createElement('div');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.position = 'fixed';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '-50px';
+                emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                emoji.style.zIndex = '10001';
+                emoji.style.animation = 'confetti-fall ' + (Math.random() * 2 + 2) + 's linear';
+                document.body.appendChild(emoji);
+
+                setTimeout(() => emoji.remove(), 4000);
+            }
+        }
+
+        function closeSuccess() {
+            document.getElementById('successOverlay').classList.remove('show');
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                progress = { sections: [false, false, false, false, false, false], percentage: 0 };
+                localStorage.setItem('chapter3ProgressEpic', JSON.stringify(progress));
+                updateProgress();
+                showToast('Progress reset! Start fresh! 🔄');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
