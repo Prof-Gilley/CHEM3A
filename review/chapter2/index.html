@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Atomic Structure - Complete Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            padding: 30px 40px;
+            background: #f8f9fa;
+        }
+
+        .progress-bar-wrapper {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #495057;
+            font-size: 1.1em;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: white;
+        }
+
+        .tracker-tile {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 3px solid #dee2e6;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tracker-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .tracker-tile.completed {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #764ba2;
+            color: white;
+        }
+
+        .tracker-tile.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .tracker-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .tracker-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .tracker-videos {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            scroll-margin-top: 100px;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .definition-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .definition-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .key-points {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .key-points h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .key-points li:before {
+            content: '⚛️';
+            position: absolute;
+            left: 0;
+            font-size: 1.3em;
+        }
+
+        .equation-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .equation-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .example-problem {
+            background: #e7f3ff;
+            border-left: 5px solid #0066cc;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+        }
+
+        .example-problem h3 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .alert-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .video-container {
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .video-container h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .complete-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .complete-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 3px solid #dee2e6;
+        }
+
+        .reset-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            font-weight: bold;
+            font-size: 1.2em;
+            z-index: 2000;
+            transition: top 0.5s ease;
+        }
+
+        .toast.show {
+            top: 30px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 1500;
+            pointer-events: none;
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-message {
+            background: white;
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .success-message h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 2s ease infinite;
+        }
+
+        .success-message p {
+            font-size: 1.5em;
+            color: #495057;
+            margin-bottom: 30px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rainbow {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .tracker-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section-header {
+                font-size: 1.4em;
+                padding: 20px;
+            }
+
+            .reset-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚛️ Chapter 2: Atomic Structure</h1>
+            <p>Complete Interactive Review Guide</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div class="progress-text" id="progressText">
+                Ready to start! Complete all 6 sections to master atomic structure.
+            </div>
+        </div>
+
+        <div class="tracker-grid">
+            <div class="tracker-tile" onclick="scrollToSection('section1')">
+                <div class="tracker-emoji">🔬</div>
+                <div class="tracker-title">Scientific Method & Atomic Theory</div>
+                <div class="tracker-videos">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section2')">
+                <div class="tracker-emoji">⚛️</div>
+                <div class="tracker-title">Subatomic Particles</div>
+                <div class="tracker-videos">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section3')">
+                <div class="tracker-emoji">📊</div>
+                <div class="tracker-title">The Periodic Table</div>
+                <div class="tracker-videos">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section4')">
+                <div class="tracker-emoji">⚡</div>
+                <div class="tracker-title">Ions</div>
+                <div class="tracker-videos">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section5')">
+                <div class="tracker-emoji">🔄</div>
+                <div class="tracker-title">Isotopes</div>
+                <div class="tracker-videos">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section6')">
+                <div class="tracker-emoji">⚖️</div>
+                <div class="tracker-title">Atomic Mass & Summary</div>
+                <div class="tracker-videos">0 videos</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: Scientific Method & Atomic Theory -->
+            <div class="section" id="section1">
+                <div class="section-header">
+                    🔬 Section 1: Scientific Method & Atomic Theory
+                </div>
+
+                <div class="definition-card">
+                    <h3>The Scientific Method</h3>
+                    <p>The scientific method is a systematic approach to understanding the natural world through observation, hypothesis formation, experimentation, and conclusion. This process led to the development of atomic theory, one of chemistry's most fundamental concepts.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li>The scientific method involves observation, hypothesis, experimentation, and conclusion</li>
+                        <li>Modern atomic theory states that all matter is composed of atoms</li>
+                        <li>Atoms of the same element are identical; atoms of different elements are different</li>
+                        <li>Atoms combine in whole-number ratios to form compounds</li>
+                        <li>Chemical reactions involve rearrangement of atoms, not creation or destruction</li>
+                        <li>John Dalton developed the first modern atomic theory in the early 1800s</li>
+                        <li>Atomic theory explains the law of conservation of mass and law of definite proportions</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Key Principles of Atomic Theory:</h3>
+                    <p><strong>1.</strong> All matter is made of atoms (indivisible particles)</p>
+                    <p><strong>2.</strong> Atoms of a given element are identical in mass and properties</p>
+                    <p><strong>3.</strong> Compounds are formed by combining atoms in fixed ratios</p>
+                    <p><strong>4.</strong> Chemical reactions rearrange atoms but don't create or destroy them</p>
+                </div>
+
+                <div class="example-problem">
+                    <h3>Example: Applying Atomic Theory</h3>
+                    <p><strong>Problem:</strong> If 2 atoms of hydrogen combine with 1 atom of oxygen to form water, how many oxygen atoms are needed to react with 10 hydrogen atoms?</p>
+                    <p><strong>Solution:</strong> Using the fixed ratio (2:1), we need 10 ÷ 2 = 5 oxygen atoms. This demonstrates that atoms combine in whole-number ratios.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ Important Note:</h3>
+                    <p>While Dalton's atomic theory was groundbreaking, we now know that atoms CAN be divided into subatomic particles (protons, neutrons, electrons). However, atoms remain indivisible in chemical reactions.</p>
+                </div>
+
+                <div class="video-container">
+                    <h3>📺 Video: Understanding the States of Matter: A Look into Particulate Theory</h3>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/YFd6XTQpI08" 
+                                title="Understanding the States of Matter: A Look into Particulate Theory" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(1)">Complete Section 1</button>
+            </div>
+
+            <!-- Section 2: Subatomic Particles -->
+            <div class="section" id="section2">
+                <div class="section-header">
+                    ⚛️ Section 2: Subatomic Particles
+                </div>
+
+                <div class="definition-card">
+                    <h3>Subatomic Particles</h3>
+                    <p>Atoms are composed of three fundamental subatomic particles: protons (positive charge), neutrons (no charge), and electrons (negative charge). These particles determine an atom's identity, mass, and chemical behavior.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li>Protons have a positive charge (+1) and mass of approximately 1 amu</li>
+                        <li>Neutrons have no charge (0) and mass of approximately 1 amu</li>
+                        <li>Electrons have a negative charge (-1) and negligible mass (~1/2000 amu)</li>
+                        <li>The nucleus contains protons and neutrons; electrons orbit in the space around the nucleus</li>
+                        <li>Most of an atom's mass is concentrated in the tiny, dense nucleus</li>
+                        <li>Most of an atom's volume is empty space where electrons are found</li>
+                        <li>Atoms are electrically neutral because # protons = # electrons</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Particle Properties Summary:</h3>
+                    <p><strong>Proton:</strong> Charge = +1 | Mass = 1.0073 amu | Location = Nucleus</p>
+                    <p><strong>Neutron:</strong> Charge = 0 | Mass = 1.0087 amu | Location = Nucleus</p>
+                    <p><strong>Electron:</strong> Charge = -1 | Mass = 0.00055 amu | Location = Outside nucleus</p>
+                    <p style="margin-top: 15px;"><strong>Atomic Number (Z)</strong> = Number of protons</p>
+                    <p><strong>Mass Number (A)</strong> = Protons + Neutrons</p>
+                </div>
+
+                <div class="example-problem">
+                    <h3>Example: Counting Subatomic Particles</h3>
+                    <p><strong>Problem:</strong> Carbon-12 has an atomic number of 6 and mass number of 12. How many protons, neutrons, and electrons does it have?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>• Protons = Atomic number = 6</p>
+                    <p>• Electrons = Protons (in neutral atom) = 6</p>
+                    <p>• Neutrons = Mass number - Atomic number = 12 - 6 = 6</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>💡 Key Insight:</h3>
+                    <p>The atomic number defines the element! All carbon atoms have 6 protons. If an atom has a different number of protons, it's a different element entirely.</p>
+                </div>
+
+                <div class="video-container">
+                    <h3>📺 Video: Introductory Nuclear Atomic Theory: The Anatomy of the Atom</h3>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/Gl6OxNmAc7M" 
+                                title="Introductory Nuclear Atomic Theory: The Anatomy of the Atom" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(2)">Complete Section 2</button>
+            </div>
+
+            <!-- Section 3: The Periodic Table -->
+            <div class="section" id="section3">
+                <div class="section-header">
+                    📊 Section 3: The Periodic Table
+                </div>
+
+                <div class="definition-card">
+                    <h3>The Periodic Table</h3>
+                    <p>The periodic table is an organized arrangement of elements based on their atomic number and recurring chemical properties. It's one of chemistry's most powerful tools, allowing us to predict element behavior and find patterns in nature.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li>Elements are arranged by increasing atomic number (number of protons)</li>
+                        <li>Horizontal rows are called periods; vertical columns are called groups or families</li>
+                        <li>Elements in the same group have similar chemical properties</li>
+                        <li>The atomic symbol (1-2 letters) represents each element uniquely</li>
+                        <li>Metals are found on the left side; nonmetals on the right side</li>
+                        <li>The periodic table predicts electron configuration and chemical behavior</li>
+                        <li>Group numbers indicate the number of valence electrons for main group elements</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Reading the Periodic Table:</h3>
+                    <p><strong>Atomic Number (top)</strong> = Number of protons (defines the element)</p>
+                    <p><strong>Element Symbol (center)</strong> = 1-2 letter abbreviation</p>
+                    <p><strong>Atomic Mass (bottom)</strong> = Average mass of all isotopes (in amu)</p>
+                    <p style="margin-top: 15px;"><strong>Example - Carbon (C):</strong></p>
+                    <p>Atomic Number = 6 | Symbol = C | Atomic Mass = 12.011 amu</p>
+                </div>
+
+                <div class="example-problem">
+                    <h3>Example: Using the Periodic Table</h3>
+                    <p><strong>Problem:</strong> An element has 17 protons. What is the element, and how many electrons does a neutral atom have?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>• Find atomic number 17 on the periodic table → Chlorine (Cl)</p>
+                    <p>• In a neutral atom, # electrons = # protons = 17 electrons</p>
+                    <p>• Chlorine is in Group 17 (halogens) and is a nonmetal</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>🎯 Pro Tip:</h3>
+                    <p>The periodic table is your best friend in chemistry! Learn to navigate it quickly. Knowing just the atomic number tells you the element's identity and its number of protons and electrons.</p>
+                </div>
+
+                <div class="video-container">
+                    <h3>📺 Video: How to Use the Periodic Table | Counting Protons, Electrons, and Neutrons</h3>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/JmyWmu3RA6Q" 
+                                title="How to Use the Periodic Table | Counting Protons, Electrons, and Neutrons" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(3)">Complete Section 3</button>
+            </div>
+
+            <!-- Section 4: Ions -->
+            <div class="section" id="section4">
+                <div class="section-header">
+                    ⚡ Section 4: Ions
+                </div>
+
+                <div class="definition-card">
+                    <h3>Ions</h3>
+                    <p>Ions are atoms or groups of atoms that have gained or lost electrons, resulting in a net electrical charge. Cations are positive ions (lost electrons), while anions are negative ions (gained electrons). Ion formation is fundamental to understanding chemical bonding and compound formation.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li>Cations are positively charged ions formed when atoms lose electrons</li>
+                        <li>Anions are negatively charged ions formed when atoms gain electrons</li>
+                        <li>Metals typically form cations; nonmetals typically form anions</li>
+                        <li>Ion charge = # protons - # electrons</li>
+                        <li>Many main group elements form predictable charges based on their group number</li>
+                        <li>The octet rule drives ion formation: atoms gain or lose electrons to achieve 8 valence electrons</li>
+                        <li>Ion notation: Element symbol with charge as superscript (e.g., Na⁺, Cl⁻, Ca²⁺)</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Predicting Ion Charges:</h3>
+                    <p><strong>Group 1:</strong> Form +1 cations (lose 1 electron) → Li⁺, Na⁺, K⁺</p>
+                    <p><strong>Group 2:</strong> Form +2 cations (lose 2 electrons) → Mg²⁺, Ca²⁺</p>
+                    <p><strong>Group 13:</strong> Form +3 cations (lose 3 electrons) → Al³⁺</p>
+                    <p><strong>Group 15:</strong> Form -3 anions (gain 3 electrons) → N³⁻, P³⁻</p>
+                    <p><strong>Group 16:</strong> Form -2 anions (gain 2 electrons) → O²⁻, S²⁻</p>
+                    <p><strong>Group 17:</strong> Form -1 anions (gain 1 electron) → F⁻, Cl⁻, Br⁻</p>
+                </div>
+
+                <div class="example-problem">
+                    <h3>Example: Determining Ion Composition</h3>
+                    <p><strong>Problem:</strong> A magnesium ion (Mg²⁺) has 12 protons. How many electrons does it have?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>• Charge = # protons - # electrons</p>
+                    <p>• +2 = 12 - # electrons</p>
+                    <p>• # electrons = 12 - 2 = 10 electrons</p>
+                    <p>• Mg²⁺ has lost 2 electrons compared to neutral Mg (which has 12 electrons)</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>⚠️ Common Mistake:</h3>
+                    <p>When an atom becomes an ion, ONLY the number of electrons changes, NOT the number of protons! The number of protons always equals the atomic number and never changes for a given element.</p>
+                </div>
+
+                <div class="video-container">
+                    <h3>📺 Video: What are Cations and Anions? Finding Predictable Charges of Ions!</h3>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/jNh0S62GrHg" 
+                                title="What are Cations and Anions? Finding Predictable Charges of Ions!" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(4)">Complete Section 4</button>
+            </div>
+
+            <!-- Section 5: Isotopes -->
+            <div class="section" id="section5">
+                <div class="section-header">
+                    🔄 Section 5: Isotopes
+                </div>
+
+                <div class="definition-card">
+                    <h3>Isotopes</h3>
+                    <p>Isotopes are atoms of the same element (same number of protons) that have different numbers of neutrons, resulting in different mass numbers. While isotopes have identical chemical properties, they differ in mass and nuclear stability.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li>Isotopes have the same atomic number but different mass numbers</li>
+                        <li>All isotopes of an element have identical chemical properties</li>
+                        <li>Isotopes differ in mass and nuclear stability</li>
+                        <li>Isotope notation: Mass number before element symbol (e.g., Carbon-12, ¹²C)</li>
+                        <li>Nuclear symbol shows both atomic and mass numbers: ᴬ𝚉X where A = mass number, Z = atomic number</li>
+                        <li>Most elements exist as mixtures of two or more isotopes in nature</li>
+                        <li>Some isotopes are radioactive (unstable nuclei)</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Isotope Notation Examples:</h3>
+                    <p><strong>Carbon-12:</strong> ¹²C or ¹²₆C → 6 protons, 6 neutrons, 6 electrons</p>
+                    <p><strong>Carbon-13:</strong> ¹³C or ¹³₆C → 6 protons, 7 neutrons, 6 electrons</p>
+                    <p><strong>Carbon-14:</strong> ¹⁴C or ¹⁴₆C → 6 protons, 8 neutrons, 6 electrons</p>
+                    <p style="margin-top: 15px;"><strong>Key Formula:</strong></p>
+                    <p>Number of Neutrons = Mass Number (A) - Atomic Number (Z)</p>
+                </div>
+
+                <div class="example-problem">
+                    <h3>Example: Comparing Isotopes</h3>
+                    <p><strong>Problem:</strong> Chlorine-35 and Chlorine-37 are two isotopes. How are they similar? How are they different?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p><strong>Similarities:</strong></p>
+                    <p>• Both have 17 protons (atomic number = 17)</p>
+                    <p>• Both have 17 electrons (neutral atoms)</p>
+                    <p>• Both have identical chemical properties</p>
+                    <p><strong>Differences:</strong></p>
+                    <p>• Cl-35: 18 neutrons (35 - 17 = 18)</p>
+                    <p>• Cl-37: 20 neutrons (37 - 17 = 20)</p>
+                    <p>• Cl-37 is slightly heavier than Cl-35</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>🔬 Real-World Application:</h3>
+                    <p>Carbon-14 dating uses the radioactive isotope ¹⁴C to determine the age of archaeological artifacts. Chlorine exists naturally as about 75% Cl-35 and 25% Cl-37, which is why its atomic mass (35.45 amu) is between these values.</p>
+                </div>
+
+                <div class="video-container">
+                    <h3>📺 Video: Isotopes: Percent Abundances and Atomic Masses</h3>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/Ia26SFitnIE" 
+                                title="Isotopes: Percent Abundances and Atomic Masses" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(5)">Complete Section 5</button>
+            </div>
+
+            <!-- Section 6: Atomic Mass & Summary -->
+            <div class="section" id="section6">
+                <div class="section-header">
+                    ⚖️ Section 6: Atomic Mass & Summary
+                </div>
+
+                <div class="definition-card">
+                    <h3>Atomic Mass</h3>
+                    <p>The atomic mass (or atomic weight) of an element is the weighted average mass of all naturally occurring isotopes of that element, measured in atomic mass units (amu). This value accounts for both the mass and relative abundance of each isotope.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li>Atomic mass is a weighted average based on isotope abundance</li>
+                        <li>Most elements exist as mixtures of isotopes in nature</li>
+                        <li>The atomic mass shown on the periodic table reflects natural isotope ratios</li>
+                        <li>Atomic mass = Σ (isotope mass × fractional abundance)</li>
+                        <li>Atomic mass units (amu) are defined relative to carbon-12</li>
+                        <li>More abundant isotopes contribute more to the average atomic mass</li>
+                        <li>Atomic mass is NOT the same as mass number (which is always a whole number)</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Calculating Atomic Mass:</h3>
+                    <p><strong>Formula:</strong></p>
+                    <p>Atomic Mass = (Mass₁ × Abundance₁) + (Mass₂ × Abundance₂) + ...</p>
+                    <p style="margin-top: 15px;"><strong>Example - Chlorine:</strong></p>
+                    <p>• Cl-35: mass = 34.97 amu, abundance = 75.76% (0.7576)</p>
+                    <p>• Cl-37: mass = 36.97 amu, abundance = 24.24% (0.2424)</p>
+                    <p>Atomic mass = (34.97 × 0.7576) + (36.97 × 0.2424)</p>
+                    <p>Atomic mass = 26.50 + 8.96 = 35.46 amu</p>
+                </div>
+
+                <div class="example-problem">
+                    <h3>Example: Calculating Average Atomic Mass</h3>
+                    <p><strong>Problem:</strong> Element X has two isotopes: X-10 (19.9% abundant, 10.01 amu) and X-11 (80.1% abundant, 11.01 amu). Calculate the average atomic mass.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Atomic mass = (10.01 × 0.199) + (11.01 × 0.801)</p>
+                    <p>Atomic mass = 1.99 + 8.82 = 10.81 amu</p>
+                    <p>Note: The atomic mass is closer to 11.01 because X-11 is more abundant.</p>
+                </div>
+
+                <div class="alert-box">
+                    <h3>📚 Chapter Summary:</h3>
+                    <p><strong>You've mastered atomic structure! Here's what you learned:</strong></p>
+                    <p>✓ Atomic theory explains that matter is made of atoms</p>
+                    <p>✓ Atoms contain protons, neutrons, and electrons</p>
+                    <p>✓ The periodic table organizes elements by atomic number</p>
+                    <p>✓ Ions form when atoms gain or lose electrons</p>
+                    <p>✓ Isotopes are atoms with different numbers of neutrons</p>
+                    <p>✓ Atomic mass is the weighted average of isotope masses</p>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(6)">Complete Section 6</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Last Updated:</strong> January 19, 2026 | <strong>Version:</strong> 1.0</p>
+            <p>Interactive Chapter Review | Chemistry Education Resource</p>
+        </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetProgress()">🔄 Reset Progress</button>
+
+    <div class="toast" id="toast"></div>
+    <div class="success-overlay" id="successOverlay" onclick="closeSuccess()">
+        <div class="success-message">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p>You've completed all sections of Chapter 2: Atomic Structure!</p>
+            <p>You're now ready to tackle more advanced chemistry topics!</p>
+            <button class="complete-btn" onclick="closeSuccess()">Continue Learning</button>
+        </div>
+    </div>
+
+    <script>
+        // Progress tracking
+        let completedSections = JSON.parse(localStorage.getItem('chapter2ProgressEpic') || '[]');
+        
+        function updateProgress() {
+            const percentage = (completedSections.length / 6) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '%';
+            
+            // Update tracker tiles
+            completedSections.forEach(section => {
+                const tiles = document.querySelectorAll('.tracker-tile');
+                tiles[section - 1].classList.add('completed');
+            });
+            
+            // Update progress message
+            if (percentage === 0) {
+                progressText.textContent = 'Ready to start! Complete all 6 sections to master atomic structure.';
+            } else if (percentage < 50) {
+                progressText.textContent = `Great start! You've completed ${completedSections.length} of 6 sections. Keep going!`;
+            } else if (percentage < 100) {
+                progressText.textContent = `You're doing amazing! Only ${6 - completedSections.length} section(s) left!`;
+            } else {
+                progressText.textContent = '🎉 Perfect! You\'ve mastered all atomic structure concepts!';
+            }
+        }
+        
+        function completeSection(sectionNum) {
+            if (!completedSections.includes(sectionNum)) {
+                completedSections.push(sectionNum);
+                localStorage.setItem('chapter2ProgressEpic', JSON.stringify(completedSections));
+                updateProgress();
+                
+                // Show toast
+                showToast(`Section ${sectionNum} completed! (${completedSections.length}/6)`);
+                
+                // Small confetti
+                createConfetti(100);
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Check for epic completion
+                if (completedSections.length === 6) {
+                    setTimeout(epicCelebration, 1000);
+                }
+            }
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        function createConfetti(count) {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b', '#fa709a'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = '50%';
+                confetti.style.top = '50%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 5 + Math.random() * 10;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                animateConfetti(confetti, vx, vy);
+            }
+        }
+        
+        function animateConfetti(element, vx, vy) {
+            let x = window.innerWidth / 2;
+            let y = window.innerHeight / 2;
+            let gravity = 0.3;
+            let opacity = 1;
+            
+            function frame() {
+                x += vx;
+                y += vy;
+                vy += gravity;
+                opacity -= 0.01;
+                
+                element.style.left = x + 'px';
+                element.style.top = y + 'px';
+                element.style.opacity = opacity;
+                
+                if (opacity > 0 && y < window.innerHeight + 100) {
+                    requestAnimationFrame(frame);
+                } else {
+                    element.remove();
+                }
+            }
+            
+            requestAnimationFrame(frame);
+        }
+        
+        function epicCelebration() {
+            const overlay = document.getElementById('successOverlay');
+            overlay.classList.add('show');
+            document.body.style.animation = 'shake 0.5s';
+            
+            // Wave 1: Center explosion
+            setTimeout(() => createConfetti(500), 0);
+            
+            // Wave 2: Corner explosions
+            setTimeout(() => {
+                createCornerExplosion(0, 0, 100);
+                createCornerExplosion(window.innerWidth, 0, 100);
+                createCornerExplosion(0, window.innerHeight, 100);
+                createCornerExplosion(window.innerWidth, window.innerHeight, 100);
+            }, 500);
+            
+            // Wave 3: Fireworks
+            setTimeout(() => {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight * 0.5;
+                        createFirework(x, y);
+                    }, i * 200);
+                }
+            }, 1000);
+            
+            // Wave 4: Emoji explosion
+            setTimeout(() => createEmojiExplosion(), 2000);
+            
+            // Wave 5: Continuous sparkles
+            setTimeout(() => {
+                const sparkleInterval = setInterval(() => {
+                    createConfetti(10);
+                }, 100);
+                setTimeout(() => clearInterval(sparkleInterval), 5000);
+            }, 2500);
+        }
+        
+        function createCornerExplosion(x, y, count) {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b', '#fa709a'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = x + 'px';
+                confetti.style.top = y + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(confetti);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 10 + Math.random() * 15;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                animateConfetti(confetti, vx, vy);
+            }
+        }
+        
+        function createFirework(x, y) {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe', '#43e97b', '#fa709a'];
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = '8px';
+                particle.style.height = '8px';
+                particle.style.borderRadius = '50%';
+                document.body.appendChild(particle);
+                
+                const angle = (Math.PI * 2 * i) / particleCount;
+                const velocity = 8 + Math.random() * 5;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                animateConfetti(particle, vx, vy);
+            }
+        }
+        
+        function createEmojiExplosion() {
+            const emojis = ['⚛️', '🔬', '📊', '⚡', '🔄', '⚖️', '🎉', '✨', '🌟', '💫'];
+            
+            for (let i = 0; i < 50; i++) {
+                const emoji = document.createElement('div');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.position = 'fixed';
+                emoji.style.left = '50%';
+                emoji.style.top = '50%';
+                emoji.style.fontSize = '30px';
+                emoji.style.zIndex = '1500';
+                emoji.style.pointerEvents = 'none';
+                document.body.appendChild(emoji);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 8 + Math.random() * 12;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                animateEmoji(emoji, vx, vy);
+            }
+        }
+        
+        function animateEmoji(element, vx, vy) {
+            let x = window.innerWidth / 2;
+            let y = window.innerHeight / 2;
+            let gravity = 0.3;
+            let opacity = 1;
+            let rotation = 0;
+            
+            function frame() {
+                x += vx;
+                y += vy;
+                vy += gravity;
+                opacity -= 0.01;
+                rotation += 10;
+                
+                element.style.left = x + 'px';
+                element.style.top = y + 'px';
+                element.style.opacity = opacity;
+                element.style.transform = `rotate(${rotation}deg)`;
+                
+                if (opacity > 0 && y < window.innerHeight + 100) {
+                    requestAnimationFrame(frame);
+                } else {
+                    element.remove();
+                }
+            }
+            
+            requestAnimationFrame(frame);
+        }
+        
+        function closeSuccess() {
+            document.getElementById('successOverlay').classList.remove('show');
+            document.body.style.animation = '';
+        }
+        
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset your progress? This will clear all completed sections.')) {
+                localStorage.removeItem('chapter2ProgressEpic');
+                completedSections = [];
+                updateProgress();
+                
+                // Remove completed class from all tiles
+                document.querySelectorAll('.tracker-tile').forEach(tile => {
+                    tile.classList.remove('completed');
+                });
+                
+                showToast('Progress reset! Start fresh.');
+            }
+        }
+        
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Initialize on load
+        updateProgress();
+    </script>
+</body>
+</html>
