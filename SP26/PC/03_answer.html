@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC-03 Answer Key | Significant Figures in Calculations</title>
+    <style>
+        :root {
+            --primary: #1a5f7a;
+            --secondary: #57837b;
+            --accent: #c38e70;
+            --light: #f5f5f5;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            background: #fafafa;
+            border-left: 4px solid var(--secondary);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .question-text {
+            margin-top: 8px;
+            color: #555;
+        }
+
+        .answer-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--success);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+
+        .answer-label {
+            font-weight: bold;
+            color: var(--success);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .answer-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-top: 5px;
+        }
+
+        .explanation {
+            background: #fff8e1;
+            border: 1px solid #ffcc80;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 15px;
+        }
+
+        .explanation-title {
+            font-weight: bold;
+            color: var(--warning);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 10px 0;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+
+        .rule-box {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+
+        .rule-title {
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 8px;
+        }
+
+        .common-error {
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 15px;
+        }
+
+        .error-title {
+            font-weight: bold;
+            color: var(--danger);
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .highlight {
+            background: #fff59d;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .sig-fig {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .not-sig {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .math {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1rem;
+        }
+
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+
+        .fraction .num {
+            border-bottom: 2px solid var(--dark);
+            padding-bottom: 3px;
+        }
+
+        .fraction .den {
+            padding-top: 3px;
+        }
+
+        .mc-option {
+            padding: 8px 15px;
+            margin: 5px 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mc-correct {
+            background: #e8f5e9;
+            border: 2px solid var(--success);
+        }
+
+        .mc-incorrect {
+            background: #fafafa;
+            border: 1px solid #ddd;
+        }
+
+        .checkmark {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border-left: 4px solid #9c27b0;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .summary-box {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .summary-box h3 {
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+
+        .summary-box ul {
+            list-style: none;
+        }
+
+        .summary-box li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .summary-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #81c784;
+        }
+
+        @media print {
+            body {
+                padding: 10px;
+            }
+            .section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PC-03: Significant Figures in Calculations</h1>
+        <p>CHEM 3A Spring 2026 | Answer Key with Detailed Explanations</p>
+        <p>Prof. Gilley</p>
+    </header>
+
+    <!-- SECTION 1: Counting Sig Figs -->
+    <div class="section">
+        <h2 class="section-title">Part 1: Counting Significant Figures</h2>
+
+        <!-- Question 1 -->
+        <div class="question">
+            <span class="question-number">Question 1</span>
+            <div class="question-text">How many significant figures are in each of the following measured values?</div>
+        </div>
+
+        <table>
+            <tr>
+                <th>Measurement</th>
+                <th>Answer</th>
+                <th>Explanation</th>
+            </tr>
+            <tr>
+                <td><strong>a) 0.00320 g</strong></td>
+                <td class="answer-value">3 sig figs</td>
+                <td>
+                    <span class="not-sig">0.00</span><span class="sig-fig">320</span> g<br>
+                    Leading zeros are <em>placeholders</em> (not significant).<br>
+                    The digits 3, 2, and the trailing 0 are all significant.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>b) 4500 mL</strong></td>
+                <td class="answer-value">2 sig figs</td>
+                <td>
+                    <span class="sig-fig">45</span><span class="not-sig">00</span> mL<br>
+                    Without a decimal point, trailing zeros are ambiguous and assumed <em>not</em> significant.<br>
+                    Only the 4 and 5 are significant.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>c) 10.070 cm</strong></td>
+                <td class="answer-value">5 sig figs</td>
+                <td>
+                    <span class="sig-fig">10.070</span> cm<br>
+                    The "trapped" zero between 1 and 0 counts.<br>
+                    The trailing zero after the decimal counts.<br>
+                    All five digits are significant.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>d) 6.022 × 10²³ atoms</strong></td>
+                <td class="answer-value">4 sig figs</td>
+                <td>
+                    <span class="sig-fig">6.022</span> × 10²³<br>
+                    In scientific notation, count only the coefficient digits.<br>
+                    The power of 10 does not affect sig fig count.
+                </td>
+            </tr>
+        </table>
+
+        <div class="rule-box">
+            <div class="rule-title">📏 Sig Fig Counting Rules Summary</div>
+            <ul>
+                <li><strong>Leading zeros</strong> → Never count (they're just placeholders)</li>
+                <li><strong>Trapped zeros</strong> → Always count (zeros between non-zero digits)</li>
+                <li><strong>Trailing zeros WITH decimal</strong> → Always count</li>
+                <li><strong>Trailing zeros WITHOUT decimal</strong> → Don't count (ambiguous)</li>
+                <li><strong>Scientific notation</strong> → Count only the coefficient digits</li>
+            </ul>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+            <span class="question-number">Question 2</span>
+            <div class="question-text">A student records the mass of a sample as 0.004050 kg. Which digits in this measurement are significant, and why are the leading zeros not counted?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">4 significant figures: 4, 0, 5, 0</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Explanation</div>
+            <p>In 0.004050 kg:</p>
+            <ul>
+                <li><span class="not-sig">0.00</span> — The leading zeros are <strong>placeholders</strong> that show where the decimal point goes. They don't represent measured precision.</li>
+                <li><span class="sig-fig">4050</span> — These four digits are significant:
+                    <ul>
+                        <li><strong>4</strong> — First non-zero digit, always significant</li>
+                        <li><strong>0</strong> — Trapped zero between 4 and 5, always counts</li>
+                        <li><strong>5</strong> — Non-zero digit, always significant</li>
+                        <li><strong>0</strong> — Trailing zero after decimal, shows precision</li>
+                    </ul>
+                </li>
+            </ul>
+            <p style="margin-top: 10px;"><strong>Why don't leading zeros count?</strong> They only indicate the magnitude of the number—they tell us where to place the decimal point, not how precisely the measurement was made. If we converted to grams (4.050 g), the leading zeros disappear but the precision stays the same!</p>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question">
+            <span class="question-number">Question 3 (Multiple Choice)</span>
+            <div class="question-text">A nurse measures out 250. mL of saline solution. The decimal point after the zero indicates that this measurement has:</div>
+        </div>
+
+        <div class="mc-option mc-incorrect">(A) 2 significant figures</div>
+        <div class="mc-option mc-correct"><span class="checkmark">✓</span> (B) 3 significant figures</div>
+        <div class="mc-option mc-incorrect">(C) 4 significant figures</div>
+        <div class="mc-option mc-incorrect">(D) infinite significant figures</div>
+
+        <div class="answer-box">
+            <div class="answer-label">Correct Answer</div>
+            <div class="answer-value">B — 3 significant figures</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Why the Decimal Point Matters</div>
+            <p>The decimal point after 250<strong>.</strong> is intentional! It tells us that the trailing zero <em>is</em> significant.</p>
+            <ul>
+                <li><strong>250 mL</strong> (no decimal) → 2 sig figs (ambiguous trailing zeros)</li>
+                <li><strong>250. mL</strong> (with decimal) → 3 sig figs (the zero is measured, not estimated)</li>
+            </ul>
+            <p style="margin-top: 10px;">This is a common notation in scientific and medical settings to clearly communicate precision.</p>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Multiplication and Division -->
+    <div class="section">
+        <h2 class="section-title">Part 2: Significant Figures in Multiplication & Division</h2>
+
+        <div class="rule-box">
+            <div class="rule-title">📐 The Multiplication/Division Rule</div>
+            <p>Round your final answer to the <strong>same number of significant figures</strong> as the measurement with the <strong>fewest</strong> sig figs.</p>
+        </div>
+
+        <!-- Question 4a -->
+        <div class="question">
+            <span class="question-number">Question 4a</span>
+            <div class="question-text">(4.52 g) ÷ (1.2 mL) = ?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">3.8 g/mL</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify sig figs in each value:</strong><br>
+                • 4.52 g → <span class="sig-fig">3 sig figs</span><br>
+                • 1.2 mL → <span class="sig-fig">2 sig figs</span> ← (limiting factor!)
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Perform the calculation:</strong><br>
+                4.52 ÷ 1.2 = 3.76666...
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to fewest sig figs (2):</strong><br>
+                3.76666... → <span class="highlight">3.8 g/mL</span>
+            </div>
+        </div>
+
+        <!-- Question 4b -->
+        <div class="question">
+            <span class="question-number">Question 4b</span>
+            <div class="question-text">(0.0821 L·atm/mol·K) × (298 K) × (2.50 mol) = ?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">61.2 L·atm</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify sig figs in each value:</strong><br>
+                • 0.0821 L·atm/mol·K → <span class="sig-fig">3 sig figs</span> ← (limiting factor!)<br>
+                • 298 K → <span class="sig-fig">3 sig figs</span><br>
+                • 2.50 mol → <span class="sig-fig">3 sig figs</span>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Perform the calculation:</strong><br>
+                0.0821 × 298 × 2.50 = 61.1645
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to fewest sig figs (3):</strong><br>
+                61.1645 → <span class="highlight">61.2 L·atm</span>
+            </div>
+        </div>
+
+        <div class="key-point">
+            <strong>🔬 Chemistry Connection:</strong> This is the ideal gas law calculation (PV = nRT)! You'll use this formula extensively in future chapters. The gas constant R = 0.0821 L·atm/mol·K has 3 sig figs.
+        </div>
+
+        <!-- Question 4c -->
+        <div class="question">
+            <span class="question-number">Question 4c</span>
+            <div class="question-text">(8.314 × 10³ J) ÷ (2.998 × 10⁸ m/s) = ?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">2.773 × 10⁻⁵ J·s/m <em>or</em> 2.77 × 10⁻⁵ J·s/m</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify sig figs in each value:</strong><br>
+                • 8.314 × 10³ J → <span class="sig-fig">4 sig figs</span><br>
+                • 2.998 × 10⁸ m/s → <span class="sig-fig">4 sig figs</span>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Divide the coefficients, subtract the exponents:</strong><br>
+                (8.314 ÷ 2.998) × 10^(3-8) = 2.7732... × 10⁻⁵
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to 4 sig figs:</strong><br>
+                2.7732... → <span class="highlight">2.773 × 10⁻⁵ J·s/m</span>
+            </div>
+        </div>
+
+        <div class="common-error">
+            <div class="error-title">⚠️ Common Mistake</div>
+            <p>Some students wrote 0.000027732... instead of using scientific notation. While not "wrong," scientific notation is preferred for very small (or very large) numbers because it clearly shows the sig figs in the coefficient.</p>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question">
+            <span class="question-number">Question 5 (Multiple Choice)</span>
+            <div class="question-text">A medical technician calculates the concentration of a drug by dividing 0.750 g by 25 mL. What is the correct result with proper significant figures?</div>
+        </div>
+
+        <div class="mc-option mc-incorrect">(A) 0.03 g/mL</div>
+        <div class="mc-option mc-correct"><span class="checkmark">✓</span> (B) 0.030 g/mL</div>
+        <div class="mc-option mc-incorrect">(C) 0.0300 g/mL</div>
+        <div class="mc-option mc-incorrect">(D) 3.0 × 10⁻² g/mL</div>
+
+        <div class="answer-box">
+            <div class="answer-label">Correct Answer</div>
+            <div class="answer-value">B — 0.030 g/mL</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Explanation</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Count sig figs:</strong><br>
+                • 0.750 g → <span class="sig-fig">3 sig figs</span><br>
+                • 25 mL → <span class="sig-fig">2 sig figs</span> ← (limiting factor!)
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Calculate:</strong> 0.750 ÷ 25 = 0.03
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Express with 2 sig figs:</strong> We need to show TWO significant figures, so we write <span class="highlight">0.030 g/mL</span>
+            </div>
+        </div>
+
+        <div class="common-error">
+            <div class="error-title">⚠️ Why (A) and (D) are Wrong</div>
+            <ul>
+                <li><strong>(A) 0.03 g/mL</strong> — Only shows 1 sig fig! The trailing zero is essential.</li>
+                <li><strong>(D) 3.0 × 10⁻² g/mL</strong> — This is technically correct mathematically, but (B) is the better answer because it matches the standard decimal notation used in medicine. Both B and D show 2 sig figs.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SECTION 3: Addition and Subtraction -->
+    <div class="section">
+        <h2 class="section-title">Part 3: Significant Figures in Addition & Subtraction</h2>
+
+        <div class="rule-box">
+            <div class="rule-title">📐 The Addition/Subtraction Rule</div>
+            <p>Round your final answer to the <strong>same number of decimal places</strong> as the measurement with the <strong>fewest</strong> decimal places.</p>
+            <p style="margin-top: 10px; color: #c62828;"><strong>⚠️ This is DIFFERENT from the mult/div rule!</strong> Here we count <em>decimal places</em>, not total sig figs.</p>
+        </div>
+
+        <!-- Question 6a -->
+        <div class="question">
+            <span class="question-number">Question 6a</span>
+            <div class="question-text">125.0 g + 0.27 g + 14.835 g = ?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">140.1 g</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify decimal places in each value:</strong><br>
+                • 125.0 g → <span class="sig-fig">1 decimal place</span> ← (limiting factor!)<br>
+                • 0.27 g → 2 decimal places<br>
+                • 14.835 g → 3 decimal places
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Line up the decimals and add:</strong><br>
+                <pre style="font-family: monospace; margin: 10px 0;">
+  125.0
+    0.27
+   14.835
+  -------
+  140.105
+                </pre>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to fewest decimal places (1):</strong><br>
+                140.105 → <span class="highlight">140.1 g</span>
+            </div>
+        </div>
+
+        <div class="common-error">
+            <div class="error-title">⚠️ Common Mistake from PC-03</div>
+            <p>Many students answered <strong>140.105 g</strong> or <strong>140 g</strong>.</p>
+            <ul>
+                <li>140.105 g → Too many decimal places (didn't round)</li>
+                <li>140 g → Wrong rule! This uses sig figs instead of decimal places.</li>
+            </ul>
+        </div>
+
+        <!-- Question 6b -->
+        <div class="question">
+            <span class="question-number">Question 6b</span>
+            <div class="question-text">1050.2 mL − 27.86 mL = ?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">1022.3 mL</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify decimal places:</strong><br>
+                • 1050.2 mL → <span class="sig-fig">1 decimal place</span> ← (limiting factor!)<br>
+                • 27.86 mL → 2 decimal places
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Subtract:</strong><br>
+                1050.2 − 27.86 = 1022.34
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to 1 decimal place:</strong><br>
+                1022.34 → <span class="highlight">1022.3 mL</span>
+            </div>
+        </div>
+
+        <!-- Question 6c -->
+        <div class="question">
+            <span class="question-number">Question 6c</span>
+            <div class="question-text">37.24 °C − 36.8 °C = ?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">0.4 °C</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify decimal places:</strong><br>
+                • 37.24 °C → 2 decimal places<br>
+                • 36.8 °C → <span class="sig-fig">1 decimal place</span> ← (limiting factor!)
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Subtract:</strong><br>
+                37.24 − 36.8 = 0.44
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to 1 decimal place:</strong><br>
+                0.44 → <span class="highlight">0.4 °C</span>
+            </div>
+        </div>
+
+        <div class="key-point">
+            <strong>🌡️ Note:</strong> This answer has only 1 sig fig! That's okay—when subtracting similar numbers, you often lose precision. The decimal place rule is more important than the total sig fig count in addition/subtraction.
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question">
+            <span class="question-number">Question 7</span>
+            <div class="question-text">A patient's temperature is recorded as 98.6 °F in the morning and 101.23 °F in the evening. What is the temperature change, reported with the correct number of significant figures?</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">2.6 °F</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify decimal places:</strong><br>
+                • 98.6 °F → <span class="sig-fig">1 decimal place</span> ← (limiting factor!)<br>
+                • 101.23 °F → 2 decimal places
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Calculate the change:</strong><br>
+                101.23 − 98.6 = 2.63
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to 1 decimal place:</strong><br>
+                2.63 → <span class="highlight">2.6 °F</span>
+            </div>
+        </div>
+
+        <div class="common-error">
+            <div class="error-title">⚠️ Common Mistake from PC-03</div>
+            <p>Many students answered <strong>2.63 °F</strong>, keeping all calculated digits. Remember: the morning temperature (98.6 °F) limits us to the <strong>tenths place</strong>!</p>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Combined Operations and Exact Numbers -->
+    <div class="section">
+        <h2 class="section-title">Part 4: Combined Operations & Exact Numbers</h2>
+
+        <!-- Question 8 -->
+        <div class="question">
+            <span class="question-number">Question 8</span>
+            <div class="question-text">Calculate the following:<br>
+            <span class="math">(25.0 g + 3.200 g) ÷ 12.5 mL</span></div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">2.26 g/mL</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution (Order of Operations!)</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>First, do the addition (in parentheses):</strong><br>
+                • 25.0 g → 1 decimal place (limiting)<br>
+                • 3.200 g → 3 decimal places<br>
+                • Sum: 25.0 + 3.200 = 28.200 → Round to <span class="highlight">28.2 g</span>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Then, do the division:</strong><br>
+                • 28.2 g → 3 sig figs<br>
+                • 12.5 mL → 3 sig figs<br>
+                • 28.2 ÷ 12.5 = 2.256
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Round to 3 sig figs:</strong><br>
+                2.256 → <span class="highlight">2.26 g/mL</span>
+            </div>
+        </div>
+
+        <div class="rule-box">
+            <div class="rule-title">🔢 Order of Operations with Sig Figs</div>
+            <ol>
+                <li>Follow PEMDAS (Parentheses first!)</li>
+                <li>Apply the appropriate sig fig rule at EACH step</li>
+                <li>Addition/Subtraction → decimal places</li>
+                <li>Multiplication/Division → sig figs</li>
+            </ol>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question">
+            <span class="question-number">Question 9</span>
+            <div class="question-text">A pharmacist counts exactly 30 tablets, each with a mass of 0.325 g. What is the total mass of all the tablets, reported with the correct number of significant figures? Explain why the number 30 does not limit your answer.</div>
+        </div>
+
+        <div class="answer-box">
+            <div class="answer-label">Answer</div>
+            <div class="answer-value">9.75 g</div>
+        </div>
+
+        <div class="explanation">
+            <div class="explanation-title">💡 Step-by-Step Solution</div>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Identify the values:</strong><br>
+                • 30 tablets → <span class="sig-fig">Exact number (counted)</span> → Infinite sig figs!<br>
+                • 0.325 g → <span class="sig-fig">3 sig figs</span> ← (this limits the answer)
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Calculate total mass:</strong><br>
+                30 × 0.325 g = 9.75 g
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Determine sig figs:</strong><br>
+                Since 30 is exact, we use 3 sig figs from 0.325 g.<br>
+                Answer: <span class="highlight">9.75 g</span> (3 sig figs)
+            </div>
+        </div>
+
+        <div class="key-point">
+            <strong>Why doesn't "30" limit the answer?</strong><br><br>
+            The number 30 is an <strong>exact number</strong> because the pharmacist <em>counted</em> the tablets—they didn't measure them. There are exactly 30 tablets, not approximately 30. You could write it as 30.000000... with infinite precision.<br><br>
+            <strong>Other examples of exact numbers:</strong>
+            <ul style="margin-top: 10px;">
+                <li>12 eggs in a dozen</li>
+                <li>2.54 cm in 1 inch (by definition)</li>
+                <li>100 cm in 1 m (by definition)</li>
+                <li>The "2" in 2πr</li>
+            </ul>
+        </div>
+
+        <div class="common-error">
+            <div class="error-title">⚠️ Common Mistake from PC-03</div>
+            <p>Some students wrote <strong>10 g</strong>, thinking "30" has only 1 or 2 sig figs. But counted numbers don't limit precision!</p>
+        </div>
+    </div>
+
+    <!-- SUMMARY BOX -->
+    <div class="summary-box">
+        <h3>📋 Key Takeaways for SC-T0</h3>
+        <ul>
+            <li><strong>Multiplication/Division:</strong> Round to FEWEST SIG FIGS</li>
+            <li><strong>Addition/Subtraction:</strong> Round to FEWEST DECIMAL PLACES</li>
+            <li>Trailing zeros after a decimal ARE significant (0.030 has 2 sig figs)</li>
+            <li>Exact numbers (counted items, defined conversions) have INFINITE sig figs</li>
+            <li>Scientific notation: count only the coefficient digits</li>
+            <li>Follow PEMDAS, applying the appropriate rule at each step</li>
+            <li>When in doubt, ask: "Which measurement is least precise?"</li>
+        </ul>
+    </div>
+
+    <footer style="text-align: center; margin-top: 30px; padding: 20px; color: #666; font-size: 0.9rem;">
+        <p>CHEM 3A Spring 2026 | Prof. Gilley</p>
+        <p>Questions? Come to office hours or email!</p>
+    </footer>
+</body>
+</html>
