@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Compounds and Chemical Bonds - Complete Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+        }
+
+        .tracker-tile {
+            background: white;
+            border: 3px solid #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tracker-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .tracker-tile.completed {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #764ba2;
+        }
+
+        .tracker-tile .emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .tracker-tile .title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .tracker-tile .video-count {
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        .tracker-tile .checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            display: none;
+        }
+
+        .tracker-tile.completed .checkmark {
+            display: block;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section-header .emoji {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+
+        .section-header h2 {
+            color: #667eea;
+            font-size: 1.8em;
+        }
+
+        .definition-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .definition-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .key-points {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .key-points h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .key-points li:before {
+            content: "🔬";
+            position: absolute;
+            left: 0;
+        }
+
+        .equation-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc107;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .equation-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .equation {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #495057;
+            margin: 10px 0;
+        }
+
+        .example-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #0066cc;
+            margin-bottom: 20px;
+        }
+
+        .example-box h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 20px;
+        }
+
+        .alert-box strong {
+            color: #856404;
+        }
+
+        .video-container {
+            margin: 25px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .complete-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .complete-btn:active {
+            transform: translateY(0);
+        }
+
+        .complete-btn.completed {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 3px solid #667eea;
+        }
+
+        .update-notice {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .reset-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.6);
+        }
+
+        .toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: top 0.5s ease;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .toast.show {
+            top: 30px;
+        }
+
+        .toast .emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            cursor: pointer;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-message {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .success-message h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+        }
+
+        .success-message p {
+            font-size: 1.5em;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tracker-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+                padding: 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section-header h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚗️ Chapter 4: Compounds and Chemical Bonds</h1>
+            <p>Complete Interactive Review Guide</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <div class="progress-text" id="progressText">Ready to master compounds and nomenclature! Complete all sections.</div>
+        </div>
+
+        <!-- Progress Tracker Grid -->
+        <div class="tracker-grid">
+            <div class="tracker-tile" onclick="scrollToSection('section1')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">🔬</div>
+                <div class="title">Properties & Changes</div>
+                <div class="video-count">2 videos</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section2')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">🧪</div>
+                <div class="title">Compounds & Formulas</div>
+                <div class="video-count">2 videos</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section3')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">⚡</div>
+                <div class="title">Ionic Compounds</div>
+                <div class="video-count">2 videos</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section4')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">👑</div>
+                <div class="title">Naming Ionic</div>
+                <div class="video-count">2 videos</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section5')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">🔵</div>
+                <div class="title">Naming Molecular</div>
+                <div class="video-count">2 videos</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section6')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">💧</div>
+                <div class="title">Naming Acids</div>
+                <div class="video-count">1 video</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Section 1 -->
+            <div class="section" id="section1">
+                <div class="section-header">
+                    <span class="emoji">🔬</span>
+                    <h2>Section 1: Properties and Changes of Matter</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Physical vs. Chemical Properties & Changes</h3>
+                    <p><strong>Physical properties</strong> can be observed without changing the substance's identity (color, melting point, density). <strong>Chemical properties</strong> describe how a substance reacts or changes into different substances (flammability, reactivity with acids). <strong>Physical changes</strong> alter appearance but not composition (melting ice), while <strong>chemical changes</strong> produce new substances with different properties (burning wood).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Physical properties: observable without chemical change (color, state, melting point, density, hardness)</li>
+                        <li>Chemical properties: describe how substances react or change (flammability, corrosiveness, reactivity)</li>
+                        <li>Physical changes: reversible, no new substances formed (state changes, dissolving, shape changes)</li>
+                        <li>Chemical changes: new substances formed, often irreversible (combustion, rusting, cooking eggs)</li>
+                        <li>Law of Conservation of Mass: mass is neither created nor destroyed in chemical reactions</li>
+                        <li>Signs of chemical change: color change, gas production, temperature change, precipitate formation</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Conservation of Mass</h3>
+                    <div class="equation">Mass of Reactants = Mass of Products</div>
+                    <div class="equation">Total mass before = Total mass after</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Identify whether each is physical or chemical: (a) ice melting (b) wood burning (c) sugar dissolving</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>(a) Physical - water is still H₂O, just different state</p>
+                    <p>(b) Chemical - wood becomes ash, CO₂, H₂O (new substances)</p>
+                    <p>(c) Physical - sugar molecules unchanged, just dispersed in water</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>⚠️ Common Misconception:</strong> Dissolving sugar in water is NOT a chemical change! The sugar molecules remain intact—they're just separated and surrounded by water molecules.
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Physical and Chemical Properties</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/u_Y1sC58C7M" 
+                                title="Physical and Chemical Properties"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Physical and Chemical Changes</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/oy7dm7qZiXY" 
+                                title="Physical and Chemical Changes"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(1)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="section" id="section2">
+                <div class="section-header">
+                    <span class="emoji">🧪</span>
+                    <h2>Section 2: Compounds and Chemical Formulas</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What Are Compounds?</h3>
+                    <p>A <strong>compound</strong> is a pure substance made of two or more different elements chemically bonded together in fixed proportions. Unlike mixtures, compounds have unique properties different from their constituent elements. <strong>Chemical formulas</strong> use element symbols and subscripts to show the types and numbers of atoms in a compound (e.g., H₂O has 2 hydrogen atoms and 1 oxygen atom).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Compounds form when elements combine chemically in fixed ratios</li>
+                        <li>Compounds have properties totally different from their elements (e.g., NaCl vs. Na and Cl₂)</li>
+                        <li>Chemical formulas show element symbols and subscript numbers</li>
+                        <li>Subscripts tell how many atoms of each element are present</li>
+                        <li>Molecular compounds: discrete molecules (H₂O, CO₂, CH₄)</li>
+                        <li>Ionic compounds: arrays of ions in crystal lattices (NaCl, CaCl₂, MgO)</li>
+                        <li>Formula unit: smallest ratio of ions in an ionic compound</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Reading Chemical Formulas</h3>
+                    <div class="equation">H₂O → 2 hydrogen atoms, 1 oxygen atom</div>
+                    <div class="equation">Ca(OH)₂ → 1 Ca, 2 O, 2 H atoms</div>
+                    <div class="equation">Al₂(SO₄)₃ → 2 Al, 3 S, 12 O atoms</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> How many of each atom are in Ca₃(PO₄)₂?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Ca: 3 atoms (subscript outside parentheses)</p>
+                    <p>P: 2 atoms (1 P in PO₄, times 2)</p>
+                    <p>O: 8 atoms (4 O in PO₄, times 2)</p>
+                    <p><strong>Total: 3 Ca, 2 P, 8 O</strong></p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>💡 Pro Tip:</strong> When parentheses are used, multiply the subscript outside by each subscript inside! Ca(OH)₂ means 1 Ca + 2×(1 O + 1 H) = 1 Ca, 2 O, 2 H.
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Introduction to Compounds</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/7fWGLGY_6Wo" 
+                                title="Introduction to Compounds"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Chemical Formulas</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/2ZT9T8M2CWM" 
+                                title="Chemical Formulas"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(2)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="section" id="section3">
+                <div class="section-header">
+                    <span class="emoji">⚡</span>
+                    <h2>Section 3: Ionic Compounds and Ions</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Ions and Ionic Compounds</h3>
+                    <p><strong>Ions</strong> are atoms or groups of atoms with electric charge. <strong>Cations</strong> are positive ions (formed by losing electrons), typically metals. <strong>Anions</strong> are negative ions (formed by gaining electrons), typically nonmetals. <strong>Ionic compounds</strong> form when cations and anions combine in ratios that produce zero net charge. <strong>Polyatomic ions</strong> are charged groups of atoms bonded together (like SO₄²⁻, NO₃⁻, NH₄⁺).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Monatomic ions: single atoms with charge (Na⁺, Cl⁻, Ca²⁺, O²⁻)</li>
+                        <li>Polyatomic ions: groups of atoms with overall charge (SO₄²⁻, NH₄⁺, CO₃²⁻)</li>
+                        <li>Metals form cations (positive) by losing electrons</li>
+                        <li>Nonmetals form anions (negative) by gaining electrons</li>
+                        <li>Writing formulas: balance charges to get zero net charge</li>
+                        <li>Use the "criss-cross" method: charges become subscripts</li>
+                        <li>Reduce subscripts to lowest whole number ratio</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Writing Ionic Formulas - Criss-Cross Method</h3>
+                    <div class="equation">Step 1: Write ions with charges: Al³⁺ and O²⁻</div>
+                    <div class="equation">Step 2: Criss-cross charges as subscripts: Al₂O₃</div>
+                    <div class="equation">Step 3: Check: 2(+3) + 3(-2) = 0 ✓</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Write the formula for calcium nitrate.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Calcium ion: Ca²⁺</p>
+                    <p>Nitrate ion: NO₃⁻</p>
+                    <p>Balance charges: Need 2 NO₃⁻ for each Ca²⁺</p>
+                    <p><strong>Formula: Ca(NO₃)₂</strong></p>
+                    <p>Check: (+2) + 2(-1) = 0 ✓</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>🎯 Important:</strong> Polyatomic ions stay together as units! When you need more than one polyatomic ion, use parentheses: Ca(OH)₂, not CaO₂H₂.
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Monatomic and Polyatomic Ions</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/A1-PS3fGOw8" 
+                                title="Monatomic and Polyatomic Ions"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Writing Formulas for Ionic Compounds</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/REdYqnSIjCg" 
+                                title="Writing Formulas for Ionic Compounds"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(3)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="section" id="section4">
+                <div class="section-header">
+                    <span class="emoji">👑</span>
+                    <h2>Section 4: Naming Ionic Compounds</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Ionic Nomenclature Rules</h3>
+                    <p><strong>Type I</strong> ionic compounds contain metals that form only one charge (like Na⁺, Ca²⁺, Al³⁺). Name: [metal name] + [nonmetal root]-ide. <strong>Type II</strong> ionic compounds contain metals with variable charges (like Fe²⁺/Fe³⁺, Cu⁺/Cu²⁺). Name: [metal name](Roman numeral) + [nonmetal root]-ide. For polyatomic ions, keep their names as-is (like sulfate, nitrate, carbonate).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Type I metals: Groups 1, 2, Al, Zn, Ag, Cd - form only one charge</li>
+                        <li>Type II metals: Transition metals and some post-transition - variable charges</li>
+                        <li>Type I naming: Just metal name + nonmetal-ide (NaCl = sodium chloride)</li>
+                        <li>Type II naming: Metal(charge) + nonmetal-ide (FeCl₃ = iron(III) chloride)</li>
+                        <li>With polyatomic ions: keep polyatomic name (CaSO₄ = calcium sulfate)</li>
+                        <li>Common polyatomic ions: SO₄²⁻ (sulfate), NO₃⁻ (nitrate), OH⁻ (hydroxide), CO₃²⁻ (carbonate)</li>
+                        <li>NH₄⁺ (ammonium) is positive - only common polyatomic cation!</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Determining Charge for Type II Metals</h3>
+                    <div class="equation">FeCl₂: Cl⁻ = -1, need 2 → Total negative = -2</div>
+                    <div class="equation">So Fe must be +2 → iron(II) chloride</div>
+                    <div class="equation">FeCl₃: Cl⁻ = -1, need 3 → Total negative = -3</div>
+                    <div class="equation">So Fe must be +3 → iron(III) chloride</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Name these compounds: (a) MgBr₂ (b) Cu₂O (c) Al(NO₃)₃</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>(a) Mg²⁺ is Type I → <strong>magnesium bromide</strong></p>
+                    <p>(b) Cu is Type II; 2 Cu balance 1 O²⁻, so each Cu is +1 → <strong>copper(I) oxide</strong></p>
+                    <p>(c) Al³⁺ is Type I, NO₃⁻ is nitrate → <strong>aluminum nitrate</strong></p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>⚠️ Watch Out:</strong> The Roman numeral shows the metal's charge, NOT the number of atoms! Fe₂O₃ is iron(III) oxide, not iron(II) oxide, because each Fe is +3.
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Naming Type I Ionic Compounds</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/wCVdwxuh__U" 
+                                title="Naming Type I Ionic Compounds"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Naming Type II Ionic Compounds</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/CTvvJRGMdxY" 
+                                title="Naming Type II Ionic Compounds"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(4)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="section" id="section5">
+                <div class="section-header">
+                    <span class="emoji">🔵</span>
+                    <h2>Section 5: Naming Molecular Compounds</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Molecular Compound Nomenclature</h3>
+                    <p><strong>Molecular (covalent) compounds</strong> form between two nonmetals sharing electrons. Naming uses <strong>Greek prefixes</strong> to indicate the number of each atom. Format: [prefix]-[first element] [prefix]-[second element]-ide. The prefix "mono-" is omitted for the first element but used for the second if there's only one atom. Common exceptions: H₂O (water), NH₃ (ammonia), CH₄ (methane).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Greek prefixes: mono(1), di(2), tri(3), tetra(4), penta(5), hexa(6), hepta(7), octa(8), nona(9), deca(10)</li>
+                        <li>First element: use prefix only if >1 atom (CO not monocarbon monoxide)</li>
+                        <li>Second element: always use prefix + change ending to "-ide"</li>
+                        <li>CO₂ = carbon dioxide (not monocarbon dioxide)</li>
+                        <li>N₂O₄ = dinitrogen tetraoxide (both get prefixes)</li>
+                        <li>Drop "a" or "o" before vowels: "tetraoxide" not "tetraaoxide"</li>
+                        <li>These rules DON'T apply to ionic compounds - only molecular!</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Greek Prefix Reference</h3>
+                    <div class="equation">1=mono, 2=di, 3=tri, 4=tetra, 5=penta</div>
+                    <div class="equation">6=hexa, 7=hepta, 8=octa, 9=nona, 10=deca</div>
+                    <div class="equation">PCl₅ = phosphorus pentachloride</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Name these molecular compounds: (a) SO₃ (b) N₂O (c) CCl₄</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>(a) <strong>sulfur trioxide</strong> (1 S = no prefix, 3 O = tri)</p>
+                    <p>(b) <strong>dinitrogen monoxide</strong> (2 N = di, 1 O = mono)</p>
+                    <p>(c) <strong>carbon tetrachloride</strong> (1 C = no prefix, 4 Cl = tetra)</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>🔍 Key Difference:</strong> Ionic compounds DON'T use prefixes (it's calcium chloride, not calcium dichloride). Only molecular compounds use Greek prefixes!
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Naming Molecular Compounds</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/VjF8XYfvkLI" 
+                                title="Naming Molecular Compounds"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: More Practice with Molecular Compounds</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/hLxGdWoM7Fk" 
+                                title="More Practice with Molecular Compounds"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(5)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="section" id="section6">
+                <div class="section-header">
+                    <span class="emoji">💧</span>
+                    <h2>Section 6: Naming Acids & Nomenclature Summary</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Acids and Complete Nomenclature</h3>
+                    <p><strong>Acids</strong> are compounds that release H⁺ ions in water. <strong>Binary acids</strong> contain hydrogen and one other nonmetal (HCl, HBr): named "hydro[nonmetal]ic acid". <strong>Oxyacids</strong> contain hydrogen, oxygen, and another element (H₂SO₄, HNO₃). If the polyatomic ion ends in "-ate", change to "-ic acid". If it ends in "-ite", change to "-ous acid". Master all three naming systems (ionic, molecular, acids) to succeed in chemistry!</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Binary acids: hydro[root]ic acid (HCl = hydrochloric acid, HBr = hydrobromic acid)</li>
+                        <li>Oxyacids from -ate ions: [root]ic acid (H₂SO₄ from SO₄²⁻ sulfate = sulfuric acid)</li>
+                        <li>Oxyacids from -ite ions: [root]ous acid (H₂SO₃ from SO₃²⁻ sulfite = sulfurous acid)</li>
+                        <li>NO₃⁻ is nitrate → HNO₃ is nitric acid</li>
+                        <li>CO₃²⁻ is carbonate → H₂CO₃ is carbonic acid</li>
+                        <li>PO₄³⁻ is phosphate → H₃PO₄ is phosphoric acid</li>
+                        <li>Decision tree: Metal? → Ionic. Two nonmetals? → Molecular. H first + dissolves in water? → Acid</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Nomenclature Decision Tree</h3>
+                    <div class="equation">Metal + Nonmetal → IONIC (Type I or II)</div>
+                    <div class="equation">Nonmetal + Nonmetal → MOLECULAR (Greek prefixes)</div>
+                    <div class="equation">H + Nonmetal → BINARY ACID (hydro___ic)</div>
+                    <div class="equation">H + Polyatomic → OXYACID (___ic or ___ous)</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Name these acids: (a) HF (b) HNO₃ (c) H₂CO₃</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>(a) Binary acid (H + F) → <strong>hydrofluoric acid</strong></p>
+                    <p>(b) From NO₃⁻ (nitrate) → <strong>nitric acid</strong></p>
+                    <p>(c) From CO₃²⁻ (carbonate) → <strong>carbonic acid</strong></p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>🎓 Master Strategy:</strong> First identify compound type (ionic/molecular/acid), then apply the correct naming rules. Different types = different rules!
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Naming Acids</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/W_AHDPMBqrA" 
+                                title="Naming Acids"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(6)">Complete This Section ✓</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="update-notice">
+                <strong>Last Updated:</strong> January 30, 2026 | <strong>Version:</strong> 1.0
+            </div>
+            <p>Interactive review materials based on OpenStax Chemistry: Atoms First</p>
+            <p>Dr. Dan videos courtesy of Dr. Dan's YouTube channel</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="emoji">🎉</div>
+        <div id="toastMessage">Section completed!</div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay" onclick="hideSuccess()">
+        <div class="success-message">
+            <h2>🎊 PHENOMENAL WORK! 🎊</h2>
+            <p>You've mastered all 6 sections of Chapter 4!</p>
+            <p style="margin-top: 20px; font-size: 1.2em;">You're a nomenclature champion! ⚗️</p>
+            <p style="margin-top: 30px; font-size: 1em; opacity: 0.9;">Click anywhere to continue</p>
+        </div>
+    </div>
+
+    <!-- Reset Button -->
+    <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+
+    <script>
+        // Progress tracking
+        let completedSections = JSON.parse(localStorage.getItem('chapter4ProgressEpic') || '[]');
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            updateProgress();
+        });
+
+        function completeSection(sectionNum) {
+            if (!completedSections.includes(sectionNum)) {
+                completedSections.push(sectionNum);
+                localStorage.setItem('chapter4ProgressEpic', JSON.stringify(completedSections));
+                
+                // Small confetti for this section
+                createConfetti(100);
+                
+                // Show toast
+                showToast(`Section ${sectionNum} completed! (${completedSections.length}/6)`);
+                
+                // Update UI
+                updateProgress();
+                
+                // Check if all complete
+                if (completedSections.length === 6) {
+                    setTimeout(() => {
+                        triggerEpicCelebration();
+                    }, 1000);
+                } else {
+                    // Scroll to top after a moment
+                    setTimeout(() => {
+                        window.scrollTo({top: 0, behavior: 'smooth'});
+                    }, 1500);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const percentage = (completedSections.length / 6) * 100;
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = Math.round(percentage) + '%';
+            
+            // Update progress message
+            if (percentage === 0) {
+                progressText.textContent = "Ready to master compounds and nomenclature! Complete all sections.";
+            } else if (percentage < 50) {
+                progressText.textContent = "Great start! You're learning the language of chemistry!";
+            } else if (percentage < 100) {
+                progressText.textContent = "Excellent! Keep going - nomenclature mastery is within reach!";
+            } else {
+                progressText.textContent = "🎉 Outstanding! You can now name any compound you encounter! 🎉";
+            }
+            
+            // Update tracker tiles and section buttons
+            for (let i = 1; i <= 6; i++) {
+                const tile = document.querySelectorAll('.tracker-tile')[i-1];
+                const button = document.querySelectorAll('.complete-btn')[i-1];
+                
+                if (completedSections.includes(i)) {
+                    tile.classList.add('completed');
+                    button.classList.add('completed');
+                    button.textContent = 'Completed ✓';
+                } else {
+                    tile.classList.remove('completed');
+                    button.classList.remove('completed');
+                    button.textContent = 'Complete This Section ✓';
+                }
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            element.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function createConfetti(count) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#fdcb6e', '#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function triggerEpicCelebration() {
+            const container = document.querySelector('.container');
+            container.classList.add('shake');
+            
+            // Wave 1: Center explosion
+            setTimeout(() => createConfetti(500), 0);
+            
+            // Wave 2: Corner explosions
+            setTimeout(() => {
+                createCornerExplosions();
+            }, 500);
+            
+            // Wave 3: Fireworks
+            setTimeout(() => {
+                createFireworks(10);
+            }, 1000);
+            
+            // Wave 4: Emoji explosions
+            setTimeout(() => {
+                createEmojiExplosion(50);
+            }, 1500);
+            
+            // Wave 5: Continuous sparkles
+            setTimeout(() => {
+                createSparkles(5000);
+            }, 2000);
+            
+            // Show success overlay
+            setTimeout(() => {
+                document.getElementById('successOverlay').classList.add('show');
+            }, 2500);
+            
+            // Remove shake
+            setTimeout(() => {
+                container.classList.remove('shake');
+            }, 500);
+            
+            // Scroll to top
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function createCornerExplosions() {
+            const positions = [
+                {left: '0', top: '0'},
+                {right: '0', top: '0'},
+                {left: '0', bottom: '0'},
+                {right: '0', bottom: '0'}
+            ];
+            
+            positions.forEach(pos => {
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    Object.assign(confetti.style, pos);
+                    confetti.style.background = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#fdcb6e'][Math.floor(Math.random() * 4)];
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+            });
+        }
+
+        function createFireworks(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    createFirework(x, y);
+                }, i * 200);
+            }
+        }
+
+        function createFirework(x, y) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#fdcb6e', '#6c5ce7'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = color;
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 2 + Math.random() * 2;
+                particle.style.setProperty('--tx', Math.cos(angle) * velocity * 50 + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * velocity * 50 + 'px');
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        function createEmojiExplosion(count) {
+            const emojis = ['⚗️', '🧪', '⚡', '👑', '🔵', '💧', '✨', '🎯', '💯', '🌟'];
+            
+            for (let i = 0; i < count; i++) {
+                const emoji = document.createElement('div');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.position = 'fixed';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '-50px';
+                emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                emoji.style.zIndex = '9999';
+                emoji.style.animation = 'confetti-fall 3s linear forwards';
+                document.body.appendChild(emoji);
+                setTimeout(() => emoji.remove(), 3000);
+            }
+        }
+
+        function createSparkles(duration) {
+            const interval = setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.textContent = '✨';
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.fontSize = '24px';
+                sparkle.style.zIndex = '9999';
+                sparkle.style.animation = 'confetti-fall 2s linear forwards';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 2000);
+            }, 100);
+            
+            setTimeout(() => clearInterval(interval), duration);
+        }
+
+        function hideSuccess() {
+            document.getElementById('successOverlay').classList.remove('show');
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset your progress? This cannot be undone.')) {
+                localStorage.removeItem('chapter4ProgressEpic');
+                completedSections = [];
+                updateProgress();
+                showToast('Progress reset! Start fresh.');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+    </script>
+</body>
+</html>
