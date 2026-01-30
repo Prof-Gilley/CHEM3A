@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: The Mole and Chemical Formulas - Complete Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+        }
+
+        .tracker-tile {
+            background: white;
+            border: 3px solid #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tracker-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .tracker-tile.completed {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #764ba2;
+        }
+
+        .tracker-tile .emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .tracker-tile .title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .tracker-tile .video-count {
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        .tracker-tile .checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            display: none;
+        }
+
+        .tracker-tile.completed .checkmark {
+            display: block;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section-header .emoji {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+
+        .section-header h2 {
+            color: #667eea;
+            font-size: 1.8em;
+        }
+
+        .definition-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .definition-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .key-points {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .key-points h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .key-points li:before {
+            content: "🔬";
+            position: absolute;
+            left: 0;
+        }
+
+        .equation-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc107;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .equation-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .equation {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #495057;
+            margin: 10px 0;
+        }
+
+        .example-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #0066cc;
+            margin-bottom: 20px;
+        }
+
+        .example-box h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 20px;
+        }
+
+        .alert-box strong {
+            color: #856404;
+        }
+
+        .video-container {
+            margin: 25px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .complete-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .complete-btn:active {
+            transform: translateY(0);
+        }
+
+        .complete-btn.completed {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            text-align: center;
+            color: #6c757d;
+            border-top: 3px solid #667eea;
+        }
+
+        .update-notice {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .reset-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.6);
+        }
+
+        .toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: top 0.5s ease;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .toast.show {
+            top: 30px;
+        }
+
+        .toast .emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(102, 126, 234, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            cursor: pointer;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-message {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .success-message h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+        }
+
+        .success-message p {
+            font-size: 1.5em;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .tracker-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+                padding: 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section-header h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🧮 Chapter 5: The Mole and Chemical Formulas</h1>
+            <p>Complete Interactive Review Guide</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <div class="progress-text" id="progressText">Start your journey! Complete all sections to master the mole concept.</div>
+        </div>
+
+        <!-- Progress Tracker Grid -->
+        <div class="tracker-grid">
+            <div class="tracker-tile" onclick="scrollToSection('section1')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">🔢</div>
+                <div class="title">Avogadro's Number</div>
+                <div class="video-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section2')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">⚖️</div>
+                <div class="title">Molar Mass</div>
+                <div class="video-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section3')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">⚛️</div>
+                <div class="title">Mass-Particle Conversions</div>
+                <div class="video-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section4')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">📊</div>
+                <div class="title">Percent Composition</div>
+                <div class="video-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section5')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">🧪</div>
+                <div class="title">Empirical Formulas</div>
+                <div class="video-count">1 video</div>
+            </div>
+            <div class="tracker-tile" onclick="scrollToSection('section6')">
+                <div class="checkmark">✓</div>
+                <div class="emoji">🗺️</div>
+                <div class="title">Mole Road Map</div>
+                <div class="video-count">Synthesis</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Section 1 -->
+            <div class="section" id="section1">
+                <div class="section-header">
+                    <span class="emoji">🔢</span>
+                    <h2>Section 1: Avogadro's Number & Mole-Atom Conversions</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What is a Mole?</h3>
+                    <p>A <strong>mole</strong> is the SI unit for amount of substance. One mole contains exactly <strong>6.022 × 10²³</strong> particles (atoms, molecules, ions, or formula units). This number is called <strong>Avogadro's Number</strong> (Nₐ). The mole allows us to count atoms and molecules by weighing them!</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>1 mole = 6.022 × 10²³ particles (Avogadro's Number)</li>
+                        <li>The mole is a counting unit, like a dozen (12) or a gross (144)</li>
+                        <li>It bridges the microscopic world (atoms) with the macroscopic world (grams)</li>
+                        <li>Use dimensional analysis to convert between moles and atoms</li>
+                        <li>Avogadro's Number is the same for ALL substances</li>
+                        <li>Think of it as the "chemist's dozen" for counting particles</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Mole-Atom Conversion Formula</h3>
+                    <div class="equation">atoms = moles × 6.022 × 10²³ atoms/mol</div>
+                    <div class="equation">moles = atoms ÷ 6.022 × 10²³ atoms/mol</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> How many atoms are in 2.5 moles of carbon?</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>2.5 mol C × (6.022 × 10²³ atoms/1 mol) = 1.51 × 10²⁴ atoms of C</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>⚠️ Common Mistake:</strong> Don't confuse moles with grams! Moles count particles, grams measure mass. They're related but different units.
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Avogadro's Number and the Mole</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/wB01PrQBxVw" 
+                                title="Avogadro's Number and the Mole"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(1)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="section" id="section2">
+                <div class="section-header">
+                    <span class="emoji">⚖️</span>
+                    <h2>Section 2: Molar Mass & Mole-Mass Conversions</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What is Molar Mass?</h3>
+                    <p><strong>Molar mass</strong> is the mass of one mole of a substance, expressed in grams per mole (g/mol). It's numerically equal to the atomic or molecular mass, but the units are g/mol instead of amu. Molar mass is your conversion factor between grams and moles!</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Molar mass has units of g/mol (grams per mole)</li>
+                        <li>For elements, molar mass equals atomic mass from the periodic table</li>
+                        <li>For compounds, add up all atomic masses from the formula</li>
+                        <li>Use the periodic table to find atomic masses</li>
+                        <li>Molar mass is the bridge between mass (grams) and amount (moles)</li>
+                        <li>Always include units in your calculations to avoid errors</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Mole-Mass Conversion Formulas</h3>
+                    <div class="equation">mass (g) = moles × molar mass (g/mol)</div>
+                    <div class="equation">moles = mass (g) ÷ molar mass (g/mol)</div>
+                    <div class="equation">Molar Mass = Σ (atomic masses × subscripts)</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Calculate the molar mass of H₂O and find how many moles are in 36.0 g of water.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Molar mass = 2(1.008) + 1(16.00) = 18.016 g/mol</p>
+                    <p>moles = 36.0 g ÷ 18.016 g/mol = 2.00 mol H₂O</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>💡 Pro Tip:</strong> When calculating molar mass for compounds, don't forget to multiply each atomic mass by its subscript in the chemical formula!
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Molar Mass and Conversions</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/mvdjSfWFdaU" 
+                                title="Molar Mass and Conversions"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(2)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="section" id="section3">
+                <div class="section-header">
+                    <span class="emoji">⚛️</span>
+                    <h2>Section 3: Mass and Particle Conversions</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Combining Conversions</h3>
+                    <p>Now we combine our two conversion skills! To convert between <strong>mass</strong> (grams) and <strong>number of particles</strong> (atoms, molecules, formula units), we must go through <strong>moles</strong> as an intermediate step. Think of moles as the central hub connecting all quantity measurements in chemistry.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Mass ↔ Moles ↔ Particles: Always go through moles!</li>
+                        <li>Use molar mass to convert between grams and moles</li>
+                        <li>Use Avogadro's Number to convert between moles and particles</li>
+                        <li>Two-step problems: grams → moles → particles (or reverse)</li>
+                        <li>Dimensional analysis is your friend - units must cancel properly</li>
+                        <li>Set up conversion factors so unwanted units cancel out</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Two-Step Conversion Path</h3>
+                    <div class="equation">Grams → (÷ molar mass) → Moles → (× Nₐ) → Particles</div>
+                    <div class="equation">Particles → (÷ Nₐ) → Moles → (× molar mass) → Grams</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> How many molecules are in 44.0 g of CO₂? (Molar mass CO₂ = 44.01 g/mol)</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Step 1: 44.0 g CO₂ × (1 mol/44.01 g) = 1.00 mol CO₂</p>
+                    <p>Step 2: 1.00 mol × (6.022 × 10²³ molecules/mol) = 6.02 × 10²³ molecules CO₂</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>🎯 Strategy:</strong> Always write out your conversion factors showing units. Make sure units cancel to give you the answer in the units you want!
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Mass to Particles Conversions</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/ZtWHJci1vgc" 
+                                title="Mass to Particles Conversions"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(3)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="section" id="section4">
+                <div class="section-header">
+                    <span class="emoji">📊</span>
+                    <h2>Section 4: Percent Composition</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>What is Percent Composition?</h3>
+                    <p><strong>Percent composition</strong> tells you the percentage by mass of each element in a compound. It answers the question: "What fraction of this compound's mass comes from each element?" This is useful for analyzing unknown compounds and checking purity of samples.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Percent composition = (mass of element / total mass of compound) × 100%</li>
+                        <li>Calculate using molar masses from the chemical formula</li>
+                        <li>All percentages in a compound should add up to 100%</li>
+                        <li>Percent composition is the same for any sample size of a pure compound</li>
+                        <li>Used in experimental analysis to identify unknown compounds</li>
+                        <li>Can work backwards: percent composition → empirical formula</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Percent Composition Formula</h3>
+                    <div class="equation">% Element = (mass of element in 1 mol compound / molar mass of compound) × 100%</div>
+                    <div class="equation">% Element = (n × atomic mass / formula mass) × 100%</div>
+                    <p style="margin-top: 10px; font-size: 0.9em;">where n = subscript of element in formula</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> Find the percent composition of water, H₂O.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Molar mass H₂O = 2(1.008) + 16.00 = 18.016 g/mol</p>
+                    <p>% H = [2(1.008) / 18.016] × 100% = 11.19% H</p>
+                    <p>% O = [16.00 / 18.016] × 100% = 88.81% O</p>
+                    <p>Check: 11.19% + 88.81% = 100.00% ✓</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>✓ Check Your Work:</strong> All percent compositions in a compound must sum to 100% (allowing for small rounding errors). If they don't, recheck your calculations!
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Percent Composition</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/r5ciwMWV8Ns" 
+                                title="Percent Composition"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(4)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="section" id="section5">
+                <div class="section-header">
+                    <span class="emoji">🧪</span>
+                    <h2>Section 5: Empirical Formulas & Hydrates</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>Empirical vs Molecular Formulas</h3>
+                    <p>An <strong>empirical formula</strong> shows the simplest whole-number ratio of atoms in a compound (e.g., CH₂O). A <strong>molecular formula</strong> shows the actual number of atoms (e.g., C₆H₁₂O₆ for glucose). The empirical formula is found from experimental data like percent composition. <strong>Hydrates</strong> are compounds that contain water molecules in their crystal structure.</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Empirical formula = simplest whole-number ratio of elements</li>
+                        <li>Start with percent composition or mass data for each element</li>
+                        <li>Convert masses to moles, then divide by the smallest number of moles</li>
+                        <li>If you get non-whole numbers, multiply all by the same factor</li>
+                        <li>Hydrates contain water (H₂O) as part of their crystal structure</li>
+                        <li>Hydrate formula: Compound · nH₂O (e.g., CuSO₄·5H₂O)</li>
+                        <li>Calculate percent water in hydrate for purity analysis</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Empirical Formula Steps</h3>
+                    <div class="equation">1. % → grams (assume 100g sample)</div>
+                    <div class="equation">2. grams → moles (divide by molar mass)</div>
+                    <div class="equation">3. moles → ratio (divide all by smallest)</div>
+                    <div class="equation">4. ratio → whole numbers (multiply if needed)</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> A compound is 40.0% C, 6.7% H, 53.3% O by mass. Find the empirical formula.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Assume 100g: 40.0g C, 6.7g H, 53.3g O</p>
+                    <p>Moles: 40.0/12.01 = 3.33 mol C, 6.7/1.008 = 6.6 mol H, 53.3/16.00 = 3.33 mol O</p>
+                    <p>Ratio (÷3.33): C₁H₂O₁ = <strong>CH₂O</strong></p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>💧 Hydrate Note:</strong> When heating hydrates, the water evaporates. The mass lost equals the mass of water in the compound. This helps determine the hydrate formula!
+                </div>
+
+                <div class="video-container">
+                    <div class="video-title">📺 Dr. Dan: Empirical Formulas</div>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/Uk5EulrSWeI" 
+                                title="Empirical Formulas"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(5)">Complete This Section ✓</button>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="section" id="section6">
+                <div class="section-header">
+                    <span class="emoji">🗺️</span>
+                    <h2>Section 6: Molecular Formulas & Mole Road Map</h2>
+                </div>
+
+                <div class="definition-card">
+                    <h3>From Empirical to Molecular Formula</h3>
+                    <p>The <strong>molecular formula</strong> is a whole-number multiple of the empirical formula. To find it, you need the compound's molar mass (from experimental data like mass spectrometry). The <strong>Mole Road Map</strong> is a visual guide showing all possible conversions between grams, moles, particles, liters (for gases), and molarity (for solutions).</p>
+                </div>
+
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+                        <li>Molecular formula = (Empirical formula)ₙ where n is a whole number</li>
+                        <li>Find n by dividing molar mass by empirical formula mass</li>
+                        <li>n should be a whole number (or very close due to rounding)</li>
+                        <li>The Mole Road Map connects all quantity measurements in chemistry</li>
+                        <li>Moles are always the central hub - convert to moles first!</li>
+                        <li>Master this chapter - it's the foundation for stoichiometry!</li>
+                        <li>Practice, practice, practice with dimensional analysis</li>
+                    </ul>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Finding Molecular Formula</h3>
+                    <div class="equation">n = Molar Mass / Empirical Formula Mass</div>
+                    <div class="equation">Molecular Formula = (Empirical Formula) × n</div>
+                    <div class="equation" style="margin-top: 15px; font-size: 1.1em;">🗺️ MOLE ROAD MAP 🗺️</div>
+                    <div class="equation" style="font-size: 0.95em;">Particles ↔ Moles ↔ Grams</div>
+                    <div class="equation" style="font-size: 0.95em;">(use Nₐ) (use molar mass)</div>
+                </div>
+
+                <div class="example-box">
+                    <h3>Example Problem</h3>
+                    <p><strong>Question:</strong> A compound has empirical formula CH₂O and molar mass 180 g/mol. Find the molecular formula.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Empirical formula mass = 12.01 + 2(1.008) + 16.00 = 30.03 g/mol</p>
+                    <p>n = 180 / 30.03 = 6.0</p>
+                    <p>Molecular formula = (CH₂O)₆ = <strong>C₆H₁₂O₆</strong> (glucose!)</p>
+                </div>
+
+                <div class="alert-box">
+                    <strong>🎓 Big Picture:</strong> The mole concept connects everything in chemistry! Master these conversions and you'll succeed in stoichiometry, solutions, and gas laws ahead.
+                </div>
+
+                <button class="complete-btn" onclick="completeSection(6)">Complete This Section ✓</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="update-notice">
+                <strong>Last Updated:</strong> January 30, 2026 | <strong>Version:</strong> 1.0
+            </div>
+            <p>Interactive review materials based on OpenStax Chemistry: Atoms First</p>
+            <p>Dr. Dan videos courtesy of Dr. Dan's YouTube channel</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="emoji">🎉</div>
+        <div id="toastMessage">Section completed!</div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay" onclick="hideSuccess()">
+        <div class="success-message">
+            <h2>🎊 AMAZING WORK! 🎊</h2>
+            <p>You've mastered all 6 sections of Chapter 5!</p>
+            <p style="margin-top: 20px; font-size: 1.2em;">You're ready to tackle stoichiometry! 🧮</p>
+            <p style="margin-top: 30px; font-size: 1em; opacity: 0.9;">Click anywhere to continue</p>
+        </div>
+    </div>
+
+    <!-- Reset Button -->
+    <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+
+    <script>
+        // Progress tracking
+        let completedSections = JSON.parse(localStorage.getItem('chapter5ProgressEpic') || '[]');
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            updateProgress();
+        });
+
+        function completeSection(sectionNum) {
+            if (!completedSections.includes(sectionNum)) {
+                completedSections.push(sectionNum);
+                localStorage.setItem('chapter5ProgressEpic', JSON.stringify(completedSections));
+                
+                // Small confetti for this section
+                createConfetti(100);
+                
+                // Show toast
+                showToast(`Section ${sectionNum} completed! (${completedSections.length}/6)`);
+                
+                // Update UI
+                updateProgress();
+                
+                // Check if all complete
+                if (completedSections.length === 6) {
+                    setTimeout(() => {
+                        triggerEpicCelebration();
+                    }, 1000);
+                } else {
+                    // Scroll to top after a moment
+                    setTimeout(() => {
+                        window.scrollTo({top: 0, behavior: 'smooth'});
+                    }, 1500);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const percentage = (completedSections.length / 6) * 100;
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = Math.round(percentage) + '%';
+            
+            // Update progress message
+            if (percentage === 0) {
+                progressText.textContent = "Start your journey! Complete all sections to master the mole concept.";
+            } else if (percentage < 50) {
+                progressText.textContent = "Great start! Keep going - you're building the foundation for all of chemistry!";
+            } else if (percentage < 100) {
+                progressText.textContent = "Excellent progress! You're more than halfway to mastering the mole!";
+            } else {
+                progressText.textContent = "🎉 Perfect! You've mastered the mole concept - the most important chapter! 🎉";
+            }
+            
+            // Update tracker tiles and section buttons
+            for (let i = 1; i <= 6; i++) {
+                const tile = document.querySelectorAll('.tracker-tile')[i-1];
+                const button = document.querySelectorAll('.complete-btn')[i-1];
+                
+                if (completedSections.includes(i)) {
+                    tile.classList.add('completed');
+                    button.classList.add('completed');
+                    button.textContent = 'Completed ✓';
+                } else {
+                    tile.classList.remove('completed');
+                    button.classList.remove('completed');
+                    button.textContent = 'Complete This Section ✓';
+                }
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            element.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function createConfetti(count) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#fdcb6e', '#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e'];
+            
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        function triggerEpicCelebration() {
+            const container = document.querySelector('.container');
+            container.classList.add('shake');
+            
+            // Wave 1: Center explosion
+            setTimeout(() => createConfetti(500), 0);
+            
+            // Wave 2: Corner explosions
+            setTimeout(() => {
+                createCornerExplosions();
+            }, 500);
+            
+            // Wave 3: Fireworks
+            setTimeout(() => {
+                createFireworks(10);
+            }, 1000);
+            
+            // Wave 4: Emoji explosions
+            setTimeout(() => {
+                createEmojiExplosion(50);
+            }, 1500);
+            
+            // Wave 5: Continuous sparkles
+            setTimeout(() => {
+                createSparkles(5000);
+            }, 2000);
+            
+            // Show success overlay
+            setTimeout(() => {
+                document.getElementById('successOverlay').classList.add('show');
+            }, 2500);
+            
+            // Remove shake
+            setTimeout(() => {
+                container.classList.remove('shake');
+            }, 500);
+            
+            // Scroll to top
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function createCornerExplosions() {
+            const positions = [
+                {left: '0', top: '0'},
+                {right: '0', top: '0'},
+                {left: '0', bottom: '0'},
+                {right: '0', bottom: '0'}
+            ];
+            
+            positions.forEach(pos => {
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    Object.assign(confetti.style, pos);
+                    confetti.style.background = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#fdcb6e'][Math.floor(Math.random() * 4)];
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+            });
+        }
+
+        function createFireworks(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    createFirework(x, y);
+                }, i * 200);
+            }
+        }
+
+        function createFirework(x, y) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#fdcb6e', '#6c5ce7'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = color;
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 2 + Math.random() * 2;
+                particle.style.setProperty('--tx', Math.cos(angle) * velocity * 50 + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * velocity * 50 + 'px');
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+
+        function createEmojiExplosion(count) {
+            const emojis = ['🧮', '⚛️', '🔬', '⚗️', '📊', '🧪', '✨', '🎯', '💯', '🌟'];
+            
+            for (let i = 0; i < count; i++) {
+                const emoji = document.createElement('div');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.position = 'fixed';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '-50px';
+                emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                emoji.style.zIndex = '9999';
+                emoji.style.animation = 'confetti-fall 3s linear forwards';
+                document.body.appendChild(emoji);
+                setTimeout(() => emoji.remove(), 3000);
+            }
+        }
+
+        function createSparkles(duration) {
+            const interval = setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.textContent = '✨';
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.fontSize = '24px';
+                sparkle.style.zIndex = '9999';
+                sparkle.style.animation = 'confetti-fall 2s linear forwards';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 2000);
+            }, 100);
+            
+            setTimeout(() => clearInterval(interval), duration);
+        }
+
+        function hideSuccess() {
+            document.getElementById('successOverlay').classList.remove('show');
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset your progress? This cannot be undone.')) {
+                localStorage.removeItem('chapter5ProgressEpic');
+                completedSections = [];
+                updateProgress();
+                showToast('Progress reset! Start fresh.');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+    </script>
+</body>
+</html>
