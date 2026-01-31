@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gilley-um: Board Unlocked — Ch. 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-primary: #080c1a;
+    --bg-secondary: #0f1428;
+    --bg-card: #141930;
+    --bg-tile: #1a2040;
+    --gold-dark: #b8860b;
+    --gold: #d4a017;
+    --gold-bright: #f0c840;
+    --gold-glow: rgba(212,160,23,0.45);
+    --text-primary: #f0f2f8;
+    --text-secondary: #8892a8;
+    --correct: #2ecc71;
+    --correct-glow: rgba(46,204,113,0.35);
+    --incorrect: #e74c3c;
+    --incorrect-glow: rgba(231,76,60,0.35);
+    --font-title: 'Cinzel Decorative', serif;
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Rajdhani', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+body::before {
+    content:'';
+    position:fixed; inset:0;
+    background:
+        radial-gradient(ellipse at 15% 60%, rgba(20,35,75,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(45,18,75,0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 85%, rgba(18,45,70,0.3) 0%, transparent 50%);
+    pointer-events:none; z-index:0;
+}
+
+/* ===== SCREENS ===== */
+.screen { display:none; min-height:100vh; position:relative; z-index:1; padding:20px; }
+.screen.active { display:flex; flex-direction:column; align-items:center; }
+
+/* ===== TRANSITION OVERLAY ===== */
+#transOverlay {
+    position:fixed; inset:0; background:var(--bg-primary);
+    z-index:300; opacity:0; pointer-events:none; transition:opacity .22s ease;
+}
+#transOverlay.active { opacity:1; pointer-events:all; }
+
+/* ===== INTRO ===== */
+#intro { justify-content:center; text-align:center; }
+.intro-wrap { max-width:580px; width:100%; }
+.intro-title {
+    font-family: var(--font-title);
+    font-size: clamp(2.8rem,7vw,4.2rem);
+    color: var(--gold-bright);
+    text-shadow: 0 0 50px var(--gold-glow), 0 0 100px rgba(212,160,23,0.15);
+    letter-spacing:2px; margin-bottom:6px;
+}
+.intro-sub {
+    font-family: var(--font-heading);
+    font-size: clamp(0.75rem,2vw,0.9rem);
+    color: var(--text-secondary);
+    letter-spacing:4px; text-transform:uppercase; margin-bottom:36px;
+}
+.intro-divider { width:70px; height:2px; background:var(--gold); margin:0 auto 36px; }
+.intro-rules {
+    background:var(--bg-card); border:1px solid rgba(212,160,23,0.18);
+    border-radius:14px; padding:28px 30px; margin-bottom:36px; text-align:left;
+}
+.intro-rules h3 {
+    font-family:var(--font-heading); color:var(--gold);
+    font-size:0.7rem; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:18px;
+}
+.intro-rules li {
+    list-style:none; padding:7px 0; color:var(--text-secondary);
+    font-size:0.93rem; font-weight:400; border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.intro-rules li:last-child { border-bottom:none; }
+.intro-rules li::before { content:'◆'; color:var(--gold); margin-right:10px; font-size:0.55rem; vertical-align:middle; }
+.intro-rules strong { color:var(--gold-bright); }
+.btn-start {
+    font-family:var(--font-heading);
+    background:linear-gradient(135deg,var(--gold-dark),var(--gold));
+    color:#000; border:none; padding:15px 52px;
+    font-size:1rem; font-weight:600; letter-spacing:3px; text-transform:uppercase;
+    border-radius:8px; cursor:pointer; transition:all .25s;
+    box-shadow:0 4px 22px var(--gold-glow);
+    animation:btnPulse 2.2s ease-in-out infinite;
+}
+.btn-start:hover { transform:translateY(-2px); box-shadow:0 6px 34px var(--gold-glow); }
+@keyframes btnPulse {
+    0%,100% { box-shadow:0 4px 22px var(--gold-glow); }
+    50% { box-shadow:0 4px 38px rgba(212,160,23,0.65); }
+}
+
+/* ===== GAME HEADER ===== */
+#gameHeader {
+    position:fixed; top:0; left:0; right:0;
+    background:rgba(8,12,26,0.94); backdrop-filter:blur(12px);
+    padding:11px 22px; display:none; align-items:center; justify-content:space-between;
+    z-index:200; border-bottom:1px solid rgba(212,160,23,0.12);
+}
+.hdr-title { font-family:var(--font-title); font-size:0.9rem; color:var(--gold); }
+.hdr-right { display:flex; align-items:center; gap:18px; }
+.hdr-score-wrap { text-align:right; }
+.hdr-score-label { font-size:0.6rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+.hdr-score { font-family:var(--font-heading); font-size:1.25rem; color:var(--gold-bright); }
+.btn-restart {
+    background:transparent; border:1px solid rgba(212,160,23,0.28); color:var(--text-secondary);
+    padding:5px 11px; border-radius:6px; cursor:pointer; font-family:var(--font-body);
+    font-size:0.7rem; letter-spacing:1px; text-transform:uppercase; transition:all .2s;
+}
+.btn-restart:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ===== BOARD ===== */
+#boardScreen { padding-top:62px; justify-content:flex-start; }
+.progress-wrap { width:100%; max-width:920px; margin-bottom:18px; }
+.progress-info { display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-secondary); margin-bottom:5px; letter-spacing:1px; text-transform:uppercase; }
+.progress-track { width:100%; height:3px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--gold-dark),var(--gold-bright)); border-radius:2px; transition:width .4s ease; }
+
+.board-grid {
+    display:grid; grid-template-columns:repeat(6,1fr);
+    gap:5px; width:100%; max-width:920px;
+}
+.cat-header {
+    background:var(--bg-card); border:1px solid rgba(212,160,23,0.22);
+    border-radius:8px; padding:12px 6px; text-align:center;
+    font-family:var(--font-heading); font-size:clamp(0.6rem,1.4vw,0.75rem);
+    color:var(--gold); text-transform:uppercase; letter-spacing:1px;
+    min-height:66px; display:flex; align-items:center; justify-content:center;
+    line-height:1.3;
+}
+.tile {
+    background:linear-gradient(150deg,#1f2548,#161c35);
+    border:1px solid rgba(212,160,23,0.28); border-radius:8px;
+    padding:16px 6px; text-align:center; cursor:pointer;
+    transition:all .2s ease;
+    font-family:var(--font-heading); font-size:clamp(0.95rem,2.2vw,1.35rem);
+    font-weight:600; color:var(--gold-bright);
+    text-shadow:0 2px 6px rgba(0,0,0,0.4);
+    min-height:66px; display:flex; align-items:center; justify-content:center;
+    user-select:none; position:relative;
+    opacity:0; animation:tileIn .38s ease forwards;
+}
+@keyframes tileIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.tile:hover:not(.done) {
+    background:linear-gradient(150deg,#2a3060,#1e2548);
+    border-color:var(--gold);
+    box-shadow:0 0 22px var(--gold-glow), inset 0 1px 0 rgba(255,255,255,0.08);
+    transform:translateY(-2px);
+}
+.tile:active:not(.done) { transform:translateY(0); }
+.tile.done {
+    background:rgba(12,16,30,0.7); border-color:rgba(212,160,23,0.08);
+    color:rgba(212,160,23,0.18); cursor:default; text-shadow:none;
+}
+.tile.done::after {
+    content:'✓'; position:absolute; top:4px; right:6px;
+    font-size:0.55rem; color:var(--correct); opacity:0.55;
+}
+
+/* ===== QUESTION ===== */
+#questionScreen { padding-top:62px; justify-content:center; }
+.q-wrap { width:100%; max-width:700px; animation:slideUp .28s ease; }
+@keyframes slideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.q-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.q-cat { font-family:var(--font-heading); font-size:0.7rem; color:var(--gold); letter-spacing:2px; text-transform:uppercase; }
+.q-val { font-family:var(--font-heading); font-size:1.45rem; color:var(--gold-bright); font-weight:600; }
+.clue-card {
+    background:var(--bg-card); border:1px solid rgba(212,160,23,0.18);
+    border-radius:13px; padding:30px 28px; margin-bottom:24px; text-align:center;
+}
+.clue-text { font-size:clamp(0.95rem,2.3vw,1.1rem); line-height:1.75; color:var(--text-primary); font-weight:400; }
+.opts { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+@media(max-width:520px){ .opts{grid-template-columns:1fr} }
+.opt-btn {
+    background:var(--bg-tile); border:1px solid rgba(255,255,255,0.09);
+    border-radius:10px; padding:15px 18px; color:var(--text-primary);
+    font-family:var(--font-body); font-size:0.88rem; cursor:pointer;
+    transition:all .2s; text-align:left; line-height:1.45;
+}
+.opt-btn:hover { border-color:var(--gold); background:rgba(212,160,23,0.07); transform:translateX(3px); }
+.opt-btn .opt-letter { color:var(--gold); font-weight:700; margin-right:9px; font-family:var(--font-heading); font-size:0.85rem; }
+.opt-btn.correct { border-color:var(--correct); background:rgba(46,204,113,0.1); box-shadow:0 0 14px var(--correct-glow); }
+.opt-btn.incorrect { border-color:var(--incorrect); background:rgba(231,76,60,0.1); }
+.opt-btn.reveal { border-color:var(--correct); background:rgba(46,204,113,0.14); }
+.opt-btn:disabled { cursor:default; }
+
+/* ===== FEEDBACK ===== */
+#feedbackScreen { padding-top:62px; justify-content:center; }
+.fb-wrap { width:100%; max-width:580px; text-align:center; animation:slideUp .28s ease; }
+.fb-icon { font-size:3.8rem; margin-bottom:8px; }
+.fb-result { font-family:var(--font-heading); font-size:1.7rem; margin-bottom:6px; }
+.fb-result.yes { color:var(--correct); }
+.fb-result.no { color:var(--incorrect); }
+.fb-pts { font-family:var(--font-heading); font-size:1rem; margin-bottom:22px; color:var(--text-secondary); }
+.fb-pts.gain { color:var(--correct); }
+.fb-pts.loss { color:var(--incorrect); }
+.explain-card {
+    background:var(--bg-card); border:1px solid rgba(255,255,255,0.07);
+    border-radius:12px; padding:22px 24px; margin-bottom:26px; text-align:left;
+}
+.explain-card h4 {
+    font-family:var(--font-heading); color:var(--gold);
+    font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:9px;
+}
+.explain-text { color:var(--text-secondary); font-size:0.9rem; line-height:1.72; }
+.btn-cont {
+    font-family:var(--font-heading); background:transparent;
+    border:1px solid var(--gold); color:var(--gold);
+    padding:11px 34px; font-size:0.8rem; letter-spacing:2px; text-transform:uppercase;
+    border-radius:8px; cursor:pointer; transition:all .2s;
+}
+.btn-cont:hover { background:var(--gold); color:#000; }
+
+/* ===== FINAL JEOPARDY ===== */
+.final-screen { padding-top:62px; justify-content:center; text-align:center; }
+.final-wrap { width:100%; max-width:580px; animation:slideUp .35s ease; }
+.final-title {
+    font-family:var(--font-title); font-size:clamp(1.7rem,5vw,2.6rem);
+    color:var(--gold-bright); text-shadow:0 0 32px var(--gold-glow); margin-bottom:6px;
+}
+.final-sub { color:var(--text-secondary); font-size:0.72rem; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:30px; }
+.final-cat-box {
+    background:var(--bg-card); border:1px solid rgba(212,160,23,0.28);
+    border-radius:12px; padding:36px; margin-bottom:30px;
+}
+.final-cat-label { font-size:0.62rem; color:var(--text-secondary); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+.final-cat-name { font-family:var(--font-heading); font-size:1.5rem; color:var(--gold-bright); }
+
+/* Wager */
+.wager-score-txt { font-family:var(--font-heading); font-size:1rem; color:var(--text-secondary); margin-bottom:20px; }
+.wager-score-txt span { color:var(--gold-bright); font-size:1.25rem; }
+.wager-row { display:flex; align-items:center; gap:14px; justify-content:center; margin-bottom:6px; }
+.wager-slider {
+    -webkit-appearance:none; width:200px; height:5px;
+    background:rgba(255,255,255,0.1); border-radius:3px; outline:none;
+}
+.wager-slider::-webkit-slider-thumb {
+    -webkit-appearance:none; width:20px; height:20px;
+    background:var(--gold); border-radius:50%; cursor:pointer;
+    box-shadow:0 0 10px var(--gold-glow);
+}
+.wager-amt { font-family:var(--font-heading); font-size:1.5rem; color:var(--gold-bright); min-width:90px; text-align:center; }
+.wager-presets { display:flex; gap:7px; justify-content:center; margin-top:14px; }
+.wager-pre {
+    background:rgba(212,160,23,0.08); border:1px solid rgba(212,160,23,0.28);
+    color:var(--gold); padding:4px 12px; border-radius:18px;
+    font-size:0.72rem; cursor:pointer; font-family:var(--font-body); transition:all .2s;
+}
+.wager-pre:hover { background:rgba(212,160,23,0.18); }
+.wager-note { color:var(--text-secondary); font-size:0.72rem; margin-top:14px; font-style:italic; }
+
+/* Final buttons */
+.btn-final {
+    background:var(--gold); color:#000; border:none;
+    padding:13px 38px; font-family:var(--font-heading); font-size:0.85rem;
+    letter-spacing:2px; text-transform:uppercase; border-radius:8px;
+    cursor:pointer; transition:all .2s;
+}
+.btn-final:hover { background:var(--gold-bright); transform:translateY(-1px); }
+.final-opts { margin-top:22px; animation:fadeIn .35s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ===== RESULTS ===== */
+#resultsScreen { justify-content:center; padding-bottom:50px; }
+.res-wrap { width:100%; max-width:640px; animation:slideUp .35s ease; }
+.res-title {
+    font-family:var(--font-title); font-size:clamp(1.7rem,5vw,2.4rem);
+    color:var(--gold-bright); text-align:center; margin-bottom:4px;
+    text-shadow:0 0 28px var(--gold-glow);
+}
+.res-tier { text-align:center; font-family:var(--font-heading); font-size:0.75rem; color:var(--text-secondary); letter-spacing:2px; text-transform:uppercase; margin-bottom:28px; }
+.res-tier span { color:var(--gold); }
+.res-score-box {
+    background:var(--bg-card); border:1px solid rgba(212,160,23,0.2);
+    border-radius:13px; padding:26px; text-align:center; margin-bottom:20px;
+}
+.res-score { font-family:var(--font-title); font-size:2.8rem; color:var(--gold-bright); text-shadow:0 0 18px var(--gold-glow); }
+.res-score-label { font-size:0.62rem; color:var(--text-secondary); letter-spacing:2px; text-transform:uppercase; margin-top:3px; }
+.res-stats { display:flex; justify-content:center; gap:36px; margin-top:18px; }
+.res-stat { text-align:center; }
+.res-stat-val { font-family:var(--font-heading); font-size:1.2rem; color:var(--text-primary); }
+.res-stat-lbl { font-size:0.6rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+.res-breakdown {
+    background:var(--bg-card); border:1px solid rgba(212,160,23,0.13);
+    border-radius:13px; padding:22px 24px; margin-bottom:24px;
+}
+.res-breakdown h3 { font-family:var(--font-heading); font-size:0.62rem; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; }
+.bd-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.bd-row:last-child { margin-bottom:0; }
+.bd-name { font-size:0.78rem; color:var(--text-primary); width:130px; flex-shrink:0; font-weight:500; }
+.bd-track { flex:1; height:7px; background:rgba(255,255,255,0.07); border-radius:4px; overflow:hidden; }
+.bd-fill { height:100%; border-radius:4px; transition:width .55s ease; }
+.bd-score { font-family:var(--font-heading); font-size:0.75rem; color:var(--text-secondary); width:42px; text-align:right; flex-shrink:0; }
+.btn-again {
+    display:block; margin:0 auto;
+    font-family:var(--font-heading);
+    background:linear-gradient(135deg,var(--gold-dark),var(--gold));
+    color:#000; border:none; padding:13px 42px;
+    font-size:0.85rem; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+    border-radius:8px; cursor:pointer; transition:all .2s;
+}
+.btn-again:hover { transform:translateY(-2px); box-shadow:0 4px 22px var(--gold-glow); }
+
+/* ===== TIMER ===== */
+.timer-wrap {
+    display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:20px;
+}
+.timer-num {
+    font-family:var(--font-heading); font-size:3.2rem; font-weight:600;
+    color:var(--gold-bright); line-height:1;
+    text-shadow:0 0 20px var(--gold-glow);
+    transition:color .3s, text-shadow .3s;
+    letter-spacing:-1px;
+}
+.timer-num.warn { color:#f39c12; text-shadow:0 0 20px rgba(243,156,18,0.45); }
+.timer-num.danger { color:var(--incorrect); text-shadow:0 0 24px var(--incorrect-glow); animation:numPulse .5s ease-in-out infinite; }
+@keyframes numPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+.timer-label {
+    font-family:var(--font-body); font-size:0.58rem;
+    color:var(--text-secondary); letter-spacing:3px; text-transform:uppercase;
+    margin-top:-6px; margin-bottom:2px;
+}
+.timer-track {
+    width:100%; height:5px;
+    background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;
+}
+.timer-fill {
+    height:100%; border-radius:3px;
+    background:var(--gold); width:100%;
+    transition:width 0.95s linear, background .3s;
+}
+.timer-fill.warn { background:#f39c12; }
+.timer-fill.danger { background:var(--incorrect); }
+
+/* ===== UPDATE CLAUSE ===== */
+.update-clause {
+    position:fixed; bottom:0; left:0; right:0; text-align:center;
+    font-size:0.56rem; color:rgba(136,146,168,0.35); padding:7px;
+    letter-spacing:0.4px; z-index:50; pointer-events:none;
+    font-family:var(--font-body);
+}
+</style>
+</head>
+<body>
+
+<div id="transOverlay"></div>
+<div class="update-clause">Updated: January 31, 2026 &nbsp;|&nbsp; Version 1.2 &nbsp;|&nbsp; CHEM 3A – Spring 2026 – Chapter 3 &nbsp;|&nbsp; Prof. Gilley, Fresno City College</div>
+
+<!-- INTRO -->
+<div class="screen active" id="intro">
+<div class="intro-wrap">
+    <h1 class="intro-title">Gilley-um</h1>
+    <p class="intro-sub">Board Unlocked &mdash; Chapter 3</p>
+    <div class="intro-divider"></div>
+    <div class="intro-rules">
+        <h3>How to Play</h3>
+        <ul>
+            <li>Pick any tile on the board — higher dollar values are tougher</li>
+            <li>Read the clue and select your answer from 4 choices</li>
+            <li>Correct answers earn points; wrong answers <em>cost</em> points — just like the show</li>
+            <li>Every answer includes an explanation so you actually learn something</li>
+            <li>Clear all 30 tiles to unlock <strong>Final Jeopardy</strong> — and wager it all</li>
+        </ul>
+    </div>
+    <button class="btn-start" onclick="startGame()">Start Game</button>
+</div>
+</div>
+
+<!-- HEADER -->
+<div id="gameHeader">
+    <div class="hdr-title">Gilley-um</div>
+    <div class="hdr-right">
+        <div class="hdr-score-wrap">
+            <div class="hdr-score-label">Score</div>
+            <div class="hdr-score" id="hdrScore">$0</div>
+        </div>
+        <button class="btn-restart" onclick="confirmRestart()">Restart</button>
+    </div>
+</div>
+
+<!-- BOARD -->
+<div class="screen" id="boardScreen">
+    <div class="progress-wrap">
+        <div class="progress-info">
+            <span id="progText">0 of 30 completed</span>
+            <span id="progPct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+    </div>
+    <div class="board-grid" id="boardGrid"></div>
+</div>
+
+<!-- QUESTION -->
+<div class="screen" id="questionScreen">
+<div class="q-wrap">
+    <div class="q-meta">
+        <span class="q-cat" id="qCat"></span>
+        <span class="q-val" id="qVal"></span>
+    </div>
+    <div class="clue-card"><p class="clue-text" id="qClue"></p></div>
+    <div class="timer-wrap">
+        <div class="timer-num" id="timerNum">0</div>
+        <div class="timer-label">seconds remaining</div>
+        <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    </div>
+    <div class="opts" id="qOpts"></div>
+</div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="screen" id="feedbackScreen">
+<div class="fb-wrap">
+    <div class="fb-icon" id="fbIcon"></div>
+    <div class="fb-result" id="fbResult"></div>
+    <div class="fb-pts" id="fbPts"></div>
+    <div class="explain-card">
+        <h4>Explanation</h4>
+        <p class="explain-text" id="fbExplain"></p>
+    </div>
+    <button class="btn-cont" id="fbBtn">Back to Board</button>
+</div>
+</div>
+
+<!-- FINAL: CATEGORY -->
+<div class="screen final-screen" id="finalCat">
+<div class="final-wrap">
+    <h2 class="final-title">Final Jeopardy</h2>
+    <p class="final-sub">Chapter 3 — The Big Picture</p>
+    <div class="final-cat-box">
+        <p class="final-cat-label">Category</p>
+        <p class="final-cat-name" id="finalCatName"></p>
+    </div>
+    <button class="btn-final" onclick="goFinalWager()">Place Your Wager</button>
+</div>
+</div>
+
+<!-- FINAL: WAGER -->
+<div class="screen final-screen" id="finalWager">
+<div class="final-wrap">
+    <h2 class="final-title">Final Jeopardy</h2>
+    <p class="final-sub">How much will you wager?</p>
+    <p class="wager-score-txt">Your score: <span id="wagerScore">$0</span></p>
+    <div class="wager-row">
+        <input type="range" class="wager-slider" id="wagerSlider" min="0" max="100" value="50" oninput="updateWager()">
+        <div class="wager-amt" id="wagerAmt">$50</div>
+    </div>
+    <div class="wager-presets" id="wagerPresets"></div>
+    <p class="wager-note" id="wagerNote"></p>
+    <div style="margin-top:28px;"><button class="btn-final" onclick="goFinalQ()">Lock In Wager</button></div>
+</div>
+</div>
+
+<!-- FINAL: QUESTION -->
+<div class="screen final-screen" id="finalQ">
+<div class="final-wrap">
+    <h2 class="final-title">Final Jeopardy</h2>
+    <p class="final-sub">Wager locked: <span id="finalWagerDisp" style="color:var(--gold-bright)">$0</span></p>
+    <div class="clue-card" style="margin-bottom:22px;"><p class="clue-text" id="finalClue"></p></div>
+    <div class="timer-wrap" id="finalTimerWrap" style="display:none">
+        <div class="timer-num" id="finalTimerNum">60</div>
+        <div class="timer-label">seconds remaining</div>
+        <div class="timer-track"><div class="timer-fill" id="finalTimerFill"></div></div>
+    </div>
+    <div id="finalOptsWrap"><button class="btn-final" onclick="revealFinalOpts()">I'm Ready — Reveal Options</button></div>
+</div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="resultsScreen">
+<div class="res-wrap">
+    <h2 class="res-title">Game Complete</h2>
+    <p class="res-tier">Performance: <span id="resTier">—</span></p>
+    <div class="res-score-box">
+        <div class="res-score" id="resScore">$0</div>
+        <p class="res-score-label">Final Score</p>
+        <div class="res-stats">
+            <div class="res-stat"><div class="res-stat-val" id="resCorrect">0</div><div class="res-stat-lbl">Correct</div></div>
+            <div class="res-stat"><div class="res-stat-val" id="resIncorrect">0</div><div class="res-stat-lbl">Incorrect</div></div>
+            <div class="res-stat"><div class="res-stat-val" id="resAcc">0%</div><div class="res-stat-lbl">Accuracy</div></div>
+        </div>
+    </div>
+    <div class="res-breakdown">
+        <h3>Category Breakdown</h3>
+        <div id="resBreakdown"></div>
+    </div>
+    <button class="btn-again" onclick="restartGame()">Play Again</button>
+</div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const CATS = ["EM Spectrum","Bohr Model","Quantum Mech","Electron Configs","Valence & Core","Periodic Trends"];
+
+const Q = {
+"EM Spectrum":[
+{v:100,clue:"This type of electromagnetic radiation has the <b>lowest</b> energy in the entire EM spectrum.",
+ opts:["Gamma rays","X-rays","Radio waves","Ultraviolet"],ans:2,
+ exp:"Radio waves have the longest wavelengths, which means they carry the lowest energy. Remember: as wavelength increases, energy decreases."},
+{v:200,clue:"This equation relates the wavelength (λ), frequency (ν), and speed of light (c) for all electromagnetic radiation.",
+ opts:["c = λ + ν","c = λν","c = λ ÷ ν","c = ν ÷ λ"],ans:1,
+ exp:"c = λν — the speed of light equals wavelength times frequency. Since c is constant (3.00 × 10⁸ m/s), wavelength and frequency are inversely related: one goes up, the other goes down."},
+{v:300,clue:"Rank these in order of <b>increasing energy</b>:<br>visible light, radio waves, ultraviolet, gamma rays, X-rays",
+ opts:["Radio &lt; Visible &lt; UV &lt; X-rays &lt; Gamma","Visible &lt; Radio &lt; UV &lt; Gamma &lt; X-rays","Radio &lt; UV &lt; Visible &lt; X-rays &lt; Gamma","Gamma &lt; X-rays &lt; UV &lt; Visible &lt; Radio"],ans:0,
+ exp:"Energy increases as wavelength decreases across the spectrum. Full order (low→high): radio → microwaves → infrared → visible → ultraviolet → X-rays → gamma rays."},
+{v:400,clue:"5G cell phone signals use EM radiation with wavelengths of 0.001–0.01 m. This places 5G in which region of the spectrum?",
+ opts:["Infrared","Radio waves","Ultraviolet","Microwaves"],ans:3,
+ exp:"Wavelengths of 0.001–0.01 m fall in the microwave region, which sits between infrared and radio waves on the EM spectrum."},
+{v:500,clue:"Light has a frequency of 8.19 × 10<sup>14</sup> s<sup>−1</sup>. Using c = 3.00 × 10<sup>8</sup> m/s and λ = c ÷ ν, what is the wavelength?",
+ opts:["2.46 × 10<sup>6</sup> m","3.66 × 10<sup>−7</sup> m","8.19 × 10<sup>6</sup> m","1.09 × 10<sup>−5</sup> m"],ans:1,
+ exp:"λ = c ÷ ν = (3.00 × 10⁸) ÷ (8.19 × 10¹⁴) = 3.66 × 10⁻⁷ m (366 nm). That's in the ultraviolet range — just below visible light."}
+],
+"Bohr Model":[
+{v:100,clue:"In the Bohr model, when an electron drops from a <b>higher</b> energy level to a <b>lower</b> one, this happens.",
+ opts:["The electron absorbs light","The electron emits light","Nothing happens","The electron is destroyed"],ans:1,
+ exp:"Dropping to a lower energy level releases excess energy as a photon (light). Moving UP requires absorbing energy; moving DOWN releases it."},
+{v:200,clue:"For a hydrogen atom, this value of n represents the <b>ground state</b> — the lowest possible energy level.",
+ opts:["n = 0","n = 1","n = 2","n = 3"],ans:1,
+ exp:"The ground state is the lowest energy state an electron can occupy. For hydrogen, that's n = 1 (the first shell, closest to the nucleus). Any higher n is an excited state."},
+{v:300,clue:"Scientists determine which elements exist in a distant star by analyzing this unique identifier.",
+ opts:["The star's temperature","The star's mass","The star's emission spectrum","The star's color alone"],ans:2,
+ exp:"Every element has a unique emission spectrum — a fingerprint of light frequencies. By matching the spectral lines from a star to known spectra, scientists can identify elements millions of light-years away."},
+{v:400,clue:"Which electron transition in hydrogen emits a photon with the <b>most</b> energy?",
+ opts:["n = 3 → n = 2","n = 5 → n = 4","n = 4 → n = 1","n = 2 → n = 1"],ans:2,
+ exp:"Energy emitted equals the gap between energy levels. n = 4 → n = 1 spans the largest energy difference among the choices (12.75 eV), producing the highest-energy photon."},
+{v:500,clue:"A hydrogen electron absorbs a photon and jumps from n = 1 to n = 4. It then returns to the ground state in two steps: n = 4 → n = 2, then n = 2 → n = 1. How many <b>total photons</b> are emitted during the return?",
+ opts:["1","2","3","4"],ans:1,
+ exp:"Each downward transition emits exactly one photon. Two steps (4→2 and 2→1) = two photons. The combined energy of those two photons equals the energy of the single photon originally absorbed."}
+],
+"Quantum Mech":[
+{v:100,clue:"Unlike Bohr's fixed circular paths, the quantum-mechanical model describes electron locations using these 3D regions of space.",
+ opts:["Orbits","Orbitals","Rings","Tracks"],ans:1,
+ exp:"Orbitals are regions where an electron is most likely to be found — not fixed paths. This is the key difference from Bohr's orbit model. Electrons behave as waves, not tiny balls on tracks."},
+{v:200,clue:"The maximum number of electrons that a single orbital can hold is:",
+ opts:["1","2","3","4"],ans:1,
+ exp:"Each orbital holds up to 2 electrons, but they must have opposite spins (one up ↑, one down ↓). This requirement comes from the Pauli Exclusion Principle."},
+{v:300,clue:"The <b>s</b> orbital has this shape.",
+ opts:["Dumbbell","Cloverleaf","Spherical","Figure-8"],ans:2,
+ exp:"The s orbital is perfectly spherical around the nucleus. Compare: p orbitals are dumbbell-shaped (2 lobes), and d orbitals have 4 lobes in a cloverleaf-like arrangement."},
+{v:400,clue:"A <b>d</b> subshell contains this many orbitals.",
+ opts:["1","3","5","7"],ans:2,
+ exp:"The pattern: s = 1 orbital, p = 3, d = 5, f = 7. Each d orbital has a different spatial orientation. With 2 electrons max per orbital, a full d subshell holds 10 electrons."},
+{v:500,clue:"What is the <b>maximum</b> number of electrons that can fill the entire n = 3 shell?<br><small>(Hint: n = 3 has subshells 3s, 3p, and 3d)</small>",
+ opts:["8","12","18","32"],ans:2,
+ exp:"Shell 3 has: 3s (2 e⁻) + 3p (6 e⁻) + 3d (10 e⁻) = 18 electrons total. The general formula is 2n², so 2(3²) = 18. Shell 4 would be 2(4²) = 32."}
+],
+"Electron Configs":[
+{v:100,clue:"The electron configuration of hydrogen (Z = 1) is:",
+ opts:["1s<sup>2</sup>","1s<sup>1</sup>","2s<sup>1</sup>","1p<sup>1</sup>"],ans:1,
+ exp:"Hydrogen has 1 electron. It goes into the lowest-energy subshell (Aufbau principle): 1s. One electron → superscript 1 → 1s¹. (1s² would be helium!)"},
+{v:200,clue:"The electron configuration of lithium (Z = 3) is:",
+ opts:["1s<sup>3</sup>","1s<sup>1</sup>2s<sup>2</sup>","1s<sup>2</sup>2s<sup>1</sup>","1s<sup>2</sup>2p<sup>1</sup>"],ans:2,
+ exp:"3 electrons fill lowest subshells first: 1s holds 2 (1s²), then the 3rd goes into 2s (2s¹). Result: 1s²2s¹. Note: 1s³ is impossible — an s orbital only holds 2!"},
+{v:300,clue:"When writing electron configurations, which subshell fills <b>before</b> 3d according to the Aufbau principle?",
+ opts:["3p","4s","4p","3f"],ans:1,
+ exp:"Despite 3d having a lower shell number, 4s has lower energy and fills first. This is why potassium (Z = 19) is [Ar]4s¹, not [Ar]3d¹. The Aufbau filling order diagram shows this clearly."},
+{v:400,clue:"The complete electron configuration for silicon (Si, Z = 14) is:",
+ opts:["1s<sup>2</sup>2s<sup>2</sup>2p<sup>5</sup>3s<sup>2</sup>3p<sup>1</sup>","1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>2</sup>3p<sup>2</sup>","1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>2</sup>3p<sup>4</sup>","1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>1</sup>3p<sup>3</sup>"],ans:1,
+ exp:"Si has 14 electrons. Fill in order: 1s²(2) → 2s²(4) → 2p⁶(10) → 3s²(12) → 3p²(14). The last 2 electrons land in 3p. Si is in Group 14, so it always has 4 valence electrons."},
+{v:500,clue:"The complete electron configuration for potassium (K, Z = 19) is:",
+ opts:["1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>2</sup>3p<sup>6</sup>3d<sup>1</sup>","1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>2</sup>3p<sup>6</sup>4s<sup>1</sup>","1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>2</sup>3p<sup>5</sup>4s<sup>2</sup>","1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>3s<sup>2</sup>3p<sup>6</sup>4p<sup>1</sup>"],ans:1,
+ exp:"After filling through 3p⁶ (18 e⁻), electron 19 goes into 4s — NOT 3d — because 4s has lower energy. This is a classic Aufbau application and a very common exam question."}
+],
+"Valence & Core":[
+{v:100,clue:"Sodium (Na, Z = 11) has this many <b>valence electrons</b>.",
+ opts:["1","2","8","11"],ans:0,
+ exp:"Na's configuration is 1s²2s²2p⁶3s¹. Valence electrons live in the highest-numbered shell (n = 3), which has just 1 electron. All Group 1 elements have exactly 1 valence electron."},
+{v:200,clue:"In the abbreviated configuration [Ne]3s<sup>1</sup>, the symbol [Ne] represents:",
+ opts:["One neon atom bonded to sodium","The core electrons (1s<sup>2</sup>2s<sup>2</sup>2p<sup>6</sup>)","The valence electrons only","The total electron count"],ans:1,
+ exp:"[Ne] is shorthand for neon's full configuration (1s²2s²2p⁶ = 10 electrons). It replaces all the core electrons so you only need to write out the valence electrons explicitly."},
+{v:300,clue:"Selenium (Se, Z = 34) has this many valence electrons.<br><small>(Hint: check its position on the periodic table.)</small>",
+ opts:["2","4","6","8"],ans:2,
+ exp:"Se is in Group 16 (VIA). All Group 16 elements have 6 valence electrons. Se's configuration ends in ...4s²3d¹⁰4p⁴ — the 4s² and 4p⁴ (6 total in shell n = 4) are the valence electrons."},
+{v:400,clue:"The abbreviated (noble gas core) electron configuration for phosphorus (P, Z = 15) is:",
+ opts:["[He]2s<sup>2</sup>2p<sup>3</sup>","[Ne]3s<sup>2</sup>3p<sup>3</sup>","[Ar]3s<sup>2</sup>3p<sup>3</sup>","[Ne]3s<sup>2</sup>3p<sup>2</sup>"],ans:1,
+ exp:"P has 15 electrons. The first 10 match neon → [Ne]. The remaining 5 fill 3s²3p³. Watch out: [Ar] would be wrong because argon has 18 electrons — more than P has!"},
+{v:500,clue:"Carbon (C, Z = 6) has configuration 1s<sup>2</sup>2s<sup>2</sup>2p<sup>2</sup>. Which correctly identifies its core and valence electrons?",
+ opts:["Core: 1s<sup>2</sup> &nbsp;|&nbsp; Valence: 2s<sup>2</sup>2p<sup>2</sup> (4 valence e<sup>−</sup>)","Core: 1s<sup>2</sup>2s<sup>2</sup> &nbsp;|&nbsp; Valence: 2p<sup>2</sup> (2 valence e<sup>−</sup>)","Core: none &nbsp;|&nbsp; Valence: all 6 electrons","Core: all 6 &nbsp;|&nbsp; Valence: none"],ans:0,
+ exp:"Valence electrons are ALL electrons in the highest principal energy level. For C, that's n = 2 — which includes both 2s² and 2p² (4 electrons). Only 1s² (shell 1) are core. Don't split valence by subshell — that's a common mistake!"}
+],
+"Periodic Trends":[
+{v:100,clue:"As you move <b>down</b> a group on the periodic table, atomic radius:",
+ opts:["Stays the same","Decreases","Increases","Cannot be predicted"],ans:2,
+ exp:"Moving down a group adds electron shells. Each new shell extends farther from the nucleus, making the atom bigger. More shells = larger radius."},
+{v:200,clue:"As you move <b>right</b> across a period on the periodic table, atomic radius:",
+ opts:["Increases","Stays the same","Decreases","First increases, then decreases"],ans:2,
+ exp:"Moving right adds protons (stronger nuclear charge) without adding new shells. The tighter nuclear grip pulls the electron cloud inward → atomic radius decreases across a period."},
+{v:300,clue:"Which atom is <b>larger</b>: Na or Cs?",
+ opts:["Na","Cs","They are the same size","Cannot be determined"],ans:1,
+ exp:"Both are in Group 1. Cs is below Na on the periodic table, meaning it has more electron shells. Moving down a group always increases atomic radius → Cs is larger."},
+{v:400,clue:"Which atom has the <b>higher</b> first ionization energy (IE): Na or S?",
+ opts:["Na","S","They are the same","Cannot be determined"],ans:1,
+ exp:"IE generally increases left to right across a period. S is to the right of Na in Period 3, so removing an electron from S requires more energy. The greater nuclear charge in S holds its electrons more tightly."},
+{v:500,clue:"Which correctly ranks these three elements by <b>decreasing</b> atomic radius: C, Si, N?",
+ opts:["Si &gt; C &gt; N","N &gt; C &gt; Si","C &gt; Si &gt; N","Si &gt; N &gt; C"],ans:0,
+ exp:"Apply both trends: Si is below C (same group) → Si > C. N is to the right of C (same period) → C > N. Combined: Si > C > N. Down = bigger; right = smaller."}
+]
+};
+
+const FINAL = {
+    cat:"The Big Picture",
+    clue:"Although this 1913 model perfectly explained hydrogen's emission spectrum using quantized energy levels, it was ultimately limited to single-electron atoms and was later replaced by a more comprehensive theory that uses four quantum numbers and orbitals instead of defined circular paths.",
+    opts:["The Quantum-Mechanical Model","The Bohr Model","The Rutherford Model","The Thomson Model"],
+    ans:1,
+    exp:"Niels Bohr's 1913 model nailed hydrogen's emission spectrum with quantized orbits. But it couldn't handle multi-electron atoms. The quantum-mechanical model replaced it — using four quantum numbers and orbitals (probability regions) instead of fixed circular orbits."
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let state;
+function initState(){
+    state={score:0,done:{},correct:0,incorrect:0,catRes:{},curQ:null,wager:0};
+    CATS.forEach(c=>state.catRes[c]={correct:0,total:5});
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function fmt(n){ return (n<0?'-$'+Math.abs(n).toLocaleString():'$'+n.toLocaleString()); }
+
+// ============================================================
+// TIMER
+// ============================================================
+const TIMES={100:20,200:25,300:30,400:38,500:45};
+let timerInterval=null, timerRemaining=0, timerMax=0, timerFillEl=null, timerNumEl=null;
+
+function startTimer(seconds,onExpire,fillId,numId){
+    stopTimer();
+    timerFillEl=document.getElementById(fillId);
+    timerNumEl=document.getElementById(numId);
+    timerMax=seconds; timerRemaining=seconds;
+    timerNumEl.textContent=seconds;
+    timerNumEl.className='timer-num';
+    timerFillEl.className='timer-fill';
+    timerFillEl.style.transition='none';
+    timerFillEl.style.width='100%';
+    void timerFillEl.offsetWidth;
+    timerFillEl.style.transition='width 0.95s linear, background .3s';
+    timerInterval=setInterval(()=>{
+        timerRemaining--;
+        timerNumEl.textContent=timerRemaining;
+        const pct=(timerRemaining/timerMax)*100;
+        timerFillEl.style.width=pct+'%';
+        if(pct<=25){ timerFillEl.className='timer-fill danger'; timerNumEl.className='timer-num danger'; }
+        else if(pct<=50){ timerFillEl.className='timer-fill warn'; timerNumEl.className='timer-num warn'; }
+        if(timerRemaining<=0){ stopTimer(); onExpire(); }
+    },1000);
+}
+function stopTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval=null; } }
+
+function timeExpired(){
+    const q=state.curQ;
+    const btns=[...document.querySelectorAll('#qOpts .opt-btn')];
+    btns.forEach(b=>b.disabled=true);
+    btns[q.ans].classList.add('reveal');
+    const key=q.cat+'-'+q.val;
+    state.done[key]=true;
+    state.score-=q.val; state.incorrect++;
+    updHdr();
+    setTimeout(()=>{
+        document.getElementById('fbIcon').textContent='⏱';
+        const r=document.getElementById('fbResult');
+        r.textContent="Time's Up!"; r.className='fb-result no';
+        const p=document.getElementById('fbPts');
+        p.textContent='−$'+q.val+' points'; p.className='fb-pts loss';
+        document.getElementById('fbExplain').innerHTML=q.exp;
+        const btn=document.getElementById('fbBtn');
+        if(Object.keys(state.done).length>=30){ btn.textContent='Proceed to Final Jeopardy'; btn.onclick=()=>startFinal(); }
+        else { btn.textContent='Back to Board'; btn.onclick=()=>{ buildBoard(); go('boardScreen'); }; }
+        go('feedbackScreen');
+    },550);
+}
+
+function finalTimeExpired(){
+    const btns=[...document.querySelectorAll('#finalOptsWrap .opt-btn')];
+    btns.forEach(b=>b.disabled=true);
+    btns[FINAL.ans].classList.add('reveal');
+    state.score-=state.wager; state.incorrect++;
+    updHdr();
+    setTimeout(()=>{
+        document.getElementById('fbIcon').textContent='⏱';
+        const r=document.getElementById('fbResult');
+        r.textContent="Time's Up!"; r.className='fb-result no';
+        const p=document.getElementById('fbPts');
+        p.textContent='Final Jeopardy: −$'+state.wager; p.className='fb-pts loss';
+        document.getElementById('fbExplain').innerHTML=FINAL.exp;
+        const btn=document.getElementById('fbBtn');
+        btn.textContent='See Final Results'; btn.onclick=showResults;
+        go('feedbackScreen');
+    },550);
+}
+
+function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+function go(id){
+    const o=document.getElementById('transOverlay');
+    o.classList.add('active');
+    setTimeout(()=>{ showScreen(id); o.classList.remove('active'); },210);
+}
+function updHdr(){ document.getElementById('hdrScore').textContent=fmt(state.score); }
+
+// ============================================================
+// GAME FLOW
+// ============================================================
+function startGame(){
+    initState();
+    document.getElementById('gameHeader').style.display='flex';
+    updHdr(); buildBoard(); go('boardScreen');
+}
+
+function buildBoard(){
+    const g=document.getElementById('boardGrid'); g.innerHTML='';
+    CATS.forEach(c=>{
+        const h=document.createElement('div'); h.className='cat-header'; h.textContent=c; g.appendChild(h);
+    });
+    [100,200,300,400,500].forEach((v,ri)=>{
+        CATS.forEach((c,ci)=>{
+            const key=c+'-'+v;
+            const t=document.createElement('div');
+            t.className='tile'+(state.done[key]?' done':'');
+            t.textContent='$'+v;
+            t.style.animationDelay=((ri*6+ci)*0.045)+'s';
+            if(!state.done[key]) t.onclick=()=>pickQ(c,v);
+            g.appendChild(t);
+        });
+    });
+    updProgress();
+}
+
+function updProgress(){
+    const n=Object.keys(state.done).length;
+    const p=Math.round(n/30*100);
+    document.getElementById('progText').textContent=n+' of 30 completed';
+    document.getElementById('progPct').textContent=p+'%';
+    document.getElementById('progFill').style.width=p+'%';
+}
+
+function pickQ(cat,val){
+    const idx=val/100-1;
+    const q=Q[cat][idx];
+    state.curQ={cat,val,...q};
+    renderQ(); go('questionScreen');
+    startTimer(TIMES[val],()=>timeExpired(),'timerFill','timerNum');
+}
+
+function renderQ(){
+    const q=state.curQ;
+    document.getElementById('qCat').textContent=q.cat;
+    document.getElementById('qVal').textContent='$'+q.val;
+    document.getElementById('qClue').innerHTML=q.clue;
+    const el=document.getElementById('qOpts'); el.innerHTML='';
+    'ABCD'.split('').forEach((l,i)=>{
+        const b=document.createElement('button');
+        b.className='opt-btn';
+        b.innerHTML='<span class="opt-letter">'+l+'</span>'+q.opts[i];
+        b.onclick=()=>pick(i);
+        el.appendChild(b);
+    });
+}
+
+function pick(chosen){
+    stopTimer();
+    const q=state.curQ;
+    const ok=chosen===q.ans;
+    const btns=[...document.querySelectorAll('#qOpts .opt-btn')];
+    btns.forEach(b=>b.disabled=true);
+    if(ok){ btns[chosen].classList.add('correct'); }
+    else{ btns[chosen].classList.add('incorrect'); btns[q.ans].classList.add('reveal'); }
+
+    const key=q.cat+'-'+q.val;
+    state.done[key]=true;
+    if(ok){ state.score+=q.val; state.correct++; state.catRes[q.cat].correct++; }
+    else { state.score-=q.val; state.incorrect++; }
+    updHdr();
+    setTimeout(()=>showFB(ok),550);
+}
+
+function showFB(ok){
+    const q=state.curQ;
+    document.getElementById('fbIcon').textContent=ok?'✓':'✗';
+    const r=document.getElementById('fbResult');
+    r.textContent=ok?'Correct!':'Incorrect'; r.className='fb-result '+(ok?'yes':'no');
+    const p=document.getElementById('fbPts');
+    p.textContent=(ok?'+':'−')+'$'+q.val+' points';
+    p.className='fb-pts '+(ok?'gain':'loss');
+    document.getElementById('fbExplain').innerHTML=q.exp;
+
+    const btn=document.getElementById('fbBtn');
+    if(Object.keys(state.done).length>=30){
+        btn.textContent='Proceed to Final Jeopardy';
+        btn.onclick=()=>startFinal();
+    } else {
+        btn.textContent='Back to Board';
+        btn.onclick=()=>{ buildBoard(); go('boardScreen'); };
+    }
+    go('feedbackScreen');
+}
+
+// ============================================================
+// FINAL JEOPARDY
+// ============================================================
+function startFinal(){
+    document.getElementById('finalCatName').textContent=FINAL.cat;
+    go('finalCat');
+}
+
+function goFinalWager(){
+    const max=Math.max(state.score,0);
+    document.getElementById('wagerScore').textContent=fmt(state.score);
+    const sl=document.getElementById('wagerSlider');
+    sl.min=0; sl.max=max; sl.value=Math.round(max*0.5);
+    state.wager=parseInt(sl.value);
+    document.getElementById('wagerAmt').textContent=fmt(state.wager);
+
+    const pre=document.getElementById('wagerPresets'); pre.innerHTML='';
+    const note=document.getElementById('wagerNote');
+    if(max>0){
+        [{l:'$0',v:0},{l:'Half',v:Math.round(max*0.5)},{l:'All In',v:max}].forEach(p=>{
+            const b=document.createElement('button'); b.className='wager-pre'; b.textContent=p.l;
+            b.onclick=()=>{ sl.value=p.v; state.wager=p.v; document.getElementById('wagerAmt').textContent=fmt(state.wager); };
+            pre.appendChild(b);
+        });
+        note.textContent='';
+    } else {
+        note.textContent="Your score is $0 or below — your wager is locked at $0, but you can still answer the question!";
+    }
+    go('finalWager');
+}
+
+function updateWager(){
+    state.wager=parseInt(document.getElementById('wagerSlider').value);
+    document.getElementById('wagerAmt').textContent=fmt(state.wager);
+}
+
+function goFinalQ(){
+    document.getElementById('finalWagerDisp').textContent=fmt(state.wager);
+    document.getElementById('finalClue').innerHTML=FINAL.clue;
+    document.getElementById('finalOptsWrap').innerHTML='<button class="btn-final" onclick="revealFinalOpts()">I\'m Ready — Reveal Options</button>';
+    go('finalQ');
+}
+
+function revealFinalOpts(){
+    let html='<div class="final-opts opts">';
+    'ABCD'.split('').forEach((l,i)=>{
+        html+='<button class="opt-btn" onclick="pickFinal('+i+')"><span class="opt-letter">'+l+'</span>'+FINAL.opts[i]+'</button>';
+    });
+    html+='</div>';
+    document.getElementById('finalOptsWrap').innerHTML=html;
+    document.getElementById('finalTimerWrap').style.display='flex';
+    startTimer(60,()=>finalTimeExpired(),'finalTimerFill','finalTimerNum');
+}
+
+function pickFinal(chosen){
+    stopTimer();
+    const ok=chosen===FINAL.ans;
+    const btns=[...document.querySelectorAll('#finalOptsWrap .opt-btn')];
+    btns.forEach(b=>b.disabled=true);
+    if(ok){ btns[chosen].classList.add('correct'); state.score+=state.wager; state.correct++; }
+    else { btns[chosen].classList.add('incorrect'); btns[FINAL.ans].classList.add('reveal'); state.score-=state.wager; state.incorrect++; }
+    updHdr();
+    setTimeout(()=>showFinalFB(ok),550);
+}
+
+function showFinalFB(ok){
+    document.getElementById('fbIcon').textContent=ok?'✓':'✗';
+    const r=document.getElementById('fbResult');
+    r.textContent=ok?'Correct!':'Incorrect'; r.className='fb-result '+(ok?'yes':'no');
+    const p=document.getElementById('fbPts');
+    p.textContent='Final Jeopardy: '+(ok?'+':'−')+'$'+state.wager;
+    p.className='fb-pts '+(ok?'gain':'loss');
+    document.getElementById('fbExplain').innerHTML=FINAL.exp;
+    const btn=document.getElementById('fbBtn');
+    btn.textContent='See Final Results'; btn.onclick=showResults;
+    go('feedbackScreen');
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults(){
+    document.getElementById('resScore').textContent=fmt(state.score);
+    const tot=state.correct+state.incorrect;
+    document.getElementById('resCorrect').textContent=state.correct;
+    document.getElementById('resIncorrect').textContent=state.incorrect;
+    const acc=tot?Math.round(state.correct/tot*100):0;
+    document.getElementById('resAcc').textContent=acc+'%';
+
+    let tier;
+    if(acc>=90) tier='ACS Ready';
+    else if(acc>=75) tier='Strong Foundation';
+    else if(acc>=60) tier='Getting There';
+    else tier='Review Time';
+    document.getElementById('resTier').textContent=tier;
+
+    const bd=document.getElementById('resBreakdown'); bd.innerHTML='';
+    CATS.forEach(c=>{
+        const res=state.catRes[c];
+        const pct=Math.round(res.correct/res.total*100);
+        const col=pct>=80?'var(--correct)':pct>=60?'var(--gold)':'var(--incorrect)';
+        bd.innerHTML+=`<div class="bd-row">
+            <div class="bd-name">${c}</div>
+            <div class="bd-track"><div class="bd-fill" style="width:${pct}%;background:${col}"></div></div>
+            <div class="bd-score">${res.correct}/5</div>
+        </div>`;
+    });
+
+    document.getElementById('gameHeader').style.display='none';
+    go('resultsScreen');
+}
+
+// ============================================================
+// RESTART
+// ============================================================
+function confirmRestart(){ if(confirm('Restart the game? All progress will be lost.')) restartGame(); }
+function restartGame(){
+    initState();
+    document.getElementById('gameHeader').style.display='flex';
+    updHdr(); buildBoard(); go('boardScreen');
+}
+</script>
+</body>
+</html>
