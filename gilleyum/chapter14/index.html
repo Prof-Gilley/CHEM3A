@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gilley-um: Board Unlocked - Ch. 14: Radioactivity</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #080c1a;
+  --bg-secondary: #0f1428;
+  --bg-card: #141930;
+  --bg-tile: #1a2040;
+  --gold-dark: #b8860b;
+  --gold: #d4a017;
+  --gold-bright: #f0c840;
+  --gold-glow: rgba(212,160,23,0.45);
+  --text-primary: #f0f2f8;
+  --text-secondary: #8892a8;
+  --correct: #2ecc71;
+  --correct-glow: rgba(46,204,113,0.35);
+  --incorrect: #e74c3c;
+  --incorrect-glow: rgba(231,76,60,0.35);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 60%, rgba(20,35,75,0.45) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(45,18,75,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 85%, rgba(18,45,70,0.3) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* INTRO SCREEN */
+.intro-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.intro-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 40px var(--gold-glow);
+}
+
+.intro-subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.3em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+.rules {
+  background: var(--bg-card);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.rules h2 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold-bright);
+  margin-bottom: 1rem;
+}
+
+.rules ul {
+  list-style: none;
+  text-align: left;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.rules li::before {
+  content: '⚛️ ';
+  margin-right: 0.5rem;
+}
+
+.start-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 30px var(--gold-glow);
+  transition: all 0.3s ease;
+  animation: btnPulse 2.2s ease-in-out infinite;
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 50px var(--gold-glow);
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 30px var(--gold-glow); }
+  50% { box-shadow: 0 0 50px var(--gold-glow), 0 0 70px var(--gold-glow); }
+}
+
+/* BOARD SCREEN */
+.board-screen {
+  padding: 2rem 0;
+}
+
+.board-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.board-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  max-width: 600px;
+  margin: 1.5rem auto;
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid var(--gold);
+}
+
+.progress-text {
+  font-size: 1.1rem;
+  color: var(--gold-bright);
+  font-weight: 600;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.category-header {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gold-bright);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.tile {
+  background: linear-gradient(135deg, var(--bg-tile), var(--bg-card));
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--gold-bright);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+  opacity: 0;
+  animation: tileLoad 0.4s ease forwards;
+}
+
+@keyframes tileLoad {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tile:hover:not(.completed) {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px var(--gold-glow);
+  border-color: var(--gold-bright);
+}
+
+.tile.completed {
+  background: linear-gradient(135deg, rgba(26,32,64,0.3), rgba(20,25,48,0.3));
+  border-color: rgba(212,160,23,0.2);
+  cursor: not-allowed;
+  color: rgba(240,200,64,0.15);
+}
+
+.tile.completed::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: var(--correct);
+  font-size: 1.2rem;
+}
+
+/* QUESTION SCREEN */
+.question-screen {
+  animation: slideUp 0.28s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timer-container {
+  text-align: center;
+  margin: 2rem auto 3rem;
+  max-width: 600px;
+}
+
+.timer-number {
+  font-family: 'Cinzel', serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.timer-number.danger {
+  animation: timerPulse 0.6s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.timer-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--gold);
+}
+
+.timer-fill {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.1s linear, background 0.3s ease;
+  border-radius: 20px;
+}
+
+.timer-fill.warn {
+  background: orange;
+}
+
+.timer-fill.danger {
+  background: var(--incorrect);
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 2.5rem;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.question-value {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  color: var(--gold-bright);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.clue-text {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.option-btn {
+  background: var(--bg-tile);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: var(--bg-secondary);
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 20px var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.option-btn.correct {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: white;
+  box-shadow: 0 0 30px var(--correct-glow);
+}
+
+.option-btn.incorrect {
+  background: var(--incorrect);
+  border-color: var(--incorrect);
+  color: white;
+  box-shadow: 0 0 30px var(--incorrect-glow);
+}
+
+/* FEEDBACK SCREEN */
+.feedback-screen {
+  animation: slideUp 0.28s ease;
+}
+
+.result-banner {
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.result-banner.correct {
+  background: linear-gradient(135deg, rgba(46,204,113,0.2), rgba(46,204,113,0.1));
+  border: 2px solid var(--correct);
+  color: var(--correct);
+}
+
+.result-banner.incorrect {
+  background: linear-gradient(135deg, rgba(231,76,60,0.2), rgba(231,76,60,0.1));
+  border: 2px solid var(--incorrect);
+  color: var(--incorrect);
+}
+
+.score-change {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.explanation-card {
+  background: var(--bg-card);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.explanation-card h3 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold-bright);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.explanation-card p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.continue-btn {
+  display: block;
+  margin: 2rem auto 0;
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px var(--gold-glow);
+}
+
+/* FINAL JEOPARDY */
+.final-category-screen,
+.final-wager-screen,
+.final-question-screen {
+  text-align: center;
+  animation: slideUp 0.28s ease;
+}
+
+.final-card {
+  background: var(--bg-card);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 3rem;
+  max-width: 700px;
+  margin: 3rem auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.final-card h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2rem;
+  color: var(--gold-bright);
+  margin-bottom: 2rem;
+}
+
+.final-card h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin: 2rem 0;
+}
+
+.current-score {
+  font-size: 1.5rem;
+  color: var(--gold-bright);
+  margin-bottom: 2rem;
+}
+
+.wager-input {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 5px;
+  outline: none;
+}
+
+.wager-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: var(--gold);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.wager-input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  background: var(--gold);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.wager-display {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  color: var(--gold-bright);
+  margin: 1rem 0 2rem;
+}
+
+.wager-presets {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.preset-btn {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  background: var(--bg-tile);
+  color: var(--text-primary);
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.preset-btn:hover {
+  background: var(--bg-secondary);
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+
+.lock-wager-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  transition: all 0.3s ease;
+}
+
+.lock-wager-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px var(--gold-glow);
+}
+
+.ready-gate-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 1.2rem 3rem;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  transition: all 0.3s ease;
+  margin-top: 2rem;
+}
+
+.ready-gate-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px var(--gold-glow);
+}
+
+/* RESULTS SCREEN */
+.results-screen {
+  text-align: center;
+  animation: slideUp 0.28s ease;
+}
+
+.final-score-display {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 5rem;
+  color: var(--gold-bright);
+  margin: 2rem 0;
+  text-shadow: 0 0 40px var(--gold-glow);
+}
+
+.stats-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background: var(--bg-card);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  min-width: 150px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  color: var(--gold-bright);
+  font-weight: 600;
+}
+
+.performance-tier {
+  background: var(--bg-card);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 3rem auto;
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: var(--gold-bright);
+}
+
+.category-breakdown {
+  max-width: 800px;
+  margin: 3rem auto;
+}
+
+.category-breakdown h3 {
+  font-family: 'Cinzel', serif;
+  color: var(--gold-bright);
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.category-result {
+  margin-bottom: 1.5rem;
+}
+
+.category-name {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.category-bar {
+  height: 30px;
+  background: var(--bg-secondary);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid var(--gold);
+}
+
+.category-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+}
+
+.category-fill.high {
+  background: var(--correct);
+}
+
+.category-fill.mid {
+  background: var(--gold);
+}
+
+.category-fill.low {
+  background: var(--incorrect);
+}
+
+/* TRANSITION OVERLAY */
+#transOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.21s ease;
+}
+
+#transOverlay.active {
+  opacity: 1;
+}
+
+/* UPDATE CLAUSE */
+.update-clause {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.56rem;
+  color: rgba(140,146,164,0.4);
+  pointer-events: none;
+  z-index: 10000;
+  font-family: 'Rajdhani', sans-serif;
+  text-align: center;
+}
+
+/* HIDDEN CLASS */
+.hidden {
+  display: none !important;
+}
+</style>
+</head>
+<body>
+
+<!-- TRANSITION OVERLAY -->
+<div id="transOverlay"></div>
+
+<!-- INTRO SCREEN -->
+<div class="intro-screen" id="introScreen">
+  <div class="container">
+    <h1 class="intro-title">Gilley-um</h1>
+    <p class="intro-subtitle">Board Unlocked — Chapter 14</p>
+    
+    <div class="rules">
+      <h2>How to Play</h2>
+      <ul>
+        <li>Choose any tile from the board</li>
+        <li>Answer before time runs out</li>
+        <li>Correct answers add points, wrong answers subtract</li>
+        <li>Complete all 30 questions to unlock Final Jeopardy</li>
+        <li>Aim for 90%+ to be ACS Ready!</li>
+      </ul>
+    </div>
+    
+    <button class="start-btn" id="startBtn">Start Game</button>
+  </div>
+</div>
+
+<!-- BOARD SCREEN -->
+<div class="board-screen hidden" id="boardScreen">
+  <div class="container">
+    <div class="board-header">
+      <h1 class="board-title">Radioactivity</h1>
+      <div class="progress-bar">
+        <span class="progress-text" id="progressText">0 of 30 Complete</span>
+      </div>
+    </div>
+    
+    <div class="board-grid" id="boardGrid">
+      <!-- Grid will be generated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- QUESTION SCREEN -->
+<div class="question-screen hidden" id="questionScreen">
+  <div class="container">
+    <div class="timer-container">
+      <div class="timer-number" id="timerNumber">30</div>
+      <div class="timer-bar">
+        <div class="timer-fill" id="timerFill"></div>
+      </div>
+    </div>
+    
+    <div class="question-card">
+      <div class="question-value" id="questionValue">$300</div>
+      <div class="clue-text" id="clueText"></div>
+      <div class="options-grid" id="optionsGrid">
+        <!-- Options will be generated by JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK SCREEN -->
+<div class="feedback-screen hidden" id="feedbackScreen">
+  <div class="container">
+    <div class="result-banner" id="resultBanner">
+      <div id="resultText">Correct!</div>
+      <div class="score-change" id="scoreChange">+$300</div>
+    </div>
+    
+    <div class="explanation-card">
+      <h3>Explanation</h3>
+      <p id="explanationText"></p>
+    </div>
+    
+    <button class="continue-btn" id="continueBtn">Continue</button>
+  </div>
+</div>
+
+<!-- FINAL JEOPARDY SCREENS -->
+<div class="final-category-screen hidden" id="finalCategoryScreen">
+  <div class="container">
+    <div class="final-card">
+      <h2>Final Jeopardy</h2>
+      <h3>Category: The Big Picture</h3>
+      <button class="continue-btn" id="categoryRevealBtn">Continue to Wager</button>
+    </div>
+  </div>
+</div>
+
+<div class="final-wager-screen hidden" id="finalWagerScreen">
+  <div class="container">
+    <div class="final-card">
+      <h2>Place Your Wager</h2>
+      <div class="current-score">Current Score: <span id="currentScoreDisplay">$0</span></div>
+      
+      <input type="range" class="wager-input" id="wagerSlider" min="0" max="1000" value="0">
+      <div class="wager-display" id="wagerDisplay">$0</div>
+      
+      <div class="wager-presets">
+        <button class="preset-btn" id="wagerZero">$0</button>
+        <button class="preset-btn" id="wagerHalf">Half</button>
+        <button class="preset-btn" id="wagerAll">All In</button>
+      </div>
+      
+      <button class="lock-wager-btn" id="lockWagerBtn">Lock In Wager</button>
+    </div>
+  </div>
+</div>
+
+<div class="final-question-screen hidden" id="finalQuestionScreen">
+  <div class="container">
+    <div class="timer-container">
+      <div class="timer-number" id="finalTimerNumber">60</div>
+      <div class="timer-bar">
+        <div class="timer-fill" id="finalTimerFill"></div>
+      </div>
+    </div>
+    
+    <div class="question-card">
+      <div class="question-value">Final Jeopardy — The Big Picture</div>
+      <div class="clue-text" id="finalClueText"></div>
+      <div id="finalReadyGate">
+        <button class="ready-gate-btn" id="readyBtn">I'm Ready</button>
+      </div>
+      <div class="options-grid hidden" id="finalOptionsGrid">
+        <!-- Options will be generated by JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div class="results-screen hidden" id="resultsScreen">
+  <div class="container">
+    <h1 class="board-title">Game Complete!</h1>
+    <div class="final-score-display" id="finalScoreDisplay">$0</div>
+    
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">Correct</div>
+        <div class="stat-value" id="correctCount">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Incorrect</div>
+        <div class="stat-value" id="incorrectCount">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Accuracy</div>
+        <div class="stat-value" id="accuracyPct">0%</div>
+      </div>
+    </div>
+    
+    <div class="performance-tier" id="performanceTier">ACS Ready</div>
+    
+    <div class="category-breakdown">
+      <h3>Category Breakdown</h3>
+      <div id="categoryBreakdown">
+        <!-- Will be generated by JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPDATE CLAUSE -->
+<div class="update-clause">
+  Updated: February 6, 2026 | Version 1.0 | CHEM 3A – Spring 2026 – Chapter 14 | Prof. Gilley, Fresno City College
+</div>
+
+<script>
+// ============================================================================
+// GAME DATA
+// ============================================================================
+
+const Q = {
+  "Fundamentals": [
+    {
+      v: 100,
+      clue: "This French scientist accidentally discovered radioactivity in 1896 when uranium salts fogged his photographic plates, even in complete darkness.",
+      opts: ["Marie Curie", "Pierre Curie", "Henri Becquerel", "Wilhelm Roentgen"],
+      ans: 2,
+      exp: "Henri Becquerel discovered radioactivity when he found that uranium-containing rocks exposed photographic film without any light or fluorescence present. Marie and Pierre Curie built on his work by discovering radium and polonium."
+    },
+    {
+      v: 200,
+      clue: "This powerful force holds protons and neutrons together in the nucleus, overcoming the electromagnetic repulsion between positively charged protons.",
+      opts: ["Gravitational force", "Electromagnetic force", "Nuclear binding energy", "Van der Waals forces"],
+      ans: 2,
+      exp: "Nuclear binding energy is what holds the nucleus together. It's much stronger than electromagnetic repulsion, which is why nuclei can exist despite having multiple positively charged protons packed tightly together."
+    },
+    {
+      v: 300,
+      clue: "Compared to chemical reactions like combustion, nuclear reactions release approximately this much more energy per atom involved.",
+      opts: ["10 times more", "1,000 times more", "Millions of times more", "About the same amount"],
+      ans: 2,
+      exp: "Nuclear reactions release millions of times more energy per atom than chemical reactions. Chemical reactions involve electrons moving between energy levels, while nuclear reactions involve changes in the nucleus itself, which contains far more binding energy."
+    },
+    {
+      v: 400,
+      clue: "Marie Curie and her husband Pierre isolated just 0.10 grams of this element from one ton of pitchblende waste, finding it was far more radioactive than uranium.",
+      opts: ["Polonium", "Radium", "Plutonium", "Francium"],
+      ans: 1,
+      exp: "The Curies isolated radium chloride from pitchblende. Radium was many times more radioactive than uranium. Marie Curie later won a second Nobel Prize for this work, making her the only person to win two Nobel Prizes in science. Polonium was named after Marie's homeland of Poland."
+    },
+    {
+      v: 500,
+      clue: "Nuclei larger than this element (atomic number 26) can undergo fission to become more stable, while smaller nuclei undergo fusion for the same reason.",
+      opts: ["Carbon", "Iron", "Uranium", "Lead"],
+      ans: 1,
+      exp: "Iron-56 is at the peak of nuclear stability — it has the highest binding energy per nucleon. Nuclei larger than iron release energy by breaking apart (fission), while nuclei smaller than iron release energy by combining (fusion). This is why iron is the endpoint of stellar nucleosynthesis."
+    }
+  ],
+  
+  "Decay Types": [
+    {
+      v: 100,
+      clue: "An alpha particle consists of this many protons and this many neutrons.",
+      opts: ["1 proton, 0 neutrons", "1 proton, 1 neutron", "2 protons, 2 neutrons", "0 protons, 1 neutron"],
+      ans: 2,
+      exp: "An alpha particle is a helium-4 nucleus: 2 protons and 2 neutrons. It can be written as <sup>4</sup><sub>2</sub>He or α. When an atom emits an alpha particle, it loses 4 from its mass number and 2 from its atomic number."
+    },
+    {
+      v: 200,
+      clue: "Of the three common types of radiation, this type has the greatest penetrating power and can pass through several centimeters of lead.",
+      opts: ["Alpha particles", "Beta particles", "Gamma rays", "All three penetrate equally"],
+      ans: 2,
+      exp: "Gamma rays are high-energy electromagnetic radiation with the greatest penetrating power. Beta particles can penetrate more than alpha but are stopped by aluminum foil. Alpha particles are stopped by paper or skin — they're the least penetrating but most ionizing."
+    },
+    {
+      v: 300,
+      clue: "When tin-121 (<sup>121</sup><sub>50</sub>Sn) undergoes beta decay, it transforms into this element.",
+      opts: ["Indium-121 (<sup>121</sup><sub>49</sub>In)", "Antimony-121 (<sup>121</sup><sub>51</sub>Sb)", "Tin-120 (<sup>120</sup><sub>50</sub>Sn)", "Cadmium-121 (<sup>121</sup><sub>48</sub>Cd)"],
+      ans: 1,
+      exp: "Beta decay occurs when a neutron converts to a proton and emits an electron (beta particle). The mass number stays the same (121), but the atomic number increases by 1 (from 50 to 51). Element 51 is antimony (Sb), so the product is <sup>121</sup><sub>51</sub>Sb."
+    },
+    {
+      v: 400,
+      clue: "The uranium-238 decay series involves 14 separate decay steps before finally reaching this stable isotope, which is why it's found in uranium ores.",
+      opts: ["Lead-206 (<sup>206</sup><sub>82</sub>Pb)", "Lead-207 (<sup>207</sup><sub>82</sub>Pb)", "Lead-208 (<sup>208</sup><sub>82</sub>Pb)", "Bismuth-209 (<sup>209</sup><sub>83</sub>Bi)"],
+      ans: 0,
+      exp: "Uranium-238 undergoes a complex decay series through 14 steps, including multiple alpha and beta emissions, before finally reaching stable lead-206. This is why radon gas exists on Earth today — it's constantly being produced as part of the U-238 decay chain, not leftover from Earth's formation."
+    },
+    {
+      v: 500,
+      clue: "During beta decay, a neutron converts to a proton by emitting an electron. However, this is NOT simply a neutron \"breaking into pieces\" because neutrons and protons are actually made of these smaller particles.",
+      opts: ["Electrons and positrons", "Photons and neutrinos", "Quarks", "Muons and tauons"],
+      ans: 2,
+      exp: "Protons and neutrons are made of quarks — three quarks each. A neutron contains one 'up' quark and two 'down' quarks, while a proton has two 'up' quarks and one 'down' quark. During beta decay, one of the neutron's down quarks converts to an up quark, transforming the neutron into a proton."
+    }
+  ],
+  
+  "Half-Life": [
+    {
+      v: 100,
+      clue: "This term describes the time it takes for exactly one-half of a radioactive sample to decay.",
+      opts: ["Decay time", "Half-life", "Radioactive constant", "Decay period"],
+      ans: 1,
+      exp: "Half-life (t<sub>½</sub>) is the time required for half of the atoms in a radioactive sample to decay. It's a constant value for each isotope and is unaffected by temperature, pressure, or chemical state."
+    },
+    {
+      v: 200,
+      clue: "If a radioactive isotope has a very short half-life of minutes or hours, it is considered more or less radioactive than an isotope with a long half-life of thousands of years?",
+      opts: ["Less radioactive", "More radioactive", "Equally radioactive", "Cannot be determined"],
+      ans: 1,
+      exp: "Isotopes with short half-lives are MORE radioactive because they decay faster, meaning more radiation is emitted per unit time. An isotope with a half-life of minutes releases its radiation quickly, while one with a half-life of thousands of years releases it very slowly."
+    },
+    {
+      v: 300,
+      clue: "If you start with 80 grams of a radioactive isotope and 3 half-lives pass, this mass remains.",
+      opts: ["40 g", "20 g", "10 g", "5 g"],
+      ans: 2,
+      exp: "After 1 half-life: 80 g → 40 g. After 2 half-lives: 40 g → 20 g. After 3 half-lives: 20 g → 10 g. Each half-life cuts the amount in half. The formula is: amount remaining = initial × (½)<sup>n</sup>, where n is the number of half-lives."
+    },
+    {
+      v: 400,
+      clue: "Carbon-14 has a half-life of 5,730 years. An ancient wooden artifact contains carbon-14 at exactly 25% of the level found in living trees, indicating the tree died approximately this many years ago.",
+      opts: ["5,730 years", "11,460 years", "17,190 years", "28,650 years"],
+      ans: 1,
+      exp: "25% remaining means two half-lives have passed (100% → 50% → 25%). Two half-lives × 5,730 years = 11,460 years. If it were one half-life (50% remaining), it would be 5,730 years old. Three half-lives (12.5% remaining) would be 17,190 years."
+    },
+    {
+      v: 500,
+      clue: "The half-life of americium-241 in smoke detectors is 432 years. Starting with 0.0002 g, the mass remaining after 1,000 years is NOT one-tenth the amount after 100 years because of this mathematical property of radioactive decay.",
+      opts: ["Radioactive decay is logarithmic, not linear", "Radioactive decay is exponential, not linear", "The decay constant changes over time", "Temperature affects the decay rate"],
+      ans: 1,
+      exp: "Radioactive decay is exponential, not linear. After 100 years, about 0.00017 g remains. After 1,000 years, about 0.000040 g remains — which is NOT 1/10th of the 100-year amount. In exponential decay, the same percentage (not amount) decays each time period."
+    }
+  ],
+  
+  "Fission": [
+    {
+      v: 100,
+      clue: "Nuclear fission occurs when a large, unstable nucleus splits into two or more of these.",
+      opts: ["Alpha particles", "Beta particles", "Smaller nuclei", "Gamma rays"],
+      ans: 2,
+      exp: "Nuclear fission is when a large nucleus breaks down into two smaller nuclei (fission fragments), usually with the release of neutrons and energy. For example, uranium-235 can split into barium-141 and krypton-92 plus 3 neutrons."
+    },
+    {
+      v: 200,
+      clue: "In a nuclear chain reaction, this particle released by one fission event goes on to trigger additional fission events.",
+      opts: ["Electron", "Proton", "Neutron", "Alpha particle"],
+      ans: 2,
+      exp: "When U-235 undergoes fission, it releases 2-3 free neutrons. These neutrons can strike other U-235 nuclei, causing them to undergo fission and release more neutrons. This creates a self-sustaining chain reaction."
+    },
+    {
+      v: 300,
+      clue: "Natural uranium contains over 99% U-238 and less than 1% U-235. To be used as fuel in most fission reactors, uranium must be processed to increase the U-235 percentage to about 3%, creating this type of uranium.",
+      opts: ["Depleted uranium", "Enriched uranium", "Weapons-grade uranium", "Fertile uranium"],
+      ans: 1,
+      exp: "Enriched uranium has had its U-235 content increased from the natural 0.7% to about 3% for reactor fuel (or 90%+ for weapons). The process separates isotopes based on tiny mass differences. Uranium with less than 0.7% U-235 is called depleted uranium."
+    },
+    {
+      v: 400,
+      clue: "In a nuclear power plant, control rods containing elements like boron or cadmium serve this critical safety function by managing the chain reaction.",
+      opts: ["They speed up neutrons to increase fission", "They absorb neutrons to slow or stop the reaction", "They generate additional neutrons", "They cool the reactor core"],
+      ans: 1,
+      exp: "Control rods absorb neutrons very effectively. Lowering them into the reactor absorbs more neutrons, slowing the chain reaction. Raising them allows more neutrons to cause fission, speeding it up. In an emergency, control rods drop fully in (by gravity) to stop the reaction entirely."
+    },
+    {
+      v: 500,
+      clue: "The 103 nuclear power plants in the US deliver approximately 20% of American electricity with zero greenhouse gas emissions, while 600 coal plants deliver 50% and produce 2 billion tons annually of this greenhouse gas.",
+      opts: ["Carbon monoxide (CO)", "Methane (CH<sub>4</sub>)", "Carbon dioxide (CO<sub>2</sub>)", "Sulfur dioxide (SO<sub>2</sub>)"],
+      ans: 2,
+      exp: "Coal plants produce 2 billion tons of CO<sub>2</sub> annually, accounting for 40% of US greenhouse emissions and 8% of global emissions. Nuclear power produces no CO<sub>2</sub> during operation. Coal plants also produce 67% of US sulfur dioxide, 23% of nitrous oxides, and 50% of mercury emissions."
+    }
+  ],
+  
+  "Fusion": [
+    {
+      v: 100,
+      clue: "Nuclear fusion occurs when two small, light nuclei combine to form this.",
+      opts: ["A smaller nucleus", "A larger, heavier nucleus", "An alpha particle", "Multiple beta particles"],
+      ans: 1,
+      exp: "Nuclear fusion is when two light nuclei join together to form a larger, heavier nucleus. This releases energy because the product nucleus is more stable (higher binding energy per nucleon) than the reactants, especially if helium-4 is formed."
+    },
+    {
+      v: 200,
+      clue: "The fusion reaction that powers the Sun primarily combines nuclei of this element, the lightest and most abundant element in the universe.",
+      opts: ["Helium", "Hydrogen", "Lithium", "Carbon"],
+      ans: 1,
+      exp: "The Sun fuses hydrogen nuclei (protons) together through several steps to ultimately form helium-4. The primary reaction in stars like our Sun converts four hydrogen nuclei into one helium-4 nucleus, releasing enormous energy in the process."
+    },
+    {
+      v: 300,
+      clue: "A common fusion reaction combines deuterium (<sup>2</sup><sub>1</sub>H) and tritium (<sup>3</sup><sub>1</sub>H) to produce helium-4 and this particle: <sup>2</sup><sub>1</sub>D + <sup>3</sup><sub>1</sub>T → <sup>4</sup><sub>2</sub>He + ?",
+      opts: ["An electron", "A proton", "A neutron", "An alpha particle"],
+      ans: 2,
+      exp: "The D-T fusion reaction produces He-4 plus a neutron: <sup>2</sup><sub>1</sub>D + <sup>3</sup><sub>1</sub>T → <sup>4</sup><sub>2</sub>He + <sup>1</sup><sub>0</sub>n. This reaction releases about 1700 GJ per mole, but requires extreme temperatures (~10<sup>8</sup> K) to overcome electrostatic repulsion between the positively charged nuclei."
+    },
+    {
+      v: 400,
+      clue: "Controlled fusion requires temperatures around 10<sup>8</sup> K, which creates this fourth state of matter where atoms are fully ionized and behave like the \"universal solvent\" of ancient alchemists.",
+      opts: ["Bose-Einstein condensate", "Supercritical fluid", "Plasma", "Quark-gluon plasma"],
+      ans: 2,
+      exp: "At fusion temperatures, all molecules dissociate and most atoms ionize, creating plasma — a state of matter consisting of free electrons and ions. Plasma converts any solid container it touches into vapor, requiring magnetic confinement or laser compression instead of physical walls."
+    },
+    {
+      v: 500,
+      clue: "Controlled fusion would offer essentially limitless energy because the fuel isotopes (deuterium and tritium) are much more readily available than uranium-235, but current research faces this barrier that has prevented usable energy production for decades.",
+      opts: ["Radioactive waste disposal is more difficult than fission", "The activation energy requirement is too high to sustain reactions long enough", "Fusion produces less energy than fission per reaction", "The fuel isotopes are actually rarer than U-235"],
+      ans: 1,
+      exp: "The activation energy to start fusion is about 30 GJ/mol — astronomically high. Current techniques (magnetic confinement and laser compression) can achieve fusion, but can't maintain it long enough to generate more energy than is consumed. The only successful large-scale fusion has been in hydrogen bombs, where a fission bomb provides the activation energy."
+    }
+  ],
+  
+  "Applications": [
+    {
+      v: 100,
+      clue: "This device, invented by Hans Geiger, detects ionizing radiation by measuring voltage changes when radiation ionizes gas inside a metal tube.",
+      opts: ["Scintillation counter", "Dosimeter", "Geiger counter", "Cloud chamber"],
+      ans: 2,
+      exp: "A Geiger counter (or Geiger-Müller counter) contains a tube filled with gas. When radiation enters, it ionizes the gas, creating a voltage change that produces an audible 'click' and registers on a meter. It's one of the most common tools for detecting radioactivity."
+    },
+    {
+      v: 200,
+      clue: "The SI unit for measuring the rate of radioactive decay is the becquerel (Bq), which equals this many disintegrations per second.",
+      opts: ["1", "1,000", "1 million", "3.7 × 10<sup>10</sup>"],
+      ans: 0,
+      exp: "One becquerel (Bq) = 1 disintegration per second. The older unit, the curie (Ci), equals 3.7 × 10<sup>10</sup> disintegrations/second — the approximate activity of 1 gram of radium-226. The curie is much larger and still commonly used in medicine."
+    },
+    {
+      v: 300,
+      clue: "Radiocarbon dating works because living organisms constantly maintain a fixed ratio of carbon-14 to carbon-12, but after death, the carbon-14 decays with a half-life of 5,730 years while this happens to the carbon-12.",
+      opts: ["Carbon-12 decays at the same rate", "Carbon-12 converts to carbon-14", "Carbon-12 remains constant", "Carbon-12 increases over time"],
+      ans: 2,
+      exp: "Carbon-12 is stable and doesn't decay, so its amount stays constant after death. Carbon-14 is radioactive and decays with a half-life of 5,730 years. By comparing the C-14:C-12 ratio in an artifact to the ratio in living organisms, we can calculate how long ago the organism died."
+    },
+    {
+      v: 400,
+      clue: "In PET scans (Positron Emission Tomography), a radioactive isotope like carbon-11 or fluorine-18 is used as this type of substance, which is tracked as it moves through the body to create images of organ function.",
+      opts: ["Contrast agent", "Tracer", "Catalyst", "Biomarker"],
+      ans: 1,
+      exp: "A radioactive tracer is a substance containing a radioactive isotope that can be tracked through the body. The tracer is injected, swallowed, or inhaled, then concentrated in specific organs. A gamma camera detects the emitted radiation to create images showing both structure and function."
+    },
+    {
+      v: 500,
+      clue: "Iodine-131 is used to treat overactive thyroid glands because the thyroid naturally concentrates iodine from the bloodstream. The treatment works because I-131's beta emissions destroy thyroid cells within this approximate range from the decay site.",
+      opts: ["Across the entire body", "Within the entire thyroid only", "Within millimeters of where it's concentrated", "Only in cells that directly absorb it"],
+      ans: 2,
+      exp: "I-131 emits beta particles that penetrate only millimeters into tissue, causing localized cell death. This makes it ideal for treating hyperthyroidism — the radioactive iodine concentrates in the thyroid gland and destroys nearby cells without significant damage to surrounding organs. The 8-day half-life means it's mostly gone within a few weeks."
+    }
+  ]
+};
+
+const FINAL = {
+  cat: "The Big Picture",
+  clue: "While both nuclear fission and fusion release tremendous energy, widespread adoption of fusion for commercial power generation would offer these two major advantages over fission, despite fusion being much harder to achieve technically.",
+  opts: [
+    "Fusion fuel is more abundant and fusion produces far less problematic radioactive waste",
+    "Fusion produces more energy per reaction and requires lower temperatures",
+    "Fusion reactions are easier to control and fusion fuel is cheaper to obtain",
+    "Fusion has zero safety risks and fusion produces no radiation at all"
+  ],
+  ans: 0,
+  exp: "Fusion fuel (deuterium from seawater, lithium for tritium breeding) is vastly more abundant than uranium-235, which must be mined and enriched. Fusion produces far less long-lived radioactive waste — primarily tritium and activated materials, not the complex mix of fission products that remain dangerous for millennia. However, fusion is NOT easier (requires 10⁸ K vs. controllable fission), does NOT produce more energy per individual reaction, and DOES produce radiation (neutrons, gamma rays). The challenge is achieving sustained, controlled fusion economically."
+};
+
+// ============================================================================
+// GAME STATE
+// ============================================================================
+
+let score = 0;
+let completed = 0;
+let correctCount = 0;
+let incorrectCount = 0;
+let categoryStats = {
+  "Fundamentals": { correct: 0, total: 5 },
+  "Decay Types": { correct: 0, total: 5 },
+  "Half-Life": { correct: 0, total: 5 },
+  "Fission": { correct: 0, total: 5 },
+  "Fusion": { correct: 0, total: 5 },
+  "Applications": { correct: 0, total: 5 }
+};
+
+let currentQuestion = null;
+let currentCategory = null;
+let currentValue = 0;
+let timerInterval = null;
+let audioContext = null;
+let finalWager = 0;
+
+// ============================================================================
+// AUDIO SYSTEM
+// ============================================================================
+
+function initAudio() {
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function playSound(frequency, duration, type = 'sine') {
+  if (!audioContext) return;
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  oscillator.frequency.value = frequency;
+  oscillator.type = type;
+  
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+  
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + duration);
+}
+
+// ============================================================================
+// SCREEN TRANSITIONS
+// ============================================================================
+
+function transition(hideEl, showEl, callback) {
+  const overlay = document.getElementById('transOverlay');
+  overlay.classList.add('active');
+  
+  setTimeout(() => {
+    hideEl.classList.add('hidden');
+    showEl.classList.remove('hidden');
+    if (callback) callback();
+    
+    setTimeout(() => {
+      overlay.classList.remove('active');
+    }, 100);
+  }, 210);
+}
+
+// ============================================================================
+// BUILD BOARD
+// ============================================================================
+
+function buildBoard() {
+  const grid = document.getElementById('boardGrid');
+  grid.innerHTML = '';
+  
+  const categories = Object.keys(Q);
+  const values = [100, 200, 300, 400, 500];
+  
+  // Headers
+  categories.forEach(cat => {
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.textContent = cat;
+    grid.appendChild(header);
+  });
+  
+  // Tiles
+  values.forEach((val, rowIdx) => {
+    categories.forEach((cat, colIdx) => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = `$${val}`;
+      tile.style.animationDelay = `${(rowIdx * 6 + colIdx) * 0.045}s`;
+      
+      tile.addEventListener('click', () => {
+        if (!tile.classList.contains('completed')) {
+          loadQuestion(cat, val, tile);
+        }
+      });
+      
+      grid.appendChild(tile);
+    });
+  });
+}
+
+// ============================================================================
+// QUESTION FLOW
+// ============================================================================
+
+function loadQuestion(category, value, tileEl) {
+  const questions = Q[category];
+  const qIndex = (value / 100) - 1;
+  currentQuestion = questions[qIndex];
+  currentCategory = category;
+  currentValue = value;
+  
+  tileEl.classList.add('completed');
+  
+  playSound(440, 0.2);
+  
+  transition(
+    document.getElementById('boardScreen'),
+    document.getElementById('questionScreen'),
+    () => startQuestion()
+  );
+}
+
+function startQuestion() {
+  document.getElementById('questionValue').textContent = `$${currentValue}`;
+  document.getElementById('clueText').innerHTML = currentQuestion.clue;
+  
+  const optionsGrid = document.getElementById('optionsGrid');
+  optionsGrid.innerHTML = '';
+  
+  currentQuestion.opts.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+    btn.addEventListener('click', () => selectAnswer(idx, btn));
+    optionsGrid.appendChild(btn);
+  });
+  
+  startTimer(currentValue);
+}
+
+function selectAnswer(selected, btnEl) {
+  clearInterval(timerInterval);
+  
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(btn => btn.disabled = true);
+  
+  const correct = currentQuestion.ans;
+  const isCorrect = selected === correct;
+  
+  allBtns[correct].classList.add('correct');
+  if (!isCorrect) {
+    btnEl.classList.add('incorrect');
+  }
+  
+  if (isCorrect) {
+    playSound(800, 0.3);
+    score += currentValue;
+    correctCount++;
+    categoryStats[currentCategory].correct++;
+  } else {
+    playSound(200, 0.4);
+    score -= currentValue;
+    incorrectCount++;
+  }
+  
+  completed++;
+  
+  setTimeout(() => showFeedback(isCorrect), 800);
+}
+
+function timeExpired() {
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(btn => btn.disabled = true);
+  
+  allBtns[currentQuestion.ans].classList.add('correct');
+  
+  playSound(200, 0.4);
+  score -= currentValue;
+  incorrectCount++;
+  completed++;
+  
+  setTimeout(() => showFeedback(false), 800);
+}
+
+// ============================================================================
+// TIMER SYSTEM
+// ============================================================================
+
+function startTimer(value) {
+  const durations = { 100: 20, 200: 25, 300: 30, 400: 38, 500: 45 };
+  const totalTime = durations[value];
+  let timeLeft = totalTime;
+  
+  const timerNum = document.getElementById('timerNumber');
+  const timerFill = document.getElementById('timerFill');
+  
+  timerNum.textContent = timeLeft;
+  timerFill.style.width = '100%';
+  timerFill.classList.remove('warn', 'danger');
+  timerNum.classList.remove('danger');
+  
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerNum.textContent = timeLeft;
+    
+    const percent = (timeLeft / totalTime) * 100;
+    timerFill.style.width = percent + '%';
+    
+    if (percent <= 25) {
+      timerFill.classList.add('danger');
+      timerNum.classList.add('danger');
+    } else if (percent <= 50) {
+      timerFill.classList.add('warn');
+    }
+    
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      timeExpired();
+    }
+  }, 1000);
+}
+
+// ============================================================================
+// FEEDBACK
+// ============================================================================
+
+function showFeedback(isCorrect) {
+  const resultBanner = document.getElementById('resultBanner');
+  const resultText = document.getElementById('resultText');
+  const scoreChange = document.getElementById('scoreChange');
+  
+  if (isCorrect) {
+    resultBanner.classList.remove('incorrect');
+    resultBanner.classList.add('correct');
+    resultText.textContent = 'Correct!';
+    scoreChange.textContent = `+$${currentValue}`;
+  } else {
+    resultBanner.classList.remove('correct');
+    resultBanner.classList.add('incorrect');
+    resultText.textContent = 'Incorrect';
+    scoreChange.textContent = `−$${currentValue}`;
+  }
+  
+  document.getElementById('explanationText').innerHTML = currentQuestion.exp;
+  
+  const continueBtn = document.getElementById('continueBtn');
+  continueBtn.textContent = completed >= 30 ? 'Continue to Final Jeopardy' : 'Back to Board';
+  
+  transition(
+    document.getElementById('questionScreen'),
+    document.getElementById('feedbackScreen')
+  );
+}
+
+document.getElementById('continueBtn').addEventListener('click', () => {
+  if (completed >= 30) {
+    showFinalCategory();
+  } else {
+    updateProgress();
+    transition(
+      document.getElementById('feedbackScreen'),
+      document.getElementById('boardScreen')
+    );
+  }
+});
+
+function updateProgress() {
+  document.getElementById('progressText').textContent = `${completed} of 30 Complete`;
+}
+
+// ============================================================================
+// FINAL JEOPARDY
+// ============================================================================
+
+function showFinalCategory() {
+  transition(
+    document.getElementById('feedbackScreen'),
+    document.getElementById('finalCategoryScreen')
+  );
+}
+
+document.getElementById('categoryRevealBtn').addEventListener('click', () => {
+  transition(
+    document.getElementById('finalCategoryScreen'),
+    document.getElementById('finalWagerScreen'),
+    () => setupWager()
+  );
+});
+
+function setupWager() {
+  const maxWager = Math.max(0, score);
+  const slider = document.getElementById('wagerSlider');
+  const display = document.getElementById('wagerDisplay');
+  
+  document.getElementById('currentScoreDisplay').textContent = `$${score}`;
+  
+  slider.max = maxWager;
+  slider.value = 0;
+  display.textContent = '$0';
+  
+  if (maxWager <= 0) {
+    slider.disabled = true;
+    document.getElementById('wagerZero').disabled = true;
+    document.getElementById('wagerHalf').disabled = true;
+    document.getElementById('wagerAll').disabled = true;
+  } else {
+    slider.disabled = false;
+    
+    slider.addEventListener('input', () => {
+      display.textContent = `$${slider.value}`;
+    });
+    
+    document.getElementById('wagerZero').addEventListener('click', () => {
+      slider.value = 0;
+      display.textContent = '$0';
+    });
+    
+    document.getElementById('wagerHalf').addEventListener('click', () => {
+      slider.value = Math.floor(maxWager / 2);
+      display.textContent = `$${slider.value}`;
+    });
+    
+    document.getElementById('wagerAll').addEventListener('click', () => {
+      slider.value = maxWager;
+      display.textContent = `$${maxWager}`;
+    });
+  }
+}
+
+document.getElementById('lockWagerBtn').addEventListener('click', () => {
+  finalWager = parseInt(document.getElementById('wagerSlider').value);
+  playSound(600, 0.2);
+  
+  transition(
+    document.getElementById('finalWagerScreen'),
+    document.getElementById('finalQuestionScreen'),
+    () => setupFinalQuestion()
+  );
+});
+
+function setupFinalQuestion() {
+  document.getElementById('finalClueText').innerHTML = FINAL.clue;
+  document.getElementById('finalReadyGate').classList.remove('hidden');
+  document.getElementById('finalOptionsGrid').classList.add('hidden');
+}
+
+document.getElementById('readyBtn').addEventListener('click', () => {
+  document.getElementById('finalReadyGate').classList.add('hidden');
+  document.getElementById('finalOptionsGrid').classList.remove('hidden');
+  
+  const grid = document.getElementById('finalOptionsGrid');
+  grid.innerHTML = '';
+  
+  FINAL.opts.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+    btn.addEventListener('click', () => selectFinalAnswer(idx, btn));
+    grid.appendChild(btn);
+  });
+  
+  startFinalTimer();
+});
+
+function startFinalTimer() {
+  let timeLeft = 60;
+  
+  const timerNum = document.getElementById('finalTimerNumber');
+  const timerFill = document.getElementById('finalTimerFill');
+  
+  timerNum.textContent = timeLeft;
+  timerFill.style.width = '100%';
+  timerFill.classList.remove('warn', 'danger');
+  timerNum.classList.remove('danger');
+  
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerNum.textContent = timeLeft;
+    
+    const percent = (timeLeft / 60) * 100;
+    timerFill.style.width = percent + '%';
+    
+    if (percent <= 25) {
+      timerFill.classList.add('danger');
+      timerNum.classList.add('danger');
+    } else if (percent <= 50) {
+      timerFill.classList.add('warn');
+    }
+    
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      finalTimeExpired();
+    }
+  }, 1000);
+}
+
+function selectFinalAnswer(selected, btnEl) {
+  clearInterval(timerInterval);
+  
+  const allBtns = document.querySelectorAll('#finalOptionsGrid .option-btn');
+  allBtns.forEach(btn => btn.disabled = true);
+  
+  const correct = FINAL.ans;
+  const isCorrect = selected === correct;
+  
+  allBtns[correct].classList.add('correct');
+  if (!isCorrect) {
+    btnEl.classList.add('incorrect');
+  }
+  
+  if (isCorrect) {
+    playSound(800, 0.3);
+    score += finalWager;
+    correctCount++;
+  } else {
+    playSound(200, 0.4);
+    score -= finalWager;
+    incorrectCount++;
+  }
+  
+  setTimeout(() => showFinalFeedback(isCorrect), 800);
+}
+
+function finalTimeExpired() {
+  const allBtns = document.querySelectorAll('#finalOptionsGrid .option-btn');
+  allBtns.forEach(btn => btn.disabled = true);
+  
+  allBtns[FINAL.ans].classList.add('correct');
+  
+  playSound(200, 0.4);
+  score -= finalWager;
+  incorrectCount++;
+  
+  setTimeout(() => showFinalFeedback(false), 800);
+}
+
+function showFinalFeedback(isCorrect) {
+  const resultBanner = document.getElementById('resultBanner');
+  const resultText = document.getElementById('resultText');
+  const scoreChange = document.getElementById('scoreChange');
+  
+  if (isCorrect) {
+    resultBanner.classList.remove('incorrect');
+    resultBanner.classList.add('correct');
+    resultText.textContent = 'Correct!';
+    scoreChange.textContent = `+$${finalWager}`;
+  } else {
+    resultBanner.classList.remove('correct');
+    resultBanner.classList.add('incorrect');
+    resultText.textContent = 'Incorrect';
+    scoreChange.textContent = `−$${finalWager}`;
+  }
+  
+  document.getElementById('explanationText').innerHTML = FINAL.exp;
+  document.getElementById('continueBtn').textContent = 'View Results';
+  
+  transition(
+    document.getElementById('finalQuestionScreen'),
+    document.getElementById('feedbackScreen')
+  );
+  
+  document.getElementById('continueBtn').onclick = () => {
+    showResults();
+  };
+}
+
+// ============================================================================
+// RESULTS
+// ============================================================================
+
+function showResults() {
+  const totalQuestions = 31;
+  const accuracy = Math.round((correctCount / totalQuestions) * 100);
+  
+  document.getElementById('finalScoreDisplay').textContent = `$${score}`;
+  document.getElementById('correctCount').textContent = correctCount;
+  document.getElementById('incorrectCount').textContent = incorrectCount;
+  document.getElementById('accuracyPct').textContent = `${accuracy}%`;
+  
+  let tier = 'Review Time';
+  if (accuracy >= 90) tier = 'ACS Ready';
+  else if (accuracy >= 75) tier = 'Strong Foundation';
+  else if (accuracy >= 60) tier = 'Getting There';
+  
+  document.getElementById('performanceTier').textContent = tier;
+  
+  const breakdown = document.getElementById('categoryBreakdown');
+  breakdown.innerHTML = '';
+  
+  Object.keys(categoryStats).forEach(cat => {
+    const stats = categoryStats[cat];
+    const pct = (stats.correct / stats.total) * 100;
+    
+    const div = document.createElement('div');
+    div.className = 'category-result';
+    
+    const name = document.createElement('div');
+    name.className = 'category-name';
+    name.innerHTML = `<span>${cat}</span><span>${stats.correct}/${stats.total}</span>`;
+    
+    const bar = document.createElement('div');
+    bar.className = 'category-bar';
+    
+    const fill = document.createElement('div');
+    fill.className = 'category-fill';
+    if (pct >= 80) fill.classList.add('high');
+    else if (pct >= 60) fill.classList.add('mid');
+    else fill.classList.add('low');
+    
+    fill.style.width = pct + '%';
+    fill.textContent = `${Math.round(pct)}%`;
+    
+    bar.appendChild(fill);
+    div.appendChild(name);
+    div.appendChild(bar);
+    breakdown.appendChild(div);
+  });
+  
+  transition(
+    document.getElementById('feedbackScreen'),
+    document.getElementById('resultsScreen')
+  );
+}
+
+// ============================================================================
+// START GAME
+// ============================================================================
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  initAudio();
+  playSound(523, 0.3);
+  
+  buildBoard();
+  
+  transition(
+    document.getElementById('introScreen'),
+    document.getElementById('boardScreen')
+  );
+});
+
+</script>
+
+</body>
+</html>
