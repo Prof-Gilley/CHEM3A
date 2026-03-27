@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Dosage Calculations</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .progress-dot.done { background: var(--success); }
+  .progress-dot.active { background: var(--primary); }
+  .progress-dot.failed { background: var(--error); }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
+
+  .question-number { font-size: 15px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-weight: 600; text-align: left; padding: 18px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: 0px; line-height: 1.6; }
+
+  .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .choice-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-light); }
+  .choice-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .text-input { flex: 1; max-width: 200px; padding: 12px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; text-align: center; font-weight: 600; font-family: 'SF Mono', 'Fira Code', monospace; outline: none; transition: border-color 0.15s; }
+  .text-input:focus { border-color: var(--primary); }
+  .submit-btn { padding: 12px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .feedback { padding: 16px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .feedback.success { background: var(--success-light); border: 1px solid var(--success); }
+  .feedback.error { background: var(--error-light); border: 1px solid var(--error); }
+  .feedback.hint { background: var(--warn-light); border: 1px solid var(--warn); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .next-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .next-btn:hover { opacity: 0.9; }
+
+  .stuck-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.15s; }
+  .stuck-btn:hover { border-color: var(--warn); color: var(--warn); }
+
+  .activation { margin-top: 16px; }
+  .activation-step { padding: 14px 16px; border-left: 3px solid var(--warn); background: var(--warn-light); border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+  .activation-step .ask { font-weight: 600; }
+  .activation-step .teach { color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+  .summary { text-align: center; }
+  .summary .score { font-size: 48px; font-weight: 700; color: var(--primary); }
+  .summary .score-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .chain-map { text-align: left; margin: 20px 0; }
+  .chain-step-result { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .chain-step-result:last-child { border: none; }
+  .chain-step-result .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0; }
+  .chain-step-result .icon.pass { background: var(--success); }
+  .chain-step-result .icon.fail { background: var(--error); }
+
+  .back-btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: all 0.15s; text-decoration: none; }
+  .back-btn:hover { background: var(--primary); color: white; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback, useMemo } = React;
+
+// ─── ACMS Hub Integration ───
+const CHAIN_ID = "chain-8";
+const CHAIN_KEY = "acms-t0-chain-8";
+const HUB_URL = "index.html";
+
+function saveResult(resultData) {
+  try {
+    localStorage.setItem(CHAIN_KEY, JSON.stringify(resultData));
+  } catch(e) { console.warn("localStorage unavailable:", e); }
+}
+
+// ─── Problem Generator ───
+function generateProblem(usedIndices) {
+  const templates = [
+    {
+      scenario: "A patient weighs 154 lb. Prescribed dose: 10 mg/kg. Medication: 100 mg per 5.0 mL. How many mL?",
+      weightLb: 154,
+      doseRate: 10,
+      concMg: 100,
+      concMl: 5.0,
+      answer: 35,
+      answerStr: "35 mL",
+      difficulty: 2,
+      notes: "Weight conversion, full chain, sig figs"
+    },
+    {
+      scenario: "A child weighs 44 lb. Dose: 25 mg/kg. Available: 250 mg/5.0 mL. How many mL?",
+      weightLb: 44,
+      doseRate: 25,
+      concMg: 250,
+      concMl: 5.0,
+      answer: 10,
+      answerStr: "10 mL",
+      difficulty: 2,
+      notes: "Weight conversion, medium doses"
+    },
+    {
+      scenario: "Patient: 176 lb. Dose: 5.0 mg/kg. Available: 50 mg/mL. How many mL?",
+      weightLb: 176,
+      doseRate: 5.0,
+      concMg: 50,
+      concMl: 1.0,
+      answer: 8.0,
+      answerStr: "8.0 mL",
+      difficulty: 2,
+      notes: "Weight conversion, concentration in mg/mL, sig figs"
+    },
+    {
+      scenario: "Patient: 70.0 kg. Dose: 15 mg/kg. Available: 100 mg/2.0 mL. How many mL?",
+      weightKg: 70.0,
+      doseRate: 15,
+      concMg: 100,
+      concMl: 2.0,
+      answer: 21,
+      answerStr: "21 mL",
+      difficulty: 1,
+      notes: "No weight conversion, straightforward calculation"
+    },
+    {
+      scenario: "A 132 lb patient needs 20 mg/kg. Drug: 250 mg per 10 mL. How many mL?",
+      weightLb: 132,
+      doseRate: 20,
+      concMg: 250,
+      concMl: 10,
+      answer: 24,
+      answerStr: "24 mL",
+      difficulty: 2,
+      notes: "Weight conversion, larger dose volume"
+    },
+    {
+      scenario: "Patient weighs 88 lb. Dose: 12 mg/kg. Available: 150 mg/mL. Calculate mL needed.",
+      weightLb: 88,
+      doseRate: 12,
+      concMg: 150,
+      concMl: 1.0,
+      answer: 4.8,
+      answerStr: "4.8 mL",
+      difficulty: 2,
+      notes: "Weight conversion, decimal answer, high concentration"
+    },
+    {
+      scenario: "A 55 kg patient. Dose: 8.0 mg/kg. Medication: 40 mg per 1.0 mL. Volume?",
+      weightKg: 55,
+      doseRate: 8.0,
+      concMg: 40,
+      concMl: 1.0,
+      answer: 11,
+      answerStr: "11 mL",
+      difficulty: 1,
+      notes: "No weight conversion, medium volume"
+    },
+    {
+      scenario: "Patient: 220 lb. Prescribed: 3.0 mg/kg. Stock: 75 mg/5.0 mL. How many mL?",
+      weightLb: 220,
+      doseRate: 3.0,
+      concMg: 75,
+      concMl: 5.0,
+      answer: 20,
+      answerStr: "20 mL",
+      difficulty: 2,
+      notes: "Heavy patient, low dose rate, concentration format"
+    },
+    {
+      scenario: "Child weighs 26 kg. Dose: 18 mg/kg. Available: 180 mg per 3.0 mL. Calculate mL.",
+      weightKg: 26,
+      doseRate: 18,
+      concMg: 180,
+      concMl: 3.0,
+      answer: 26,
+      answerStr: "26 mL",
+      difficulty: 1,
+      notes: "No weight conversion, nice round numbers"
+    },
+    {
+      scenario: "Patient: 99 lb. Dose: 7.0 mg/kg. Concentration: 70 mg/mL. How many mL?",
+      weightLb: 99,
+      doseRate: 7.0,
+      concMg: 70,
+      concMl: 1.0,
+      answer: 4.5,
+      answerStr: "4.5 mL",
+      difficulty: 2,
+      notes: "Weight conversion, decimal answer"
+    },
+    {
+      scenario: "Patient weighs 80 kg. Dose: 11 mg/kg. Drug: 200 mg per 4.0 mL. Volume needed?",
+      weightKg: 80,
+      doseRate: 11,
+      concMg: 200,
+      concMl: 4.0,
+      answer: 17.6,
+      answerStr: "17.6 mL",
+      difficulty: 2,
+      notes: "No weight conversion, decimal volume, 3 sf"
+    },
+    {
+      scenario: "A 165 lb adult. Dose: 6.0 mg/kg. Available: 120 mg/5.0 mL. How many mL to give?",
+      weightLb: 165,
+      doseRate: 6.0,
+      concMg: 120,
+      concMl: 5.0,
+      answer: 22.2,
+      answerStr: "22 mL",
+      difficulty: 2,
+      notes: "Weight conversion, decimal calculation, sf rounding"
+    },
+  ];
+
+  const available = templates.map((t, i) => i).filter(i => !usedIndices.has(i));
+  if (available.length === 0) return { ...templates[Math.floor(Math.random() * templates.length)], index: -1 };
+  const idx = available[Math.floor(Math.random() * available.length)];
+  return { ...templates[idx], index: idx };
+}
+
+// ─── Normalize answer for comparison ───
+function normalizeAnswer(str) {
+  let s = str.trim().replace(/\s+/g, '').toLowerCase();
+  s = s.replace(/[x\*]/g, '×');
+  s = s.replace(/(ml|mg|kg|g|l)$/i, '');
+  return s;
+}
+
+function answersMatch(userStr, problem) {
+  const norm = normalizeAnswer(userStr);
+  const correctNum = problem.answer;
+  const userNum = parseFloat(norm);
+
+  if (!isNaN(userNum)) {
+    // Accept ±0.1 tolerance for mL answers
+    if (Math.abs(userNum - correctNum) <= 0.1) return true;
+  }
+
+  return false;
+}
+
+// ─── Diagnosis Engine ───
+function diagnoseFailure(problem, userAnswer) {
+  const userNum = parseFloat(normalizeAnswer(userAnswer));
+  const correctNum = problem.answer;
+
+  if (!isNaN(userNum)) {
+    // Check if they forgot to convert lb to kg (answer ~2.2x too large)
+    const weightLb = problem.weightLb;
+    if (weightLb && userNum > correctNum * 2 && userNum < correctNum * 2.5) {
+      return {
+        step: 1,
+        stepName: "Convert weight from lb to kg",
+        diagnosis: "forgot-weight-conversion",
+        message: "It looks like you used the weight in pounds directly instead of converting to kilograms. The dose rate is per kilogram, not per pound.",
+        remediation: "Convert " + weightLb + " lb to kg first: " + weightLb + " ÷ 2.205 ≈ " + (weightLb / 2.205).toFixed(1) + " kg. Then use that for the calculation."
+      };
+    }
+
+    // Check if they used 2.2 instead of 2.205 (minor error)
+    const exactConversion = weightLb ? weightLb / 2.205 : 0;
+    const approxConversion = weightLb ? weightLb / 2.2 : 0;
+    if (weightLb && userNum > correctNum * 0.98 && userNum < correctNum * 1.02 &&
+        Math.abs(userNum - (approxConversion * problem.doseRate / (problem.concMg / problem.concMl))) < 1) {
+      return {
+        step: 1,
+        stepName: "Convert weight from lb to kg",
+        diagnosis: "approx-conversion",
+        message: "You used 2.2 as the conversion factor. That's a common approximation, but the exact value is 2.205. Let's use the more precise value.",
+        remediation: "Use 1 kg = 2.205 lb for accuracy. " + weightLb + " ÷ 2.205 = " + (weightLb / 2.205).toFixed(2) + " kg."
+      };
+    }
+
+    // Check if they multiplied instead of dividing for concentration
+    const wrongDose = (weightLb ? weightLb / 2.205 : problem.weightKg) * problem.doseRate;
+    const wrongMultiply = wrongDose * (problem.concMg / problem.concMl);
+    if (!isNaN(userNum) && Math.abs(userNum - wrongMultiply) < 1 && wrongMultiply > correctNum * 10) {
+      return {
+        step: 4,
+        stepName: "Calculate volume to administer",
+        diagnosis: "multiplied-instead-divide",
+        message: "You multiplied the dose by the concentration. For volume, you need to divide: dose ÷ concentration = volume.",
+        remediation: "The dose is " + wrongDose.toFixed(0) + " mg. The concentration is " + (problem.concMg / problem.concMl).toFixed(1) + " mg/mL. Divide: " + wrongDose.toFixed(0) + " ÷ " + (problem.concMg / problem.concMl).toFixed(1) + " = " + correctNum.toFixed(1) + " mL."
+      };
+    }
+
+    // Check if they inverted concentration
+    const invertedConc = wrongDose / (problem.concMl / problem.concMg);
+    if (!isNaN(userNum) && Math.abs(userNum - invertedConc) < 1 && invertedConc > correctNum * 2) {
+      return {
+        step: 3,
+        stepName: "Identify the available concentration",
+        diagnosis: "inverted-concentration",
+        message: "It looks like you inverted the concentration. The concentration should be mg/mL (dose ÷ concentration), not mL/mg.",
+        remediation: "Concentration is " + problem.concMg + " mg per " + problem.concMl + " mL = " + (problem.concMg / problem.concMl).toFixed(1) + " mg/mL. Use that to divide the dose."
+      };
+    }
+
+    // Check if answer is way off
+    if (userNum > correctNum * 2 || userNum < correctNum * 0.5) {
+      return {
+        step: 2,
+        stepName: "Calculate the required dose in mg",
+        diagnosis: "arithmetic-error",
+        message: "Your answer is quite far from the correct value. Let's check each step of the calculation.",
+        remediation: "Step-by-step: (1) Convert weight to kg, (2) Multiply by mg/kg to get total mg, (3) Find the concentration in mg/mL, (4) Divide dose by concentration for mL."
+      };
+    }
+  }
+
+  // Generic fallback
+  return {
+    step: 2,
+    stepName: "Calculate the required dose in mg",
+    diagnosis: "general-error",
+    message: "Let's walk through the dosage calculation chain step by step.",
+    remediation: "The process: (1) Convert weight to kg if needed, (2) Dose in mg = weight (kg) × dose rate (mg/kg), (3) Find concentration in mg/mL, (4) Volume = dose (mg) ÷ concentration (mg/mL)."
+  };
+}
+
+// ─── Chain Definition ───
+const chain = {
+  id: "T0-C8",
+  title: "Dosage Calculations",
+  steps: [
+    { id: 1, name: "Convert patient weight to kg", short: "Weight conversion" },
+    { id: 2, name: "Calculate required dose in mg", short: "Calculate dose" },
+    { id: 3, name: "Identify available concentration", short: "Concentration" },
+    { id: 4, name: "Calculate volume to administer", short: "Calculate volume" },
+    { id: 5, name: "Apply significant figures", short: "Sig figs" },
+  ],
+  activationRamps: [
+    [
+      { prompt: "A patient weighs 110 lb. Convert to kg using 1 kg = 2.205 lb.", answer: "110 ÷ 2.205 = 49.9 kg (or about 50 kg)", teaches: "Always convert pounds to kilograms first since the dose rate is per kg" },
+      { prompt: "The dose is 10 mg/kg. For a 49.9 kg patient, how many mg total?", answer: "49.9 × 10 = 499 mg", teaches: "Multiply the weight in kg by the mg/kg dose to get the total dose needed" },
+      { prompt: "The medication comes as 250 mg per 5.0 mL. What's the concentration in mg/mL?", answer: "250 ÷ 5.0 = 50 mg/mL", teaches: "Concentration tells you how much drug is in each mL — divide mg by mL" },
+      { prompt: "The patient needs 499 mg and the concentration is 50 mg/mL. How many mL?", answer: "499 ÷ 50 = 10.0 mL", teaches: "To find volume, divide the total dose by the concentration: dose ÷ concentration = volume" },
+      { prompt: "The full chain is: weight → dose → concentration → volume. Practice it.", answer: "1. Convert lb to kg, 2. Multiply by mg/kg, 3. Find mg/mL, 4. Divide dose by concentration.", teaches: "This four-step chain is the same every time — master it and you've mastered dosage calculations" },
+    ],
+    [
+      { prompt: "Why can't we just use pounds with mg/kg doses?", answer: "Because mg/kg means the dose rate is per kilogram, not per pound. Two different units.", teaches: "The dose rate is always per kilogram in medical dosing — must convert first" },
+      { prompt: "A 200 lb person is how many kg? (1 kg = 2.205 lb)", answer: "200 ÷ 2.205 = 90.7 kg", teaches: "Divide pounds by 2.205 to get kilograms — this is the correct direction" },
+      { prompt: "Common mistake: 200 × 2.205 = 441. Why is that wrong?", answer: "That would give you lb from kg (the opposite direction). You need to divide, not multiply.", teaches: "Dividing by 2.205 converts lb → kg. Multiplying by 2.205 converts kg → lb." },
+      { prompt: "Quick estimate: half the weight in lbs ≈ weight in kg. Is 200 lb ≈ 100 kg?", answer: "Close! 200 lb ≈ 91 kg. The estimate is 100 kg, which is close but use 2.205 for accuracy.", teaches: "The rule of thumb is helpful for checking, but always use 2.205 for the real answer" },
+      { prompt: "If a dose is 5 mg/kg for a 90.7 kg patient, what's the total dose?", answer: "90.7 × 5 = 454 mg", teaches: "Once you have weight in kg, multiply by the mg/kg dose rate to get the total mg needed" },
+    ],
+    [
+      { prompt: "A vial says '500 mg / 10 mL'. What does that mean?", answer: "Every 10 mL of the liquid contains 500 mg of the drug.", teaches: "The concentration notation tells you the amount of drug per volume of liquid" },
+      { prompt: "What's the concentration in mg per mL for that vial?", answer: "500 ÷ 10 = 50 mg/mL", teaches: "Divide the total mg by the total mL to get the concentration in mg/mL" },
+      { prompt: "If a patient needs 200 mg and the concentration is 50 mg/mL, how many mL?", answer: "200 ÷ 50 = 4.0 mL", teaches: "Dose divided by concentration gives you the volume: dose ÷ concentration = mL" },
+      { prompt: "What if you accidentally multiply? 200 × 50 = 10000. Does that make sense?", answer: "No! 10000 mL = 10 liters — way too much for any injection or medication dose.", teaches: "Always divide dose by concentration. If your answer is huge (liters instead of mL), you multiplied wrong." },
+      { prompt: "The rule: dose ÷ concentration = volume. Always divide?", answer: "Yes. Always: dose (mg) ÷ concentration (mg/mL) = volume (mL). Never multiply.", teaches: "This is the golden rule of dosage calculations — divide, never multiply, for volume" },
+    ],
+  ]
+};
+
+// ─── Components ───
+function ProgressBar({ total, results, current }) {
+  return (
+    <div className="progress-bar">
+      {Array.from({ length: total }, (_, i) => {
+        let cls = "";
+        if (i < results.length) cls = results[i].correct ? "done" : "failed";
+        else if (i === current) cls = "active";
+        return <div key={i} className={`progress-dot ${cls}`} />;
+      })}
+    </div>
+  );
+}
+
+function StepDiagnosis({ diagnosis }) {
+  const friendlyNames = {
+    1: "Convert Patient Weight to kg",
+    2: "Calculate Required Dose in mg",
+    3: "Identify Available Concentration",
+    4: "Calculate Volume to Administer",
+    5: "Apply Significant Figures"
+  };
+  return (
+    <div className="feedback error">
+      <strong>Skill to practice: {friendlyNames[diagnosis.step] || diagnosis.stepName}</strong>
+      {diagnosis.message}
+      <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6, fontSize: 13 }}>
+        <strong style={{ color: '#b91c1c', fontSize: 12 }}>Try this:</strong> {diagnosis.remediation}
+      </div>
+    </div>
+  );
+}
+
+function ActivationRamp({ ramps }) {
+  const [rampIndex] = useState(() => Math.floor(Math.random() * ramps.length));
+  const sequence = ramps[rampIndex];
+  const [revealed, setRevealed] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleRevealAnswer = () => setShowAnswer(true);
+  const handleNext = () => {
+    setRevealed(r => r + 1);
+    setShowAnswer(false);
+  };
+
+  return (
+    <div className="activation">
+      <p style={{ fontSize: 14, color: '#92400e', fontWeight: 600, marginBottom: 8 }}>
+        Let's build up to it, one step at a time:
+      </p>
+      {sequence.slice(0, revealed + 1).map((step, i) => {
+        const isPast = i < revealed;
+        const isCurrent = i === revealed;
+        return (
+          <div key={`${rampIndex}-${i}`} className="activation-step">
+            <div className="ask">{step.prompt}</div>
+            {isPast && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+            {isCurrent && showAnswer && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {revealed < sequence.length - 1 ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          {!showAnswer ? (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleRevealAnswer}>
+              Show answer
+            </button>
+          ) : (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleNext}>
+              Next step
+            </button>
+          )}
+        </div>
+      ) : (
+        !showAnswer ? (
+          <button className="submit-btn" style={{ marginTop: 8, fontSize: 13, padding: '8px 16px' }}
+            onClick={handleRevealAnswer}>
+            Show answer
+          </button>
+        ) : (
+          <div className="feedback success" style={{ marginTop: 8 }}>
+            <strong>Now you have the full toolkit.</strong>
+            Go back and try the problem again — you know the dosage calculation chain inside and out now.
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function Summary({ results, onReset, onReturnToHub }) {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+
+  const stepResults = chain.steps.map(step => {
+    const failures = results.filter(r => !r.correct && r.diagnosis && r.diagnosis.step === step.id);
+    return { ...step, failures: failures.length };
+  });
+
+  const failures = results
+    .filter(r => !r.correct && r.diagnosis)
+    .map(r => r.diagnosis.diagnosis);
+  const resultData = {
+    passed: correct >= Math.ceil(total * 0.7),
+    score: correct + "/" + total,
+    correct: correct,
+    total: total,
+    failures: [...new Set(failures)],
+    stepBreakdown: stepResults.map(s => ({ id: s.id, name: s.name, failures: s.failures })),
+    timestamp: new Date().toISOString()
+  };
+  saveResult(resultData);
+
+  return (
+    <div className="card summary">
+      <div className="score">{correct}/{total}</div>
+      <div className="score-label">problems correct</div>
+
+      <div className="chain-map">
+        <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Dosage Calculation Skills:
+        </p>
+        {stepResults.map(step => {
+          const friendlyNames = {
+            1: "Convert Patient Weight to kg",
+            2: "Calculate Required Dose in mg",
+            3: "Identify Available Concentration",
+            4: "Calculate Volume to Administer",
+            5: "Apply Significant Figures"
+          };
+          const status = step.failures === 0 ? 'pass' : 'fail';
+          return (
+            <div key={step.id} className="chain-step-result">
+              <div className={`icon ${status}`}>{status === 'pass' ? '✓' : step.failures}</div>
+              <div>
+                <strong>{friendlyNames[step.id]}</strong>
+                {step.failures > 0 ? (
+                  <div style={{ fontSize: 12, color: 'var(--error)', marginTop: 2 }}>
+                    {step.failures} error{step.failures > 1 ? 's' : ''} — this skill needs practice
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--success)', marginTop: 2 }}>
+                    Solid
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {correct < total && (
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 16, lineHeight: 1.6 }}>
+          Dosage calculations are a five-step chain. Focus on the red area{stepResults.filter(s => s.failures > 0).length > 1 ? 's' : ''} above — that's where practice will help most.
+        </p>
+      )}
+      {correct === total && (
+        <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
+          Every link in the chain is solid. You've got dosage calculations locked down.
+        </p>
+      )}
+
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+        <button className="back-btn" onClick={onReset}>Try another set</button>
+        <button className="next-btn" style={{ width: 'auto', padding: '12px 32px', marginTop: 0 }} onClick={onReturnToHub}>
+          Continue to next chain →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function App() {
+  const TOTAL_QUESTIONS = 5;
+  const [results, setResults] = useState([]);
+  const [usedIndices, setUsedIndices] = useState(new Set());
+  const [problem, setProblem] = useState(() => {
+    const p = generateProblem(new Set());
+    return p;
+  });
+  const [userInput, setUserInput] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [showActivation, setShowActivation] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const currentQ = results.length;
+
+  const handleSubmit = () => {
+    if (!userInput.trim()) return;
+
+    const correct = answersMatch(userInput, problem);
+    let diagnosis = null;
+    if (!correct) {
+      diagnosis = diagnoseFailure(problem, userInput);
+    }
+
+    setFeedback({ correct, diagnosis });
+  };
+
+  const handleNext = () => {
+    const correct = feedback.correct;
+    const diagnosis = feedback.diagnosis;
+    const newResults = [...results, { correct, diagnosis, problem }];
+    setResults(newResults);
+    setFeedback(null);
+    setUserInput("");
+    setShowActivation(false);
+
+    if (newResults.length >= TOTAL_QUESTIONS) {
+      setDone(true);
+    } else {
+      const newUsed = new Set([...usedIndices, problem.index]);
+      setUsedIndices(newUsed);
+      setProblem(generateProblem(newUsed));
+    }
+  };
+
+  const handleReset = () => {
+    setResults([]);
+    setUsedIndices(new Set());
+    setProblem(generateProblem(new Set()));
+    setUserInput("");
+    setFeedback(null);
+    setShowActivation(false);
+    setDone(false);
+  };
+
+  const handleReturnToHub = () => {
+    window.location.href = HUB_URL;
+  };
+
+  if (done) {
+    return (
+      <div className="app">
+        <div className="header">
+          <h1>ACMS — Dosage Calculations</h1>
+          <p>Chain 8 Diagnostic Results</p>
+        </div>
+        <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
+        <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS — Dosage Calculations</h1>
+        <p>Chain 8: Dosage Calculations</p>
+      </div>
+
+      <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
+
+      <div className="card">
+        <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
+
+        <div className="question-number">
+          {problem.scenario}
+        </div>
+
+        <div className="step-prompt">What is the answer in mL? (Include units.)</div>
+
+        {!feedback && (
+          <>
+            <div className="input-row">
+              <input
+                className="text-input"
+                type="text"
+                value={userInput}
+                onChange={e => setUserInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                autoFocus
+                placeholder="Your answer"
+              />
+              <button
+                className="submit-btn"
+                onClick={handleSubmit}
+                disabled={!userInput.trim()}
+              >
+                Check
+              </button>
+            </div>
+          </>
+        )}
+
+        {feedback && feedback.correct && (
+          <>
+            <div className="feedback success">
+              <strong>Correct!</strong>
+              The answer is {problem.answerStr}.
+            </div>
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+
+        {feedback && !feedback.correct && (
+          <>
+            <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
+              You answered <strong style={{ color: 'var(--error)' }}>{userInput}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.answerStr}</strong>.
+            </div>
+
+            <StepDiagnosis diagnosis={feedback.diagnosis} />
+
+            {!showActivation && (
+              <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+                I'm stuck — walk me through the basics
+              </button>
+            )}
+
+            {showActivation && (
+              <ActivationRamp ramps={chain.activationRamps} />
+            )}
+
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {!feedback && !showActivation && (
+        <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+          I'm stuck — help me build up to this
+        </button>
+      )}
+
+      {!feedback && showActivation && (
+        <div className="card">
+          <ActivationRamp ramps={chain.activationRamps} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
