@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACMS — Density Calculations</title>
+<title>ACMS — Sink or Float</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
@@ -43,7 +43,7 @@
 
   .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
 
-  .question-number { font-size: 17px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 500; text-align: left; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; line-height: 1.5; }
+  .question-number { font-size: 18px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; text-align: center; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: 0.5px; line-height: 1.4; }
 
   .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
 
@@ -98,8 +98,8 @@
 const { useState, useCallback, useMemo } = React;
 
 // ─── ACMS Hub Integration ───
-const CHAIN_ID = "chain-5";
-const CHAIN_KEY = "acms-t0-chain-5";
+const CHAIN_ID = "chain-6";
+const CHAIN_KEY = "acms-t0-chain-6";
 const HUB_URL = "index.html";
 
 function saveResult(resultData) {
@@ -111,247 +111,181 @@ function saveResult(resultData) {
 // ─── Problem Generator ───
 function generateProblem(usedIndices) {
   const templates = [
-    // Type 1: Find density (d = m/V)
-    { display: "A rock has mass 45.2 g and volume 12.8 mL. What is its density in g/mL?",
-      givenMass: 45.2, givenVolume: 12.8, solveFor: "d",
-      answer: "3.53", answerNum: 3.53, needsConversion: false, difficulty: 1,
-      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "45.2 ÷ 12.8 = 3.53125 → 3.53 g/mL" },
+    // Type 1: Given density directly, asked sink/float in water (d=1.0 g/mL)
+    { question: "An object has a density of 2.7 g/mL. When placed in water (density = 1.0 g/mL), will it sink or float?",
+      choices: ["Sink", "Float"], correctIndex: 0, difficulty: 1,
+      objectDensity: 2.7, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "Since 2.7 g/mL > 1.0 g/mL, the object is denser than water and will sink." },
+    { question: "A piece of wood has a density of 0.6 g/mL. In water (density = 1.0 g/mL), does it sink or float?",
+      choices: ["Sink", "Float"], correctIndex: 1, difficulty: 1,
+      objectDensity: 0.6, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "Since 0.6 g/mL < 1.0 g/mL, the object is less dense than water and will float." },
+    { question: "An object has density 1.5 g/mL and is placed in water. What happens?",
+      choices: ["It sinks", "It floats", "It neither sinks nor floats"], correctIndex: 0, difficulty: 1,
+      objectDensity: 1.5, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "Density 1.5 > 1.0, so it sinks. The object is denser than water." },
+    { question: "Cork has a density of 0.24 g/mL. Will it sink in water?",
+      choices: ["Yes, it will sink", "No, it will float"], correctIndex: 1, difficulty: 1,
+      objectDensity: 0.24, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "0.24 < 1.0, so cork floats. It's much less dense than water." },
 
-    { display: "A marble has mass 15.0 g and volume 5.00 mL. What is its density?",
-      givenMass: 15.0, givenVolume: 5.00, solveFor: "d",
-      answer: "3.0", answerNum: 3.0, needsConversion: false, difficulty: 1,
-      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "15.0 ÷ 5.00 = 3.0 g/mL" },
+    // Type 2: Given mass and volume, must calculate density first, then predict
+    { question: "An object has a mass of 15.0 g and a volume of 20.0 mL. Will it sink or float in water?",
+      choices: ["Sink", "Float"], correctIndex: 1, difficulty: 2,
+      objectDensity: 0.75, liquidDensity: 1.0, needsCalculation: true,
+      explanation: "Density = 15.0 g ÷ 20.0 mL = 0.75 g/mL. Since 0.75 < 1.0, it floats." },
+    { question: "An object weighs 30.0 g and occupies 10.0 mL. In water, sink or float?",
+      choices: ["Sink", "Float"], correctIndex: 0, difficulty: 2,
+      objectDensity: 3.0, liquidDensity: 1.0, needsCalculation: true,
+      explanation: "Density = 30.0 g ÷ 10.0 mL = 3.0 g/mL. Since 3.0 > 1.0, it sinks." },
+    { question: "A block has mass 45 g and volume 50 mL. What will happen in water?",
+      choices: ["It will sink", "It will float"], correctIndex: 1, difficulty: 2,
+      objectDensity: 0.9, liquidDensity: 1.0, needsCalculation: true,
+      explanation: "Density = 45 g ÷ 50 mL = 0.9 g/mL. Since 0.9 < 1.0, it floats." },
+    { question: "An object: 24 g and 12 mL. In water, does it sink or float?",
+      choices: ["Sink", "Float"], correctIndex: 0, difficulty: 2,
+      objectDensity: 2.0, liquidDensity: 1.0, needsCalculation: true,
+      explanation: "Density = 24 g ÷ 12 mL = 2.0 g/mL. Since 2.0 > 1.0, it sinks." },
 
-    { display: "A block of plastic weighs 120 g and occupies 150 mL. Calculate its density.",
-      givenMass: 120, givenVolume: 150, solveFor: "d",
-      answer: "0.80", answerNum: 0.80, needsConversion: false, difficulty: 1,
-      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "120 ÷ 150 = 0.8 g/mL" },
+    // Type 3: Given density, asked about a non-water liquid
+    { question: "An object has density 0.85 g/mL. A liquid has density 0.79 g/mL. Sink or float?",
+      choices: ["Sink", "Float"], correctIndex: 0, difficulty: 2,
+      objectDensity: 0.85, liquidDensity: 0.79, needsCalculation: false,
+      explanation: "Since 0.85 g/mL > 0.79 g/mL, the object is denser and will sink in this liquid." },
+    { question: "Object density = 1.2 g/mL. Liquid density = 1.3 g/mL. What happens?",
+      choices: ["Sinks", "Floats"], correctIndex: 1, difficulty: 2,
+      objectDensity: 1.2, liquidDensity: 1.3, needsCalculation: false,
+      explanation: "Since 1.2 < 1.3, the object is less dense than the liquid and floats." },
+    { question: "A ball (d = 0.8 g/mL) is placed in oil (d = 0.92 g/mL). Sink or float?",
+      choices: ["Sink", "Float"], correctIndex: 1, difficulty: 2,
+      objectDensity: 0.8, liquidDensity: 0.92, needsCalculation: false,
+      explanation: "0.8 < 0.92, so the ball floats in oil." },
+    { question: "Stone (d = 2.6 g/mL) in honey (d = 1.42 g/mL). Will it sink?",
+      choices: ["Yes", "No"], correctIndex: 0, difficulty: 2,
+      objectDensity: 2.6, liquidDensity: 1.42, needsCalculation: false,
+      explanation: "2.6 > 1.42, so the stone sinks in honey." },
 
-    { display: "A metal cube has mass 78.5 g and volume 10.0 mL. What is its density in g/mL?",
-      givenMass: 78.5, givenVolume: 10.0, solveFor: "d",
-      answer: "7.85", answerNum: 7.85, needsConversion: false, difficulty: 2,
-      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "78.5 ÷ 10.0 = 7.85 g/mL" },
-
-    // Type 2: Find mass (m = d × V)
-    { display: "Mercury has density 13.6 g/mL. What is the mass of 5.00 mL of mercury?",
-      givenDensity: 13.6, givenVolume: 5.00, solveFor: "m",
-      answer: "68", answerNum: 68, needsConversion: false, difficulty: 1,
-      step1: "density and volume", step2: "m = d × V", step3: "no", step4: "13.6 × 5.00 = 68 g" },
-
-    { display: "Water has density 1.00 g/mL. What is the mass of 250 mL of water?",
-      givenDensity: 1.00, givenVolume: 250, solveFor: "m",
-      answer: "250", answerNum: 250, needsConversion: false, difficulty: 1,
-      step1: "density and volume", step2: "m = d × V", step3: "no", step4: "1.00 × 250 = 250 g" },
-
-    { display: "Aluminum has density 2.70 g/mL. What is the mass of 50.0 mL of aluminum?",
-      givenDensity: 2.70, givenVolume: 50.0, solveFor: "m",
-      answer: "135", answerNum: 135, needsConversion: false, difficulty: 1,
-      step1: "density and volume", step2: "m = d × V", step3: "no", step4: "2.70 × 50.0 = 135 g" },
-
-    // Type 3: Find volume (V = m/d)
-    { display: "Gold has density 19.3 g/mL. What volume does 50.0 g of gold occupy?",
-      givenMass: 50.0, givenDensity: 19.3, solveFor: "V",
-      answer: "2.59", answerNum: 2.59, needsConversion: false, difficulty: 1,
-      step1: "mass and density", step2: "V = m/d", step3: "no", step4: "50.0 ÷ 19.3 = 2.59 mL" },
-
-    { display: "A liquid has density 0.79 g/mL. What is the volume of 158 g of this liquid?",
-      givenMass: 158, givenDensity: 0.79, solveFor: "V",
-      answer: "200", answerNum: 200, needsConversion: false, difficulty: 1,
-      step1: "mass and density", step2: "V = m/d", step3: "no", step4: "158 ÷ 0.79 = 200 mL" },
-
-    { display: "Iron has density 7.87 g/mL. What volume does 100 g of iron occupy?",
-      givenMass: 100, givenDensity: 7.87, solveFor: "V",
-      answer: "12.7", answerNum: 12.7, needsConversion: false, difficulty: 1,
-      step1: "mass and density", step2: "V = m/d", step3: "no", step4: "100 ÷ 7.87 = 12.7 mL" },
-
-    // Type 4: With unit conversion (kg → g)
-    { display: "A block of ice has mass 1.8 kg and density 0.92 g/mL. Find volume in mL.",
-      givenMass: 1800, givenDensity: 0.92, solveFor: "V",
-      answer: "1956", answerNum: 1956, needsConversion: true, difficulty: 2,
-      step1: "mass (need to convert kg→g) and density", step2: "V = m/d", step3: "yes: 1.8 kg = 1800 g", step4: "1800 ÷ 0.92 = 1956.5 ≈ 1956 mL" },
-
-    { display: "A sample has mass 0.250 kg and density 8.9 g/mL. Calculate its volume.",
-      givenMass: 250, givenDensity: 8.9, solveFor: "V",
-      answer: "28.1", answerNum: 28.1, needsConversion: true, difficulty: 2,
-      step1: "mass (need to convert kg→g) and density", step2: "V = m/d", step3: "yes: 0.250 kg = 250 g", step4: "250 ÷ 8.9 = 28.1 mL" },
-
-    // Type 5: With cm³ = mL conversion
-    { display: "A cube is 2.0 cm on each side (V = 8.0 cm³). Mass is 21.6 g. Find density in g/mL.",
-      givenMass: 21.6, givenVolume: 8.0, solveFor: "d",
-      answer: "2.7", answerNum: 2.7, needsConversion: true, difficulty: 2,
-      step1: "mass and volume (in cm³)", step2: "d = m/V", step3: "yes: 8.0 cm³ = 8.0 mL", step4: "21.6 ÷ 8.0 = 2.7 g/mL" },
-
-    { display: "A rectangular solid is 1.5 cm × 2.0 cm × 3.0 cm (V = 9.0 cm³). Mass is 23.4 g. Density?",
-      givenMass: 23.4, givenVolume: 9.0, solveFor: "d",
-      answer: "2.6", answerNum: 2.6, needsConversion: true, difficulty: 2,
-      step1: "mass and volume (in cm³)", step2: "d = m/V", step3: "yes: 9.0 cm³ = 9.0 mL", step4: "23.4 ÷ 9.0 = 2.6 g/mL" },
-
-    { display: "A sphere with volume 27 cm³ has mass 54 g. Calculate its density in g/mL.",
-      givenMass: 54, givenVolume: 27, solveFor: "d",
-      answer: "2.0", answerNum: 2.0, needsConversion: true, difficulty: 2,
-      step1: "mass and volume (in cm³)", step2: "d = m/V", step3: "yes: 27 cm³ = 27 mL", step4: "54 ÷ 27 = 2.0 g/mL" },
-
-    // Type 6: Liter conversion
-    { display: "A liquid has density 0.79 g/mL and volume 2.5 L. What is the mass in grams?",
-      givenDensity: 0.79, givenVolume: 2500, solveFor: "m",
-      answer: "1975", answerNum: 1975, needsConversion: true, difficulty: 2,
-      step1: "density and volume (need to convert L→mL)", step2: "m = d × V", step3: "yes: 2.5 L = 2500 mL", step4: "0.79 × 2500 = 1975 g" },
+    // Type 5: Conceptual trap — heavy but low-density vs light but high-density
+    { question: "A 500 g wooden block (d = 0.6 g/mL) vs a 5 g steel ball (d = 7.8 g/mL). Which sinks in water?",
+      choices: ["The wooden block (it's heavier)", "The steel ball (it's denser)", "Both sink equally"], correctIndex: 1, difficulty: 3,
+      objectDensity: 7.8, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "The steel ball sinks because density determines sinking, not mass. The 5 g steel is denser than water; the 500 g wood is not." },
+    { question: "A large, light foam object vs a tiny, heavy metal object. What determines which sinks?",
+      choices: ["Mass (weight)", "Density (mass per volume)", "Size"], correctIndex: 1, difficulty: 3,
+      objectDensity: 1.0, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "Density is what matters. An object sinks if its density exceeds the liquid's density, regardless of total mass or size." },
+    { question: "A 1000 kg aluminum block (d ≈ 2.7 g/mL) and a 1 kg water-saturated cotton ball (d > 1.0). In water, which sinks?",
+      choices: ["The aluminum (it's much heavier)", "The cotton ball (if its density > 1.0)", "Both sink"], correctIndex: 1, difficulty: 3,
+      objectDensity: 1.05, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "Both sink, but for the same reason: their density exceeds 1.0 g/mL. Mass is a red herring — density determines floating." },
+    { question: "Heavy object (500 g, d = 0.5 g/mL) vs light object (1 g, d = 8.0 g/mL) in water. Which floats?",
+      choices: ["The heavy one (500 g)", "The light one (1 g)", "Both float"], correctIndex: 0, difficulty: 3,
+      objectDensity: 0.5, liquidDensity: 1.0, needsCalculation: false,
+      explanation: "The 500 g object floats because its density (0.5) is less than water's. The 1 g sinks (density 8.0 > 1.0). Mass is irrelevant." },
   ];
 
+  // Pick one we haven't used yet
   const available = templates.map((t, i) => i).filter(i => !usedIndices.has(i));
   if (available.length === 0) return { ...templates[Math.floor(Math.random() * templates.length)], index: -1 };
   const idx = available[Math.floor(Math.random() * available.length)];
   return { ...templates[idx], index: idx };
 }
 
-// ─── Normalize answer for comparison ───
-function normalizeAnswer(str) {
-  let s = str.trim().replace(/\s+/g, '').toLowerCase();
-  s = s.replace(/[x\*]/g, '×');
-  s = s.replace(/(g\/ml|m|g|ml|kg|l)$/i, '');
-  return s;
-}
-
-function answersMatch(userStr, problem) {
-  const norm = normalizeAnswer(userStr);
-  const correctNorm = normalizeAnswer(problem.answer);
-
-  if (norm === correctNorm) return true;
-
-  const userNum = parseFloat(norm);
-  const tolerance = problem.answerNum > 100 ? 5 : (problem.answerNum > 10 ? 0.5 : 0.05);
-  if (!isNaN(userNum) && Math.abs(userNum - problem.answerNum) <= tolerance) return true;
-
-  return false;
-}
-
 // ─── Diagnosis Engine ───
-function diagnoseFailure(problem, userAnswer) {
-  const userNum = parseFloat(normalizeAnswer(userAnswer));
-  const correctNum = problem.answerNum;
+function diagnoseFailure(problem, selectedIndex) {
+  const isCorrect = selectedIndex === problem.correctIndex;
+  if (isCorrect) return null;
 
-  if (!isNaN(userNum)) {
-    // Check: used wrong formula (e.g., calculated V/m instead of m/V for density)
-    const inverted = 1 / userNum;
-    if (Math.abs(inverted - correctNum) < correctNum * 0.05) {
+  const userChoice = problem.choices[selectedIndex];
+  const correctChoice = problem.choices[problem.correctIndex];
+  const objectDenser = problem.objectDensity > problem.liquidDensity;
+  const shouldSink = objectDenser;
+
+  // Trap 1: Compared to wrong reference density
+  if (problem.liquidDensity !== 1.0 && selectedIndex !== problem.correctIndex) {
+    if (problem.objectDensity > 1.0 && !shouldSink) {
       return {
         step: 2,
-        stepName: "Select the correct rearrangement",
-        diagnosis: "inverted-formula",
-        message: "It looks like you inverted the formula. For density, you need d = m/V, not V/m. Check which two quantities you have and which one you're solving for.",
-        remediation: "If you have mass and volume, use d = m/V (divide). If you have density and volume, use m = d × V (multiply). If you have mass and density, use V = m/d (divide)."
+        stepName: "Compare to the correct liquid density",
+        diagnosis: "wrong-reference-density",
+        message: `You may have compared the object's density to water (1.0), but the problem uses a different liquid (${problem.liquidDensity} g/mL). Always compare to the actual liquid's density.`,
+        remediation: `Compare ${problem.objectDensity} g/mL to ${problem.liquidDensity} g/mL (not 1.0). Since ${problem.objectDensity} ${objectDenser ? '>' : '<'} ${problem.liquidDensity}, the object ${shouldSink ? 'sinks' : 'floats'}.`
       };
     }
+  }
 
-    // Check: forgot unit conversion
-    if (problem.needsConversion) {
-      const offBy1000 = userNum * 1000;
-      const offBySmall = userNum / 1000;
-      if (Math.abs(offBy1000 - correctNum) < correctNum * 0.1) {
-        return {
-          step: 3,
-          stepName: "Convert units",
-          diagnosis: "forgot-conversion",
-          message: "You didn't convert units! Check if you need to convert kg → g, L → mL, or cm³ → mL.",
-          remediation: "Unit conversions: 1 kg = 1000 g, 1 L = 1000 mL, 1 cm³ = 1 mL. Do the conversion before plugging numbers into the formula."
-        };
-      }
-      if (Math.abs(offBySmall - correctNum) < correctNum * 0.1) {
-        return {
-          step: 3,
-          stepName: "Convert units",
-          diagnosis: "wrong-conversion",
-          message: "Your unit conversion is backwards. Double-check the direction: are you going from a smaller unit to a larger one, or vice versa?",
-          remediation: "Remember: kg → g (multiply by 1000), L → mL (multiply by 1000), cm³ = mL (they're the same)."
-        };
-      }
-    }
+  // Trap 2: Reversed the rule (said float when should sink, or vice versa)
+  if (shouldSink && userChoice === "Float") {
+    return {
+      step: 3,
+      stepName: "Apply the density rule",
+      diagnosis: "reversed-rule",
+      message: `You said the object floats, but its density (${problem.objectDensity}) is greater than the liquid's (${problem.liquidDensity}). Remember: denser than liquid → sinks.`,
+      remediation: `Since ${problem.objectDensity} > ${problem.liquidDensity}, the object is denser and will sink.`
+    };
+  }
 
-    // Check: arithmetic error (close but not exact)
-    const diff = Math.abs(userNum - correctNum);
-    const tolerance = problem.answerNum > 100 ? 5 : (problem.answerNum > 10 ? 0.5 : 0.05);
-    if (diff > tolerance && diff < tolerance * 3) {
-      return {
-        step: 4,
-        stepName: "Calculate and apply sig figs",
-        diagnosis: "arithmetic-error",
-        message: "Your answer is close, but not quite right. Did you check your arithmetic? Re-enter the numbers into your calculator carefully.",
-        remediation: "Double-check: Did you use the right formula? Did you convert units? Did you enter the numbers correctly? Then round to the appropriate number of significant figures."
-      };
-    }
+  if (!shouldSink && userChoice === "Sink") {
+    return {
+      step: 3,
+      stepName: "Apply the density rule",
+      diagnosis: "reversed-rule",
+      message: `You said the object sinks, but its density (${problem.objectDensity}) is less than the liquid's (${problem.liquidDensity}). Remember: less dense than liquid → floats.`,
+      remediation: `Since ${problem.objectDensity} < ${problem.liquidDensity}, the object is less dense and will float.`
+    };
+  }
 
-    // Check: sig fig error
-    const userSF = countSigFigs(userAnswer.trim());
-    const answerSF = countSigFigs(problem.answer);
-    if (userSF !== answerSF && userNum > correctNum * 0.5 && userNum < correctNum * 1.5) {
-      return {
-        step: 4,
-        stepName: "Calculate and apply sig figs",
-        diagnosis: "sig-fig-error",
-        message: "Your calculation is right, but your sig figs are off. The answer should have " + answerSF + " significant figures, not " + userSF + ".",
-        remediation: "Sig fig rule: Your answer should have the same sig figs as the measurement with the fewest sig figs. Count the given numbers, then round your answer accordingly."
-      };
-    }
+  // Trap 3: Confused mass with density
+  if (problem.needsCalculation) {
+    return {
+      step: 1,
+      stepName: "Calculate density first",
+      diagnosis: "forgot-to-calculate",
+      message: "You didn't calculate the density from mass and volume. Always compute density (mass ÷ volume) before comparing.",
+      remediation: `Calculate: density = mass ÷ volume. Then compare that density to the liquid's density to predict sink or float.`
+    };
   }
 
   // Generic fallback
   return {
-    step: 4,
-    stepName: "Calculate and apply sig figs",
+    step: 3,
+    stepName: "Apply the density rule",
     diagnosis: "general-error",
-    message: "Let's walk through it: (1) Identify which two values you have. (2) Pick the right formula rearrangement. (3) Convert units if needed. (4) Calculate and round.",
-    remediation: problem.step1 + " → " + problem.step2 + " → " + problem.step3 + " → " + problem.step4
+    message: "Let's check: is the object's density greater than or less than the liquid's density?",
+    remediation: `Object density: ${problem.objectDensity} g/mL. Liquid density: ${problem.liquidDensity} g/mL. Which is larger?`
   };
-}
-
-function countSigFigs(str) {
-  let s = str.replace(/\s/g, '');
-  s = s.replace(/[×xX\*]10.*$/, '').trim();
-  s = s.replace(/^-/, '');
-
-  if (s.includes('.')) {
-    const stripped = s.replace('.', '');
-    if (parseFloat(s) === 0) return 0;
-    const noLeading = stripped.replace(/^0+/, '');
-    return noLeading.length;
-  } else {
-    const noLeading = s.replace(/^0+/, '');
-    const noTrailing = noLeading.replace(/0+$/, '');
-    return noTrailing.length || 1;
-  }
 }
 
 // ─── Chain Definition ───
 const chain = {
-  id: "T0-C5",
-  title: "Density Calculations",
+  id: "T0-C6",
+  title: "Density Concepts: Sink or Float",
   steps: [
-    { id: 1, name: "Identify what's given", short: "What's given?" },
-    { id: 2, name: "Select the correct formula rearrangement", short: "Formula" },
-    { id: 3, name: "Convert units if needed", short: "Units" },
-    { id: 4, name: "Calculate and apply sig figs", short: "Calc" },
+    { id: 1, name: "Calculate density (if needed)", short: "Density calc" },
+    { id: 2, name: "Compare to liquid density", short: "Comparison" },
+    { id: 3, name: "Apply the rule", short: "Rule" },
   ],
   activationRamps: [
     [
-      { prompt: "A rock sinks in water. Is it more or less dense than water?", answer: "More dense. If it sinks, it's heavier than the water it displaces.", teaches: "Density is about how much mass fits in a certain volume." },
-      { prompt: "Water's density is 1.00 g/mL. What does that mean?", answer: "It means 1 mL of water has a mass of 1 g (or 1 L has a mass of 1 kg).", teaches: "Density connects mass and volume: d = m/V." },
-      { prompt: "You have 50 mL of water. What's its mass?", answer: "50 g. Because d = 1.00 g/mL, and m = d × V = 1.00 × 50 = 50 g.", teaches: "Rearrange the formula: m = d × V" },
-      { prompt: "A marble is 15 g and 5 mL. What's its density?", answer: "3.0 g/mL. Use d = m/V = 15 ÷ 5 = 3.0 g/mL.", teaches: "Direct calculation when you have both mass and volume." },
-      { prompt: "Now harder: a block is 1.8 kg and 2000 mL. Density?", answer: "0.90 g/mL. First convert: 1.8 kg = 1800 g. Then d = 1800 ÷ 2000 = 0.90 g/mL.", teaches: "Always convert units first. kg→g by × 1000." },
+      { prompt: "Does a rock sink or float in water?", answer: "Sinks — it's much denser than water.", teaches: "Experience: denser objects sink" },
+      { prompt: "Does a piece of wood float or sink?", answer: "Floats — it's less dense than water.", teaches: "Experience: less dense objects float" },
+      { prompt: "What's the difference between the rock and the wood?", answer: "The rock is denser (more mass packed into its volume).", teaches: "Density = mass ÷ volume" },
+      { prompt: "Water's density is 1.0 g/mL. A cork is 0.2 g/mL. Which is denser?", answer: "Water. 1.0 > 0.2.", teaches: "Compare numerical densities" },
+      { prompt: "So which way does the cork go in water?", answer: "Floats! Its density (0.2) is less than water's (1.0).", teaches: "The rule: less dense than liquid = float" },
     ],
     [
-      { prompt: "d = m/V. If d = 2.0 g/mL and V = 10 mL, what's the mass?", answer: "20 g. Rearrange: m = d × V = 2.0 × 10 = 20 g.", teaches: "To solve for m, multiply density and volume." },
-      { prompt: "Same density, but mass is 50 g. What's the volume?", answer: "25 mL. Rearrange: V = m/d = 50 ÷ 2.0 = 25 mL.", teaches: "To solve for V, divide mass by density." },
-      { prompt: "A gold nugget is 38.6 g and 2.0 mL. Density?", answer: "19.3 g/mL. Use d = m/V = 38.6 ÷ 2.0 = 19.3 g/mL.", teaches: "When you have m and V, divide to get d." },
-      { prompt: "Mercury: d = 13.6 g/mL. Mass of 5.0 mL?", answer: "68 g. Use m = d × V = 13.6 × 5.0 = 68 g.", teaches: "When you have d and V, multiply to get m." },
-      { prompt: "Aluminum: d = 2.70 g/mL. Volume of 100 g?", answer: "37.0 mL. Use V = m/d = 100 ÷ 2.70 = 37.0 mL.", teaches: "When you have m and d, divide to get V." },
+      { prompt: "Oil floats on water. What does that tell you about oil's density?", answer: "Oil's density is less than water's (less than 1.0 g/mL).", teaches: "Observation → density ordering" },
+      { prompt: "Honey sinks in water. What about its density?", answer: "Honey's density is greater than 1.0 g/mL.", teaches: "Denser than water → sinks" },
+      { prompt: "If you pour oil, water, and honey in a glass, what order top to bottom?", answer: "Oil on top, water in middle, honey on bottom. Least dense to most dense.", teaches: "Layering by density" },
+      { prompt: "An object has d = 1.5 g/mL. Does it sink in honey (d = 1.42)?", answer: "Yes! 1.5 > 1.42, so it sinks in honey.", teaches: "Always compare to the actual liquid" },
+      { prompt: "Same object in mercury (d = 13.6 g/mL)?", answer: "Floats! 1.5 < 13.6, so it floats in mercury.", teaches: "Different liquids change the outcome" },
     ],
     [
-      { prompt: "1 cm³ equals how many mL?", answer: "1 mL. They are the same unit — 1 cm³ = 1 mL exactly.", teaches: "cm³ and mL are interchangeable." },
-      { prompt: "1 kg equals how many grams?", answer: "1000 g. Move the decimal three places.", teaches: "kg → g: multiply by 1000." },
-      { prompt: "A rock is 0.250 kg. Convert to grams.", answer: "250 g. 0.250 × 1000 = 250 g.", teaches: "kg → g: use × 1000." },
-      { prompt: "That rock is 89 mL. Density?", answer: "2.8 g/mL. d = 250 ÷ 89 = 2.81... ≈ 2.8 g/mL.", teaches: "After converting, use the formula normally." },
-      { prompt: "A liquid has d = 0.79 g/mL and V = 2.5 L. Mass in grams?", answer: "1975 g (or ~2000 g). First: 2.5 L = 2500 mL. Then: m = 0.79 × 2500 = 1975 g.", teaches: "L → mL: multiply by 1000. Then apply the formula." },
+      { prompt: "A bowling ball is heavy. Does heavy always mean it sinks?", answer: "No! Density matters, not just mass. A heavy foam block might float.", teaches: "Mass ≠ density" },
+      { prompt: "A ship is thousands of tons but floats. Why?", answer: "Its overall density (air + hull combined) is less than water.", teaches: "Average density of a composite object" },
+      { prompt: "A tiny grain of sand sinks. Mass doesn't determine sinking — what does?", answer: "Density! Sand is very dense, even in small amounts.", teaches: "Density, not size or total mass" },
+      { prompt: "Object: 24 g, 18 mL. Density?", answer: "24 ÷ 18 = 1.33 g/mL.", teaches: "Calculate density from mass and volume" },
+      { prompt: "Does it sink in water (1.0 g/mL)?", answer: "Yes, 1.33 > 1.0.", teaches: "Once you have density, the rule is simple" },
     ],
   ]
 };
@@ -372,10 +306,9 @@ function ProgressBar({ total, results, current }) {
 
 function StepDiagnosis({ diagnosis }) {
   const friendlyNames = {
-    1: "Identifying What's Given",
-    2: "Selecting the Right Formula",
-    3: "Converting Units",
-    4: "Calculating and Rounding"
+    1: "Calculate Density (if Needed)",
+    2: "Compare to Liquid Density",
+    3: "Apply the Density Rule",
   };
   return (
     <div className="feedback error">
@@ -449,7 +382,7 @@ function ActivationRamp({ ramps }) {
         ) : (
           <div className="feedback success" style={{ marginTop: 8 }}>
             <strong>Now you have the full toolkit.</strong>
-            Go back and try the problem again — you know density inside and out now.
+            Go back and try the problem again — you know how density and floating work now.
           </div>
         )
       )}
@@ -466,6 +399,7 @@ function Summary({ results, onReset, onReturnToHub }) {
     return { ...step, failures: failures.length };
   });
 
+  // Save results to localStorage for the hub
   const failures = results
     .filter(r => !r.correct && r.diagnosis)
     .map(r => r.diagnosis.diagnosis);
@@ -491,10 +425,9 @@ function Summary({ results, onReset, onReturnToHub }) {
         </p>
         {stepResults.map(step => {
           const friendlyNames = {
-            1: "Identifying What's Given",
-            2: "Selecting the Right Formula",
-            3: "Converting Units",
-            4: "Calculating and Rounding"
+            1: "Calculate Density (if Needed)",
+            2: "Compare to Liquid Density",
+            3: "Apply the Density Rule",
           };
           const status = step.failures === 0 ? 'pass' : 'fail';
           return (
@@ -524,7 +457,7 @@ function Summary({ results, onReset, onReturnToHub }) {
       )}
       {correct === total && (
         <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
-          Every link in the chain is solid. You've got density locked down.
+          Every link in the chain is solid. You've got density and floating down.
         </p>
       )}
 
@@ -547,7 +480,7 @@ function App() {
     const p = generateProblem(new Set());
     return p;
   });
-  const [userInput, setUserInput] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [showActivation, setShowActivation] = useState(false);
   const [done, setDone] = useState(false);
@@ -555,15 +488,15 @@ function App() {
   const currentQ = results.length;
 
   const handleSubmit = () => {
-    if (!userInput.trim()) return;
+    if (selectedIndex === null) return;
 
-    const correct = answersMatch(userInput, problem);
+    const correct = selectedIndex === problem.correctIndex;
     let diagnosis = null;
     if (!correct) {
-      diagnosis = diagnoseFailure(problem, userInput);
+      diagnosis = diagnoseFailure(problem, selectedIndex);
     }
 
-    setFeedback({ correct, diagnosis });
+    setFeedback({ correct, diagnosis, selectedIndex });
   };
 
   const handleNext = () => {
@@ -572,7 +505,7 @@ function App() {
     const newResults = [...results, { correct, diagnosis, problem }];
     setResults(newResults);
     setFeedback(null);
-    setUserInput("");
+    setSelectedIndex(null);
     setShowActivation(false);
 
     if (newResults.length >= TOTAL_QUESTIONS) {
@@ -588,7 +521,7 @@ function App() {
     setResults([]);
     setUsedIndices(new Set());
     setProblem(generateProblem(new Set()));
-    setUserInput("");
+    setSelectedIndex(null);
     setFeedback(null);
     setShowActivation(false);
     setDone(false);
@@ -602,8 +535,8 @@ function App() {
     return (
       <div className="app">
         <div className="header">
-          <h1>ACMS — Density Calculations</h1>
-          <p>Chain 5 Diagnostic Results</p>
+          <h1>ACMS — Sink or Float</h1>
+          <p>Chain 6 Diagnostic Results</p>
         </div>
         <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
         <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
@@ -614,8 +547,8 @@ function App() {
   return (
     <div className="app">
       <div className="header">
-        <h1>ACMS — Density Calculations</h1>
-        <p>Chain 5: Density Calculations</p>
+        <h1>ACMS — Sink or Float</h1>
+        <p>Chain 6: Density Concepts</p>
       </div>
 
       <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
@@ -624,31 +557,32 @@ function App() {
         <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
 
         <div className="question-number">
-          {problem.display}
+          {problem.question}
         </div>
 
-        <div className="step-prompt">What is your answer? (Round to 3 sig figs or as needed)</div>
+        <div className="step-prompt">Select your answer:</div>
 
         {!feedback && (
           <>
-            <div className="input-row">
-              <input
-                className="text-input"
-                type="text"
-                value={userInput}
-                onChange={e => setUserInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                autoFocus
-                placeholder="e.g., 3.53 or 68 g"
-              />
-              <button
-                className="submit-btn"
-                onClick={handleSubmit}
-                disabled={!userInput.trim()}
-              >
-                Check
-              </button>
+            <div className="choices">
+              {problem.choices.map((choice, idx) => (
+                <button
+                  key={idx}
+                  className={`choice-btn ${selectedIndex === idx ? 'selected' : ''}`}
+                  onClick={() => setSelectedIndex(idx)}
+                >
+                  {choice}
+                </button>
+              ))}
             </div>
+            <button
+              className="submit-btn"
+              onClick={handleSubmit}
+              disabled={selectedIndex === null}
+              style={{ marginTop: 16 }}
+            >
+              Check Answer
+            </button>
           </>
         )}
 
@@ -656,7 +590,7 @@ function App() {
           <>
             <div className="feedback success">
               <strong>Correct!</strong>
-              Your answer of {userInput} is right.
+              {problem.explanation}
             </div>
             <button className="next-btn" onClick={handleNext}>
               {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
@@ -667,7 +601,7 @@ function App() {
         {feedback && !feedback.correct && (
           <>
             <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
-              You answered <strong style={{ color: 'var(--error)' }}>{userInput}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.answer}</strong>.
+              You selected <strong style={{ color: 'var(--error)' }}>{problem.choices[feedback.selectedIndex]}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.choices[problem.correctIndex]}</strong>.
             </div>
 
             <StepDiagnosis diagnosis={feedback.diagnosis} />
