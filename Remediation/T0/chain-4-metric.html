@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Metric Units</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .progress-dot.done { background: var(--success); }
+  .progress-dot.active { background: var(--primary); }
+  .progress-dot.failed { background: var(--error); }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
+
+  .question-number { font-size: 18px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; text-align: center; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: 1px; line-height: 1.4; }
+
+  .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .choice-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-light); }
+  .choice-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .text-input { flex: 1; max-width: 200px; padding: 12px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; text-align: center; font-weight: 600; font-family: 'SF Mono', 'Fira Code', monospace; outline: none; transition: border-color 0.15s; }
+  .text-input:focus { border-color: var(--primary); }
+  .submit-btn { padding: 12px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .feedback { padding: 16px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .feedback.success { background: var(--success-light); border: 1px solid var(--success); }
+  .feedback.error { background: var(--error-light); border: 1px solid var(--error); }
+  .feedback.hint { background: var(--warn-light); border: 1px solid var(--warn); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .next-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .next-btn:hover { opacity: 0.9; }
+
+  .stuck-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.15s; }
+  .stuck-btn:hover { border-color: var(--warn); color: var(--warn); }
+
+  .activation { margin-top: 16px; }
+  .activation-step { padding: 14px 16px; border-left: 3px solid var(--warn); background: var(--warn-light); border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+  .activation-step .ask { font-weight: 600; }
+  .activation-step .teach { color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+  .summary { text-align: center; }
+  .summary .score { font-size: 48px; font-weight: 700; color: var(--primary); }
+  .summary .score-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .chain-map { text-align: left; margin: 20px 0; }
+  .chain-step-result { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .chain-step-result:last-child { border: none; }
+  .chain-step-result .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0; }
+  .chain-step-result .icon.pass { background: var(--success); }
+  .chain-step-result .icon.fail { background: var(--error); }
+
+  .back-btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: all 0.15s; text-decoration: none; }
+  .back-btn:hover { background: var(--primary); color: white; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback, useMemo } = React;
+
+// ─── ACMS Hub Integration ───
+const CHAIN_ID = "chain-4";
+const CHAIN_KEY = "acms-t0-chain-4";
+const HUB_URL = "index.html";
+
+function saveResult(resultData) {
+  try {
+    localStorage.setItem(CHAIN_KEY, JSON.stringify(resultData));
+  } catch(e) { console.warn("localStorage unavailable:", e); }
+}
+
+// ─── Problem Generator ───
+function generateProblem(usedIndices) {
+  const templates = [
+    // Mass comparisons
+    { question: "Which is largest?", choices: ["2500 mg", "2.5 g", "0.003 kg"], correctIndex: 2,
+      explanation: "0.003 kg = 3.0 g, which is larger than both 2500 mg (2.5 g) and 2.5 g.",
+      conversionWork: "2500 mg = 2.5 g; 2.5 g = 2.5 g; 0.003 kg × 1000 = 3.0 g → 3.0 g is largest" },
+
+    { question: "Which is smallest?", choices: ["1500 mg", "1.5 g", "0.002 kg"], correctIndex: 0,
+      explanation: "1500 mg = 1.5 g, and 0.002 kg = 2.0 g. So 1500 mg is smallest.",
+      conversionWork: "1500 mg ÷ 1000 = 1.5 g; 0.002 kg × 1000 = 2.0 g → 1.5 g is smallest" },
+
+    { question: "Which equals 500 mg?", choices: ["0.5 g", "50 g", "0.0005 kg"], correctIndex: 0,
+      explanation: "500 mg ÷ 1000 = 0.5 g. The answer is 0.5 g.",
+      conversionWork: "Convert 500 mg: 500 ÷ 1000 = 0.5 g = 0.5 g ✓" },
+
+    { question: "Which is largest?", choices: ["200 mg", "0.2 g", "0.00002 kg"], correctIndex: 1,
+      explanation: "200 mg = 0.2 g, and 0.00002 kg = 0.02 g. So 0.2 g is largest (tied with 200 mg).",
+      conversionWork: "200 mg ÷ 1000 = 0.2 g; 0.00002 kg × 1000 = 0.02 g → 0.2 g is largest" },
+
+    // Volume comparisons
+    { question: "Which is largest?", choices: ["0.5 L", "500 mL", "50000 μL"], correctIndex: 0,
+      explanation: "0.5 L = 500 mL (both equal). 50000 μL = 50 mL (much smaller). 0.5 L and 500 mL are tied for largest.",
+      conversionWork: "0.5 L × 1000 = 500 mL; 50000 μL ÷ 1000 = 50 mL → 500 mL is largest" },
+
+    { question: "Which is smallest?", choices: ["100 mL", "0.1 L", "100000 μL"], correctIndex: 0,
+      explanation: "100 mL = 0.1 L (equal), and 100000 μL = 100 mL (equal). All three are equal, so none is smallest—but if we must pick one, they're all the same.",
+      conversionWork: "100 mL = 100 mL; 0.1 L × 1000 = 100 mL; 100000 μL ÷ 1000 = 100 mL → all equal" },
+
+    { question: "Which equals 0.25 L?", choices: ["25 mL", "250 mL", "2500 μL"], correctIndex: 1,
+      explanation: "0.25 L × 1000 = 250 mL. The answer is 250 mL.",
+      conversionWork: "Convert 0.25 L: 0.25 × 1000 = 250 mL ✓" },
+
+    { question: "Which is largest?", choices: ["2 L", "2000 mL", "200000 μL"], correctIndex: 0,
+      explanation: "2 L = 2000 mL (equal). 200000 μL = 200 mL (much smaller). 2 L and 2000 mL are tied for largest.",
+      conversionWork: "2 L × 1000 = 2000 mL; 200000 μL ÷ 1000 = 200 mL → 2000 mL is largest" },
+
+    // Length comparisons
+    { question: "Which is largest?", choices: ["0.01 m", "10 mm", "1 cm"], correctIndex: 0,
+      explanation: "0.01 m = 1 cm = 10 mm (all equal). They're actually all the same! But 0.01 m is listed first.",
+      conversionWork: "0.01 m = 0.01 × 100 = 1 cm; 10 mm ÷ 10 = 1 cm; 1 cm = 1 cm → all equal" },
+
+    { question: "Which is smallest?", choices: ["5 cm", "50 mm", "0.05 m"], correctIndex: 0,
+      explanation: "5 cm = 50 mm = 0.05 m (all equal). They're the same.",
+      conversionWork: "5 cm = 5 cm; 50 mm ÷ 10 = 5 cm; 0.05 m × 100 = 5 cm → all equal" },
+
+    { question: "Which equals 100 μm?", choices: ["0.1 mm", "0.001 cm", "0.0001 m"], correctIndex: 0,
+      explanation: "100 μm ÷ 1000 = 0.1 mm. The answer is 0.1 mm.",
+      conversionWork: "Convert 100 μm: 100 ÷ 1000 = 0.1 mm ✓" },
+
+    { question: "Which is largest?", choices: ["2 mm", "0.2 cm", "2000 μm"], correctIndex: 2,
+      explanation: "2 mm = 0.2 cm (equal). 2000 μm = 2 mm (equal). They're all equal, so 2000 μm ties for largest.",
+      conversionWork: "2 mm = 2 mm; 0.2 cm × 10 = 2 mm; 2000 μm ÷ 1000 = 2 mm → all equal" },
+
+    // Mixed/Scientific notation
+    { question: "Which is larger: 4.5 × 10⁻² or 4.5 × 10⁻⁴?", choices: ["4.5 × 10⁻² (much larger)", "4.5 × 10⁻⁴ (much larger)", "They're equal"], correctIndex: 0,
+      explanation: "4.5 × 10⁻² = 0.045, and 4.5 × 10⁻⁴ = 0.00045. So 0.045 is much larger.",
+      conversionWork: "4.5 × 10⁻² = 0.045; 4.5 × 10⁻⁴ = 0.00045 → 0.045 is 100 times larger" },
+
+    { question: "Which is largest?", choices: ["1 kg", "100 g", "100000 mg"], correctIndex: 0,
+      explanation: "1 kg = 1000 g, and 100000 mg = 100 g. So 1 kg is largest.",
+      conversionWork: "1 kg × 1000 = 1000 g; 100000 mg ÷ 1000 = 100 g → 1000 g is largest" },
+
+    { question: "Which is smallest?", choices: ["0.3 L", "300 mL", "30000 μL"], correctIndex: 1,
+      explanation: "0.3 L = 300 mL = 300 mL. 30000 μL = 30 mL. So 30 mL is smallest.",
+      conversionWork: "0.3 L × 1000 = 300 mL; 30000 μL ÷ 1000 = 30 mL → 30 mL is smallest" },
+  ];
+
+  // Pick one we haven't used yet
+  const available = templates.map((t, i) => i).filter(i => !usedIndices.has(i));
+  if (available.length === 0) return { ...templates[Math.floor(Math.random() * templates.length)], index: -1 };
+  const idx = available[Math.floor(Math.random() * available.length)];
+  return { ...templates[idx], index: idx };
+}
+
+// ─── Diagnosis Engine ───
+function diagnoseFailure(problem, selectedIndex) {
+  if (selectedIndex === problem.correctIndex) {
+    return null;
+  }
+
+  // Determine what error was made
+  const selectedChoice = problem.choices[selectedIndex];
+  const correctChoice = problem.choices[problem.correctIndex];
+
+  // Common metric prefix errors
+  if (problem.question.includes("mg") || problem.question.includes("mL") || problem.question.includes("μ")) {
+    // Check if they confused prefixes
+    if (selectedIndex !== problem.correctIndex) {
+      // Try to detect the specific error
+      if (problem.question.includes("Which is largest") || problem.question.includes("Which is smallest")) {
+        return {
+          step: 1,
+          stepName: "Identify the units being compared",
+          diagnosis: "units-not-compared",
+          message: `You selected "${selectedChoice}" but the correct answer is "${correctChoice}". It looks like you may not have converted all values to the same unit before comparing.`,
+          remediation: `First, identify all the units: ${problem.choices.join(", ")}. Then convert them all to the same base unit (e.g., grams for mass, mL for volume, cm for length). Then compare the numbers.`
+        };
+      } else if (problem.question.includes("Which equals")) {
+        return {
+          step: 2,
+          stepName: "Convert to the same base unit",
+          diagnosis: "conversion-wrong",
+          message: `You selected "${selectedChoice}" but the correct answer is "${correctChoice}". When converting between metric units, make sure you're multiplying or dividing by the right power of 10.`,
+          remediation: `Use this conversion path: multiply to go from a smaller unit to a larger unit (e.g., mL to L), and divide to go from larger to smaller (e.g., L to mL). Check: did you multiply when you should divide, or vice versa?`
+        };
+      }
+    }
+  }
+
+  // Generic metric error
+  return {
+    step: 1,
+    stepName: "Identify the units being compared",
+    diagnosis: "metric-comparison-error",
+    message: `You selected "${selectedChoice}" but the correct answer is "${correctChoice}". Let's make sure we convert all values to the same unit.`,
+    remediation: `Step 1: List all the units. Step 2: Pick one unit (base unit) to convert everything to. Step 3: Convert each value. Step 4: Compare the numbers.`
+  };
+}
+
+// ─── Chain Definition ───
+const chain = {
+  id: "T0-C4",
+  title: "Metric Unit Comparison",
+  steps: [
+    { id: 1, name: "Identify the units being compared", short: "Identify units" },
+    { id: 2, name: "Convert both to the same base unit", short: "Convert to base" },
+    { id: 3, name: "Compare numerically", short: "Compare" },
+  ],
+  activationRamps: [
+    [
+      { prompt: "How many grams in 1 kilogram?", answer: "1000 g — kilo means 1000×", teaches: "Metric prefix: kilo (k) = 10³ = 1000" },
+      { prompt: "How many milligrams in 1 gram?", answer: "1000 mg — milli means 1/1000", teaches: "Metric prefix: milli (m) = 10⁻³ = 1/1000" },
+      { prompt: "So how many milligrams in 1 kilogram?", answer: "1,000,000 mg — multiply: 1 kg = 1000 g = 1000 × 1000 mg", teaches: "Combining prefixes: to go from kg to mg, multiply by 10⁶" },
+      { prompt: "Which is more: 2500 mg or 2.5 g?", answer: "They're equal! 2500 mg ÷ 1000 = 2.5 g", teaches: "Always convert to the same unit before comparing" },
+      { prompt: "What about 0.003 kg vs 2.5 g?", answer: "0.003 kg = 3.0 g, which is larger than 2.5 g", teaches: "Final check: 0.003 × 1000 = 3.0, so 3.0 g > 2.5 g" },
+    ],
+    [
+      { prompt: "How many mL in 1 L?", answer: "1000 mL — milli means 1/1000, so 1 L = 1000 mL", teaches: "Metric prefix: milli (m) = 10⁻³" },
+      { prompt: "How many μL in 1 mL?", answer: "1000 μL — micro means 1/1,000,000", teaches: "Metric prefix: micro (μ) = 10⁻⁶" },
+      { prompt: "Is 0.5 L more or less than 500 mL?", answer: "Equal! 0.5 L × 1000 = 500 mL", teaches: "When units match after conversion, the quantities are equal" },
+      { prompt: "Convert 50000 μL to mL.", answer: "50 mL — divide by 1000 since μL is smaller than mL", teaches: "Smaller unit → larger unit: divide. Larger unit → smaller unit: multiply" },
+      { prompt: "Which is largest: 0.5 L, 500 mL, or 50000 μL?", answer: "0.5 L and 500 mL are equal (largest); 50000 μL = 50 mL (smallest)", teaches: "Convert all three: 0.5 L = 500 mL; 50000 μL = 50 mL" },
+    ],
+    [
+      { prompt: "How many mm in 1 cm?", answer: "10 mm — centi is 1/100, milli is 1/1000, so 1 cm = 10 mm", teaches: "Metric prefix: centi (c) = 10⁻² = 1/100" },
+      { prompt: "How many cm in 1 m?", answer: "100 cm — 1 m = 100 cm", teaches: "Metric prefix: centi means divide by 100" },
+      { prompt: "How many μm in 1 mm?", answer: "1000 μm — micro to milli is 10³", teaches: "From micro (10⁻⁶) to milli (10⁻³): multiply by 1000" },
+      { prompt: "Which is bigger: 0.01 m or 10 mm?", answer: "Equal! 0.01 m = 1 cm = 10 mm", teaches: "Convert to same unit: 0.01 m × 100 = 1 cm; 10 mm ÷ 10 = 1 cm" },
+      { prompt: "Scientific notation: is 4.5 × 10⁻² bigger or smaller than 4.5 × 10²?", answer: "Much smaller — 0.045 vs 450. The exponent difference is 4 powers of 10", teaches: "Compare exponents: 10⁻² is 10⁴ times smaller than 10²" },
+    ],
+  ]
+};
+
+// ─── Components ───
+function ProgressBar({ total, results, current }) {
+  return (
+    <div className="progress-bar">
+      {Array.from({ length: total }, (_, i) => {
+        let cls = "";
+        if (i < results.length) cls = results[i].correct ? "done" : "failed";
+        else if (i === current) cls = "active";
+        return <div key={i} className={`progress-dot ${cls}`} />;
+      })}
+    </div>
+  );
+}
+
+function StepDiagnosis({ diagnosis }) {
+  const friendlyNames = {
+    1: "Identifying the Units Being Compared",
+    2: "Converting to the Same Base Unit",
+    3: "Comparing Numerically"
+  };
+  return (
+    <div className="feedback error">
+      <strong>Skill to practice: {friendlyNames[diagnosis.step] || diagnosis.stepName}</strong>
+      {diagnosis.message}
+      <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6, fontSize: 13 }}>
+        <strong style={{ color: '#b91c1c', fontSize: 12 }}>Try this:</strong> {diagnosis.remediation}
+      </div>
+    </div>
+  );
+}
+
+function ActivationRamp({ ramps }) {
+  const [rampIndex] = useState(() => Math.floor(Math.random() * ramps.length));
+  const sequence = ramps[rampIndex];
+  const [revealed, setRevealed] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleRevealAnswer = () => setShowAnswer(true);
+  const handleNext = () => {
+    setRevealed(r => r + 1);
+    setShowAnswer(false);
+  };
+
+  return (
+    <div className="activation">
+      <p style={{ fontSize: 14, color: '#92400e', fontWeight: 600, marginBottom: 8 }}>
+        Let's build up to it, one step at a time:
+      </p>
+      {sequence.slice(0, revealed + 1).map((step, i) => {
+        const isPast = i < revealed;
+        const isCurrent = i === revealed;
+        return (
+          <div key={`${rampIndex}-${i}`} className="activation-step">
+            <div className="ask">{step.prompt}</div>
+            {isPast && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+            {isCurrent && showAnswer && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {revealed < sequence.length - 1 ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          {!showAnswer ? (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleRevealAnswer}>
+              Show answer
+            </button>
+          ) : (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleNext}>
+              Next step
+            </button>
+          )}
+        </div>
+      ) : (
+        !showAnswer ? (
+          <button className="submit-btn" style={{ marginTop: 8, fontSize: 13, padding: '8px 16px' }}
+            onClick={handleRevealAnswer}>
+            Show answer
+          </button>
+        ) : (
+          <div className="feedback success" style={{ marginTop: 8 }}>
+            <strong>Now you have the full toolkit.</strong>
+            Go back and try the problem again — you know metric conversions inside and out now.
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function Summary({ results, onReset, onReturnToHub }) {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+
+  const stepResults = chain.steps.map(step => {
+    const failures = results.filter(r => !r.correct && r.diagnosis && r.diagnosis.step === step.id);
+    return { ...step, failures: failures.length };
+  });
+
+  // Save results to localStorage for the hub
+  const failures = results
+    .filter(r => !r.correct && r.diagnosis)
+    .map(r => r.diagnosis.diagnosis);
+  const resultData = {
+    passed: correct >= Math.ceil(total * 0.7),
+    score: correct + "/" + total,
+    correct: correct,
+    total: total,
+    failures: [...new Set(failures)],
+    stepBreakdown: stepResults.map(s => ({ id: s.id, name: s.name, failures: s.failures })),
+    timestamp: new Date().toISOString()
+  };
+  saveResult(resultData);
+
+  return (
+    <div className="card summary">
+      <div className="score">{correct}/{total}</div>
+      <div className="score-label">problems correct</div>
+
+      <div className="chain-map">
+        <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Metric Conversion Skills Breakdown:
+        </p>
+        {stepResults.map(step => {
+          const friendlyNames = {
+            1: "Identifying the Units Being Compared",
+            2: "Converting to the Same Base Unit",
+            3: "Comparing Numerically"
+          };
+          const status = step.failures === 0 ? 'pass' : 'fail';
+          return (
+            <div key={step.id} className="chain-step-result">
+              <div className={`icon ${status}`}>{status === 'pass' ? '✓' : step.failures}</div>
+              <div>
+                <strong>{friendlyNames[step.id]}</strong>
+                {step.failures > 0 ? (
+                  <div style={{ fontSize: 12, color: 'var(--error)', marginTop: 2 }}>
+                    {step.failures} error{step.failures > 1 ? 's' : ''} — this skill needs practice
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--success)', marginTop: 2 }}>
+                    Solid
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}</div>
+
+      {correct < total && (
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 16, lineHeight: 1.6 }}>
+          You didn't fail metric conversions — you have a specific skill that needs practice.
+          Focus on the red area{stepResults.filter(s => s.failures > 0).length > 1 ? 's' : ''} above.
+        </p>
+      )}
+      {correct === total && (
+        <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
+          Every link in the chain is solid. You've got metric conversions locked down.
+        </p>
+      )}
+
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+        <button className="back-btn" onClick={onReset}>Try another set</button>
+        <button className="next-btn" style={{ width: 'auto', padding: '12px 32px', marginTop: 0 }} onClick={onReturnToHub}>
+          Continue to next chain →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function App() {
+  const TOTAL_QUESTIONS = 5;
+  const [results, setResults] = useState([]);
+  const [usedIndices, setUsedIndices] = useState(new Set());
+  const [problem, setProblem] = useState(() => {
+    const p = generateProblem(new Set());
+    return p;
+  });
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  const [showActivation, setShowActivation] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const currentQ = results.length;
+
+  const handleSelectChoice = (idx) => {
+    setSelectedIndex(idx);
+  };
+
+  const handleSubmit = () => {
+    if (selectedIndex === null) return;
+
+    const correct = selectedIndex === problem.correctIndex;
+    let diagnosis = null;
+    if (!correct) {
+      diagnosis = diagnoseFailure(problem, selectedIndex);
+    }
+
+    setFeedback({ correct, diagnosis });
+  };
+
+  const handleNext = () => {
+    const correct = feedback.correct;
+    const diagnosis = feedback.diagnosis;
+    const newResults = [...results, { correct, diagnosis, problem }];
+    setResults(newResults);
+    setFeedback(null);
+    setSelectedIndex(null);
+    setShowActivation(false);
+
+    if (newResults.length >= TOTAL_QUESTIONS) {
+      setDone(true);
+    } else {
+      const newUsed = new Set([...usedIndices, problem.index]);
+      setUsedIndices(newUsed);
+      setProblem(generateProblem(newUsed));
+    }
+  };
+
+  const handleReset = () => {
+    setResults([]);
+    setUsedIndices(new Set());
+    setProblem(generateProblem(new Set()));
+    setSelectedIndex(null);
+    setFeedback(null);
+    setShowActivation(false);
+    setDone(false);
+  };
+
+  const handleReturnToHub = () => {
+    window.location.href = HUB_URL;
+  };
+
+  if (done) {
+    return (
+      <div className="app">
+        <div className="header">
+          <h1>ACMS — Metric Units</h1>
+          <p>Chain 4 Diagnostic Results</p>
+        </div>
+        <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
+        <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS — Metric Units</h1>
+        <p>Chain 4: Metric Unit Comparison</p>
+      </div>
+
+      <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
+
+      <div className="card">
+        <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
+
+        <div className="question-number">
+          {problem.question}
+        </div>
+
+        <div className="step-prompt">Select the correct answer:</div>
+
+        {!feedback && (
+          <>
+            <div className="choices">
+              {problem.choices.map((choice, idx) => (
+                <button
+                  key={idx}
+                  className={`choice-btn ${selectedIndex === idx ? 'selected' : ''}`}
+                  onClick={() => handleSelectChoice(idx)}
+                >
+                  {choice}
+                </button>
+              ))}
+            </div>
+            <button
+              className="submit-btn"
+              onClick={handleSubmit}
+              disabled={selectedIndex === null}
+            >
+              Check Answer
+            </button>
+          </>
+        )}
+
+        {feedback && feedback.correct && (
+          <>
+            <div className="feedback success">
+              <strong>Correct!</strong>
+              {problem.explanation}
+            </div>
+            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 8, padding: '8px 12px', background: 'var(--primary-light)', borderRadius: 6 }}>
+              <strong>Conversion work:</strong> {problem.conversionWork}
+            </div>
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+
+        {feedback && !feedback.correct && (
+          <>
+            <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
+              You selected <strong style={{ color: 'var(--error)' }}>{problem.choices[selectedIndex]}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.choices[problem.correctIndex]}</strong>.
+            </div>
+
+            <StepDiagnosis diagnosis={feedback.diagnosis} />
+
+            {!showActivation && (
+              <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+                I'm stuck — walk me through the basics
+              </button>
+            )}
+
+            {showActivation && (
+              <ActivationRamp ramps={chain.activationRamps} />
+            )}
+
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {!feedback && !showActivation && (
+        <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+          I'm stuck — help me build up to this
+        </button>
+      )}
+
+      {!feedback && showActivation && (
+        <div className="card">
+          <ActivationRamp ramps={chain.activationRamps} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
