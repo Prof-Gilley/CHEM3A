@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Tier 0: Foundations</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 28px; font-weight: 700; color: var(--primary); }
+  .header .subtitle { font-size: 18px; color: var(--text); margin-top: 4px; font-weight: 500; }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 8px; line-height: 1.6; }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .name-input { width: 100%; padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; outline: none; transition: border-color 0.15s; text-align: center; }
+  .name-input:focus { border-color: var(--primary); }
+
+  .start-btn { width: 100%; padding: 16px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .start-btn:hover { opacity: 0.9; }
+  .start-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .chain-list { list-style: none; }
+  .chain-item { display: flex; align-items: center; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; border-radius: 8px; }
+  .chain-item:hover { background: var(--primary-light); }
+  .chain-item:last-child { border-bottom: none; }
+  .chain-item .status-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; flex-shrink: 0; font-weight: 600; }
+  .chain-item .status-icon.complete { background: var(--success); }
+  .chain-item .status-icon.failed { background: var(--error); }
+  .chain-item .status-icon.pending { background: var(--border); color: var(--text-secondary); }
+  .chain-item .status-icon.next { background: var(--primary); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(74, 94, 228, 0.4); } 50% { box-shadow: 0 0 0 8px rgba(74, 94, 228, 0); } }
+  .chain-item .chain-info { flex: 1; }
+  .chain-item .chain-name { font-weight: 600; font-size: 15px; }
+  .chain-item .chain-score { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .chain-item .arrow { color: var(--text-secondary); font-size: 18px; }
+
+  .progress-overview { display: flex; gap: 4px; margin-bottom: 24px; }
+  .progress-segment { flex: 1; height: 8px; border-radius: 4px; background: var(--border); transition: background 0.3s; }
+  .progress-segment.complete { background: var(--success); }
+  .progress-segment.failed { background: var(--error); }
+  .progress-segment.active { background: var(--primary); }
+
+  .summary-card { text-align: center; }
+  .summary-card .big-check { font-size: 64px; margin-bottom: 16px; }
+  .summary-card h2 { font-size: 22px; margin-bottom: 8px; }
+
+  .cert-btn { width: 100%; padding: 16px; border-radius: 8px; border: none; background: var(--success); color: white; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .cert-btn:hover { opacity: 0.9; }
+
+  .reset-all-btn { width: 100%; padding: 12px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; }
+  .reset-all-btn:hover { border-color: var(--error); color: var(--error); }
+
+  .welcome-features { text-align: left; margin-top: 20px; }
+  .welcome-features li { padding: 8px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.5; display: flex; gap: 8px; align-items: flex-start; }
+  .welcome-features li .bullet { color: var(--primary); font-weight: 700; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+// ─── Chain Registry ───
+const CHAINS = [
+  { id: "chain-1", key: "acms-t0-chain-1", name: "Counting Significant Figures", file: "chain-1-sigfigs.html" },
+  { id: "chain-2", key: "acms-t0-chain-2", name: "Rounding to Significant Figures", file: "chain-2-rounding.html" },
+  { id: "chain-3", key: "acms-t0-chain-3", name: "Temperature Conversion", file: "chain-3-temperature.html" },
+  { id: "chain-4", key: "acms-t0-chain-4", name: "Metric Unit Comparison", file: "chain-4-metric.html" },
+  { id: "chain-5", key: "acms-t0-chain-5", name: "Density Calculations", file: "chain-5-density-calc.html" },
+  { id: "chain-6", key: "acms-t0-chain-6", name: "Density Concepts (Sink/Float)", file: "chain-6-density-concepts.html" },
+  { id: "chain-7", key: "acms-t0-chain-7", name: "Dimensional Analysis", file: "chain-7-dimensional-analysis.html" },
+  { id: "chain-8", key: "acms-t0-chain-8", name: "Dosage Calculations", file: "chain-8-dosage.html" },
+  { id: "chain-9", key: "acms-t0-chain-9", name: "Precision & Accuracy / Scientific Method", file: "chain-9-precision-accuracy.html" },
+];
+
+const NAME_KEY = "acms-t0-student-name";
+
+function getStoredResult(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function generateVerificationCode(name, results, date) {
+  // Simple hash for verification
+  const str = name + date + JSON.stringify(results);
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return "ACMS-T0-" + Math.abs(hash).toString(36).toUpperCase().slice(0, 8);
+}
+
+// ─── Landing Screen ───
+function Landing({ onStart }) {
+  const [name, setName] = useState(() => {
+    try { return localStorage.getItem(NAME_KEY) || ""; } catch(e) { return ""; }
+  });
+
+  const handleStart = () => {
+    if (!name.trim()) return;
+    try { localStorage.setItem(NAME_KEY, name.trim()); } catch(e) {}
+    onStart(name.trim());
+  };
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS</h1>
+        <div className="subtitle">Tier 0: Foundations</div>
+        <p>This tool finds exactly where you're stuck and helps you fix it — one skill at a time.</p>
+      </div>
+
+      <div className="card">
+        <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 12 }}>Enter your full name (for your completion certificate):</div>
+        <input
+          className="name-input"
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleStart()}
+          placeholder="First Last"
+          autoFocus
+        />
+        <button className="start-btn" onClick={handleStart} disabled={!name.trim()}>
+          Start Diagnostic
+        </button>
+      </div>
+
+      <div className="card">
+        <ul className="welcome-features" style={{ listStyle: 'none' }}>
+          <li><span className="bullet">\u2192</span> 9 diagnostic chains covering all T0 skills</li>
+          <li><span className="bullet">\u2192</span> Each chain finds the exact step where your reasoning breaks</li>
+          <li><span className="bullet">\u2192</span> If you get stuck, the system walks you through it from scratch</li>
+          <li><span className="bullet">\u2192</span> Complete all 9 chains to earn your certificate</li>
+          <li><span className="bullet">\u2192</span> Your progress saves automatically — you can close and come back</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+// ─── Chain Map (progress view) ───
+function ChainMap({ studentName, chainResults, onNavigate, onReset, onGenerateCert }) {
+  const allComplete = CHAINS.every(c => chainResults[c.key] != null);
+  const completedCount = CHAINS.filter(c => chainResults[c.key] != null).length;
+  const passedCount = CHAINS.filter(c => chainResults[c.key]?.passed).length;
+
+  // Find the first incomplete chain
+  const nextChainIndex = CHAINS.findIndex(c => chainResults[c.key] == null);
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS \u2014 Tier 0</h1>
+        <p style={{ marginTop: 4 }}>Welcome back, {studentName}</p>
+      </div>
+
+      <div className="progress-overview">
+        {CHAINS.map((c, i) => {
+          const result = chainResults[c.key];
+          let cls = "pending";
+          if (result) cls = result.passed ? "complete" : "failed";
+          else if (i === nextChainIndex) cls = "active";
+          return <div key={c.id} className={`progress-segment ${cls}`} />;
+        })}
+      </div>
+
+      <div style={{ textAlign: 'center', fontSize: 14, color: 'var(--text-secondary)', marginBottom: 20 }}>
+        {completedCount} of {CHAINS.length} chains complete
+      </div>
+
+      {allComplete && (
+        <div className="card summary-card">
+          <div className="big-check">{passedCount === CHAINS.length ? '\u2705' : '\u2705'}</div>
+          <h2>All Chains Complete!</h2>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 8 }}>
+            {passedCount === CHAINS.length
+              ? "You passed every chain. You're ready to retake SC-T0."
+              : `You passed ${passedCount} of ${CHAINS.length} chains. Review the ones marked in red below, then generate your certificate.`
+            }
+          </p>
+          <button className="cert-btn" onClick={onGenerateCert}>
+            Generate Completion Certificate (PDF)
+          </button>
+        </div>
+      )}
+
+      {!allComplete && nextChainIndex >= 0 && (
+        <div className="card" style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>Next up:</div>
+          <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--primary)', marginBottom: 16 }}>
+            {CHAINS[nextChainIndex].name}
+          </div>
+          <button className="start-btn" onClick={() => onNavigate(CHAINS[nextChainIndex].file)}>
+            Start Chain {nextChainIndex + 1} \u2192
+          </button>
+        </div>
+      )}
+
+      <div className="card">
+        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Chain Map
+        </div>
+        <div className="chain-list">
+          {CHAINS.map((c, i) => {
+            const result = chainResults[c.key];
+            const isNext = i === nextChainIndex;
+            let statusCls = "pending";
+            let statusText = "\u2013";
+            if (result) {
+              statusCls = result.passed ? "complete" : "failed";
+              statusText = result.passed ? "\u2713" : "\u2717";
+            } else if (isNext) {
+              statusCls = "next";
+              statusText = i + 1;
+            } else {
+              statusText = i + 1;
+            }
+
+            return (
+              <div key={c.id} className="chain-item" onClick={() => {
+                if (result || isNext) onNavigate(c.file);
+              }} style={{ opacity: (!result && !isNext) ? 0.5 : 1, cursor: (!result && !isNext) ? 'default' : 'pointer' }}>
+                <div className={`status-icon ${statusCls}`}>{statusText}</div>
+                <div className="chain-info">
+                  <div className="chain-name">{c.name}</div>
+                  {result && (
+                    <div className="chain-score">
+                      Score: {result.score} {result.passed ? '' : '— needs review'}
+                    </div>
+                  )}
+                  {!result && isNext && (
+                    <div className="chain-score" style={{ color: 'var(--primary)' }}>Ready to start</div>
+                  )}
+                  {!result && !isNext && (
+                    <div className="chain-score">Locked — complete earlier chains first</div>
+                  )}
+                </div>
+                {(result || isNext) && <div className="arrow">\u203A</div>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <button className="reset-all-btn" onClick={onReset}>
+        Reset all progress (start over)
+      </button>
+    </div>
+  );
+}
+
+// ─── Certificate Generator ───
+function generateCertificate(studentName, chainResults) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'letter' });
+  const w = doc.internal.pageSize.getWidth();
+  const h = doc.internal.pageSize.getHeight();
+  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Collect result data
+  const results = CHAINS.map(c => ({
+    name: c.name,
+    result: chainResults[c.key]
+  }));
+  const passedCount = results.filter(r => r.result?.passed).length;
+  const verificationCode = generateVerificationCode(studentName, chainResults, date);
+
+  // ── Border ──
+  doc.setDrawColor(74, 94, 228);
+  doc.setLineWidth(2);
+  doc.rect(10, 10, w - 20, h - 20);
+  doc.setLineWidth(0.5);
+  doc.rect(13, 13, w - 26, h - 26);
+
+  // ── Header ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.setTextColor(74, 94, 228);
+  doc.text('ATOMIC CHEMISTRY MASTERY SYSTEM', w / 2, 28, { align: 'center' });
+
+  doc.setFontSize(28);
+  doc.setTextColor(30, 41, 59);
+  doc.text('Certificate of Completion', w / 2, 42, { align: 'center' });
+
+  doc.setFontSize(12);
+  doc.setTextColor(100, 116, 139);
+  doc.text('Tier 0: Foundations Diagnostic', w / 2, 52, { align: 'center' });
+
+  // ── Student Name ──
+  doc.setFontSize(10);
+  doc.setTextColor(100, 116, 139);
+  doc.text('This certifies that', w / 2, 66, { align: 'center' });
+
+  doc.setFontSize(24);
+  doc.setTextColor(30, 41, 59);
+  doc.setFont('helvetica', 'bold');
+  doc.text(studentName, w / 2, 78, { align: 'center' });
+
+  // Underline
+  const nameWidth = doc.getTextWidth(studentName);
+  doc.setDrawColor(74, 94, 228);
+  doc.setLineWidth(0.5);
+  doc.line(w / 2 - nameWidth / 2 - 10, 80, w / 2 + nameWidth / 2 + 10, 80);
+
+  doc.setFontSize(10);
+  doc.setTextColor(100, 116, 139);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`has completed all 9 diagnostic chains for Tier 0: Foundations`, w / 2, 88, { align: 'center' });
+  doc.text(`passing ${passedCount} of ${CHAINS.length} chains on ${date}`, w / 2, 94, { align: 'center' });
+
+  // ── Chain Results Table ──
+  const tableStartY = 102;
+  const colX = 40;
+  const col2X = 200;
+  const rowH = 6;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(74, 94, 228);
+  doc.text('CHAIN', colX, tableStartY);
+  doc.text('RESULT', col2X, tableStartY);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+
+  results.forEach((r, i) => {
+    const y = tableStartY + 8 + i * rowH;
+    doc.setTextColor(30, 41, 59);
+    doc.text(`${i + 1}. ${r.name}`, colX, y);
+
+    if (r.result?.passed) {
+      doc.setTextColor(34, 197, 94);
+      doc.text(`PASS (${r.result.score})`, col2X, y);
+    } else {
+      doc.setTextColor(239, 68, 68);
+      doc.text(`NEEDS REVIEW (${r.result?.score || 'N/A'})`, col2X, y);
+    }
+  });
+
+  // ── Footer ──
+  const footerY = h - 28;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(34, 197, 94);
+  doc.text('READY TO RETAKE SC-T0', w / 2, footerY, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text(`Fresno City College \u2022 CHEM 3A \u2022 Prof. Gilley`, w / 2, footerY + 7, { align: 'center' });
+  doc.text(`Verification: ${verificationCode}`, w / 2, footerY + 12, { align: 'center' });
+
+  // Save
+  doc.save(`ACMS_T0_Certificate_${studentName.replace(/\s+/g, '_')}.pdf`);
+}
+
+// ─── Main App ───
+function App() {
+  const [studentName, setStudentName] = useState(() => {
+    try { return localStorage.getItem(NAME_KEY) || ""; } catch(e) { return ""; }
+  });
+  const [started, setStarted] = useState(() => !!studentName);
+  const [chainResults, setChainResults] = useState({});
+
+  // Load all chain results from localStorage
+  useEffect(() => {
+    const results = {};
+    CHAINS.forEach(c => {
+      const r = getStoredResult(c.key);
+      if (r) results[c.key] = r;
+    });
+    setChainResults(results);
+  }, []);
+
+  const handleStart = (name) => {
+    setStudentName(name);
+    setStarted(true);
+  };
+
+  const handleNavigate = (file) => {
+    window.location.href = file;
+  };
+
+  const handleReset = () => {
+    if (!confirm("This will erase all your progress for Tier 0. Are you sure?")) return;
+    CHAINS.forEach(c => {
+      try { localStorage.removeItem(c.key); } catch(e) {}
+    });
+    try { localStorage.removeItem(NAME_KEY); } catch(e) {}
+    setStudentName("");
+    setStarted(false);
+    setChainResults({});
+  };
+
+  const handleGenerateCert = () => {
+    generateCertificate(studentName, chainResults);
+  };
+
+  if (!started) {
+    return <Landing onStart={handleStart} />;
+  }
+
+  return (
+    <ChainMap
+      studentName={studentName}
+      chainResults={chainResults}
+      onNavigate={handleNavigate}
+      onReset={handleReset}
+      onGenerateCert={handleGenerateCert}
+    />
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
