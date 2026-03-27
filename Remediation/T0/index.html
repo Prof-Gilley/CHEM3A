@@ -37,8 +37,12 @@
 
   .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 
+  .form-label { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; display: block; }
   .name-input { width: 100%; padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; outline: none; transition: border-color 0.15s; text-align: center; }
   .name-input:focus { border-color: var(--primary); }
+  .section-select { width: 100%; padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 16px; outline: none; transition: border-color 0.15s; text-align: center; background: white; color: var(--text); appearance: none; -webkit-appearance: none; cursor: pointer; }
+  .section-select:focus { border-color: var(--primary); }
+  .form-group { margin-bottom: 16px; }
 
   .start-btn { width: 100%; padding: 16px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
   .start-btn:hover { opacity: 0.9; }
@@ -99,6 +103,8 @@ const CHAINS = [
 ];
 
 const NAME_KEY = "acms-t0-student-name";
+const SECTION_KEY = "acms-t0-section";
+const SECTIONS = ["19263", "19264", "19265", "19266"];
 
 function getStoredResult(key) {
   try {
@@ -124,11 +130,19 @@ function Landing({ onStart }) {
   const [name, setName] = useState(() => {
     try { return localStorage.getItem(NAME_KEY) || ""; } catch(e) { return ""; }
   });
+  const [section, setSection] = useState(() => {
+    try { return localStorage.getItem(SECTION_KEY) || ""; } catch(e) { return ""; }
+  });
+
+  const canStart = name.trim() && section;
 
   const handleStart = () => {
-    if (!name.trim()) return;
-    try { localStorage.setItem(NAME_KEY, name.trim()); } catch(e) {}
-    onStart(name.trim());
+    if (!canStart) return;
+    try {
+      localStorage.setItem(NAME_KEY, name.trim());
+      localStorage.setItem(SECTION_KEY, section);
+    } catch(e) {}
+    onStart(name.trim(), section);
   };
 
   return (
@@ -140,17 +154,32 @@ function Landing({ onStart }) {
       </div>
 
       <div className="card">
-        <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 12 }}>Enter your full name (for your completion certificate):</div>
-        <input
-          className="name-input"
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleStart()}
-          placeholder="First Last"
-          autoFocus
-        />
-        <button className="start-btn" onClick={handleStart} disabled={!name.trim()}>
+        <div className="form-group">
+          <label className="form-label">Full Name (as it appears on your roster)</label>
+          <input
+            className="name-input"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && canStart && handleStart()}
+            placeholder="First Last"
+            autoFocus
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Section Number</label>
+          <select
+            className="section-select"
+            value={section}
+            onChange={e => setSection(e.target.value)}
+          >
+            <option value="" disabled>Select your section</option>
+            {SECTIONS.map(s => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+        <button className="start-btn" onClick={handleStart} disabled={!canStart}>
           Start Diagnostic
         </button>
       </div>
@@ -169,7 +198,7 @@ function Landing({ onStart }) {
 }
 
 // ─── Chain Map (progress view) ───
-function ChainMap({ studentName, chainResults, onNavigate, onReset, onGenerateCert }) {
+function ChainMap({ studentName, section, chainResults, onNavigate, onReset, onGenerateCert }) {
   const allComplete = CHAINS.every(c => chainResults[c.key] != null);
   const completedCount = CHAINS.filter(c => chainResults[c.key] != null).length;
   const passedCount = CHAINS.filter(c => chainResults[c.key]?.passed).length;
@@ -181,7 +210,7 @@ function ChainMap({ studentName, chainResults, onNavigate, onReset, onGenerateCe
     <div className="app">
       <div className="header">
         <h1>ACMS \u2014 Tier 0</h1>
-        <p style={{ marginTop: 4 }}>Welcome back, {studentName}</p>
+        <p style={{ marginTop: 4 }}>Welcome back, {studentName} — Section {section}</p>
       </div>
 
       <div className="progress-overview">
@@ -280,106 +309,187 @@ function ChainMap({ studentName, chainResults, onNavigate, onReset, onGenerateCe
 }
 
 // ─── Certificate Generator ───
-function generateCertificate(studentName, chainResults) {
+function generateCertificate(studentName, section, chainResults) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'letter' });
   const w = doc.internal.pageSize.getWidth();
   const h = doc.internal.pageSize.getHeight();
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const cx = w / 2;
 
-  // Collect result data
-  const results = CHAINS.map(c => ({
-    name: c.name,
-    result: chainResults[c.key]
-  }));
+  const results = CHAINS.map(c => ({ name: c.name, result: chainResults[c.key] }));
   const passedCount = results.filter(r => r.result?.passed).length;
-  const verificationCode = generateVerificationCode(studentName, chainResults, date);
+  const verificationCode = generateVerificationCode(studentName + section, chainResults, date);
 
-  // ── Border ──
-  doc.setDrawColor(74, 94, 228);
-  doc.setLineWidth(2);
-  doc.rect(10, 10, w - 20, h - 20);
-  doc.setLineWidth(0.5);
-  doc.rect(13, 13, w - 26, h - 26);
+  // ── Colors ──
+  const navy = [25, 40, 82];
+  const gold = [184, 156, 60];
+  const slate = [100, 116, 139];
+  const dark = [30, 41, 59];
+  const green = [34, 150, 80];
+  const red = [200, 60, 60];
 
-  // ── Header ──
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.setTextColor(74, 94, 228);
-  doc.text('ATOMIC CHEMISTRY MASTERY SYSTEM', w / 2, 28, { align: 'center' });
+  // ── Decorative double border ──
+  doc.setDrawColor(...navy);
+  doc.setLineWidth(2.5);
+  doc.rect(8, 8, w - 16, h - 16);
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.8);
+  doc.rect(12, 12, w - 24, h - 24);
 
-  doc.setFontSize(28);
-  doc.setTextColor(30, 41, 59);
-  doc.text('Certificate of Completion', w / 2, 42, { align: 'center' });
+  // ── Corner ornaments (simple L-brackets) ──
+  const orn = 15;
+  const m = 16;
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(1.2);
+  // Top-left
+  doc.line(m, m + orn, m, m); doc.line(m, m, m + orn, m);
+  // Top-right
+  doc.line(w - m - orn, m, w - m, m); doc.line(w - m, m, w - m, m + orn);
+  // Bottom-left
+  doc.line(m, h - m - orn, m, h - m); doc.line(m, h - m, m + orn, h - m);
+  // Bottom-right
+  doc.line(w - m - orn, h - m, w - m, h - m); doc.line(w - m, h - m, w - m, h - m - orn);
 
-  doc.setFontSize(12);
-  doc.setTextColor(100, 116, 139);
-  doc.text('Tier 0: Foundations Diagnostic', w / 2, 52, { align: 'center' });
+  // ── Thin gold rule under header area ──
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.4);
+  doc.line(30, 55, w - 30, 55);
 
-  // ── Student Name ──
-  doc.setFontSize(10);
-  doc.setTextColor(100, 116, 139);
-  doc.text('This certifies that', w / 2, 66, { align: 'center' });
-
-  doc.setFontSize(24);
-  doc.setTextColor(30, 41, 59);
-  doc.setFont('helvetica', 'bold');
-  doc.text(studentName, w / 2, 78, { align: 'center' });
-
-  // Underline
-  const nameWidth = doc.getTextWidth(studentName);
-  doc.setDrawColor(74, 94, 228);
-  doc.setLineWidth(0.5);
-  doc.line(w / 2 - nameWidth / 2 - 10, 80, w / 2 + nameWidth / 2 + 10, 80);
-
-  doc.setFontSize(10);
-  doc.setTextColor(100, 116, 139);
+  // ── Institution header ──
   doc.setFont('helvetica', 'normal');
-  doc.text(`has completed all 9 diagnostic chains for Tier 0: Foundations`, w / 2, 88, { align: 'center' });
-  doc.text(`passing ${passedCount} of ${CHAINS.length} chains on ${date}`, w / 2, 94, { align: 'center' });
-
-  // ── Chain Results Table ──
-  const tableStartY = 102;
-  const colX = 40;
-  const col2X = 200;
-  const rowH = 6;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9);
-  doc.setTextColor(74, 94, 228);
-  doc.text('CHAIN', colX, tableStartY);
-  doc.text('RESULT', col2X, tableStartY);
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-
-  results.forEach((r, i) => {
-    const y = tableStartY + 8 + i * rowH;
-    doc.setTextColor(30, 41, 59);
-    doc.text(`${i + 1}. ${r.name}`, colX, y);
-
-    if (r.result?.passed) {
-      doc.setTextColor(34, 197, 94);
-      doc.text(`PASS (${r.result.score})`, col2X, y);
-    } else {
-      doc.setTextColor(239, 68, 68);
-      doc.text(`NEEDS REVIEW (${r.result?.score || 'N/A'})`, col2X, y);
-    }
-  });
-
-  // ── Footer ──
-  const footerY = h - 28;
+  doc.setFontSize(10);
+  doc.setTextColor(...slate);
+  doc.text('FRESNO CITY COLLEGE', cx, 24, { align: 'center' });
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
-  doc.setTextColor(34, 197, 94);
-  doc.text('READY TO RETAKE SC-T0', w / 2, footerY, { align: 'center' });
+  doc.setTextColor(...navy);
+  doc.text('CHEM 3A \u2014 Introductory General Chemistry', cx, 31, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...slate);
+  doc.text('Spring 2026 \u2022 Prof. Rob Gilley', cx, 37, { align: 'center' });
+
+  // ── Title ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(26);
+  doc.setTextColor(...navy);
+  doc.text('Certificate of Completion', cx, 50, { align: 'center' });
+
+  // ── ACMS subtitle ──
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(...gold);
+  doc.text('ATOMIC CHEMISTRY MASTERY SYSTEM \u2014 TIER 0: FOUNDATIONS', cx, 62, { align: 'center' });
+
+  // ── "This certifies that" ──
+  doc.setFontSize(10);
+  doc.setTextColor(...slate);
+  doc.text('This certifies that', cx, 74, { align: 'center' });
+
+  // ── Student name (large, prominent) ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(...dark);
+  doc.text(studentName, cx, 87, { align: 'center' });
+
+  // Gold line under name
+  const nameW = doc.getTextWidth(studentName);
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.6);
+  doc.line(cx - nameW / 2 - 8, 90, cx + nameW / 2 + 8, 90);
+
+  // ── Section + completion info ──
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...slate);
+  doc.text(`Section ${section} \u2022 Completed ${date}`, cx, 97, { align: 'center' });
+  doc.text(`has completed all 9 diagnostic chains, passing ${passedCount} of ${CHAINS.length}`, cx, 103, { align: 'center' });
+
+  // ── Chain results table ──
+  const tableTop = 112;
+  const leftCol = 42;
+  const rightCol = w - 42;
+  const rowH = 5.8;
+
+  // Table header line
+  doc.setDrawColor(...navy);
+  doc.setLineWidth(0.3);
+  doc.line(leftCol - 4, tableTop - 1, rightCol + 4, tableTop - 1);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...navy);
+  doc.text('DIAGNOSTIC CHAIN', leftCol, tableTop + 3);
+  doc.text('SCORE', rightCol - 30, tableTop + 3);
+  doc.text('STATUS', rightCol, tableTop + 3);
+
+  doc.setLineWidth(0.15);
+  doc.line(leftCol - 4, tableTop + 5, rightCol + 4, tableTop + 5);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
-  doc.setTextColor(100, 116, 139);
-  doc.text(`Fresno City College \u2022 CHEM 3A \u2022 Prof. Gilley`, w / 2, footerY + 7, { align: 'center' });
-  doc.text(`Verification: ${verificationCode}`, w / 2, footerY + 12, { align: 'center' });
+
+  results.forEach((r, i) => {
+    const y = tableTop + 10 + i * rowH;
+    const passed = r.result?.passed;
+
+    // Alternating subtle background
+    if (i % 2 === 0) {
+      doc.setFillColor(245, 247, 250);
+      doc.rect(leftCol - 4, y - 3.5, rightCol - leftCol + 8, rowH, 'F');
+    }
+
+    doc.setTextColor(...dark);
+    doc.text(`${i + 1}. ${r.name}`, leftCol, y);
+
+    doc.setTextColor(...slate);
+    doc.text(r.result?.score || 'N/A', rightCol - 30, y);
+
+    if (passed) {
+      doc.setTextColor(...green);
+      doc.setFont('helvetica', 'bold');
+      doc.text('PASS', rightCol, y);
+    } else {
+      doc.setTextColor(...red);
+      doc.setFont('helvetica', 'bold');
+      doc.text('REVIEW', rightCol, y);
+    }
+    doc.setFont('helvetica', 'normal');
+  });
+
+  // Table bottom line
+  const tableBottom = tableTop + 10 + results.length * rowH;
+  doc.setDrawColor(...navy);
+  doc.setLineWidth(0.3);
+  doc.line(leftCol - 4, tableBottom - 2, rightCol + 4, tableBottom - 2);
+
+  // ── Ready to retake banner ──
+  const bannerY = h - 38;
+  doc.setFillColor(240, 253, 244);
+  doc.roundedRect(cx - 55, bannerY - 5, 110, 12, 3, 3, 'F');
+  doc.setDrawColor(...green);
+  doc.setLineWidth(0.4);
+  doc.roundedRect(cx - 55, bannerY - 5, 110, 12, 3, 3, 'S');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(...green);
+  doc.text('READY TO RETAKE SC-T0', cx, bannerY + 3, { align: 'center' });
+
+  // ── Bottom gold rule ──
+  doc.setDrawColor(...gold);
+  doc.setLineWidth(0.4);
+  doc.line(30, h - 22, w - 30, h - 22);
+
+  // ── Footer ──
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.setTextColor(...slate);
+  doc.text('Submit this certificate to the ACMS Completion assignment on Canvas for credit.', cx, h - 17, { align: 'center' });
+  doc.text(`Verification Code: ${verificationCode}`, cx, h - 13, { align: 'center' });
 
   // Save
   doc.save(`ACMS_T0_Certificate_${studentName.replace(/\s+/g, '_')}.pdf`);
@@ -390,10 +500,12 @@ function App() {
   const [studentName, setStudentName] = useState(() => {
     try { return localStorage.getItem(NAME_KEY) || ""; } catch(e) { return ""; }
   });
-  const [started, setStarted] = useState(() => !!studentName);
+  const [section, setSection] = useState(() => {
+    try { return localStorage.getItem(SECTION_KEY) || ""; } catch(e) { return ""; }
+  });
+  const [started, setStarted] = useState(() => !!(studentName && section));
   const [chainResults, setChainResults] = useState({});
 
-  // Load all chain results from localStorage
   useEffect(() => {
     const results = {};
     CHAINS.forEach(c => {
@@ -403,8 +515,9 @@ function App() {
     setChainResults(results);
   }, []);
 
-  const handleStart = (name) => {
+  const handleStart = (name, sec) => {
     setStudentName(name);
+    setSection(sec);
     setStarted(true);
   };
 
@@ -417,14 +530,18 @@ function App() {
     CHAINS.forEach(c => {
       try { localStorage.removeItem(c.key); } catch(e) {}
     });
-    try { localStorage.removeItem(NAME_KEY); } catch(e) {}
+    try {
+      localStorage.removeItem(NAME_KEY);
+      localStorage.removeItem(SECTION_KEY);
+    } catch(e) {}
     setStudentName("");
+    setSection("");
     setStarted(false);
     setChainResults({});
   };
 
   const handleGenerateCert = () => {
-    generateCertificate(studentName, chainResults);
+    generateCertificate(studentName, section, chainResults);
   };
 
   if (!started) {
@@ -434,6 +551,7 @@ function App() {
   return (
     <ChainMap
       studentName={studentName}
+      section={section}
       chainResults={chainResults}
       onNavigate={handleNavigate}
       onReset={handleReset}
