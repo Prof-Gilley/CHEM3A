@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Density Calculations</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .progress-dot.done { background: var(--success); }
+  .progress-dot.active { background: var(--primary); }
+  .progress-dot.failed { background: var(--error); }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
+
+  .question-number { font-size: 17px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 500; text-align: left; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; line-height: 1.5; }
+
+  .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .choice-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-light); }
+  .choice-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .text-input { flex: 1; max-width: 200px; padding: 12px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; text-align: center; font-weight: 600; font-family: 'SF Mono', 'Fira Code', monospace; outline: none; transition: border-color 0.15s; }
+  .text-input:focus { border-color: var(--primary); }
+  .submit-btn { padding: 12px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .feedback { padding: 16px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .feedback.success { background: var(--success-light); border: 1px solid var(--success); }
+  .feedback.error { background: var(--error-light); border: 1px solid var(--error); }
+  .feedback.hint { background: var(--warn-light); border: 1px solid var(--warn); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .next-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .next-btn:hover { opacity: 0.9; }
+
+  .stuck-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.15s; }
+  .stuck-btn:hover { border-color: var(--warn); color: var(--warn); }
+
+  .activation { margin-top: 16px; }
+  .activation-step { padding: 14px 16px; border-left: 3px solid var(--warn); background: var(--warn-light); border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+  .activation-step .ask { font-weight: 600; }
+  .activation-step .teach { color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+  .summary { text-align: center; }
+  .summary .score { font-size: 48px; font-weight: 700; color: var(--primary); }
+  .summary .score-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .chain-map { text-align: left; margin: 20px 0; }
+  .chain-step-result { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .chain-step-result:last-child { border: none; }
+  .chain-step-result .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0; }
+  .chain-step-result .icon.pass { background: var(--success); }
+  .chain-step-result .icon.fail { background: var(--error); }
+
+  .back-btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: all 0.15s; text-decoration: none; }
+  .back-btn:hover { background: var(--primary); color: white; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback, useMemo } = React;
+
+// ─── ACMS Hub Integration ───
+const CHAIN_ID = "chain-5";
+const CHAIN_KEY = "acms-t0-chain-5";
+const HUB_URL = "index.html";
+
+function saveResult(resultData) {
+  try {
+    localStorage.setItem(CHAIN_KEY, JSON.stringify(resultData));
+  } catch(e) { console.warn("localStorage unavailable:", e); }
+}
+
+// ─── Problem Generator ───
+function generateProblem(usedIndices) {
+  const templates = [
+    // Type 1: Find density (d = m/V)
+    { display: "A rock has mass 45.2 g and volume 12.8 mL. What is its density in g/mL?",
+      givenMass: 45.2, givenVolume: 12.8, solveFor: "d",
+      answer: "3.53", answerNum: 3.53, needsConversion: false, difficulty: 1,
+      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "45.2 ÷ 12.8 = 3.53125 → 3.53 g/mL" },
+
+    { display: "A marble has mass 15.0 g and volume 5.00 mL. What is its density?",
+      givenMass: 15.0, givenVolume: 5.00, solveFor: "d",
+      answer: "3.0", answerNum: 3.0, needsConversion: false, difficulty: 1,
+      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "15.0 ÷ 5.00 = 3.0 g/mL" },
+
+    { display: "A block of plastic weighs 120 g and occupies 150 mL. Calculate its density.",
+      givenMass: 120, givenVolume: 150, solveFor: "d",
+      answer: "0.80", answerNum: 0.80, needsConversion: false, difficulty: 1,
+      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "120 ÷ 150 = 0.8 g/mL" },
+
+    { display: "A metal cube has mass 78.5 g and volume 10.0 mL. What is its density in g/mL?",
+      givenMass: 78.5, givenVolume: 10.0, solveFor: "d",
+      answer: "7.85", answerNum: 7.85, needsConversion: false, difficulty: 2,
+      step1: "mass and volume", step2: "d = m/V", step3: "no", step4: "78.5 ÷ 10.0 = 7.85 g/mL" },
+
+    // Type 2: Find mass (m = d × V)
+    { display: "Mercury has density 13.6 g/mL. What is the mass of 5.00 mL of mercury?",
+      givenDensity: 13.6, givenVolume: 5.00, solveFor: "m",
+      answer: "68", answerNum: 68, needsConversion: false, difficulty: 1,
+      step1: "density and volume", step2: "m = d × V", step3: "no", step4: "13.6 × 5.00 = 68 g" },
+
+    { display: "Water has density 1.00 g/mL. What is the mass of 250 mL of water?",
+      givenDensity: 1.00, givenVolume: 250, solveFor: "m",
+      answer: "250", answerNum: 250, needsConversion: false, difficulty: 1,
+      step1: "density and volume", step2: "m = d × V", step3: "no", step4: "1.00 × 250 = 250 g" },
+
+    { display: "Aluminum has density 2.70 g/mL. What is the mass of 50.0 mL of aluminum?",
+      givenDensity: 2.70, givenVolume: 50.0, solveFor: "m",
+      answer: "135", answerNum: 135, needsConversion: false, difficulty: 1,
+      step1: "density and volume", step2: "m = d × V", step3: "no", step4: "2.70 × 50.0 = 135 g" },
+
+    // Type 3: Find volume (V = m/d)
+    { display: "Gold has density 19.3 g/mL. What volume does 50.0 g of gold occupy?",
+      givenMass: 50.0, givenDensity: 19.3, solveFor: "V",
+      answer: "2.59", answerNum: 2.59, needsConversion: false, difficulty: 1,
+      step1: "mass and density", step2: "V = m/d", step3: "no", step4: "50.0 ÷ 19.3 = 2.59 mL" },
+
+    { display: "A liquid has density 0.79 g/mL. What is the volume of 158 g of this liquid?",
+      givenMass: 158, givenDensity: 0.79, solveFor: "V",
+      answer: "200", answerNum: 200, needsConversion: false, difficulty: 1,
+      step1: "mass and density", step2: "V = m/d", step3: "no", step4: "158 ÷ 0.79 = 200 mL" },
+
+    { display: "Iron has density 7.87 g/mL. What volume does 100 g of iron occupy?",
+      givenMass: 100, givenDensity: 7.87, solveFor: "V",
+      answer: "12.7", answerNum: 12.7, needsConversion: false, difficulty: 1,
+      step1: "mass and density", step2: "V = m/d", step3: "no", step4: "100 ÷ 7.87 = 12.7 mL" },
+
+    // Type 4: With unit conversion (kg → g)
+    { display: "A block of ice has mass 1.8 kg and density 0.92 g/mL. Find volume in mL.",
+      givenMass: 1800, givenDensity: 0.92, solveFor: "V",
+      answer: "1956", answerNum: 1956, needsConversion: true, difficulty: 2,
+      step1: "mass (need to convert kg→g) and density", step2: "V = m/d", step3: "yes: 1.8 kg = 1800 g", step4: "1800 ÷ 0.92 = 1956.5 ≈ 1956 mL" },
+
+    { display: "A sample has mass 0.250 kg and density 8.9 g/mL. Calculate its volume.",
+      givenMass: 250, givenDensity: 8.9, solveFor: "V",
+      answer: "28.1", answerNum: 28.1, needsConversion: true, difficulty: 2,
+      step1: "mass (need to convert kg→g) and density", step2: "V = m/d", step3: "yes: 0.250 kg = 250 g", step4: "250 ÷ 8.9 = 28.1 mL" },
+
+    // Type 5: With cm³ = mL conversion
+    { display: "A cube is 2.0 cm on each side (V = 8.0 cm³). Mass is 21.6 g. Find density in g/mL.",
+      givenMass: 21.6, givenVolume: 8.0, solveFor: "d",
+      answer: "2.7", answerNum: 2.7, needsConversion: true, difficulty: 2,
+      step1: "mass and volume (in cm³)", step2: "d = m/V", step3: "yes: 8.0 cm³ = 8.0 mL", step4: "21.6 ÷ 8.0 = 2.7 g/mL" },
+
+    { display: "A rectangular solid is 1.5 cm × 2.0 cm × 3.0 cm (V = 9.0 cm³). Mass is 23.4 g. Density?",
+      givenMass: 23.4, givenVolume: 9.0, solveFor: "d",
+      answer: "2.6", answerNum: 2.6, needsConversion: true, difficulty: 2,
+      step1: "mass and volume (in cm³)", step2: "d = m/V", step3: "yes: 9.0 cm³ = 9.0 mL", step4: "23.4 ÷ 9.0 = 2.6 g/mL" },
+
+    { display: "A sphere with volume 27 cm³ has mass 54 g. Calculate its density in g/mL.",
+      givenMass: 54, givenVolume: 27, solveFor: "d",
+      answer: "2.0", answerNum: 2.0, needsConversion: true, difficulty: 2,
+      step1: "mass and volume (in cm³)", step2: "d = m/V", step3: "yes: 27 cm³ = 27 mL", step4: "54 ÷ 27 = 2.0 g/mL" },
+
+    // Type 6: Liter conversion
+    { display: "A liquid has density 0.79 g/mL and volume 2.5 L. What is the mass in grams?",
+      givenDensity: 0.79, givenVolume: 2500, solveFor: "m",
+      answer: "1975", answerNum: 1975, needsConversion: true, difficulty: 2,
+      step1: "density and volume (need to convert L→mL)", step2: "m = d × V", step3: "yes: 2.5 L = 2500 mL", step4: "0.79 × 2500 = 1975 g" },
+  ];
+
+  const available = templates.map((t, i) => i).filter(i => !usedIndices.has(i));
+  if (available.length === 0) return { ...templates[Math.floor(Math.random() * templates.length)], index: -1 };
+  const idx = available[Math.floor(Math.random() * available.length)];
+  return { ...templates[idx], index: idx };
+}
+
+// ─── Normalize answer for comparison ───
+function normalizeAnswer(str) {
+  let s = str.trim().replace(/\s+/g, '').toLowerCase();
+  s = s.replace(/[x\*]/g, '×');
+  s = s.replace(/(g\/ml|m|g|ml|kg|l)$/i, '');
+  return s;
+}
+
+function answersMatch(userStr, problem) {
+  const norm = normalizeAnswer(userStr);
+  const correctNorm = normalizeAnswer(problem.answer);
+
+  if (norm === correctNorm) return true;
+
+  const userNum = parseFloat(norm);
+  const tolerance = problem.answerNum > 100 ? 5 : (problem.answerNum > 10 ? 0.5 : 0.05);
+  if (!isNaN(userNum) && Math.abs(userNum - problem.answerNum) <= tolerance) return true;
+
+  return false;
+}
+
+// ─── Diagnosis Engine ───
+function diagnoseFailure(problem, userAnswer) {
+  const userNum = parseFloat(normalizeAnswer(userAnswer));
+  const correctNum = problem.answerNum;
+
+  if (!isNaN(userNum)) {
+    // Check: used wrong formula (e.g., calculated V/m instead of m/V for density)
+    const inverted = 1 / userNum;
+    if (Math.abs(inverted - correctNum) < correctNum * 0.05) {
+      return {
+        step: 2,
+        stepName: "Select the correct rearrangement",
+        diagnosis: "inverted-formula",
+        message: "It looks like you inverted the formula. For density, you need d = m/V, not V/m. Check which two quantities you have and which one you're solving for.",
+        remediation: "If you have mass and volume, use d = m/V (divide). If you have density and volume, use m = d × V (multiply). If you have mass and density, use V = m/d (divide)."
+      };
+    }
+
+    // Check: forgot unit conversion
+    if (problem.needsConversion) {
+      const offBy1000 = userNum * 1000;
+      const offBySmall = userNum / 1000;
+      if (Math.abs(offBy1000 - correctNum) < correctNum * 0.1) {
+        return {
+          step: 3,
+          stepName: "Convert units",
+          diagnosis: "forgot-conversion",
+          message: "You didn't convert units! Check if you need to convert kg → g, L → mL, or cm³ → mL.",
+          remediation: "Unit conversions: 1 kg = 1000 g, 1 L = 1000 mL, 1 cm³ = 1 mL. Do the conversion before plugging numbers into the formula."
+        };
+      }
+      if (Math.abs(offBySmall - correctNum) < correctNum * 0.1) {
+        return {
+          step: 3,
+          stepName: "Convert units",
+          diagnosis: "wrong-conversion",
+          message: "Your unit conversion is backwards. Double-check the direction: are you going from a smaller unit to a larger one, or vice versa?",
+          remediation: "Remember: kg → g (multiply by 1000), L → mL (multiply by 1000), cm³ = mL (they're the same)."
+        };
+      }
+    }
+
+    // Check: arithmetic error (close but not exact)
+    const diff = Math.abs(userNum - correctNum);
+    const tolerance = problem.answerNum > 100 ? 5 : (problem.answerNum > 10 ? 0.5 : 0.05);
+    if (diff > tolerance && diff < tolerance * 3) {
+      return {
+        step: 4,
+        stepName: "Calculate and apply sig figs",
+        diagnosis: "arithmetic-error",
+        message: "Your answer is close, but not quite right. Did you check your arithmetic? Re-enter the numbers into your calculator carefully.",
+        remediation: "Double-check: Did you use the right formula? Did you convert units? Did you enter the numbers correctly? Then round to the appropriate number of significant figures."
+      };
+    }
+
+    // Check: sig fig error
+    const userSF = countSigFigs(userAnswer.trim());
+    const answerSF = countSigFigs(problem.answer);
+    if (userSF !== answerSF && userNum > correctNum * 0.5 && userNum < correctNum * 1.5) {
+      return {
+        step: 4,
+        stepName: "Calculate and apply sig figs",
+        diagnosis: "sig-fig-error",
+        message: "Your calculation is right, but your sig figs are off. The answer should have " + answerSF + " significant figures, not " + userSF + ".",
+        remediation: "Sig fig rule: Your answer should have the same sig figs as the measurement with the fewest sig figs. Count the given numbers, then round your answer accordingly."
+      };
+    }
+  }
+
+  // Generic fallback
+  return {
+    step: 4,
+    stepName: "Calculate and apply sig figs",
+    diagnosis: "general-error",
+    message: "Let's walk through it: (1) Identify which two values you have. (2) Pick the right formula rearrangement. (3) Convert units if needed. (4) Calculate and round.",
+    remediation: problem.step1 + " → " + problem.step2 + " → " + problem.step3 + " → " + problem.step4
+  };
+}
+
+function countSigFigs(str) {
+  let s = str.replace(/\s/g, '');
+  s = s.replace(/[×xX\*]10.*$/, '').trim();
+  s = s.replace(/^-/, '');
+
+  if (s.includes('.')) {
+    const stripped = s.replace('.', '');
+    if (parseFloat(s) === 0) return 0;
+    const noLeading = stripped.replace(/^0+/, '');
+    return noLeading.length;
+  } else {
+    const noLeading = s.replace(/^0+/, '');
+    const noTrailing = noLeading.replace(/0+$/, '');
+    return noTrailing.length || 1;
+  }
+}
+
+// ─── Chain Definition ───
+const chain = {
+  id: "T0-C5",
+  title: "Density Calculations",
+  steps: [
+    { id: 1, name: "Identify what's given", short: "What's given?" },
+    { id: 2, name: "Select the correct formula rearrangement", short: "Formula" },
+    { id: 3, name: "Convert units if needed", short: "Units" },
+    { id: 4, name: "Calculate and apply sig figs", short: "Calc" },
+  ],
+  activationRamps: [
+    [
+      { prompt: "A rock sinks in water. Is it more or less dense than water?", answer: "More dense. If it sinks, it's heavier than the water it displaces.", teaches: "Density is about how much mass fits in a certain volume." },
+      { prompt: "Water's density is 1.00 g/mL. What does that mean?", answer: "It means 1 mL of water has a mass of 1 g (or 1 L has a mass of 1 kg).", teaches: "Density connects mass and volume: d = m/V." },
+      { prompt: "You have 50 mL of water. What's its mass?", answer: "50 g. Because d = 1.00 g/mL, and m = d × V = 1.00 × 50 = 50 g.", teaches: "Rearrange the formula: m = d × V" },
+      { prompt: "A marble is 15 g and 5 mL. What's its density?", answer: "3.0 g/mL. Use d = m/V = 15 ÷ 5 = 3.0 g/mL.", teaches: "Direct calculation when you have both mass and volume." },
+      { prompt: "Now harder: a block is 1.8 kg and 2000 mL. Density?", answer: "0.90 g/mL. First convert: 1.8 kg = 1800 g. Then d = 1800 ÷ 2000 = 0.90 g/mL.", teaches: "Always convert units first. kg→g by × 1000." },
+    ],
+    [
+      { prompt: "d = m/V. If d = 2.0 g/mL and V = 10 mL, what's the mass?", answer: "20 g. Rearrange: m = d × V = 2.0 × 10 = 20 g.", teaches: "To solve for m, multiply density and volume." },
+      { prompt: "Same density, but mass is 50 g. What's the volume?", answer: "25 mL. Rearrange: V = m/d = 50 ÷ 2.0 = 25 mL.", teaches: "To solve for V, divide mass by density." },
+      { prompt: "A gold nugget is 38.6 g and 2.0 mL. Density?", answer: "19.3 g/mL. Use d = m/V = 38.6 ÷ 2.0 = 19.3 g/mL.", teaches: "When you have m and V, divide to get d." },
+      { prompt: "Mercury: d = 13.6 g/mL. Mass of 5.0 mL?", answer: "68 g. Use m = d × V = 13.6 × 5.0 = 68 g.", teaches: "When you have d and V, multiply to get m." },
+      { prompt: "Aluminum: d = 2.70 g/mL. Volume of 100 g?", answer: "37.0 mL. Use V = m/d = 100 ÷ 2.70 = 37.0 mL.", teaches: "When you have m and d, divide to get V." },
+    ],
+    [
+      { prompt: "1 cm³ equals how many mL?", answer: "1 mL. They are the same unit — 1 cm³ = 1 mL exactly.", teaches: "cm³ and mL are interchangeable." },
+      { prompt: "1 kg equals how many grams?", answer: "1000 g. Move the decimal three places.", teaches: "kg → g: multiply by 1000." },
+      { prompt: "A rock is 0.250 kg. Convert to grams.", answer: "250 g. 0.250 × 1000 = 250 g.", teaches: "kg → g: use × 1000." },
+      { prompt: "That rock is 89 mL. Density?", answer: "2.8 g/mL. d = 250 ÷ 89 = 2.81... ≈ 2.8 g/mL.", teaches: "After converting, use the formula normally." },
+      { prompt: "A liquid has d = 0.79 g/mL and V = 2.5 L. Mass in grams?", answer: "1975 g (or ~2000 g). First: 2.5 L = 2500 mL. Then: m = 0.79 × 2500 = 1975 g.", teaches: "L → mL: multiply by 1000. Then apply the formula." },
+    ],
+  ]
+};
+
+// ─── Components ───
+function ProgressBar({ total, results, current }) {
+  return (
+    <div className="progress-bar">
+      {Array.from({ length: total }, (_, i) => {
+        let cls = "";
+        if (i < results.length) cls = results[i].correct ? "done" : "failed";
+        else if (i === current) cls = "active";
+        return <div key={i} className={`progress-dot ${cls}`} />;
+      })}
+    </div>
+  );
+}
+
+function StepDiagnosis({ diagnosis }) {
+  const friendlyNames = {
+    1: "Identifying What's Given",
+    2: "Selecting the Right Formula",
+    3: "Converting Units",
+    4: "Calculating and Rounding"
+  };
+  return (
+    <div className="feedback error">
+      <strong>Skill to practice: {friendlyNames[diagnosis.step] || diagnosis.stepName}</strong>
+      {diagnosis.message}
+      <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6, fontSize: 13 }}>
+        <strong style={{ color: '#b91c1c', fontSize: 12 }}>Try this:</strong> {diagnosis.remediation}
+      </div>
+    </div>
+  );
+}
+
+function ActivationRamp({ ramps }) {
+  const [rampIndex] = useState(() => Math.floor(Math.random() * ramps.length));
+  const sequence = ramps[rampIndex];
+  const [revealed, setRevealed] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleRevealAnswer = () => setShowAnswer(true);
+  const handleNext = () => {
+    setRevealed(r => r + 1);
+    setShowAnswer(false);
+  };
+
+  return (
+    <div className="activation">
+      <p style={{ fontSize: 14, color: '#92400e', fontWeight: 600, marginBottom: 8 }}>
+        Let's build up to it, one step at a time:
+      </p>
+      {sequence.slice(0, revealed + 1).map((step, i) => {
+        const isPast = i < revealed;
+        const isCurrent = i === revealed;
+        return (
+          <div key={`${rampIndex}-${i}`} className="activation-step">
+            <div className="ask">{step.prompt}</div>
+            {isPast && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+            {isCurrent && showAnswer && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {revealed < sequence.length - 1 ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          {!showAnswer ? (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleRevealAnswer}>
+              Show answer
+            </button>
+          ) : (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleNext}>
+              Next step
+            </button>
+          )}
+        </div>
+      ) : (
+        !showAnswer ? (
+          <button className="submit-btn" style={{ marginTop: 8, fontSize: 13, padding: '8px 16px' }}
+            onClick={handleRevealAnswer}>
+            Show answer
+          </button>
+        ) : (
+          <div className="feedback success" style={{ marginTop: 8 }}>
+            <strong>Now you have the full toolkit.</strong>
+            Go back and try the problem again — you know density inside and out now.
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function Summary({ results, onReset, onReturnToHub }) {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+
+  const stepResults = chain.steps.map(step => {
+    const failures = results.filter(r => !r.correct && r.diagnosis && r.diagnosis.step === step.id);
+    return { ...step, failures: failures.length };
+  });
+
+  const failures = results
+    .filter(r => !r.correct && r.diagnosis)
+    .map(r => r.diagnosis.diagnosis);
+  const resultData = {
+    passed: correct >= Math.ceil(total * 0.7),
+    score: correct + "/" + total,
+    correct: correct,
+    total: total,
+    failures: [...new Set(failures)],
+    stepBreakdown: stepResults.map(s => ({ id: s.id, name: s.name, failures: s.failures })),
+    timestamp: new Date().toISOString()
+  };
+  saveResult(resultData);
+
+  return (
+    <div className="card summary">
+      <div className="score">{correct}/{total}</div>
+      <div className="score-label">problems correct</div>
+
+      <div className="chain-map">
+        <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Density Skills Breakdown:
+        </p>
+        {stepResults.map(step => {
+          const friendlyNames = {
+            1: "Identifying What's Given",
+            2: "Selecting the Right Formula",
+            3: "Converting Units",
+            4: "Calculating and Rounding"
+          };
+          const status = step.failures === 0 ? 'pass' : 'fail';
+          return (
+            <div key={step.id} className="chain-step-result">
+              <div className={`icon ${status}`}>{status === 'pass' ? '✓' : step.failures}</div>
+              <div>
+                <strong>{friendlyNames[step.id]}</strong>
+                {step.failures > 0 ? (
+                  <div style={{ fontSize: 12, color: 'var(--error)', marginTop: 2 }}>
+                    {step.failures} error{step.failures > 1 ? 's' : ''} — this skill needs practice
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--success)', marginTop: 2 }}>
+                    Solid
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}</div>
+
+      {correct < total && (
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 16, lineHeight: 1.6 }}>
+          You didn't fail at density — you have a specific skill that needs practice.
+          Focus on the red area{stepResults.filter(s => s.failures > 0).length > 1 ? 's' : ''} above.
+        </p>
+      )}
+      {correct === total && (
+        <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
+          Every link in the chain is solid. You've got density locked down.
+        </p>
+      )}
+
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+        <button className="back-btn" onClick={onReset}>Try another set</button>
+        <button className="next-btn" style={{ width: 'auto', padding: '12px 32px', marginTop: 0 }} onClick={onReturnToHub}>
+          Continue to next chain →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function App() {
+  const TOTAL_QUESTIONS = 5;
+  const [results, setResults] = useState([]);
+  const [usedIndices, setUsedIndices] = useState(new Set());
+  const [problem, setProblem] = useState(() => {
+    const p = generateProblem(new Set());
+    return p;
+  });
+  const [userInput, setUserInput] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [showActivation, setShowActivation] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const currentQ = results.length;
+
+  const handleSubmit = () => {
+    if (!userInput.trim()) return;
+
+    const correct = answersMatch(userInput, problem);
+    let diagnosis = null;
+    if (!correct) {
+      diagnosis = diagnoseFailure(problem, userInput);
+    }
+
+    setFeedback({ correct, diagnosis });
+  };
+
+  const handleNext = () => {
+    const correct = feedback.correct;
+    const diagnosis = feedback.diagnosis;
+    const newResults = [...results, { correct, diagnosis, problem }];
+    setResults(newResults);
+    setFeedback(null);
+    setUserInput("");
+    setShowActivation(false);
+
+    if (newResults.length >= TOTAL_QUESTIONS) {
+      setDone(true);
+    } else {
+      const newUsed = new Set([...usedIndices, problem.index]);
+      setUsedIndices(newUsed);
+      setProblem(generateProblem(newUsed));
+    }
+  };
+
+  const handleReset = () => {
+    setResults([]);
+    setUsedIndices(new Set());
+    setProblem(generateProblem(new Set()));
+    setUserInput("");
+    setFeedback(null);
+    setShowActivation(false);
+    setDone(false);
+  };
+
+  const handleReturnToHub = () => {
+    window.location.href = HUB_URL;
+  };
+
+  if (done) {
+    return (
+      <div className="app">
+        <div className="header">
+          <h1>ACMS — Density Calculations</h1>
+          <p>Chain 5 Diagnostic Results</p>
+        </div>
+        <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
+        <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS — Density Calculations</h1>
+        <p>Chain 5: Density Calculations</p>
+      </div>
+
+      <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
+
+      <div className="card">
+        <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
+
+        <div className="question-number">
+          {problem.display}
+        </div>
+
+        <div className="step-prompt">What is your answer? (Round to 3 sig figs or as needed)</div>
+
+        {!feedback && (
+          <>
+            <div className="input-row">
+              <input
+                className="text-input"
+                type="text"
+                value={userInput}
+                onChange={e => setUserInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                autoFocus
+                placeholder="e.g., 3.53 or 68 g"
+              />
+              <button
+                className="submit-btn"
+                onClick={handleSubmit}
+                disabled={!userInput.trim()}
+              >
+                Check
+              </button>
+            </div>
+          </>
+        )}
+
+        {feedback && feedback.correct && (
+          <>
+            <div className="feedback success">
+              <strong>Correct!</strong>
+              Your answer of {userInput} is right.
+            </div>
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+
+        {feedback && !feedback.correct && (
+          <>
+            <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
+              You answered <strong style={{ color: 'var(--error)' }}>{userInput}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.answer}</strong>.
+            </div>
+
+            <StepDiagnosis diagnosis={feedback.diagnosis} />
+
+            {!showActivation && (
+              <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+                I'm stuck — walk me through the basics
+              </button>
+            )}
+
+            {showActivation && (
+              <ActivationRamp ramps={chain.activationRamps} />
+            )}
+
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {!feedback && !showActivation && (
+        <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+          I'm stuck — help me build up to this
+        </button>
+      )}
+
+      {!feedback && showActivation && (
+        <div className="card">
+          <ActivationRamp ramps={chain.activationRamps} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
