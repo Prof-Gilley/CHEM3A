@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Rounding to Sig Figs</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .progress-dot.done { background: var(--success); }
+  .progress-dot.active { background: var(--primary); }
+  .progress-dot.failed { background: var(--error); }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
+
+  .question-number { font-size: 22px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; text-align: center; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: 1px; line-height: 1.4; }
+
+  .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .choice-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-light); }
+  .choice-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .text-input { flex: 1; max-width: 200px; padding: 12px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; text-align: center; font-weight: 600; font-family: 'SF Mono', 'Fira Code', monospace; outline: none; transition: border-color 0.15s; }
+  .text-input:focus { border-color: var(--primary); }
+  .submit-btn { padding: 12px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .feedback { padding: 16px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .feedback.success { background: var(--success-light); border: 1px solid var(--success); }
+  .feedback.error { background: var(--error-light); border: 1px solid var(--error); }
+  .feedback.hint { background: var(--warn-light); border: 1px solid var(--warn); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .next-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .next-btn:hover { opacity: 0.9; }
+
+  .stuck-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.15s; }
+  .stuck-btn:hover { border-color: var(--warn); color: var(--warn); }
+
+  .activation { margin-top: 16px; }
+  .activation-step { padding: 14px 16px; border-left: 3px solid var(--warn); background: var(--warn-light); border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+  .activation-step .ask { font-weight: 600; }
+  .activation-step .teach { color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+  .summary { text-align: center; }
+  .summary .score { font-size: 48px; font-weight: 700; color: var(--primary); }
+  .summary .score-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .chain-map { text-align: left; margin: 20px 0; }
+  .chain-step-result { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .chain-step-result:last-child { border: none; }
+  .chain-step-result .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0; }
+  .chain-step-result .icon.pass { background: var(--success); }
+  .chain-step-result .icon.fail { background: var(--error); }
+
+  .back-btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: all 0.15s; text-decoration: none; }
+  .back-btn:hover { background: var(--primary); color: white; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback, useMemo } = React;
+
+// ─── ACMS Hub Integration ───
+const CHAIN_ID = "chain-2";
+const CHAIN_KEY = "acms-t0-chain-2";
+const HUB_URL = "index.html";
+
+function saveResult(resultData) {
+  try {
+    localStorage.setItem(CHAIN_KEY, JSON.stringify(resultData));
+  } catch(e) { console.warn("localStorage unavailable:", e); }
+}
+
+// ─── Problem Generator ───
+function generateProblem(usedIndices) {
+  const templates = [
+    // [original number, target sig figs, correct answer string, difficulty, notes]
+    // Leading zeros — students must preserve them
+    { display: "0.08706", targetSF: 2, answer: "0.087", difficulty: 2,
+      answerNum: 0.087, originalSF: 4, lastKeep: "7", lookAt: "0", action: "round down" },
+    { display: "0.06284", targetSF: 2, answer: "0.063", difficulty: 2,
+      answerNum: 0.063, originalSF: 4, lastKeep: "2", lookAt: "8", action: "round up" },
+    { display: "0.004538", targetSF: 2, answer: "0.0045", difficulty: 2,
+      answerNum: 0.0045, originalSF: 4, lastKeep: "5", lookAt: "3", action: "round down" },
+    { display: "0.009045", targetSF: 3, answer: "0.00905", difficulty: 3,
+      answerNum: 0.00905, originalSF: 4, lastKeep: "4", lookAt: "5", action: "round up" },
+    { display: "0.07250", targetSF: 2, answer: "0.073", difficulty: 2,
+      answerNum: 0.073, originalSF: 4, lastKeep: "2", lookAt: "5", action: "round up" },
+
+    // No leading zeros — straightforward rounding
+    { display: "345.8", targetSF: 2, answer: "350", difficulty: 2,
+      answerNum: 350, originalSF: 4, lastKeep: "4", lookAt: "5", action: "round up" },
+    { display: "2.4867", targetSF: 2, answer: "2.5", difficulty: 1,
+      answerNum: 2.5, originalSF: 5, lastKeep: "4", lookAt: "8", action: "round up" },
+    { display: "7832", targetSF: 2, answer: "7800", difficulty: 2,
+      answerNum: 7800, originalSF: 4, lastKeep: "8", lookAt: "3", action: "round down" },
+    { display: "1.0356", targetSF: 3, answer: "1.04", difficulty: 2,
+      answerNum: 1.04, originalSF: 5, lastKeep: "3", lookAt: "5", action: "round up" },
+    { display: "56.817", targetSF: 4, answer: "56.82", difficulty: 2,
+      answerNum: 56.82, originalSF: 5, lastKeep: "1", lookAt: "7", action: "round up" },
+
+    // Trailing zero traps — answer requires keeping a trailing zero
+    { display: "4.0521", targetSF: 2, answer: "4.1", difficulty: 1,
+      answerNum: 4.1, originalSF: 5, lastKeep: "0", lookAt: "5", action: "round up" },
+    { display: "2.9501", targetSF: 2, answer: "3.0", difficulty: 3,
+      answerNum: 3.0, originalSF: 5, lastKeep: "9", lookAt: "5", action: "round up",
+      trailingZeroTrap: true },
+    { display: "0.5983", targetSF: 1, answer: "0.6", difficulty: 2,
+      answerNum: 0.6, originalSF: 4, lastKeep: "5", lookAt: "9", action: "round up" },
+    { display: "99.62", targetSF: 3, answer: "99.6", difficulty: 1,
+      answerNum: 99.6, originalSF: 4, lastKeep: "6", lookAt: "2", action: "round down" },
+
+    // Scientific notation
+    { display: "3.4528 \u00d7 10\u00b3", targetSF: 3, answer: "3.45 \u00d7 10\u00b3", difficulty: 2,
+      answerNum: 3450, originalSF: 5, lastKeep: "5", lookAt: "2", action: "round down", sciNotation: true, answerAlt: "3450" },
+    { display: "6.0782 \u00d7 10\u207b\u00b2", targetSF: 3, answer: "6.08 \u00d7 10\u207b\u00b2", difficulty: 3,
+      answerNum: 0.0608, originalSF: 5, lastKeep: "7", lookAt: "8", action: "round up", sciNotation: true, answerAlt: "0.0608" },
+
+    // Round-to with captive zero in answer
+    { display: "80.45", targetSF: 3, answer: "80.5", difficulty: 2,
+      answerNum: 80.5, originalSF: 4, lastKeep: "4", lookAt: "5", action: "round up" },
+    { display: "30.249", targetSF: 3, answer: "30.2", difficulty: 2,
+      answerNum: 30.2, originalSF: 5, lastKeep: "2", lookAt: "4", action: "round down" },
+  ];
+
+  // Pick one we haven't used yet
+  const available = templates.map((t, i) => i).filter(i => !usedIndices.has(i));
+  if (available.length === 0) return { ...templates[Math.floor(Math.random() * templates.length)], index: -1 };
+  const idx = available[Math.floor(Math.random() * available.length)];
+  return { ...templates[idx], index: idx };
+}
+
+// ─── Normalize answer for comparison ───
+function normalizeAnswer(str) {
+  // Strip spaces, lowercase, remove trailing period
+  let s = str.trim().replace(/\s+/g, '').toLowerCase();
+  // Accept × or x or * for multiplication
+  s = s.replace(/[x\*]/g, '\u00d7');
+  // Remove units if any
+  s = s.replace(/(g\/ml|m|g|ml|kg|l)$/i, '');
+  return s;
+}
+
+function answersMatch(userStr, problem) {
+  const norm = normalizeAnswer(userStr);
+  const correctNorm = normalizeAnswer(problem.answer);
+
+  // Direct string match
+  if (norm === correctNorm) return true;
+
+  // Numeric match
+  const userNum = parseFloat(norm);
+  if (!isNaN(userNum) && Math.abs(userNum - problem.answerNum) < 1e-10) return true;
+
+  // Alt answer match (for sci notation problems)
+  if (problem.answerAlt && normalizeAnswer(problem.answerAlt) === norm) return true;
+
+  return false;
+}
+
+// ─── Diagnosis Engine ───
+function diagnoseFailure(problem, userAnswer) {
+  const userNum = parseFloat(normalizeAnswer(userAnswer));
+  const correctNum = problem.answerNum;
+  const original = problem.display;
+  const targetSF = problem.targetSF;
+
+  // Check: did they round in the wrong direction?
+  if (!isNaN(userNum)) {
+    // Wrong direction: they rounded up when should round down (or vice versa)
+    // E.g., 345.8 to 2 SF: correct is 350 (round up), user says 340 (round down)
+    if (problem.action === "round up" && userNum < correctNum && Math.abs(userNum - correctNum) < Math.pow(10, Math.floor(Math.log10(Math.abs(correctNum))))) {
+      return {
+        step: 4,
+        stepName: "Apply the rounding rule",
+        diagnosis: "wrong-direction",
+        message: "It looks like you rounded down when you should have rounded up. The digit after the last one you keep is " + problem.lookAt + ", which is 5 or greater \u2014 that means round UP.",
+        remediation: "In " + original + ", the last sig fig to keep is " + problem.lastKeep + ". The next digit is " + problem.lookAt + ". Since " + problem.lookAt + " \u2265 5, round the " + problem.lastKeep + " up."
+      };
+    }
+    if (problem.action === "round down" && userNum > correctNum && Math.abs(userNum - correctNum) < Math.pow(10, Math.floor(Math.log10(Math.abs(correctNum))))) {
+      return {
+        step: 4,
+        stepName: "Apply the rounding rule",
+        diagnosis: "wrong-direction",
+        message: "It looks like you rounded up when you should have rounded down. The digit after the last one you keep is " + problem.lookAt + ", which is less than 5 \u2014 that means round DOWN (keep the digit the same).",
+        remediation: "In " + original + ", the last sig fig to keep is " + problem.lastKeep + ". The next digit is " + problem.lookAt + ". Since " + problem.lookAt + " < 5, keep the " + problem.lastKeep + " as-is."
+      };
+    }
+
+    // Check: dropped trailing zeros (e.g., wrote "3" instead of "3.0")
+    if (problem.trailingZeroTrap && !userAnswer.includes(".")) {
+      return {
+        step: 5,
+        stepName: "Handle trailing zeros after rounding",
+        diagnosis: "dropped-trailing-zero",
+        message: "You dropped the trailing zero! When rounding gives you a number like 3.0, that trailing zero is significant \u2014 it shows you measured to that precision. Write 3.0, not just 3.",
+        remediation: "Rounding " + original + " to " + targetSF + " sig figs gives " + problem.answer + ". The .0 isn\u2019t optional \u2014 it shows you have " + targetSF + " significant figures."
+      };
+    }
+
+    // Check: dropped leading zeros (e.g., wrote ".087" instead of "0.087", or the count is wrong)
+    if (original.startsWith("0.") && userNum > correctNum * 5) {
+      return {
+        step: 1,
+        stepName: "Count sig figs in the original",
+        diagnosis: "counted-leading-zeros",
+        message: "It looks like you may have counted leading zeros as significant figures. Remember: leading zeros are placeholders \u2014 they\u2019re not significant. Start counting from the first nonzero digit.",
+        remediation: "In " + original + ", skip the leading zeros. The first significant digit is " + original.replace(/^0\.0*/, '')[0] + ". Count " + targetSF + " sig figs starting there."
+      };
+    }
+
+    // Check: wrong number of sig figs in answer
+    // Count sig figs in their answer
+    const userSF = countSigFigs(userAnswer.trim());
+    if (userSF !== targetSF && userSF > 0) {
+      return {
+        step: 2,
+        stepName: "Identify the last significant digit to keep",
+        diagnosis: "wrong-sf-count",
+        message: "Your answer has " + userSF + " significant figures, but the problem asked for " + targetSF + ". Make sure you\u2019re counting to the right position before rounding.",
+        remediation: "In " + original + ", find the " + ordinal(targetSF) + " significant digit (remember: skip leading zeros). That\u2019s the last digit you keep. Everything after it gets rounded."
+      };
+    }
+  }
+
+  // Generic fallback
+  return {
+    step: 3,
+    stepName: "Look at the digit immediately after",
+    diagnosis: "general-error",
+    message: "Let\u2019s walk through it: find the " + ordinal(targetSF) + " significant digit in " + original + ", then look at the very next digit to decide whether to round up or down.",
+    remediation: "Step by step: (1) Skip any leading zeros. (2) Count to sig fig #" + targetSF + " \u2014 that\u2019s " + problem.lastKeep + ". (3) The next digit is " + problem.lookAt + ". (4) Since " + problem.lookAt + (parseInt(problem.lookAt) >= 5 ? " \u2265 5, round up." : " < 5, round down.")
+  };
+}
+
+function countSigFigs(str) {
+  let s = str.replace(/\s/g, '');
+  // Remove sci notation part
+  s = s.replace(/[\u00d7xX\*]10.*$/, '').trim();
+  // Remove negative sign
+  s = s.replace(/^-/, '');
+
+  if (s.includes('.')) {
+    // Has decimal point
+    const stripped = s.replace('.', '');
+    if (parseFloat(s) === 0) return 0;
+    // Remove leading zeros
+    const noLeading = stripped.replace(/^0+/, '');
+    return noLeading.length;
+  } else {
+    // No decimal point — trailing zeros are ambiguous (not sig)
+    const noLeading = s.replace(/^0+/, '');
+    const noTrailing = noLeading.replace(/0+$/, '');
+    return noTrailing.length || 1;
+  }
+}
+
+function ordinal(n) {
+  const s = ["th","st","nd","rd"];
+  const v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
+// ─── Chain Definition ───
+const chain = {
+  id: "T0-C2",
+  title: "Rounding to Significant Figures",
+  steps: [
+    { id: 1, name: "Count sig figs in the original", short: "Count SF" },
+    { id: 2, name: "Find the last sig fig to keep", short: "Last digit" },
+    { id: 3, name: "Look at the next digit", short: "Decision digit" },
+    { id: 4, name: "Apply the rounding rule", short: "Round" },
+    { id: 5, name: "Handle trailing zeros", short: "Trailing zeros" },
+  ],
+  activationRamps: [
+    [
+      { prompt: "Round 78 to 1 significant figure.", answer: "80 \u2014 the first sig fig is 7, the next digit is 8 (\u2265 5), so round up.", teaches: "Basic rounding: look at the digit after the one you keep" },
+      { prompt: "Round 4.63 to 2 significant figures.", answer: "4.6 \u2014 keep the 4 and 6, then look at the 3. Since 3 < 5, round down (keep 6 as-is).", teaches: "Round down when the decision digit is < 5" },
+      { prompt: "Round 0.0378 to 2 sig figs.", answer: "0.038 \u2014 the leading zeros aren't significant. The sig figs are 3 and 7. The next digit is 8 (\u2265 5), so 7 rounds up to 8.", teaches: "Leading zeros stay as placeholders \u2014 they\u2019re never counted" },
+      { prompt: "Round 2.950 to 2 sig figs.", answer: "3.0, not just 3! The 9 rounds up to 10, carrying over. The trailing zero shows you have 2 sig figs.", teaches: "Trailing zeros after rounding ARE significant \u2014 don\u2019t drop them" },
+      { prompt: "Round 0.06284 to 2 sig figs.", answer: "0.063 \u2014 skip leading zeros, first two sig figs are 6 and 2, next digit is 8 (\u2265 5), round the 2 up to 3.", teaches: "Full process: skip leading zeros, count, check decision digit, round" },
+    ],
+    [
+      { prompt: "Round 46 to 1 sig fig.", answer: "50 \u2014 keep the 4, look at 6 (\u2265 5), round up to 5. Replace the 6 with a zero.", teaches: "Replace digits after the rounding point with zeros in whole numbers" },
+      { prompt: "Round 3.827 to 3 sig figs.", answer: "3.83 \u2014 keep 3, 8, 2. The next digit is 7 (\u2265 5), so 2 rounds up to 3.", teaches: "Counting to the right sig fig position" },
+      { prompt: "Now try 0.004538 to 2 sig figs.", answer: "0.0045 \u2014 skip the leading zeros. Sig figs are 4 and 5. The next digit is 3 (< 5), so round down.", teaches: "Leading zeros don\u2019t count toward sig figs" },
+      { prompt: "Round 1.0500 to 2 sig figs.", answer: "1.1 \u2014 keep 1 and 0. Next digit is 5, round up: 0 becomes 1.", teaches: "Rounding up when the decision digit is exactly 5" },
+      { prompt: "Round 99.62 to 3 sig figs.", answer: "99.6 \u2014 keep 9, 9, 6. Next digit is 2 (< 5), round down.", teaches: "Rounding near carry-over boundaries" },
+    ],
+    [
+      { prompt: "Round 8.4 to 1 sig fig.", answer: "8 \u2014 keep the 8, look at 4 (< 5), round down.", teaches: "Simple one-digit rounding" },
+      { prompt: "Round 852 to 2 sig figs.", answer: "850 \u2014 keep 8 and 5, the next digit 2 (< 5) means round down. Replace with zero.", teaches: "Whole number rounding replaces dropped digits with zeros" },
+      { prompt: "Round 0.08706 to 2 sig figs.", answer: "0.087 \u2014 skip leading zeros. Sig figs: 8 and 7. Next digit: 0 (< 5). Round down.", teaches: "Leading zeros are placeholders, not significant" },
+      { prompt: "What if I round 4.950 to 2 sig figs?", answer: "5.0 \u2014 not just 5! The 9 rounds up, carries to the 4 making it 5. The .0 keeps it at 2 sig figs.", teaches: "Never drop a trailing zero that shows your sig fig count" },
+      { prompt: "Round 3.4528 \u00d7 10\u00b3 to 3 sig figs.", answer: "3.45 \u00d7 10\u00b3 \u2014 round the coefficient only. Keep 3, 4, 5. Next digit 2 (< 5), round down.", teaches: "Scientific notation: only round the coefficient" },
+    ],
+  ]
+};
+
+// ─── Components ───
+function ProgressBar({ total, results, current }) {
+  return (
+    <div className="progress-bar">
+      {Array.from({ length: total }, (_, i) => {
+        let cls = "";
+        if (i < results.length) cls = results[i].correct ? "done" : "failed";
+        else if (i === current) cls = "active";
+        return <div key={i} className={`progress-dot ${cls}`} />;
+      })}
+    </div>
+  );
+}
+
+function StepDiagnosis({ diagnosis }) {
+  const friendlyNames = {
+    1: "Counting Sig Figs in the Original",
+    2: "Finding the Last Digit to Keep",
+    3: "Identifying the Decision Digit",
+    4: "Applying the Rounding Rule",
+    5: "Handling Trailing Zeros"
+  };
+  return (
+    <div className="feedback error">
+      <strong>Skill to practice: {friendlyNames[diagnosis.step] || diagnosis.stepName}</strong>
+      {diagnosis.message}
+      <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6, fontSize: 13 }}>
+        <strong style={{ color: '#b91c1c', fontSize: 12 }}>Try this:</strong> {diagnosis.remediation}
+      </div>
+    </div>
+  );
+}
+
+function ActivationRamp({ ramps }) {
+  const [rampIndex] = useState(() => Math.floor(Math.random() * ramps.length));
+  const sequence = ramps[rampIndex];
+  const [revealed, setRevealed] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleRevealAnswer = () => setShowAnswer(true);
+  const handleNext = () => {
+    setRevealed(r => r + 1);
+    setShowAnswer(false);
+  };
+
+  return (
+    <div className="activation">
+      <p style={{ fontSize: 14, color: '#92400e', fontWeight: 600, marginBottom: 8 }}>
+        Let's build up to it, one step at a time:
+      </p>
+      {sequence.slice(0, revealed + 1).map((step, i) => {
+        const isPast = i < revealed;
+        const isCurrent = i === revealed;
+        return (
+          <div key={`${rampIndex}-${i}`} className="activation-step">
+            <div className="ask">{step.prompt}</div>
+            {isPast && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+            {isCurrent && showAnswer && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {revealed < sequence.length - 1 ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          {!showAnswer ? (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleRevealAnswer}>
+              Show answer
+            </button>
+          ) : (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleNext}>
+              Next step
+            </button>
+          )}
+        </div>
+      ) : (
+        !showAnswer ? (
+          <button className="submit-btn" style={{ marginTop: 8, fontSize: 13, padding: '8px 16px' }}
+            onClick={handleRevealAnswer}>
+            Show answer
+          </button>
+        ) : (
+          <div className="feedback success" style={{ marginTop: 8 }}>
+            <strong>Now you have the full toolkit.</strong>
+            Go back and try the problem again — you know the rounding process inside and out now.
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function Summary({ results, onReset, onReturnToHub }) {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+
+  const stepResults = chain.steps.map(step => {
+    const failures = results.filter(r => !r.correct && r.diagnosis && r.diagnosis.step === step.id);
+    return { ...step, failures: failures.length };
+  });
+
+  // Save results to localStorage for the hub
+  const failures = results
+    .filter(r => !r.correct && r.diagnosis)
+    .map(r => r.diagnosis.diagnosis);
+  const resultData = {
+    passed: correct >= Math.ceil(total * 0.7),
+    score: correct + "/" + total,
+    correct: correct,
+    total: total,
+    failures: [...new Set(failures)],
+    stepBreakdown: stepResults.map(s => ({ id: s.id, name: s.name, failures: s.failures })),
+    timestamp: new Date().toISOString()
+  };
+  saveResult(resultData);
+
+  return (
+    <div className="card summary">
+      <div className="score">{correct}/{total}</div>
+      <div className="score-label">problems correct</div>
+
+      <div className="chain-map">
+        <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Rounding Skills Breakdown:
+        </p>
+        {stepResults.map(step => {
+          const friendlyNames = {
+            1: "Counting Sig Figs in the Original",
+            2: "Finding the Last Digit to Keep",
+            3: "Identifying the Decision Digit",
+            4: "Applying the Rounding Rule",
+            5: "Handling Trailing Zeros"
+          };
+          const status = step.failures === 0 ? 'pass' : 'fail';
+          return (
+            <div key={step.id} className="chain-step-result">
+              <div className={`icon ${status}`}>{status === 'pass' ? '\u2713' : step.failures}</div>
+              <div>
+                <strong>{friendlyNames[step.id]}</strong>
+                {step.failures > 0 ? (
+                  <div style={{ fontSize: 12, color: 'var(--error)', marginTop: 2 }}>
+                    {step.failures} error{step.failures > 1 ? 's' : ''} — this skill needs practice
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--success)', marginTop: 2 }}>
+                    Solid
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {correct < total && (
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 16, lineHeight: 1.6 }}>
+          You didn't fail at rounding — you have a specific skill that needs practice.
+          Focus on the red area{stepResults.filter(s => s.failures > 0).length > 1 ? 's' : ''} above.
+        </p>
+      )}
+      {correct === total && (
+        <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
+          Every link in the chain is solid. You've got rounding locked down.
+        </p>
+      )}
+
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+        <button className="back-btn" onClick={onReset}>Try another set</button>
+        <button className="next-btn" style={{ width: 'auto', padding: '12px 32px', marginTop: 0 }} onClick={onReturnToHub}>
+          Continue to next chain \u2192
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function App() {
+  const TOTAL_QUESTIONS = 5;
+  const [results, setResults] = useState([]);
+  const [usedIndices, setUsedIndices] = useState(new Set());
+  const [problem, setProblem] = useState(() => {
+    const p = generateProblem(new Set());
+    return p;
+  });
+  const [userInput, setUserInput] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [showActivation, setShowActivation] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const currentQ = results.length;
+
+  const handleSubmit = () => {
+    if (!userInput.trim()) return;
+
+    const correct = answersMatch(userInput, problem);
+    let diagnosis = null;
+    if (!correct) {
+      diagnosis = diagnoseFailure(problem, userInput);
+    }
+
+    setFeedback({ correct, diagnosis });
+  };
+
+  const handleNext = () => {
+    const correct = feedback.correct;
+    const diagnosis = feedback.diagnosis;
+    const newResults = [...results, { correct, diagnosis, problem }];
+    setResults(newResults);
+    setFeedback(null);
+    setUserInput("");
+    setShowActivation(false);
+
+    if (newResults.length >= TOTAL_QUESTIONS) {
+      setDone(true);
+    } else {
+      const newUsed = new Set([...usedIndices, problem.index]);
+      setUsedIndices(newUsed);
+      setProblem(generateProblem(newUsed));
+    }
+  };
+
+  const handleReset = () => {
+    setResults([]);
+    setUsedIndices(new Set());
+    setProblem(generateProblem(new Set()));
+    setUserInput("");
+    setFeedback(null);
+    setShowActivation(false);
+    setDone(false);
+  };
+
+  const handleReturnToHub = () => {
+    window.location.href = HUB_URL;
+  };
+
+  if (done) {
+    return (
+      <div className="app">
+        <div className="header">
+          <h1>ACMS \u2014 Rounding</h1>
+          <p>Chain 2 Diagnostic Results</p>
+        </div>
+        <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
+        <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS \u2014 Rounding</h1>
+        <p>Chain 2: Rounding to Significant Figures</p>
+      </div>
+
+      <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
+
+      <div className="card">
+        <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
+
+        <div className="question-number">
+          Round {problem.display} to {problem.targetSF} significant figure{problem.targetSF > 1 ? 's' : ''}
+        </div>
+
+        <div className="step-prompt">What is the rounded value?</div>
+
+        {!feedback && (
+          <>
+            <div className="input-row">
+              <input
+                className="text-input"
+                type="text"
+                value={userInput}
+                onChange={e => setUserInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                autoFocus
+                placeholder="Your answer"
+              />
+              <button
+                className="submit-btn"
+                onClick={handleSubmit}
+                disabled={!userInput.trim()}
+              >
+                Check
+              </button>
+            </div>
+          </>
+        )}
+
+        {feedback && feedback.correct && (
+          <>
+            <div className="feedback success">
+              <strong>Correct!</strong>
+              {problem.display} rounded to {problem.targetSF} sig fig{problem.targetSF > 1 ? 's' : ''} is {problem.answer}.
+            </div>
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+
+        {feedback && !feedback.correct && (
+          <>
+            <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
+              You answered <strong style={{ color: 'var(--error)' }}>{userInput}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.answer}</strong>.
+            </div>
+
+            <StepDiagnosis diagnosis={feedback.diagnosis} />
+
+            {!showActivation && (
+              <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+                I'm stuck — walk me through the basics
+              </button>
+            )}
+
+            {showActivation && (
+              <ActivationRamp ramps={chain.activationRamps} />
+            )}
+
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {!feedback && !showActivation && (
+        <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+          I'm stuck — help me build up to this
+        </button>
+      )}
+
+      {!feedback && showActivation && (
+        <div className="card">
+          <ActivationRamp ramps={chain.activationRamps} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
