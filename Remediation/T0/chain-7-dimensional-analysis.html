@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Dimensional Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .progress-dot.done { background: var(--success); }
+  .progress-dot.active { background: var(--primary); }
+  .progress-dot.failed { background: var(--error); }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
+
+  .question-number { font-size: 18px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; text-align: center; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: 0.5px; line-height: 1.5; }
+
+  .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .choice-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-light); }
+  .choice-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .text-input { flex: 1; max-width: 200px; padding: 12px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 18px; text-align: center; font-weight: 600; font-family: 'SF Mono', 'Fira Code', monospace; outline: none; transition: border-color 0.15s; }
+  .text-input:focus { border-color: var(--primary); }
+  .submit-btn { padding: 12px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .feedback { padding: 16px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .feedback.success { background: var(--success-light); border: 1px solid var(--success); }
+  .feedback.error { background: var(--error-light); border: 1px solid var(--error); }
+  .feedback.hint { background: var(--warn-light); border: 1px solid var(--warn); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .next-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .next-btn:hover { opacity: 0.9; }
+
+  .stuck-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.15s; }
+  .stuck-btn:hover { border-color: var(--warn); color: var(--warn); }
+
+  .activation { margin-top: 16px; }
+  .activation-step { padding: 14px 16px; border-left: 3px solid var(--warn); background: var(--warn-light); border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+  .activation-step .ask { font-weight: 600; }
+  .activation-step .teach { color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+  .summary { text-align: center; }
+  .summary .score { font-size: 48px; font-weight: 700; color: var(--primary); }
+  .summary .score-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .chain-map { text-align: left; margin: 20px 0; }
+  .chain-step-result { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .chain-step-result:last-child { border: none; }
+  .chain-step-result .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0; }
+  .chain-step-result .icon.pass { background: var(--success); }
+  .chain-step-result .icon.fail { background: var(--error); }
+
+  .back-btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: all 0.15s; text-decoration: none; }
+  .back-btn:hover { background: var(--primary); color: white; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback, useMemo } = React;
+
+// ─── ACMS Hub Integration ───
+const CHAIN_ID = "chain-7";
+const CHAIN_KEY = "acms-t0-chain-7";
+const HUB_URL = "index.html";
+
+function saveResult(resultData) {
+  try {
+    localStorage.setItem(CHAIN_KEY, JSON.stringify(resultData));
+  } catch(e) { console.warn("localStorage unavailable:", e); }
+}
+
+// ─── Problem Generator ───
+function generateProblem(usedIndices) {
+  const templates = [
+    // Single-step metric conversions
+    { display: "Convert 5.0 kg to grams", answer: "5000", unit: "g", tolerance: 1, steps: 1, difficulty: 1,
+      conversion: "1 kg = 1000 g", answerStr: "5000 g" },
+    { display: "Convert 250 mL to liters", answer: "0.25", unit: "L", tolerance: 0.01, steps: 1, difficulty: 1,
+      conversion: "1 L = 1000 mL", answerStr: "0.25 L" },
+    { display: "Convert 3.5 kg to grams", answer: "3500", unit: "g", tolerance: 1, steps: 1, difficulty: 1,
+      conversion: "1 kg = 1000 g", answerStr: "3500 g" },
+    { display: "Convert 2.0 L to mL", answer: "2000", unit: "mL", tolerance: 1, steps: 1, difficulty: 1,
+      conversion: "1 L = 1000 mL", answerStr: "2000 mL" },
+
+    // Two-step metric conversions
+    { display: "Convert 4500 mg to kilograms", answer: "0.0045", unit: "kg", tolerance: 0.0001, steps: 2, difficulty: 2,
+      conversion: "1 g = 1000 mg, 1 kg = 1000 g", answerStr: "0.0045 kg" },
+    { display: "Convert 2500 μm to meters", answer: "0.0025", unit: "m", tolerance: 0.0001, steps: 2, difficulty: 2,
+      conversion: "1 mm = 1000 μm, 1 m = 1000 mm", answerStr: "0.0025 m" },
+    { display: "Convert 2.5 km to centimeters", answer: "250000", unit: "cm", tolerance: 1000, steps: 2, difficulty: 2,
+      conversion: "1 km = 1000 m, 1 m = 100 cm", answerStr: "250000 cm" },
+    { display: "Convert 5000 μg to milligrams", answer: "5", unit: "mg", tolerance: 0.1, steps: 2, difficulty: 2,
+      conversion: "1 mg = 1000 μg", answerStr: "5 mg" },
+
+    // Non-metric conversions (with given factors)
+    { display: "Convert 25 lb to kg (1 kg = 2.205 lb)", answer: "11.3", unit: "kg", tolerance: 0.2, steps: 1, difficulty: 2,
+      conversion: "1 kg = 2.205 lb", answerStr: "11.3 kg" },
+    { display: "Convert 150 lb to kg (1 kg = 2.205 lb)", answer: "68", unit: "kg", tolerance: 1, steps: 1, difficulty: 2,
+      conversion: "1 kg = 2.205 lb", answerStr: "68 kg" },
+
+    // Volume conversions
+    { display: "Convert 2.5 L to microliters", answer: "2500000", unit: "μL", tolerance: 100000, steps: 2, difficulty: 2,
+      conversion: "1 L = 1,000,000 μL", answerStr: "2.5 × 10⁶ μL" },
+    { display: "Convert 500 μL to mL", answer: "0.5", unit: "mL", tolerance: 0.01, steps: 1, difficulty: 1,
+      conversion: "1 mL = 1000 μL", answerStr: "0.5 mL" },
+
+    // Multi-dimensional conversions
+    { display: "Convert 65 mi/hr to m/s (1 mi = 1.609 km)", answer: "29", unit: "m/s", tolerance: 1, steps: 3, difficulty: 3,
+      conversion: "1 mi = 1.609 km, 1 km = 1000 m, 1 hr = 3600 s", answerStr: "≈29 m/s" },
+    { display: "Convert 100 cm³ to mL", answer: "100", unit: "mL", tolerance: 1, steps: 1, difficulty: 1,
+      conversion: "1 cm³ = 1 mL", answerStr: "100 mL" },
+
+    // Micro to milli range
+    { display: "Convert 8000 μm to millimeters", answer: "8", unit: "mm", tolerance: 0.1, steps: 1, difficulty: 1,
+      conversion: "1 mm = 1000 μm", answerStr: "8 mm" },
+  ];
+
+  // Pick one we haven't used yet
+  const available = templates.map((t, i) => i).filter(i => !usedIndices.has(i));
+  if (available.length === 0) return { ...templates[Math.floor(Math.random() * templates.length)], index: -1 };
+  const idx = available[Math.floor(Math.random() * available.length)];
+  return { ...templates[idx], index: idx };
+}
+
+// ─── Normalize answer for comparison ───
+function normalizeAnswer(str) {
+  let s = str.trim().replace(/\s+/g, '').toLowerCase();
+  // Accept × or x or * for multiplication, and various notations for sci notation
+  s = s.replace(/[x\*]/g, '×');
+  s = s.replace(/\^/g, '');
+  // Remove units if any
+  s = s.replace(/(g\/ml|m|g|ml|kg|l|μl|mm|μm|cm³|ml|μg|mg|lb|m\/s|mi\/hr)$/i, '');
+  return s;
+}
+
+function answersMatch(userStr, problem) {
+  const norm = normalizeAnswer(userStr);
+  const correctNorm = normalizeAnswer(problem.answer);
+
+  // Direct string match
+  if (norm === correctNorm) return true;
+
+  // Numeric match with tolerance
+  const userNum = parseFloat(norm);
+  const correctNum = parseFloat(problem.answer);
+  if (!isNaN(userNum) && !isNaN(correctNum)) {
+    const diff = Math.abs(userNum - correctNum);
+    if (diff <= problem.tolerance) return true;
+  }
+
+  // Check scientific notation alternatives
+  if (problem.answerAlt) {
+    const altNorm = normalizeAnswer(problem.answerAlt);
+    if (altNorm === norm) return true;
+  }
+
+  return false;
+}
+
+// ─── Diagnosis Engine ───
+function diagnoseFailure(problem, userAnswer) {
+  const userNum = parseFloat(normalizeAnswer(userAnswer));
+  const correctNum = parseFloat(problem.answer);
+
+  if (!isNaN(userNum) && !isNaN(correctNum)) {
+    // Check: is the answer the reciprocal? (units flipped)
+    const reciprocal = 1 / correctNum;
+    if (Math.abs(userNum - reciprocal) < 0.01 * Math.abs(reciprocal)) {
+      return {
+        step: 3,
+        stepName: "Set up conversion factors so units cancel",
+        diagnosis: "conversion-factor-flipped",
+        message: "Your answer looks like the reciprocal of the correct value. This usually means you flipped a conversion factor — the unit you WANT should be on top, the unit you HAVE on bottom.",
+        remediation: "In the conversion factor, put the target unit in the numerator and the starting unit in the denominator. This way, units cancel properly."
+      };
+    }
+
+    // Check: significant figures/precision error
+    const correctStr = problem.answer.toString();
+    const userStr = userNum.toString();
+    if (Math.abs(userNum - correctNum) < 0.1 * Math.abs(correctNum)) {
+      return {
+        step: 5,
+        stepName: "Apply sig figs to final answer",
+        diagnosis: "sig-fig-error",
+        message: "Your value is close but the precision is off. Check your significant figures — the given data determines how many sig figs your answer should have.",
+        remediation: "Count the sig figs in the original measurement and round your answer accordingly. The answer should be: " + problem.answer + " " + problem.unit
+      };
+    }
+
+    // Check: arithmetic error (off by a small multiple or close)
+    if (Math.abs(userNum - correctNum) < 0.2 * Math.abs(correctNum)) {
+      return {
+        step: 4,
+        stepName: "Multiply/divide across the bridge",
+        diagnosis: "arithmetic-error",
+        message: "You're close, but the arithmetic isn't quite right. Double-check your multiplication or division steps.",
+        remediation: "Recalculate the problem step by step: " + problem.conversion + ". The correct answer is " + problem.answer + " " + problem.unit
+      };
+    }
+
+    // Check: skipped a step (off by order of magnitude)
+    const ratio = Math.abs(userNum / correctNum);
+    if (ratio > 10 || ratio < 0.1) {
+      return {
+        step: 2,
+        stepName: "Identify the target units",
+        diagnosis: "skipped-step",
+        message: "It looks like you may have skipped a conversion step or used the wrong conversion factor. Multi-step conversions need you to build a bridge from the starting units to the final units.",
+        remediation: "This problem requires " + problem.steps + " conversion step" + (problem.steps > 1 ? "s" : "") + ". Use: " + problem.conversion + ". The correct answer is " + problem.answer + " " + problem.unit
+      };
+    }
+
+    // Wrong conversion factor entirely
+    return {
+      step: 3,
+      stepName: "Set up conversion factors so units cancel",
+      diagnosis: "wrong-conversion-factor",
+      message: "The conversion factor doesn't match this problem. Make sure you're using the right ratio between the starting and target units.",
+      remediation: "For this problem, use: " + problem.conversion + ". Set it up so the units cancel and you get " + problem.answer + " " + problem.unit
+    };
+  }
+
+  // Generic fallback
+  return {
+    step: 1,
+    stepName: "Write what you're given with units",
+    diagnosis: "general-error",
+    message: "Let's start from the beginning. First, write down the starting amount with its units.",
+    remediation: "Step 1: Write what you're given. Step 2: Identify target units. Step 3: Set up conversion factors. Step 4: Multiply/divide. Step 5: Apply sig figs."
+  };
+}
+
+// ─── Chain Definition ───
+const chain = {
+  id: "T0-C7",
+  title: "Dimensional Analysis (Unit Conversions)",
+  steps: [
+    { id: 1, name: "Write what you're given with units", short: "Start" },
+    { id: 2, name: "Identify the target units", short: "Target" },
+    { id: 3, name: "Set up conversion factors so units cancel", short: "Bridge" },
+    { id: 4, name: "Multiply/divide across the bridge", short: "Calculate" },
+    { id: 5, name: "Apply sig figs to final answer", short: "Precision" },
+  ],
+  activationRamps: [
+    [
+      { prompt: "1 kg = how many grams?", answer: "1000 grams. This is a basic conversion fact you need to know.", teaches: "Unit conversion facts are building blocks" },
+      { prompt: "So to convert 3.5 kg to grams, what do you do?", answer: "Multiply: 3.5 kg × 1000 = 3500 g. You multiply because grams are smaller than kilograms.", teaches: "When converting to smaller units, multiply; to larger units, divide" },
+      { prompt: "Now reverse: Convert 500 g to kg.", answer: "Divide: 500 g ÷ 1000 = 0.5 kg (or 500 g × (1 kg / 1000 g) = 0.5 kg).", teaches: "Division works, but the factor method shows WHY — units cancel" },
+      { prompt: "Here's the trick: write it as 500 g × (1 kg / 1000 g). Why does that equal 0.5 kg?", answer: "Because the grams cancel! 500 g × (1 kg / 1000 g) = (500 / 1000) kg = 0.5 kg. The units tell you what to do.", teaches: "Unit cancellation: put the unit you want on top, the unit you have on bottom" },
+      { prompt: "Two-step problem: Convert 4500 mg to kg. The bridge: mg → g → kg. Show the setup.", answer: "4500 mg × (1 g / 1000 mg) × (1 kg / 1000 g) = 0.0045 kg. The mg cancels, then the g cancels, leaving kg.", teaches: "Multi-step conversions: chain factors so each unit cancels with the next" },
+    ],
+    [
+      { prompt: "You have 2.0 L and 1 L = 1000 mL. Write the conversion factor.", answer: "1000 mL / 1 L. The unit you WANT (mL) goes on top; the unit you HAVE (L) goes on bottom.", teaches: "Orient factors: numerator = target unit, denominator = starting unit" },
+      { prompt: "2.0 L × (1000 mL / 1 L) = ?", answer: "2000 mL. The liters cancel, leaving mL. 2.0 × 1000 = 2000.", teaches: "Units guide the calculation; always check that units cancel properly" },
+      { prompt: "What if you flip it? 2.0 L × (1 L / 1000 mL) = ?", answer: "You get 0.002 L²/mL — total nonsense! The units don't cancel. This is why orientation matters.", teaches: "Wrong orientation = wrong units = wrong answer. Always flip the factor if units don't cancel" },
+      { prompt: "Rule: put the unit you WANT on top and the unit you HAVE on bottom. True or false?", answer: "TRUE. This ensures units cancel and you get the right answer.", teaches: "This is the golden rule of dimensional analysis" },
+      { prompt: "Convert 75 cm to meters. 75 cm × (? m / ? cm) = ?", answer: "75 cm × (1 m / 100 cm) = 0.75 m. Target unit (m) on top, starting unit (cm) on bottom.", teaches: "Apply the rule: the factor flips so units work out" },
+    ],
+    [
+      { prompt: "A patient weighs 150 lb. Given: 1 kg = 2.205 lb. Set up the bridge.", answer: "150 lb × (1 kg / 2.205 lb) = ? The pounds cancel, leaving kg.", teaches: "Non-metric conversions work the same way — orient the factor correctly" },
+      { prompt: "Calculate it: 150 lb × (1 kg / 2.205 lb) = ?", answer: "150 / 2.205 ≈ 68 kg (or 68.0 kg with proper sig figs).", teaches: "Arithmetic: divide because the factor is a fraction" },
+      { prompt: "Now the drug dose is 5 mg/kg. This patient weighs 68 kg. How many mg total?", answer: "68 kg × 5 mg/kg = 340 mg. The kg units cancel.", teaches: "Rates (mg/kg) are conversion factors too — they work the same way" },
+      { prompt: "The drug comes as 50 mg/mL. To give 340 mg, how many mL?", answer: "340 mg × (1 mL / 50 mg) = 6.8 mL. The mg cancels.", teaches: "Compound conversions: chain multiple factors to get from mg to mL" },
+      { prompt: "That whole problem was one big chain: lb → kg → mg → mL. What was the key?", answer: "Setting up each factor so units cancel. Start with what you're given, chain factors to reach the target, and check that units work out.", teaches: "Complex problems are just multiple simple conversions linked together" },
+    ],
+  ]
+};
+
+// ─── Components ───
+function ProgressBar({ total, results, current }) {
+  return (
+    <div className="progress-bar">
+      {Array.from({ length: total }, (_, i) => {
+        let cls = "";
+        if (i < results.length) cls = results[i].correct ? "done" : "failed";
+        else if (i === current) cls = "active";
+        return <div key={i} className={`progress-dot ${cls}`} />;
+      })}
+    </div>
+  );
+}
+
+function StepDiagnosis({ diagnosis }) {
+  const friendlyNames = {
+    1: "Write What You're Given with Units",
+    2: "Identify the Target Units",
+    3: "Set Up Conversion Factors So Units Cancel",
+    4: "Multiply/Divide Across the Bridge",
+    5: "Apply Sig Figs to Final Answer"
+  };
+  return (
+    <div className="feedback error">
+      <strong>Skill to practice: {friendlyNames[diagnosis.step] || diagnosis.stepName}</strong>
+      {diagnosis.message}
+      <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6, fontSize: 13 }}>
+        <strong style={{ color: '#b91c1c', fontSize: 12 }}>Try this:</strong> {diagnosis.remediation}
+      </div>
+    </div>
+  );
+}
+
+function ActivationRamp({ ramps }) {
+  const [rampIndex] = useState(() => Math.floor(Math.random() * ramps.length));
+  const sequence = ramps[rampIndex];
+  const [revealed, setRevealed] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleRevealAnswer = () => setShowAnswer(true);
+  const handleNext = () => {
+    setRevealed(r => r + 1);
+    setShowAnswer(false);
+  };
+
+  return (
+    <div className="activation">
+      <p style={{ fontSize: 14, color: '#92400e', fontWeight: 600, marginBottom: 8 }}>
+        Let's build up to it, one step at a time:
+      </p>
+      {sequence.slice(0, revealed + 1).map((step, i) => {
+        const isPast = i < revealed;
+        const isCurrent = i === revealed;
+        return (
+          <div key={`${rampIndex}-${i}`} className="activation-step">
+            <div className="ask">{step.prompt}</div>
+            {isPast && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+            {isCurrent && showAnswer && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {revealed < sequence.length - 1 ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          {!showAnswer ? (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleRevealAnswer}>
+              Show answer
+            </button>
+          ) : (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleNext}>
+              Next step
+            </button>
+          )}
+        </div>
+      ) : (
+        !showAnswer ? (
+          <button className="submit-btn" style={{ marginTop: 8, fontSize: 13, padding: '8px 16px' }}
+            onClick={handleRevealAnswer}>
+            Show answer
+          </button>
+        ) : (
+          <div className="feedback success" style={{ marginTop: 8 }}>
+            <strong>Now you have the full toolkit.</strong>
+            Go back and try the problem again — you know dimensional analysis inside and out now.
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function Summary({ results, onReset, onReturnToHub }) {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+
+  const stepResults = chain.steps.map(step => {
+    const failures = results.filter(r => !r.correct && r.diagnosis && r.diagnosis.step === step.id);
+    return { ...step, failures: failures.length };
+  });
+
+  // Save results to localStorage for the hub
+  const failures = results
+    .filter(r => !r.correct && r.diagnosis)
+    .map(r => r.diagnosis.diagnosis);
+  const resultData = {
+    passed: correct >= Math.ceil(total * 0.7),
+    score: correct + "/" + total,
+    correct: correct,
+    total: total,
+    failures: [...new Set(failures)],
+    stepBreakdown: stepResults.map(s => ({ id: s.id, name: s.name, failures: s.failures })),
+    timestamp: new Date().toISOString()
+  };
+  saveResult(resultData);
+
+  return (
+    <div className="card summary">
+      <div className="score">{correct}/{total}</div>
+      <div className="score-label">problems correct</div>
+
+      <div className="chain-map">
+        <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Dimensional Analysis Skills Breakdown:
+        </p>
+        {stepResults.map(step => {
+          const friendlyNames = {
+            1: "Write What You're Given with Units",
+            2: "Identify the Target Units",
+            3: "Set Up Conversion Factors So Units Cancel",
+            4: "Multiply/Divide Across the Bridge",
+            5: "Apply Sig Figs to Final Answer"
+          };
+          const status = step.failures === 0 ? 'pass' : 'fail';
+          return (
+            <div key={step.id} className="chain-step-result">
+              <div className={`icon ${status}`}>{status === 'pass' ? '✓' : step.failures}</div>
+              <div>
+                <strong>{friendlyNames[step.id]}</strong>
+                {step.failures > 0 ? (
+                  <div style={{ fontSize: 12, color: 'var(--error)', marginTop: 2 }}>
+                    {step.failures} error{step.failures > 1 ? 's' : ''} — this skill needs practice
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--success)', marginTop: 2 }}>
+                    Solid
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {correct < total && (
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 16, lineHeight: 1.6 }}>
+          You didn't fail at dimensional analysis — you have a specific skill that needs practice.
+          Focus on the red area{stepResults.filter(s => s.failures > 0).length > 1 ? 's' : ''} above.
+        </p>
+      )}
+      {correct === total && (
+        <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
+          Every link in the chain is solid. You've got dimensional analysis locked down.
+        </p>
+      )}
+
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+        <button className="back-btn" onClick={onReset}>Try another set</button>
+        <button className="next-btn" style={{ width: 'auto', padding: '12px 32px', marginTop: 0 }} onClick={onReturnToHub}>
+          Continue to next chain →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function App() {
+  const TOTAL_QUESTIONS = 5;
+  const [results, setResults] = useState([]);
+  const [usedIndices, setUsedIndices] = useState(new Set());
+  const [problem, setProblem] = useState(() => {
+    const p = generateProblem(new Set());
+    return p;
+  });
+  const [userInput, setUserInput] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [showActivation, setShowActivation] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const currentQ = results.length;
+
+  const handleSubmit = () => {
+    if (!userInput.trim()) return;
+
+    const correct = answersMatch(userInput, problem);
+    let diagnosis = null;
+    if (!correct) {
+      diagnosis = diagnoseFailure(problem, userInput);
+    }
+
+    setFeedback({ correct, diagnosis });
+  };
+
+  const handleNext = () => {
+    const correct = feedback.correct;
+    const diagnosis = feedback.diagnosis;
+    const newResults = [...results, { correct, diagnosis, problem }];
+    setResults(newResults);
+    setFeedback(null);
+    setUserInput("");
+    setShowActivation(false);
+
+    if (newResults.length >= TOTAL_QUESTIONS) {
+      setDone(true);
+    } else {
+      const newUsed = new Set([...usedIndices, problem.index]);
+      setUsedIndices(newUsed);
+      setProblem(generateProblem(newUsed));
+    }
+  };
+
+  const handleReset = () => {
+    setResults([]);
+    setUsedIndices(new Set());
+    setProblem(generateProblem(new Set()));
+    setUserInput("");
+    setFeedback(null);
+    setShowActivation(false);
+    setDone(false);
+  };
+
+  const handleReturnToHub = () => {
+    window.location.href = HUB_URL;
+  };
+
+  if (done) {
+    return (
+      <div className="app">
+        <div className="header">
+          <h1>ACMS — Dimensional Analysis</h1>
+          <p>Chain 7 Diagnostic Results</p>
+        </div>
+        <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
+        <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS — Dimensional Analysis</h1>
+        <p>Chain 7: Dimensional Analysis (Unit Conversions)</p>
+      </div>
+
+      <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
+
+      <div className="card">
+        <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
+
+        <div className="question-number">
+          {problem.display}
+        </div>
+
+        <div className="step-prompt">What is the answer? (Include the unit)</div>
+
+        {!feedback && (
+          <>
+            <div className="input-row">
+              <input
+                className="text-input"
+                type="text"
+                value={userInput}
+                onChange={e => setUserInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                autoFocus
+                placeholder="e.g., 5000 g"
+              />
+              <button
+                className="submit-btn"
+                onClick={handleSubmit}
+                disabled={!userInput.trim()}
+              >
+                Check
+              </button>
+            </div>
+          </>
+        )}
+
+        {feedback && feedback.correct && (
+          <>
+            <div className="feedback success">
+              <strong>Correct!</strong>
+              {problem.display} = {problem.answer} {problem.unit}.
+            </div>
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+
+        {feedback && !feedback.correct && (
+          <>
+            <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
+              You answered <strong style={{ color: 'var(--error)' }}>{userInput}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.answer} {problem.unit}</strong>.
+            </div>
+
+            <StepDiagnosis diagnosis={feedback.diagnosis} />
+
+            {!showActivation && (
+              <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+                I'm stuck — walk me through the basics
+              </button>
+            )}
+
+            {showActivation && (
+              <ActivationRamp ramps={chain.activationRamps} />
+            )}
+
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {!feedback && !showActivation && (
+        <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+          I'm stuck — help me build up to this
+        </button>
+      )}
+
+      {!feedback && showActivation && (
+        <div className="card">
+          <ActivationRamp ramps={chain.activationRamps} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
