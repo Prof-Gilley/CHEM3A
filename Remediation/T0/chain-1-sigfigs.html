@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACMS — Significant Figures</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #4a5ee4;
+    --primary-light: #eef0ff;
+    --success: #22c55e;
+    --success-light: #dcfce7;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+    --error: #ef4444;
+    --error-light: #fee2e2;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .app { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+  .header p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 28px; }
+  .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+  .progress-dot.done { background: var(--success); }
+  .progress-dot.active { background: var(--primary); }
+  .progress-dot.failed { background: var(--error); }
+
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+  .step-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin-bottom: 8px; }
+
+  .question-number { font-size: 28px; font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 700; text-align: center; padding: 20px; background: var(--primary-light); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: 2px; }
+
+  .step-prompt { font-size: 17px; font-weight: 500; margin-bottom: 16px; line-height: 1.5; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn { padding: 14px 16px; border-radius: 8px; border: 2px solid var(--border); background: white; font-size: 15px; text-align: left; cursor: pointer; transition: all 0.15s; }
+  .choice-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+  .choice-btn.correct { border-color: var(--success); background: var(--success-light); }
+  .choice-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .num-input { width: 80px; padding: 12px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 20px; text-align: center; font-weight: 600; outline: none; transition: border-color 0.15s; }
+  .num-input:focus { border-color: var(--primary); }
+  .submit-btn { padding: 12px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .feedback { padding: 16px; border-radius: 8px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .feedback.success { background: var(--success-light); border: 1px solid var(--success); }
+  .feedback.error { background: var(--error-light); border: 1px solid var(--error); }
+  .feedback.hint { background: var(--warn-light); border: 1px solid var(--warn); }
+  .feedback strong { display: block; margin-bottom: 4px; }
+
+  .next-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: opacity 0.15s; }
+  .next-btn:hover { opacity: 0.9; }
+
+  .stuck-btn { width: 100%; padding: 10px; border-radius: 8px; border: 1px dashed var(--border); background: transparent; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.15s; }
+  .stuck-btn:hover { border-color: var(--warn); color: var(--warn); }
+
+  .activation { margin-top: 16px; }
+  .activation-step { padding: 14px 16px; border-left: 3px solid var(--warn); background: var(--warn-light); border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+  .activation-step .ask { font-weight: 600; }
+  .activation-step .teach { color: var(--text-secondary); font-style: italic; margin-top: 4px; }
+
+  .summary { text-align: center; }
+  .summary .score { font-size: 48px; font-weight: 700; color: var(--primary); }
+  .summary .score-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+  .chain-map { text-align: left; margin: 20px 0; }
+  .chain-step-result { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .chain-step-result:last-child { border: none; }
+  .chain-step-result .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0; }
+  .chain-step-result .icon.pass { background: var(--success); }
+  .chain-step-result .icon.fail { background: var(--error); }
+  .chain-step-result .icon.skip { background: var(--border); }
+
+  .reset-btn { padding: 12px 32px; border-radius: 8px; border: 2px solid var(--primary); background: transparent; color: var(--primary); font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: all 0.15s; }
+  .reset-btn:hover { background: var(--primary); color: white; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback, useMemo } = React;
+
+// ─── ACMS Hub Integration ───
+const CHAIN_ID = "chain-1";
+const CHAIN_KEY = "acms-t0-chain-1";
+const HUB_URL = "index.html";
+
+function saveResult(resultData) {
+  try {
+    localStorage.setItem(CHAIN_KEY, JSON.stringify(resultData));
+  } catch(e) { console.warn("localStorage unavailable:", e); }
+}
+
+// ─── Problem Generator ───
+function generateProblem() {
+  const templates = [
+    // [number string, correct sig figs, zero types present]
+    // Leading zeros only
+    { display: "0.0042", answer: 2, zeros: ["leading"], difficulty: 1 },
+    { display: "0.00081", answer: 2, zeros: ["leading"], difficulty: 1 },
+    { display: "0.056", answer: 2, zeros: ["leading"], difficulty: 1 },
+    // Captive zeros
+    { display: "3007", answer: 4, zeros: ["captive"], difficulty: 2 },
+    { display: "10.05", answer: 4, zeros: ["captive"], difficulty: 2 },
+    { display: "20.08", answer: 4, zeros: ["captive"], difficulty: 2 },
+    { display: "5003", answer: 4, zeros: ["captive"], difficulty: 2 },
+    // Trailing zeros after decimal
+    { display: "0.02040", answer: 4, zeros: ["leading", "trailing-decimal"], difficulty: 3 },
+    { display: "8.100", answer: 4, zeros: ["trailing-decimal"], difficulty: 2 },
+    { display: "25.00", answer: 4, zeros: ["trailing-decimal"], difficulty: 2 },
+    { display: "0.5000", answer: 4, zeros: ["trailing-decimal"], difficulty: 2 },
+    // Ambiguous trailing (whole number)
+    { display: "2500", answer: 2, zeros: ["trailing-whole"], difficulty: 3, note: "Ambiguous — assume trailing zeros in whole numbers are NOT significant unless a decimal point is shown." },
+    { display: "800", answer: 1, zeros: ["trailing-whole"], difficulty: 3, note: "Ambiguous — assume trailing zeros in whole numbers are NOT significant unless a decimal point is shown." },
+    // Scientific notation
+    { display: "2.04 × 10³", answer: 3, zeros: ["captive"], difficulty: 2, sciNotation: true },
+    { display: "6.020 × 10²³", answer: 4, zeros: ["captive", "trailing-decimal"], difficulty: 3, sciNotation: true },
+    { display: "3.0 × 10⁻⁴", answer: 2, zeros: ["trailing-decimal"], difficulty: 2, sciNotation: true },
+    // Simple (no tricky zeros)
+    { display: "4.56", answer: 3, zeros: [], difficulty: 1 },
+    { display: "78.2", answer: 3, zeros: [], difficulty: 1 },
+    { display: "123", answer: 3, zeros: [], difficulty: 1 },
+    // Mixed
+    { display: "0.020400", answer: 5, zeros: ["leading", "captive", "trailing-decimal"], difficulty: 4 },
+    { display: "10.0200", answer: 6, zeros: ["captive", "trailing-decimal"], difficulty: 4 },
+  ];
+  return templates[Math.floor(Math.random() * templates.length)];
+}
+
+// ─── Diagnosis Engine ───
+// Given a problem and wrong answer, figure out which step likely broke
+function diagnoseFailure(problem, userAnswer, correctAnswer) {
+  const diff = userAnswer - correctAnswer;
+  const num = problem.display;
+
+  // Step 1 failure: scientific notation — counted exponent digits
+  if (problem.sciNotation && userAnswer > correctAnswer + 2) {
+    return {
+      step: 1,
+      stepName: "Identify the notation format",
+      message: "It looks like you may have counted digits from the exponent. In scientific notation, only the coefficient (the number before × 10) contains significant figures. The exponent just tells you the magnitude.",
+      remediation: `Look at ${num} — which part tells you about precision: the coefficient or the exponent?`
+    };
+  }
+
+  // Step 3 failure: counted leading zeros (this is a zero classification error)
+  if (problem.zeros.includes("leading") && userAnswer > correctAnswer) {
+    return {
+      step: 3,
+      stepName: "Classify each zero",
+      message: "It looks like you counted leading zeros as significant. Leading zeros are just placeholders — they hold the decimal place but don't represent measured precision. Start counting from the first nonzero digit.",
+      remediation: `In ${num}, the leading zeros before the first nonzero digit are NOT significant. Where does counting actually begin?`
+    };
+  }
+
+  // Step 3 failure: missed trailing zeros after decimal
+  if (problem.zeros.includes("trailing-decimal") && userAnswer < correctAnswer) {
+    return {
+      step: 3,
+      stepName: "Classify each zero",
+      message: "It looks like you missed a trailing zero after the decimal point. When a zero appears at the END of a number AFTER a decimal point, it IS significant — someone measured precisely enough to include that zero on purpose.",
+      remediation: `In ${num}, that final zero after the decimal was written intentionally. It means the measurement was precise to that place.`
+    };
+  }
+
+  // Step 3 failure: missed captive zeros
+  if (problem.zeros.includes("captive") && userAnswer < correctAnswer) {
+    return {
+      step: 3,
+      stepName: "Classify each zero",
+      message: "It looks like you skipped a captive zero. Zeros that are sandwiched BETWEEN nonzero digits are always significant — they're captive, trapped in the middle, and they count.",
+      remediation: `In ${num}, the zero(s) between the nonzero digits are captive. They're significant.`
+    };
+  }
+
+  // Step 3 failure: counted trailing zeros in whole number
+  if (problem.zeros.includes("trailing-whole") && userAnswer > correctAnswer) {
+    return {
+      step: 3,
+      stepName: "Classify each zero",
+      message: "Trailing zeros in a whole number (no decimal point) are ambiguous. By convention, we assume they are NOT significant unless a decimal point is explicitly shown. To be clear, use scientific notation.",
+      remediation: `${num} is ambiguous. If all digits were significant, it would be written as ${num}. — with a decimal point, or in scientific notation.`
+    };
+  }
+
+  // Step 4 failure: simple miscount
+  return {
+    step: 4,
+    stepName: "Count all significant digits",
+    message: "Looks like a counting error. Try going through the number digit by digit: mark each one as significant or not, then count up the significant ones.",
+    remediation: `Write out each digit of ${num} and label it. Then count only the significant ones.`
+  };
+}
+
+// ─── Chain Definition ───
+const chain = {
+  id: "T0-C1",
+  title: "Counting Significant Figures",
+  steps: [
+    { id: 1, name: "Identify notation format", short: "Notation" },
+    { id: 2, name: "Find first nonzero digit", short: "First digit" },
+    { id: 3, name: "Classify each zero", short: "Zero types" },
+    { id: 4, name: "Count significant digits", short: "Count" },
+  ],
+  activationRamps: [
+    [
+      { prompt: "Is the digit 7 significant in the number 47?", answer: "Yes — every nonzero digit is significant.", teaches: "Nonzero digits always count" },
+      { prompt: "How many sig figs in 407?", answer: "3 — the zero between 4 and 7 is captive, trapped between nonzero digits.", teaches: "Captive zeros count" },
+      { prompt: "How about 0.047? Did anything change about the 4 and the 7?", answer: "Still 2 sig figs — leading zeros are just placeholders.", teaches: "Leading zeros don't count" },
+      { prompt: "What about 0.0470? Is that trailing zero on purpose?", answer: "Yes — 3 sig figs. That trailing zero after the decimal is significant.", teaches: "Trailing zeros after decimal count" },
+      { prompt: "Now the tricky one: how many sig figs in 400?", answer: "Just 1 — trailing zeros in a whole number without a decimal point are ambiguous. We assume NOT significant.", teaches: "The 400 rule — trailing zeros in whole numbers are ambiguous" },
+      { prompt: "What if someone writes 400. with a decimal point?", answer: "Now it's 3 sig figs. That decimal point is a signal: 'I measured this precisely to the ones place.'", teaches: "A decimal point makes trailing zeros significant" },
+    ],
+    [
+      { prompt: "How many sig figs in 56?", answer: "2 — both digits are nonzero, so both count.", teaches: "Nonzero digits always count" },
+      { prompt: "What about 506? Does that zero matter?", answer: "Yes — 3 sig figs. That zero is captive, sandwiched between 5 and 6.", teaches: "Captive zeros are significant" },
+      { prompt: "How about 0.0056? More zeros now — how many sig figs?", answer: "Still 2 — the 5 and the 6. Those leading zeros just hold the decimal place.", teaches: "Leading zeros are placeholders, not significant" },
+      { prompt: "What changes if we write 0.00560?", answer: "Now it's 3 sig figs. That trailing zero after the decimal was written on purpose.", teaches: "Trailing zeros after decimal show precision" },
+      { prompt: "Here's the twist: how many sig figs in 8000?", answer: "Just 1 — those trailing zeros have no decimal point to anchor them.", teaches: "Trailing zeros in whole numbers — ambiguous, assume not significant" },
+      { prompt: "How would you write 8000 if all four digits were significant?", answer: "8.000 × 10³ — scientific notation removes the ambiguity.", teaches: "Scientific notation resolves the 400-rule ambiguity" },
+    ],
+    [
+      { prompt: "Quick check: is 9 a significant digit in 93?", answer: "Yes — nonzero digits are always significant. 93 has 2 sig figs.", teaches: "Nonzero digits always count" },
+      { prompt: "What about 903? That zero in the middle — significant?", answer: "Yes — 3 sig figs. Zeros between nonzero digits are captive and always count.", teaches: "Captive zeros count" },
+      { prompt: "Now look at 0.0093. How many sig figs?", answer: "2 — just the 9 and 3. The leading zeros are placeholders.", teaches: "Leading zeros don't count" },
+      { prompt: "Compare 2.50 and 2.5 — are these the same number of sig figs?", answer: "No! 2.50 has 3 sig figs, 2.5 has 2. That trailing zero means someone measured more precisely.", teaches: "Trailing zeros after decimal indicate measured precision" },
+      { prompt: "Tough one: how many sig figs in 1500?", answer: "2 — the 1 and the 5. Without a decimal point, those trailing zeros are ambiguous.", teaches: "The 400 rule applies to any whole number with trailing zeros" },
+      { prompt: "A scientist writes 1.500 × 10³ instead. Now how many?", answer: "4 sig figs — every digit in the coefficient counts, and the trailing zeros after the decimal are intentional.", teaches: "Scientific notation makes sig figs unambiguous" },
+    ],
+  ]
+};
+
+// ─── Components ───
+
+function ProgressBar({ total, results, current }) {
+  return (
+    <div className="progress-bar">
+      {Array.from({ length: total }, (_, i) => {
+        let cls = "";
+        if (i < results.length) cls = results[i].correct ? "done" : "failed";
+        else if (i === current) cls = "active";
+        return <div key={i} className={`progress-dot ${cls}`} />;
+      })}
+    </div>
+  );
+}
+
+function StepDiagnosis({ diagnosis }) {
+  const friendlyNames = {
+    1: "Reading Scientific Notation",
+    2: "Finding Where to Start Counting",
+    3: "Identifying Zero Types",
+    4: "Counting Up the Digits"
+  };
+  return (
+    <div className="feedback error">
+      <strong>Skill to practice: {friendlyNames[diagnosis.step] || diagnosis.stepName}</strong>
+      {diagnosis.message}
+      <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6, fontSize: 13 }}>
+        <strong style={{ color: '#b91c1c', fontSize: 12 }}>Try this:</strong> {diagnosis.remediation}
+      </div>
+    </div>
+  );
+}
+
+function ActivationRamp({ ramps }) {
+  // Pick a random ramp on mount, stable for this instance
+  const [rampIndex] = useState(() => Math.floor(Math.random() * ramps.length));
+  const sequence = ramps[rampIndex];
+  const [revealed, setRevealed] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const handleRevealAnswer = () => setShowAnswer(true);
+  const handleNext = () => {
+    setRevealed(r => r + 1);
+    setShowAnswer(false);
+  };
+
+  return (
+    <div className="activation">
+      <p style={{ fontSize: 14, color: '#92400e', fontWeight: 600, marginBottom: 8 }}>
+        Let's build up to it, one step at a time:
+      </p>
+      {sequence.slice(0, revealed + 1).map((step, i) => {
+        const isPast = i < revealed;
+        const isCurrent = i === revealed;
+        return (
+          <div key={`${rampIndex}-${i}`} className="activation-step">
+            <div className="ask">{step.prompt}</div>
+            {isPast && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+            {isCurrent && showAnswer && (
+              <>
+                <div style={{ marginTop: 6 }}>{step.answer}</div>
+                <div className="teach">{step.teaches}</div>
+              </>
+            )}
+          </div>
+        );
+      })}
+      {revealed < sequence.length - 1 ? (
+        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+          {!showAnswer ? (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleRevealAnswer}>
+              Show answer
+            </button>
+          ) : (
+            <button className="submit-btn" style={{ fontSize: 13, padding: '8px 16px' }}
+              onClick={handleNext}>
+              Next step
+            </button>
+          )}
+        </div>
+      ) : (
+        !showAnswer ? (
+          <button className="submit-btn" style={{ marginTop: 8, fontSize: 13, padding: '8px 16px' }}
+            onClick={handleRevealAnswer}>
+            Show answer
+          </button>
+        ) : (
+          <div className="feedback success" style={{ marginTop: 8 }}>
+            <strong>Now you have the full toolkit.</strong>
+            Go back and try the problem again — you know how every type of zero works now, including the tricky ones.
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+function Summary({ results, onReset, onReturnToHub }) {
+  const correct = results.filter(r => r.correct).length;
+  const total = results.length;
+
+  // Build step-level diagnosis
+  const stepResults = chain.steps.map(step => {
+    const failures = results.filter(r => !r.correct && r.diagnosis && r.diagnosis.step === step.id);
+    return { ...step, failures: failures.length, tested: true };
+  });
+
+  // Save results to localStorage for the hub
+  const failures = results
+    .filter(r => !r.correct && r.diagnosis)
+    .map(r => r.diagnosis.step);
+  const resultData = {
+    passed: correct >= Math.ceil(total * 0.7),
+    score: correct + "/" + total,
+    correct: correct,
+    total: total,
+    failures: [...new Set(failures.map(String))],
+    stepBreakdown: stepResults.map(s => ({ id: s.id, name: s.name, failures: s.failures })),
+    timestamp: new Date().toISOString()
+  };
+  saveResult(resultData);
+
+  return (
+    <div className="card summary">
+      <div className="score">{correct}/{total}</div>
+      <div className="score-label">problems correct</div>
+
+      <div className="chain-map">
+        <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 12, color: 'var(--text-secondary)' }}>
+          Your Sig Fig Skills Breakdown:
+        </p>
+        {stepResults.map(step => {
+          const friendlyNames = {
+            1: "Reading Scientific Notation",
+            2: "Finding Where to Start Counting",
+            3: "Identifying Zero Types",
+            4: "Counting Up the Digits"
+          };
+          const status = step.failures === 0 ? 'pass' : 'fail';
+          return (
+            <div key={step.id} className="chain-step-result">
+              <div className={`icon ${status}`}>{status === 'pass' ? '\u2713' : step.failures}</div>
+              <div>
+                <strong>{friendlyNames[step.id]}</strong>
+                {step.failures > 0 ? (
+                  <div style={{ fontSize: 12, color: 'var(--error)', marginTop: 2 }}>
+                    {step.failures} error{step.failures > 1 ? 's' : ''} — this skill needs practice
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: 'var(--success)', marginTop: 2 }}>
+                    Solid
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {correct < total && (
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 16, lineHeight: 1.6 }}>
+          You didn't fail at sig figs — you have a specific skill that needs practice.
+          Focus on the red area{stepResults.filter(s => s.failures > 0).length > 1 ? 's' : ''} above.
+        </p>
+      )}
+      {correct === total && (
+        <p style={{ fontSize: 14, color: 'var(--success)', marginTop: 16, fontWeight: 600 }}>
+          Every link in the chain is solid. You've got this skill.
+        </p>
+      )}
+
+      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+        <button className="reset-btn" onClick={onReset}>Try another set</button>
+        <button className="next-btn" style={{ width: 'auto', padding: '12px 32px', marginTop: 0 }} onClick={onReturnToHub}>
+          Continue to next chain \u2192
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function App() {
+  const TOTAL_QUESTIONS = 5;
+  const [results, setResults] = useState([]);
+  const [problem, setProblem] = useState(() => generateProblem());
+  const [userInput, setUserInput] = useState("");
+  const [feedback, setFeedback] = useState(null); // null | { correct, diagnosis }
+  const [showActivation, setShowActivation] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const currentQ = results.length;
+
+  const handleSubmit = () => {
+    const parsed = parseInt(userInput, 10);
+    if (isNaN(parsed)) return;
+
+    const correct = parsed === problem.answer;
+    let diagnosis = null;
+    if (!correct) {
+      diagnosis = diagnoseFailure(problem, parsed, problem.answer);
+    }
+
+    setFeedback({ correct, diagnosis });
+  };
+
+  const handleNext = () => {
+    const correct = feedback.correct;
+    const diagnosis = feedback.diagnosis;
+    const newResults = [...results, { correct, diagnosis, problem }];
+    setResults(newResults);
+    setFeedback(null);
+    setUserInput("");
+    setShowActivation(false);
+
+    if (newResults.length >= TOTAL_QUESTIONS) {
+      setDone(true);
+    } else {
+      setProblem(generateProblem());
+    }
+  };
+
+  const handleReset = () => {
+    setResults([]);
+    setProblem(generateProblem());
+    setUserInput("");
+    setFeedback(null);
+    setShowActivation(false);
+    setDone(false);
+  };
+
+  const handleReturnToHub = () => {
+    window.location.href = HUB_URL;
+  };
+
+  if (done) {
+    return (
+      <div className="app">
+        <div className="header">
+          <h1>ACMS — Sig Figs</h1>
+          <p>Chain 1 Diagnostic Results</p>
+        </div>
+        <ProgressBar total={TOTAL_QUESTIONS} results={results} current={-1} />
+        <Summary results={results} onReset={handleReset} onReturnToHub={handleReturnToHub} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <div className="header">
+        <h1>ACMS — Sig Figs</h1>
+        <p>Chain 1: Counting Significant Figures</p>
+      </div>
+
+      <ProgressBar total={TOTAL_QUESTIONS} results={results} current={currentQ} />
+
+      <div className="card">
+        <div className="step-label">Question {currentQ + 1} of {TOTAL_QUESTIONS}</div>
+
+        <div className="question-number">{problem.display}</div>
+
+        <div className="step-prompt">How many significant figures does this number have?</div>
+
+        {!feedback && (
+          <>
+            <div className="input-row">
+              <input
+                className="num-input"
+                type="number"
+                min="1"
+                max="20"
+                value={userInput}
+                onChange={e => setUserInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                autoFocus
+                placeholder="#"
+              />
+              <button
+                className="submit-btn"
+                onClick={handleSubmit}
+                disabled={!userInput}
+              >
+                Check
+              </button>
+            </div>
+          </>
+        )}
+
+        {feedback && feedback.correct && (
+          <>
+            <div className="feedback success">
+              <strong>Correct!</strong>
+              {problem.display} has {problem.answer} significant figure{problem.answer !== 1 ? 's' : ''}.
+              {problem.note && <div style={{ marginTop: 4, fontSize: 13 }}>{problem.note}</div>}
+            </div>
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+
+        {feedback && !feedback.correct && (
+          <>
+            <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 8 }}>
+              You answered <strong style={{ color: 'var(--error)' }}>{userInput}</strong> — the correct answer is <strong style={{ color: 'var(--success)' }}>{problem.answer}</strong>.
+            </div>
+
+            <StepDiagnosis diagnosis={feedback.diagnosis} />
+
+            {!showActivation && (
+              <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+                I'm stuck — walk me through the basics
+              </button>
+            )}
+
+            {showActivation && (
+              <ActivationRamp ramps={chain.activationRamps} />
+            )}
+
+            <button className="next-btn" onClick={handleNext}>
+              {currentQ + 1 >= TOTAL_QUESTIONS ? "See Results" : "Next Problem"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {!feedback && !showActivation && (
+        <button className="stuck-btn" onClick={() => setShowActivation(true)}>
+          I'm stuck — help me build up to this
+        </button>
+      )}
+
+      {!feedback && showActivation && (
+        <div className="card">
+          <ActivationRamp ramps={chain.activationRamps} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
