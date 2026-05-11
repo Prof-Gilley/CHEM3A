@@ -87,6 +87,7 @@ body { min-height: 100vh; }
   display: inline-block; padding: 2px 8px; background: #e3f2fd;
   color: #1565c0; border-radius: 4px; margin-right: 8px; font-weight: 600;
 }
+.q-meta .tier-tag.probe { background: #fff3e0; color: #e65100; }
 .q-stem { font-size: 17px; line-height: 1.6; margin-bottom: 24px; white-space: pre-line; }
 .options { list-style: none; padding: 0; margin: 0; }
 .option-item {
@@ -138,6 +139,14 @@ body { min-height: 100vh; }
 .tier-stat .value { font-size: 18px; font-weight: 700; color: #1a1a1a; }
 .tier-stat.weak { background: #ffebee; }
 .tier-stat.strong { background: #e8f5e9; }
+
+.skill-focus {
+  background: #fff8e1; border: 2px solid #f0a500;
+  border-radius: 8px; padding: 16px; margin: 24px 0;
+}
+.skill-focus h3 { margin: 0 0 8px 0; color: #b87600; font-size: 16px; }
+.skill-focus ul { margin: 8px 0 0 0; padding-left: 20px; }
+.skill-focus li { margin: 4px 0; font-size: 14px; line-height: 1.5; }
 
 .results-actions {
   text-align: center; margin: 24px 0;
@@ -270,6 +279,10 @@ body { min-height: 100vh; }
       <div id="scoreLetter" style="font-size: 18px; color: #666; margin-top: 8px;"></div>
       <div class="tier-breakdown" id="tierBreakdown"></div>
     </div>
+    <div class="skill-focus" id="skillFocus" style="display:none;">
+      <h3>Skills to Focus On</h3>
+      <div id="skillFocusBody"></div>
+    </div>
     <div class="results-actions">
       <button class="btn btn-primary" onclick="downloadSummary()">Download Summary</button>
       <button class="btn btn-secondary" onclick="window.print()">Print Results</button>
@@ -294,258 +307,260 @@ body { min-height: 100vh; }
 <script>
 // ============================================================
 // QUESTION DATA — 50 questions
-// Format: { n, tier, stem, opts: [A,B,C,D], correct: index (0-3), sol: worked solution, expl: [A,B,C,D explanations] }
+// Format: { n, tier, granular, stem, opts: [A,B,C,D], correct: index (0-3), sol: worked solution, expl: [A,B,C,D explanations] }
+// Q 1–42: v2-aligned (tier T0–T9). Q 43–50: building blocks (tier P, displayed as "BUILDING BLOCK").
+// Granular IDs map to Skill Inventory v1.
 // ============================================================
 const QUESTIONS = [
-{n:1,tier:"T0",stem:"A student measures two volumes: 5.62 mL and 5.59 mL. The difference is then divided by 8.0. What is the result with the correct number of significant figures?",
-opts:["0.00375","0.004","0.0038","4.0 × 10⁻³"],correct:1,
-sol:"Step 1 (subtraction): 5.62 − 5.59 = 0.03. Subtraction rule limits result by decimal places. 0.03 has only 1 sig fig (leading zeros don't count).\nStep 2 (division): 0.03 / 8.0 = 0.00375. Division rule: result limited to fewest sig figs = min(1, 2) = 1 sf.\nRound 0.00375 → 0.004 (1 sf).",
-expl:["Calculator output with 3 sig figs. Sig fig rules not applied.","CORRECT — 1 sig fig as required.","2 sig figs, over-counts by one. Common error: applying division rule without first reducing 0.03 to 1 sf.","Same magnitude as the correct answer but 2 sig figs. Wrong sf count."]},
-
-{n:2,tier:"T0",stem:"Platinum has a density of 21.45 g/cm³. What is the mass of a platinum disk with a diameter of 1.50 cm and a thickness of 0.20 cm? (V_cylinder = πr²h)",
-opts:["2.41 g","7.58 g","9.65 g","30.3 g"],correct:1,
-sol:"Radius r = 1.50/2 = 0.75 cm.\nVolume V = πr²h = π(0.75)²(0.20) = π(0.5625)(0.20) = 0.3534 cm³.\nMass = ρV = 21.45 × 0.3534 = 7.58 g.",
-expl:["Forgot π. V = (0.75)²(0.20) = 0.1125; m = 21.45 × 0.1125 = 2.41 g.","CORRECT.","Used diameter² without π: (1.50)²(0.20) = 0.45; m = 21.45 × 0.45 = 9.65 g.","Used diameter² with π instead of radius²: π(1.50)²(0.20) = 1.41; m = 30.3 g."]},
-
-{n:3,tier:"T0",stem:"A patient receives an IV infusion at 30 drops per minute. The IV tubing has a drop factor of 15 drops per mL. What is the infusion rate in mL/hr?",
+{n:1,tier:"T0",granular:"t0-g05",stem:"A patient receives an IV infusion at a rate of 30 drops per minute. The IV tubing has a drop factor of 15 drops per mL. What is the infusion rate in mL/hr?",
 opts:["30 mL/hr","60 mL/hr","120 mL/hr","450 mL/hr"],correct:2,
-sol:"30 drops/min × (1 mL / 15 drops) × (60 min / 1 hr) = 30 × 60 / 15 = 1800/15 = 120 mL/hr.",
-expl:["Treated drops as if they were mL. No conversion applied.","Incomplete conversion chain — only one factor applied.","CORRECT.","Multiplied by 15 instead of dividing — drop factor inverted."]},
+sol:"30 drops/min × (1 mL / 15 drops) × (60 min / 1 hr) = (30 × 60) / 15 = 1800/15 = 120 mL/hr.",
+expl:["Treated drops as if they were mL. No conversion applied. [Atomic gap: identify given/wanted units]","Incomplete chain — applied min→hr but skipped drops→mL. [Atomic gap: chain conversions]","CORRECT.","Multiplied by 15 instead of dividing — drop factor inverted. [Atomic gap: build conversion factor]"]},
 
-{n:4,tier:"T1",stem:"Each container shows particles, where each circle represents one atom. Which container best represents a heterogeneous mixture?",
-opts:["A container filled uniformly with only black circles","A container with black and white circles uniformly distributed","A container filled uniformly with paired black-white molecules","A container with a region of black circles on one side and white circles on the other"],correct:3,
+{n:2,tier:"T0",granular:"t0-g06",stem:"Platinum has a density of 21.45 g/cm³. What is the mass of a platinum disk with a diameter of 1.50 cm and a thickness of 0.20 cm? (V_cylinder = πr²h)",
+opts:["2.41 g","7.58 g","9.65 g","30.3 g"],correct:1,
+sol:"Radius r = 1.50/2 = 0.75 cm. V = π(0.75)²(0.20) = 0.3534 cm³. Mass = ρV = 21.45 × 0.3534 = 7.58 g.",
+expl:["Forgot π. V = (0.75)²(0.20) × 21.45 = 2.41 g. [Atomic gap: cylinder volume formula]","CORRECT.","Used d² without π. [Atomic gap: radius vs diameter and missing π]","Used d² with π (forgot to halve diameter). [Atomic gap: radius vs diameter]"]},
+
+{n:3,tier:"T0",granular:"t0-g03",stem:"A student reads a graduated cylinder containing water. The bottom of the meniscus rests between the 24 mL and 25 mL graduation marks, closer to 24 mL. Which of the following is the BEST recorded volume measurement?",
+opts:["24 mL","24.5 mL","24.3 mL","24.27 mL"],correct:2,
+sol:"Read to one digit beyond the smallest graduation. With 1 mL marks, estimate to 0.1 mL. 'Closer to 24' → ~24.3 mL.",
+expl:["Failed to estimate the uncertain digit beyond the smallest graduation. [Atomic gap: estimate uncertain digit]","Used midpoint regardless of meniscus position. [Atomic gap: meniscus reading]","CORRECT.","Over-estimates beyond instrument precision (two digits past smallest graduation). [Atomic gap: report to correct sig figs]"]},
+
+{n:4,tier:"T1",granular:"t1-g01",stem:"Each container shows particles, where each circle represents one atom. Which container best represents a heterogeneous mixture?",
+opts:["A container filled uniformly with only black circles","A container with black and white circles uniformly distributed throughout","A container filled uniformly with paired black-white molecules","A container with a region of black circles on one side and a region of white circles on the other, with no overlap"],correct:3,
 sol:"Heterogeneous mixtures have visible regions of different composition.",
-expl:["Pure element — one type of atom, uniform.","Homogeneous mixture (solution) — uniform mix of two elements.","Pure compound — consistent molecular structure.","CORRECT — visible regions of different composition = heterogeneous."]},
+expl:["Pure element — one type of atom, uniform. [Atomic gap: recognize element]","Homogeneous mixture (solution) — uniform mix of two elements. [Atomic gap: recognize homogeneous mix]","Pure compound — consistent molecular structure throughout. [Atomic gap: recognize compound]","CORRECT — visible regions of different composition = heterogeneous."]},
 
-{n:5,tier:"T1",stem:"What is the ground-state electron configuration of antimony (Sb, Z = 51)?",
+{n:5,tier:"T1",granular:"t1-g06",stem:"What is the ground-state electron configuration of antimony (Sb, Z = 51)?",
 opts:["[Kr] 5s² 4d¹⁰ 5p³","[Kr] 5s² 5p³","[Kr] 5s² 4d¹⁰ 5p⁵","[Kr] 4d¹⁰ 5p³"],correct:0,
 sol:"Sb has 51 electrons. After [Kr] (Z=36), 15 more electrons remain. Fill order: 5s² (2) + 4d¹⁰ (12) + 5p³ (15). Total: 51.",
-expl:["CORRECT.","Total = 41 ≠ 51. Skipped 4d subshell.","Total = 53. This would be iodine, not antimony.","Total = 49. Forgot 5s before 4d in fill order."]},
+expl:["CORRECT.","Total = 41 ≠ 51. Skipped 4d subshell. [Atomic gap: Aufbau fill order (d-block insertion)]","Total = 53. This would be iodine, not antimony. [Atomic gap: count valence electrons]","Total = 49. Forgot 5s before 4d in fill order. [Atomic gap: 5s before 4d]"]},
 
-{n:6,tier:"T1",stem:"Which of the following pairs are isotopes of each other?",
+{n:6,tier:"T1",granular:"t1-g03",stem:"Which of the following pairs are isotopes of each other?",
 opts:["¹⁴C and ¹⁴N","³⁵Cl and ³⁷Cl","²³Na and ²⁴Mg","⁴⁰Ar and ⁴⁰K"],correct:1,
-sol:"Isotopes share same atomic number Z but differ in mass number A.",
-expl:["Same A but different Z — these are isobars, not isotopes.","CORRECT — both have Z=17 (chlorine), different mass numbers.","Different elements. Not isotopes.","Same A, different Z — isobars, not isotopes."]},
+sol:"Isotopes share same atomic number Z (same element) but differ in mass number A.",
+expl:["Same A but different Z — these are isobars, not isotopes. [Atomic gap: isobar vs isotope]","CORRECT — both have Z = 17 (chlorine), different mass numbers.","Different elements entirely. [Atomic gap: same-element requirement]","Same A, different Z — isobars, not isotopes. [Atomic gap: isobar vs isotope]"]},
 
-{n:7,tier:"T1",stem:"An ion contains 35 protons and 36 electrons. What is the identity and charge of the ion?",
-opts:["Br⁻","Br⁺","Kr⁻","Cl⁻"],correct:0,
-sol:"35 protons → bromine (Br). 36 electrons = 35 + 1 → gained 1 electron → Br⁻.",
-expl:["CORRECT.","Cation has FEWER electrons than protons. Sign error.","Used electron count (36) as proton count. Kr has Z=36.","Cl has Z=17, not 35."]},
+{n:7,tier:"T2",granular:"t2-g01",stem:"Brass is an alloy composed of copper and zinc that appears uniform throughout. Which of the following best classifies brass?",
+opts:["Element","Compound","Homogeneous mixture","Heterogeneous mixture"],correct:2,
+sol:"Brass is a solid solution (alloy) of two metals with uniform composition — a homogeneous mixture.",
+expl:["Multiple elements are present. [Atomic gap: element vs compound vs mixture]","Brass has no fixed stoichiometric ratio; not chemically bonded. [Atomic gap: compound = fixed ratio]","CORRECT — alloys with uniform composition are homogeneous mixtures.","Brass appears uniform, so it is not heterogeneous. [Atomic gap: homo vs hetero (uniformity criterion)]"]},
 
-{n:8,tier:"T2",stem:"Which compound contains a polyatomic ion with a charge of 2−?",
+{n:8,tier:"T2",granular:"t2-g04",stem:"Which compound contains a polyatomic ion with a charge of 2−?",
 opts:["NaNO₃","K₃PO₄","MgSO₄","NaClO"],correct:2,
-sol:"Identify the polyatomic anion in each: NaNO₃→NO₃⁻ (1−); K₃PO₄→PO₄³⁻ (3−); MgSO₄→SO₄²⁻ (2−) ✓; NaClO→ClO⁻ (1−).",
-expl:["Nitrate is 1−.","Phosphate is 3−.","CORRECT — sulfate is 2−.","Hypochlorite is 1−."]},
+sol:"NaNO₃→NO₃⁻ (1−); K₃PO₄→PO₄³⁻ (3−); MgSO₄→SO₄²⁻ (2−) ✓; NaClO→ClO⁻ (1−).",
+expl:["Nitrate is 1−. [Atomic gap: nitrate charge recall]","Phosphate is 3−. [Atomic gap: phosphate charge recall]","CORRECT — sulfate is 2−.","Hypochlorite is 1−. [Atomic gap: chlorite/hypochlorite family charges]"]},
 
-{n:9,tier:"T2",stem:"What is the chemical formula for calcium nitride?",
+{n:9,tier:"T2",granular:"t2-g05",stem:"What is the chemical formula for calcium nitride?",
 opts:["CaN","Ca₂N₃","Ca₃N₂","CaN₂"],correct:2,
-sol:"Ca²⁺ + N³⁻ → cross-multiply: 3 Ca²⁺ + 2 N³⁻ gives total +6 and −6 → balanced. Formula: Ca₃N₂.",
-expl:["Charges don't balance (+2 ≠ −3). Treated as 1:1.","Cross-multiplication reversed.","CORRECT.","Charges don't balance."]},
+sol:"Ca²⁺ + N³⁻ → cross-multiply: 3 Ca²⁺ + 2 N³⁻ → total ±6 → balanced. Formula: Ca₃N₂.",
+expl:["Charges don't balance (+2 ≠ −3). Treated as 1:1. [Atomic gap: balance charges]","Cross-multiplication reversed (would imply Ca³⁻ and N²⁺). [Atomic gap: cross-multiplication direction]","CORRECT.","Charges don't balance. [Atomic gap: balance charges]"]},
 
-{n:10,tier:"T2",stem:"What is the chemical formula for ammonium phosphate?",
+{n:10,tier:"T2",granular:"t2-g06",stem:"What is the chemical formula for ammonium phosphate?",
 opts:["NH₄PO₄","(NH₄)₂PO₄","(NH₄)₃PO₄","NH₄(PO₄)₃"],correct:2,
-sol:"NH₄⁺ + PO₄³⁻ → 3 NH₄⁺ + 1 PO₄³⁻ gives +3 and −3 → balanced. Formula: (NH₄)₃PO₄.",
-expl:["Charges don't balance (+1 ≠ −3).","Off by one in subscript (+2 ≠ −3).","CORRECT.","Reversed subscripts."]},
+sol:"NH₄⁺ + PO₄³⁻ → 3 NH₄⁺ + 1 PO₄³⁻ → balanced ±3. Formula: (NH₄)₃PO₄.",
+expl:["Charges don't balance (+1 ≠ −3). [Atomic gap: balance charges]","Off by one in subscript (+2 ≠ −3). [Atomic gap: stoichiometric balance]","CORRECT.","Reversed subscripts. [Atomic gap: cross-multiplication direction]"]},
 
-{n:11,tier:"T2",stem:"What is the systematic name for CuCl?",
-opts:["copper chloride","copper(I) chloride","copper(II) chloride","monocopper monochloride"],correct:1,
-sol:"Cl is 1−, so Cu must be +1. Roman numeral required because Cu has variable oxidation states.",
-expl:["Ambiguous — Cu has more than one common oxidation state, so a Roman numeral is required.","CORRECT.","This name corresponds to CuCl₂, not CuCl.","Greek prefixes are used for binary covalent compounds, not ionic."]},
+{n:11,tier:"T3",granular:"t3-g01",stem:"Which of the following statements correctly identifies a property of gases that distinguishes them from solids and liquids?",
+opts:["Gases have a fixed volume","Gases are highly compressible","Gases have a definite shape","Gas particles are held in place by strong attractive forces"],correct:1,
+sol:"Gases differ from condensed phases by being highly compressible (low density, weak IMF, variable shape, variable volume).",
+expl:["Wrong — gases fill their container; volume is variable. [Atomic gap: gas volume behavior]","CORRECT — high compressibility is a defining gas property.","Wrong — gases take the shape of their container. [Atomic gap: gas shape behavior]","Wrong — ideal-gas IMF is negligible. [Atomic gap: IMF in gas phase]"]},
 
-{n:12,tier:"T2",stem:"Baking soda is a common household chemical used in cooking and as an antacid. What is its chemical formula?",
-opts:["Na₂CO₃","NaHCO₃","NaCO₃","Na(HCO₃)₂"],correct:1,
-sol:"Baking soda = sodium bicarbonate = NaHCO₃. (Note: Na₂CO₃ is washing soda, a different compound.)",
-expl:["This is washing soda (sodium carbonate), not baking soda.","CORRECT.","Charge imbalance (+1 ≠ −2). Not a valid neutral compound.","Charge imbalance (+1 ≠ −2)."]},
+{n:12,tier:"T3",granular:"t3-g02",stem:"Which of the following compounds contains ONLY ionic bonds?",
+opts:["CO₂","K₂O","CH₄","HCl"],correct:1,
+sol:"Metal + nonmetal → ionic. K₂O has K (metal) + O (nonmetal) → ionic. CO₂, CH₄, HCl are all nonmetal+nonmetal → covalent.",
+expl:["Covalent — carbon and oxygen are both nonmetals. [Atomic gap: metal vs nonmetal recognition]","CORRECT — K (metal) + O (nonmetal).","Covalent — carbon and hydrogen are both nonmetals. [Atomic gap: metal vs nonmetal recognition]","Covalent (polar covalent) — H and Cl are both nonmetals. [Atomic gap: ΔEN cutoff]"]},
 
-{n:13,tier:"T3",stem:"A student draws the carbonate ion (CO₃²⁻) with the central carbon atom single-bonded to all three oxygen atoms, with three lone pairs on each oxygen, totaling 24 valence electrons. What is wrong with this structure?",
-opts:["Total valence electrons should be 22","The carbon atom does not satisfy the octet rule","Each oxygen has too many lone pairs","The structure is correct as drawn"],correct:1,
-sol:"Total valence: 4 + 3(6) + 2 = 24 ✓. With all single bonds, C only has 6 e⁻ around it. Need a double bond somewhere → resonance structures.",
-expl:["24 is correct (4 + 18 + 2 = 24).","CORRECT — carbon only has 6 e⁻ in three single bonds.","Each O has 6 e⁻ as lone pairs + 2 in bond = 8 (octet satisfied).","C lacks octet — structure is incorrect."]},
+{n:13,tier:"T3",granular:"t3-g04",stem:"A student draws the carbonate ion (CO₃²⁻) with the central carbon atom single-bonded to all three oxygen atoms, with three lone pairs on each oxygen, totaling 24 valence electrons. What is wrong with this structure?",
+opts:["The total number of valence electrons should be 22","The carbon atom does not satisfy the octet rule","Each oxygen has too many lone pairs","The structure is correct as drawn"],correct:1,
+sol:"Total valence: 4 + 3(6) + 2 = 24 ✓. With all single bonds, C has only 6 e⁻ around it — octet violated. Need a double bond.",
+expl:["24 is correct (4 + 18 + 2 = 24). [Atomic gap: valence e total (forgot charge)]","CORRECT — carbon only has 6 e⁻ in three single bonds.","Each O has 6 e⁻ as lone pairs + 2 in bond = 8 (octet satisfied). [Atomic gap: per-atom octet check]","C lacks octet — structure is incorrect. [Atomic gap: per-atom octet check (carbon)]"]},
 
-{n:14,tier:"T3",stem:"What is the bond angle in a water (H₂O) molecule?",
-opts:["90°","104.5°","109.5°","180°"],correct:1,
-sol:"H₂O: 4 electron groups (2 bonding + 2 lone pairs) on O. Electron geometry tetrahedral, but lone pair compression reduces the H-O-H angle from 109.5° to ~104.5°.",
-expl:["This is the angle in octahedral geometry (6 e⁻ groups).","CORRECT.","Ideal tetrahedral angle (no lone pairs). Forgot lone pair compression.","Linear angle — not water's geometry."]},
-
-{n:15,tier:"T3",stem:"How many resonance structures can be drawn for sulfur trioxide (SO₃)?",
+{n:14,tier:"T3",granular:"t3-g06",stem:"How many resonance structures can be drawn for sulfur trioxide (SO₃)?",
 opts:["1","2","3","4"],correct:2,
-sol:"SO₃: one S=O double bond + two S-O single bonds. The double bond can be drawn to any of the 3 oxygens → 3 equivalent resonance structures.",
-expl:["Misses delocalization.","Off by one — three-fold symmetry gives 3, not 2.","CORRECT.","Over-counts."]},
+sol:"SO₃: one S=O double bond + two S−O single bonds. The double bond can be drawn to any of the 3 equivalent oxygens → 3 resonance structures.",
+expl:["Misses delocalization. [Atomic gap: identify equivalent positions]","Off by one — three-fold symmetry gives 3, not 2. [Atomic gap: count unique structures]","CORRECT.","Over-counts — only 3 oxygens. [Atomic gap: count unique structures]"]},
 
-{n:16,tier:"T3",stem:"Which of the following substances has only London dispersion forces between its molecules?",
-opts:["H₂O","NH₃","HCl","CH₄"],correct:3,
-sol:"LDF only requires no polar bonds and no H bonded to N/O/F.",
-expl:["Has H-bonding (H on O).","Has H-bonding (H on N).","Polar — has dipole-dipole forces.","CORRECT — tetrahedral, nonpolar, no H-bonding capability."]},
+{n:15,tier:"T3",granular:"t3-g07",stem:"What is the bond angle in a water (H₂O) molecule?",
+opts:["90°","104.5°","109.5°","180°"],correct:1,
+sol:"O has 2 bonding pairs + 2 lone pairs = 4 e-groups → tetrahedral electron geometry → bent shape. Lone pair compression reduces 109.5° → 104.5°.",
+expl:["Octahedral angle (6 e-groups). [Atomic gap: count electron groups]","CORRECT.","Ideal tetrahedral (no lone pair compression). [Atomic gap: lone-pair compression]","Linear (2 e-groups). [Atomic gap: count electron groups]"]},
 
-{n:17,tier:"T3",stem:"Which of the following substances can form hydrogen bonds with water?",
+{n:16,tier:"T3",granular:"t3-g11",stem:"Three substances exist as a solid, a liquid, and a gas, respectively, at room temperature. Which phase has the WEAKEST intermolecular forces between its particles?",
+opts:["Solid","Liquid","Gas","All three have equal intermolecular forces"],correct:2,
+sol:"IMF strength: solid > liquid > gas. Weak IMF → particles separated → gas phase.",
+expl:["Strongest IMF (particles locked in a lattice). [Atomic gap: IMF → phase correspondence]","Intermediate IMF. [Atomic gap: rank IMF by phase]","CORRECT — gas phase has weakest IMF.","Phase depends on IMF strength; they are not equal. [Atomic gap: phase has IMF dependence]"]},
+
+{n:17,tier:"T3",granular:"t3-g12",stem:"Which of the following substances can form hydrogen bonds with water?",
 opts:["CH₄","CH₃OH","CCl₄","C₆H₆"],correct:1,
-sol:"H-bonding requires H bonded to N/O/F (donor) or lone pair on N/O/F (acceptor). Water has both. Only CH₃OH (with -OH) can both donate and accept H-bonds with water.",
-expl:["No N/O/F.","CORRECT — methanol's -OH bonds with water.","No H-bond functional group.","Aromatic ring with only C-H bonds."]},
+sol:"Water H-bonds with species that have H on N/O/F (donor) or a lone pair on N/O/F (acceptor). CH₃OH has −OH → both donor and acceptor.",
+expl:["No N/O/F present. [Atomic gap: H-bond donor/acceptor recognition]","CORRECT — methanol's −OH H-bonds with water.","Cl doesn't H-bond in this context. [Atomic gap: H-bond restricted to N, O, F]","Aromatic but no N/O/F. [Atomic gap: H-bond donor/acceptor recognition]"]},
 
-{n:18,tier:"T3",stem:"Rank the following substances in order of INCREASING boiling point:",
-opts:["HF < HCl < HBr < HI","HCl < HBr < HI < HF","HCl < HF < HBr < HI","HF < HBr < HCl < HI"],correct:1,
-sol:"HCl, HBr, HI: dipole-dipole + LDF, with LDF dominating (HI has the highest BP among these). HF: H-bonding overrides LDF size effects, giving HF the highest BP overall. Actual BPs: HCl ≈ −85°C; HBr ≈ −67°C; HI ≈ −35°C; HF ≈ +19.5°C.",
-expl:["Treats HF only by molecular size, ignoring H-bonding.","CORRECT.","Inserts HF in middle — fails to recognize H-bonding's strong effect.","Wrong direction in middle of sequence."]},
-
-{n:19,tier:"T3",stem:"The phase change from gas directly to solid (without passing through the liquid phase) is called:",
-opts:["sublimation","condensation","deposition","freezing"],correct:2,
-sol:"Deposition: gas → solid. Sublimation is the reverse (solid → gas).",
-expl:["Solid → gas (reverse direction).","Gas → liquid.","CORRECT.","Liquid → solid."]},
-
-{n:20,tier:"T3",stem:"Is chloroform (CHCl₃) polar or nonpolar, and why?",
-opts:["Polar — bonds are polar and the molecule is symmetric","Polar — asymmetric distribution of polar bonds creates a net dipole","Nonpolar — all bonds are equally polar","Nonpolar — tetrahedral geometry causes all dipoles to cancel"],correct:1,
-sol:"CHCl₃ is tetrahedral with 3 Cl + 1 H. The asymmetry of substituents prevents dipole cancellation. Polar molecule.",
-expl:["Right answer (polar) but wrong reason — molecule is asymmetric, not symmetric.","CORRECT.","C-H and C-Cl bonds have different polarities. Even if equal, asymmetric arrangement still leaves net dipole.","Tetrahedral cancellation only occurs when all 4 substituents are identical (e.g., CCl₄)."]},
-
-{n:21,tier:"T4",stem:"Which of the following represents a physical change?",
+{n:18,tier:"T4",granular:"t4-g01",stem:"Which of the following represents a physical change?",
 opts:["Burning gasoline in a car engine","Cutting a sheet of paper into smaller pieces","An iron nail rusting outdoors","Baking a cake in the oven"],correct:1,
-sol:"Physical change preserves chemical composition. Cutting paper changes shape/size but not composition.",
-expl:["Combustion = chemical change (CO₂, H₂O formed).","CORRECT — composition unchanged.","Fe + O₂ → Fe₂O₃, chemical change.","Multiple chemical changes (denaturation, Maillard, leavening)."]},
+sol:"Physical change: composition unchanged. Cutting paper changes shape but not composition.",
+expl:["Combustion — chemical change (CO₂, H₂O formed). [Atomic gap: combustion is chemical]","CORRECT — composition unchanged.","Fe + O₂ → Fe₂O₃ — chemical change. [Atomic gap: oxidation is chemical]","Multiple chemical changes (Maillard, leavening). [Atomic gap: cooking is chemical]"]},
 
-{n:22,tier:"T4",stem:"When pentane (C₅H₁₂) undergoes complete combustion, the balanced equation is:\n\nC₅H₁₂ + ___ O₂ → ___ CO₂ + ___ H₂O\n\nWhat is the sum of all coefficients in the balanced equation?",
-opts:["14","17","20","24"],correct:2,
-sol:"Balance: C₅H₁₂ + 8 O₂ → 5 CO₂ + 6 H₂O. Check: C 5=5, H 12=12, O 16=10+6=16. Sum: 1 + 8 + 5 + 6 = 20.",
-expl:["Incorrect balance.","Incorrect balance — likely 6 O₂ instead of 8.","CORRECT.","Over-balanced."]},
-
-{n:23,tier:"T4",stem:"Which type of reaction is represented by:\n\n2 NaHCO₃(s) → Na₂CO₃(s) + H₂O(g) + CO₂(g)",
+{n:19,tier:"T4",granular:"t4-g04",stem:"Which type of reaction is represented by the following?\n\n2 NaHCO₃(s) → Na₂CO₃(s) + H₂O(g) + CO₂(g)",
 opts:["Combination","Decomposition","Single replacement","Double replacement"],correct:1,
 sol:"One reactant → multiple products = decomposition.",
-expl:["Combination has multiple reactants → one product.","CORRECT.","Single replacement requires element + compound.","Double replacement requires two ionic compounds swapping partners."]},
+expl:["Combination is A + B → AB. [Atomic gap: combination pattern]","CORRECT.","SR requires element + compound → different element + different compound. [Atomic gap: SR pattern]","DR requires two ionic compounds swapping partners. [Atomic gap: DR pattern]"]},
 
-{n:24,tier:"T4",stem:"What are the products when magnesium metal reacts with copper(II) nitrate solution?",
+{n:20,tier:"T4",granular:"t4-g06",stem:"What are the products when magnesium metal reacts with copper(II) nitrate solution?",
 opts:["Mg(NO₃)₂ + Cu","MgNO₃ + Cu","MgCu + (NO₃)₂","No reaction occurs"],correct:0,
-sol:"Mg is more active than Cu (above Cu in activity series). Single replacement: Mg + Cu(NO₃)₂ → Mg(NO₃)₂ + Cu.",
-expl:["CORRECT.","MgNO₃ has charge imbalance: Mg²⁺ + NO₃⁻ doesn't balance.","Not real chemical species.","Mg is above Cu — reaction proceeds."]},
+sol:"Mg is above Cu in the activity series → Mg displaces Cu²⁺. Mg(s) + Cu(NO₃)₂(aq) → Mg(NO₃)₂(aq) + Cu(s).",
+expl:["CORRECT.","Charge imbalance — Mg²⁺ needs 2 NO₃⁻ for neutral compound. [Atomic gap: write product formula with charge balance]","MgCu is not a real compound. [Atomic gap: ionic vs molecular product formation]","Mg is above Cu in activity series — reaction occurs. [Atomic gap: read activity series direction]"]},
 
-{n:25,tier:"T4",stem:"Based on the activity series, which metal will NOT displace copper(II) ions from a copper(II) nitrate solution?",
-opts:["Zn","Fe","Ag","Mg"],correct:2,
-sol:"To displace Cu²⁺, metal must be ABOVE Cu in activity series. Activity series: K > Na > Ca > Mg > Al > Zn > Fe > Sn > Pb > H > Cu > Ag > Au. Ag is below Cu, so cannot displace.",
-expl:["Above Cu — can displace.","Above Cu — can displace.","CORRECT — Ag is below Cu.","Above Cu — can displace."]},
+{n:21,tier:"T5",granular:"t5-g01",stem:"Vinegar is a dilute aqueous solution of acetic acid (CH₃COOH). What is the molar mass of acetic acid?",
+opts:["46 g/mol","60 g/mol","74 g/mol","88 g/mol"],correct:1,
+sol:"C: 2 × 12.01 = 24.02; H: 4 × 1.008 = 4.03; O: 2 × 16.00 = 32.00. Total: 60.05 ≈ 60 g/mol.",
+expl:["Off by ~14. Missed one C or misread the condensed formula. [Atomic gap: atom count from CH₃COOH (2C, 4H, 2O)]","CORRECT.","Over-count — added an extra C. [Atomic gap: atom count]","Major over-count. [Atomic gap: atom count]"]},
 
-{n:26,tier:"T5",stem:"What mass of water is produced when 4.0 g of hydrogen gas reacts completely with excess oxygen? (M: H₂ = 2.0 g/mol; H₂O = 18 g/mol)\n\n2 H₂(g) + O₂(g) → 2 H₂O(l)",
+{n:22,tier:"T5",granular:"t5-g04",stem:"What mass of water is produced when 4.0 g of hydrogen gas reacts completely with excess oxygen? (Molar mass: H₂ = 2.0 g/mol; H₂O = 18 g/mol)\n\n2 H₂(g) + O₂(g) → 2 H₂O(l)",
 opts:["18 g","36 g","72 g","9.0 g"],correct:1,
-sol:"4.0 g H₂ × (1 mol/2.0 g) = 2.0 mol H₂.\n2.0 mol H₂ × (2 mol H₂O / 2 mol H₂) = 2.0 mol H₂O.\n2.0 mol H₂O × 18 g/mol = 36 g H₂O.",
-expl:["Used 1:1 mass ratio — skipped the mole step.","CORRECT.","Doubled — used wrong mole ratio.","Halved — wrong direction in mass-to-mole conversion."]},
+sol:"4.0 g H₂ × (1 mol/2.0 g) = 2.0 mol H₂. × (2 mol H₂O/2 mol H₂) = 2.0 mol H₂O. × 18 g/mol = 36 g.",
+expl:["Used 1:1 mass ratio without mole step. [Atomic gap: mass↔mole conversion]","CORRECT.","Doubled — used wrong mole ratio. [Atomic gap: mole-ratio application]","Halved — wrong direction on mass-mole conversion. [Atomic gap: mole↔mass direction]"]},
 
-{n:27,tier:"T5",stem:"When 4.0 g of aluminum reacts with 6.0 g of chlorine gas to form aluminum chloride, which is the limiting reactant? (M: Al = 27 g/mol; Cl₂ = 71 g/mol)\n\n2 Al(s) + 3 Cl₂(g) → 2 AlCl₃(s)",
+{n:23,tier:"T5",granular:"t5-g05",stem:"When 4.0 g of aluminum reacts with 6.0 g of chlorine gas to form aluminum chloride, which is the limiting reactant? (Molar mass: Al = 27 g/mol; Cl₂ = 71 g/mol)\n\n2 Al(s) + 3 Cl₂(g) → 2 AlCl₃(s)",
 opts:["Al","Cl₂","Both are limiting","AlCl₃"],correct:1,
-sol:"mol Al = 4.0/27 = 0.148 mol. mol Cl₂ = 6.0/71 = 0.0845 mol.\nDivide by coefficient: Al: 0.148/2 = 0.074. Cl₂: 0.0845/3 = 0.028.\nCl₂ has the smaller value → Cl₂ limits.",
-expl:["Al is in excess.","CORRECT — Cl₂ runs out first.","Only one species can be the limiting reactant.","AlCl₃ is the product, not a reactant."]},
+sol:"mol Al = 4.0/27 = 0.148; ÷ 2 = 0.0741. mol Cl₂ = 6.0/71 = 0.0845; ÷ 3 = 0.0282. Cl₂ has smaller quotient → Cl₂ limits.",
+expl:["Al is in excess. [Atomic gap: divide-by-coefficient comparison]","CORRECT.","Only one can be the limiting reactant. [Atomic gap: LR definition]","AlCl₃ is the product, not a reactant. [Atomic gap: reactant identification]"]},
 
-{n:28,tier:"T5",stem:"A student decomposes calcium carbonate to produce calcium oxide. Theoretical yield of CaO is 12.0 g, but only 8.5 g is obtained. What is the percent yield?",
+{n:24,tier:"T5",granular:"t5-g06",stem:"A student decomposes calcium carbonate to produce calcium oxide. The theoretical yield of CaO is 12.0 g, but only 8.5 g is actually obtained. What is the percent yield?",
 opts:["70.8%","141%","3.5%","85.0%"],correct:0,
 sol:"% yield = (actual / theoretical) × 100 = (8.5 / 12.0) × 100 = 70.8%.",
-expl:["CORRECT.","Reversed: (12.0 / 8.5) × 100. Impossible — yield > 100%.","Computed difference (12.0 − 8.5), not ratio.","Used 8.5 directly.  Formula not applied."]},
+expl:["CORRECT.","Ratio reversed: (12.0/8.5) × 100. [Atomic gap: % yield formula direction]","Computed difference (12.0 − 8.5), not ratio. [Atomic gap: ratio vs difference]","Wrong denominator. [Atomic gap: theoretical yield as denominator]"]},
 
-{n:29,tier:"T5",stem:"What is the molar mass of caffeine (C₈H₁₀N₄O₂)?",
-opts:["96 g/mol","144 g/mol","194 g/mol","228 g/mol"],correct:2,
-sol:"C: 8 × 12.01 = 96.08; H: 10 × 1.008 = 10.08; N: 4 × 14.01 = 56.04; O: 2 × 16.00 = 32.00. Total: 194.20 g/mol.",
-expl:["Only counted carbon. Forgot H, N, O.","Partial sum — missing or wrong mass for one element.","CORRECT.","Over-counts — likely wrong atomic mass for one element."]},
+{n:25,tier:"T6",granular:"t6-g02",stem:"Which of the following best describes the energy diagram for an endothermic reaction with a high activation energy?",
+opts:["Products lower than reactants; small activation energy hump","Products higher than reactants; small activation energy hump","Products higher than reactants; large activation energy hump","Products and reactants at the same energy level; no activation energy"],correct:2,
+sol:"Endothermic = products higher (ΔH > 0). High Ea = tall hump.",
+expl:["Both wrong (exothermic with low Ea). [Atomic gap: endo vs exo on diagram]","Endo ✓ but Ea wrong. [Atomic gap: Ea magnitude on diagram]","CORRECT.","Doesn't represent any meaningful reaction. [Atomic gap: ΔH and Ea as separate features]"]},
 
-{n:30,tier:"T6",stem:"When an ice cube is placed on a kitchen counter at room temperature, it gradually melts. From the perspective of the ice, this process is best described as:",
-opts:["Endothermic — the ice absorbs heat from its surroundings","Exothermic — the ice releases heat to its surroundings","Adiabatic — no heat is exchanged","Isothermic — temperature remains constant throughout"],correct:0,
-sol:"Ice melting absorbs heat from surroundings → endothermic.",
-expl:["CORRECT.","Ice gains energy, not releases.","Heat IS exchanged with the warm room.","While temperature stays constant during the phase change at 0°C, the question asks about heat flow direction (endo/exo)."]},
+{n:26,tier:"T7",granular:"t7-g01",stem:"Which of the following statements is NOT part of the kinetic molecular theory of gases?",
+opts:["Gas particles are in constant, random motion","Collisions between gas particles are perfectly elastic","The average kinetic energy of gas particles depends on temperature","Gas particles experience strong attractive forces between each other"],correct:3,
+sol:"KMT postulates: random motion, negligible volume, NO IMF (ideal), elastic collisions, KE ∝ T(K). Attractive forces explicitly excluded.",
+expl:["This IS part of KMT. [Atomic gap: KMT postulate recall]","This IS part of KMT. [Atomic gap: KMT postulate recall]","This IS part of KMT. [Atomic gap: KMT postulate recall]","CORRECT answer — KMT assumes NO attractive forces (ideal gas)."]},
 
-{n:31,tier:"T6",stem:"Which of the following best describes the energy diagram for an endothermic reaction with a high activation energy?",
-opts:["Products lower than reactants; small Ea hump","Products higher than reactants; small Ea hump","Products higher than reactants; large Ea hump","Products and reactants at same energy level; no Ea"],correct:2,
-sol:"Endothermic = products higher (ΔH > 0). High Ea = tall activation energy hump.",
-expl:["Both wrong — this would be exothermic with low Ea.","Endothermic ✓ but Ea wrong.","CORRECT.","Doesn't represent any meaningful reaction."]},
-
-{n:32,tier:"T7",stem:"A sample of gas occupies 8.0 L at 2.5 atm. At constant temperature, what volume will the gas occupy if the pressure is increased to 5.0 atm?",
-opts:["4.0 L","16 L","1.6 L","10 L"],correct:0,
-sol:"Boyle's Law: P₁V₁ = P₂V₂. (2.5)(8.0) = (5.0)(V₂). V₂ = 20/5.0 = 4.0 L.",
-expl:["CORRECT.","Reversed Boyle's relationship — pressure increase should DECREASE volume.","Wrong arithmetic.","Average — not a Boyle's Law calculation."]},
-
-{n:33,tier:"T7",stem:"A gas occupies 6.0 L at 200 K. If the temperature is increased to 400 K at constant pressure, what is the new volume?",
-opts:["3.0 L","6.0 L","12 L","24 L"],correct:2,
-sol:"Charles's Law: V₁/T₁ = V₂/T₂. 6.0/200 = V₂/400. V₂ = 6.0 × 2 = 12 L.",
-expl:["Halved instead of doubled. T increases → V increases (direct).","No change — didn't apply Charles's Law.","CORRECT.","Quadrupled — wrong ratio."]},
-
-{n:34,tier:"T7",stem:"What is the pressure of a 0.50 mol sample of gas in a 10.0 L container at 27°C? (R = 0.0821 L·atm/mol·K)",
+{n:27,tier:"T7",granular:"t7-g04",stem:"What is the pressure of a 0.50 mol sample of gas in a 10.0 L container at 27 °C? (R = 0.0821 L·atm/mol·K)",
 opts:["0.11 atm","1.23 atm","12.3 atm","0.082 atm"],correct:1,
-sol:"Convert: T = 27 + 273 = 300 K. P = nRT/V = (0.50)(0.0821)(300)/10.0 = 1.23 atm.",
-expl:["Forgot to convert °C to K. Used 27 K instead of 300 K.","CORRECT.","Forgot to divide by V — gave nRT alone.","Other arithmetic error."]},
+sol:"T = 27 + 273 = 300 K. P = nRT/V = (0.50)(0.0821)(300)/10.0 = 12.315/10 = 1.23 atm.",
+expl:["Forgot °C → K. Used 27 instead of 300. [Atomic gap: T must be in Kelvin]","CORRECT.","Forgot to divide by V. [Atomic gap: rearrange PV=nRT for P]","R-only error. [Atomic gap: rearrange for P]"]},
 
-{n:35,tier:"T7",stem:"Which of the following compounds is most soluble in water?",
-opts:["hexane (C₆H₁₄)","ethanol (CH₃CH₂OH)","octanol (C₈H₁₇OH)","pentane (C₅H₁₂)"],correct:1,
-sol:"Like dissolves like. Water is polar; small polar compounds with H-bonding capability dissolve best. Ethanol is fully miscible with water.",
-expl:["Nonpolar — insoluble.","CORRECT — fully miscible.","Has -OH but the long carbon chain dominates; poor solubility.","Nonpolar — insoluble."]},
-
-{n:36,tier:"T7",stem:"A patient receives 750 mL of a 5.0% (m/v) glucose IV solution. How many grams of glucose does the patient receive?",
+{n:28,tier:"T7",granular:"t7-g09",stem:"A patient receives 750 mL of a 5.0% (m/v) glucose IV solution. How many grams of glucose does the patient receive?",
 opts:["5.0 g","37.5 g","7.5 g","50 g"],correct:1,
-sol:"5.0% (m/v) = 5.0 g per 100 mL. (5.0 g / 100 mL) × 750 mL = 37.5 g.",
-expl:["Took % value as the answer — ignored volume scaling.","CORRECT.","Wrong scaling factor.","Off by factor of ~1.33."]},
+sol:"5.0% (m/v) = 5.0 g per 100 mL. (5.0/100) × 750 = 37.5 g.",
+expl:["Took % value as the answer. [Atomic gap: scale by volume]","CORRECT.","Off by factor of 5 — possibly used 1%. [Atomic gap: % m/v interpretation]","Wrong scaling. [Atomic gap: % m/v formula]"]},
 
-{n:37,tier:"T7",stem:"A solution that has a higher solute concentration than the inside of a cell is called:",
-opts:["hypotonic","isotonic","hypertonic","saturated"],correct:2,
-sol:"Hypotonic = lower; isotonic = equal; hypertonic = higher.",
-expl:["Lower, not higher.","Equal, not higher.","CORRECT.","'Saturated' refers to dissolution capacity, not relative concentration."]},
+{n:29,tier:"T7",granular:"t7-g10",stem:"Which of the following compounds is most soluble in water?",
+opts:["hexane (C₆H₁₄)","ethanol (CH₃CH₂OH)","octanol (C₈H₁₇OH)","pentane (C₅H₁₂)"],correct:1,
+sol:"Like dissolves like. Water is polar; small polar compounds with H-bonding dissolve best.",
+expl:["Nonpolar — insoluble. [Atomic gap: polarity classification]","CORRECT — small + −OH = miscible.","Has −OH but long nonpolar chain dominates. [Atomic gap: chain-length effect]","Nonpolar — insoluble. [Atomic gap: polarity classification]"]},
 
-{n:38,tier:"T8",stem:"What is the pH of a solution with [H⁺] = 4.0 × 10⁻³ M?",
-opts:["2.40","3.00","2.0","11.6"],correct:0,
-sol:"pH = −log(4.0 × 10⁻³) = 3 − log(4.0) = 3 − 0.602 = 2.40.",
-expl:["CORRECT.","Took only the negative exponent. Ignored the coefficient 4.0.","Rounded too aggressively.","Subtracted from 14 — confused acidic vs basic."]},
+{n:30,tier:"T7",granular:"t7-g12",stem:"A red blood cell is placed in a beaker containing pure water. Which of the following best describes what happens?",
+opts:["Water moves out of the cell, causing it to shrink","Water moves into the cell, causing it to swell","Solute moves out of the cell into the surrounding water","No net movement occurs because the membrane is impermeable"],correct:1,
+sol:"Water moves from low-solute (pure water outside) to high-solute (cell interior). Cell swells (hemolysis).",
+expl:["Wrong direction — water moves toward higher solute. [Atomic gap: osmosis direction]","CORRECT.","Semipermeable membrane passes solvent, not solute. [Atomic gap: semipermeable membrane definition]","Concentration gradient drives osmosis. [Atomic gap: osmosis across gradient]"]},
 
-{n:39,tier:"T8",stem:"What is the pH of a solution with [OH⁻] = 1.0 × 10⁻⁴ M?",
-opts:["4","10","14","7"],correct:1,
-sol:"pOH = 4. pH = 14 − pOH = 10. (Or: [H⁺] = 10⁻¹⁴ / 10⁻⁴ = 10⁻¹⁰; pH = 10.)",
-expl:["This is pOH, not pH.","CORRECT.","Just used the K_w exponent.","Pure water value — only true for [OH⁻] = 10⁻⁷."]},
-
-{n:40,tier:"T8",stem:"What is the conjugate acid of the bicarbonate ion (HCO₃⁻)?",
+{n:31,tier:"T8",granular:"t8-g02",stem:"What is the conjugate acid of the bicarbonate ion (HCO₃⁻)?",
 opts:["CO₃²⁻","H₂CO₃","OH⁻","H₃O⁺"],correct:1,
-sol:"Conjugate acid: add H⁺. HCO₃⁻ + H⁺ → H₂CO₃ (carbonic acid).",
-expl:["This is the conjugate BASE of HCO₃⁻ (HCO₃⁻ - H⁺ → CO₃²⁻).","CORRECT.","Unrelated.","Conjugate acid of water, not HCO₃⁻."]},
+sol:"Conjugate acid: add one H⁺. HCO₃⁻ + H⁺ → H₂CO₃ (carbonic acid).",
+expl:["This is the conjugate BASE of HCO₃⁻. [Atomic gap: conjugate acid vs base direction]","CORRECT.","Unrelated. [Atomic gap: identify the right molecule to modify]","Conjugate acid of water, not HCO₃⁻. [Atomic gap: identify the right molecule to modify]"]},
 
-{n:41,tier:"T8",stem:"Which of the following is classified as a strong acid?",
-opts:["HF","HClO₄","CH₃COOH","NH₄⁺"],correct:1,
-sol:"Strong acids: HCl, HBr, HI, HNO₃, H₂SO₄, HClO₄, HClO₃. HClO₄ (perchloric acid) is a strong acid.",
-expl:["Weak acid (HF, despite being a halogen acid).","CORRECT.","Weak acid (acetic acid, K_a ≈ 1.8 × 10⁻⁵).","Weak acid (slightly acidic ammonium ion)."]},
+{n:32,tier:"T8",granular:"t8-g04",stem:"What is the pH of a solution with [H⁺] = 4.0 × 10⁻³ M?",
+opts:["2.40","3.00","2.0","11.6"],correct:0,
+sol:"pH = −log(4.0 × 10⁻³) = −[log 4.0 + log 10⁻³] = −[0.602 − 3] = 2.40.",
+expl:["CORRECT.","Used only the exponent — ignored coefficient. [Atomic gap: log of coefficient × 10ⁿ]","Rounded too aggressively. [Atomic gap: log of coefficient]","Subtracted from 14 — gave pOH, not pH. [Atomic gap: pH vs pOH]"]},
 
-{n:42,tier:"T8",stem:"What is the correct equilibrium constant expression for:\n\n2 NO(g) + Cl₂(g) ⇌ 2 NOCl(g)",
-opts:["K = [NOCl] / ([NO][Cl₂])","K = [NOCl]² / ([NO]²[Cl₂])","K = [NO]²[Cl₂] / [NOCl]²","K = 2[NOCl] / (2[NO] + [Cl₂])"],correct:1,
-sol:"K = [products]^coefficients / [reactants]^coefficients. Coefficients become exponents (not multipliers); products on top.",
-expl:["Coefficients dropped from exponents.","CORRECT.","Reactants and products inverted.","Treats coefficients as multipliers and uses addition. Fundamental error."]},
+{n:33,tier:"T8",granular:"t8-g05",stem:"What is the pH of a solution with [OH⁻] = 1.0 × 10⁻⁴ M?",
+opts:["4","10","14","7"],correct:1,
+sol:"pOH = −log(10⁻⁴) = 4. pH = 14 − 4 = 10.",
+expl:["This is pOH, not pH. [Atomic gap: pH + pOH = 14]","CORRECT.","Used Kw exponent only. [Atomic gap: pH/pOH calculation]","Pure water value — only applies for [OH⁻] = 10⁻⁷. [Atomic gap: pH/pOH for non-neutral]"]},
 
-{n:43,tier:"T8",stem:"For the exothermic equilibrium:\n\nA(g) + B(g) ⇌ C(g) + heat\n\nIf the temperature is increased, the equilibrium will:",
-opts:["shift to the right (toward products)","shift to the left (toward reactants)","not change","the equilibrium constant K will increase"],correct:1,
-sol:"Heat is treated as a 'product' in exothermic reactions. Adding heat shifts equilibrium AWAY from added 'product' → shifts left.",
-expl:["Wrong direction.","CORRECT.","T always affects equilibrium when ΔH ≠ 0.","K decreases for exothermic when T increases. Also confuses K with shift direction."]},
+{n:34,tier:"T8",granular:"t8-g06",stem:"Which of the following reactions is best classified as an ACID-BASE reaction?",
+opts:["2 Mg(s) + O₂(g) → 2 MgO(s)","AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)","HNO₃(aq) + KOH(aq) → KNO₃(aq) + H₂O(l)","Zn(s) + 2 HCl(aq) → ZnCl₂(aq) + H₂(g)"],correct:2,
+sol:"Acid + base → salt + water. Only (C) matches: HNO₃ (acid) + KOH (base) → KNO₃ (salt) + H₂O.",
+expl:["Combination/redox. [Atomic gap: distinguish acid-base from redox]","Precipitation — insoluble AgCl forms. [Atomic gap: distinguish acid-base from precipitation]","CORRECT.","Single replacement/redox — produces H₂ gas, not H₂O. [Atomic gap: acid presence ≠ acid-base reaction]"]},
 
-{n:44,tier:"T8",stem:"For the equilibrium A(g) + 2 B(g) ⇌ C(g), what happens when more A is added?",
-opts:["The equilibrium shifts to the right","The equilibrium shifts to the left","The equilibrium is unaffected","The equilibrium constant decreases"],correct:0,
-sol:"Add reactant → system shifts to consume it → toward products → right.",
-expl:["CORRECT.","Wrong direction.","Adding reactant always perturbs equilibrium.","K is constant at constant T."]},
+{n:35,tier:"T8",granular:"t8-g07",stem:"What are the products when hydrochloric acid (HCl) reacts with barium hydroxide (Ba(OH)₂) in a neutralization reaction?",
+opts:["BaCl(aq) + H₂O(l)","BaCl₂(aq) + 2 H₂O(l)","BaH₂(aq) + Cl₂O(aq)","Ba(OH)Cl(aq) + H₂(g)"],correct:1,
+sol:"Acid + base → salt + water. Ba²⁺ + 2 Cl⁻ = BaCl₂. 2 HCl + Ba(OH)₂ → BaCl₂ + 2 H₂O.",
+expl:["BaCl has charge imbalance — Ba²⁺ needs 2 Cl⁻. [Atomic gap: salt formula (charge balance)]","CORRECT.","Wrong products — does not match acid+base pattern. [Atomic gap: identify cation from base, anion from acid]","H₂ gas comes from SR, not neutralization. [Atomic gap: distinguish neutralization from SR]"]},
 
-{n:45,tier:"T8",stem:"Which of the following will NOT increase the rate of a chemical reaction?",
+{n:36,tier:"T8",granular:"t8-g08",stem:"Which of the following will NOT increase the rate of a chemical reaction?",
 opts:["Adding a catalyst","Increasing the temperature","Increasing the concentration of reactants","Increasing the value of the equilibrium constant"],correct:3,
-sol:"K is a thermodynamic constant; it doesn't appear in rate equations. Catalyst, temperature, and concentration all affect kinetics directly.",
-expl:["Catalyst lowers Ea — increases rate.","Higher T → more KE → faster.","More frequent collisions → faster.","CORRECT — K doesn't affect rate; it's a thermodynamic property."]},
+sol:"Catalyst, T, and concentration all increase rate. K is thermodynamic; doesn't appear in rate equations.",
+expl:["Catalyst lowers Ea — increases rate. [Atomic gap: catalyst effect]","Higher T → more KE → faster. [Atomic gap: T effect on rate]","More frequent collisions → faster. [Atomic gap: concentration effect]","CORRECT — K is thermodynamic, doesn't affect rate."]},
 
-{n:46,tier:"T8",stem:"In the reaction below, which species acts as a Brønsted-Lowry base?\n\nNH₃(aq) + H₂O(l) ⇌ NH₄⁺(aq) + OH⁻(aq)",
-opts:["NH₃","H₂O","NH₄⁺","OH⁻"],correct:0,
-sol:"BL base = H⁺ acceptor. NH₃ accepts H⁺ to become NH₄⁺ → NH₃ is the BL base. H₂O donates H⁺ → BL acid in this reaction.",
-expl:["CORRECT.","H₂O is the BL acid here (donates H⁺).","NH₄⁺ is the conjugate acid (already received H⁺).","OH⁻ is the conjugate base of H₂O."]},
+{n:37,tier:"T8",granular:"t8-g09",stem:"What is the correct equilibrium constant expression for the following reaction?\n\n2 NO(g) + Cl₂(g) ⇌ 2 NOCl(g)",
+opts:["K = [NOCl] / ([NO][Cl₂])","K = [NOCl]² / ([NO]²[Cl₂])","K = [NO]²[Cl₂] / [NOCl]²","K = 2[NOCl] / (2[NO] + [Cl₂])"],correct:1,
+sol:"K = [products]^coefs / [reactants]^coefs. Coefficients become exponents.",
+expl:["Coefficients dropped. [Atomic gap: coefficients become exponents]","CORRECT.","Reactants and products inverted. [Atomic gap: products on top]","Coefficients as multipliers and + instead of ×. [Atomic gap: multiply not add; exponents not coefficients]"]},
 
-{n:47,tier:"T9",stem:"A radioactive isotope has a half-life of 12 hours. If you start with 80 mg, how much time must pass for the sample to decay to 5.0 mg?",
-opts:["24 hr","36 hr","48 hr","60 hr"],correct:2,
-sol:"80 → 40 → 20 → 10 → 5 mg = 4 half-lives. 4 × 12 hr = 48 hr.",
-expl:["2 half-lives → 80 → 20 mg. Stopped too early.","3 half-lives → 80 → 10 mg. Off by one half-life.","CORRECT.","5 half-lives → 80 → 2.5 mg. One half-life too many."]},
+{n:38,tier:"T8",granular:"t8-g10",stem:"For the reaction A(g) + B(g) ⇌ C(g), the equilibrium constant is K = 5 × 10⁵. What does this tell you about the position of equilibrium?",
+opts:["Reactants are strongly favored at equilibrium","Products are strongly favored at equilibrium","Reactants and products are present in roughly equal amounts","The reaction has not yet reached equilibrium"],correct:1,
+sol:"K >> 1 → products favored. K << 1 → reactants. K ≈ 1 → comparable. Here K = 5×10⁵ ≫ 1.",
+expl:["Reverses K interpretation. [Atomic gap: K direction]","CORRECT.","K ≈ 1 means equal; K = 5×10⁵ is much larger. [Atomic gap: K magnitude interpretation]","K is defined only at equilibrium. [Atomic gap: K definition]"]},
 
-{n:48,tier:"T9",stem:"Cesium-137 (¹³⁷₅₅Cs) undergoes beta decay. What is the daughter nuclide produced?\n\n¹³⁷₅₅Cs → ___ + ⁰₋₁e",
-opts:["¹³⁷₅₆Ba","¹³⁷₅₄Xe","¹³⁶₅₅Cs","¹³⁷₅₇La"],correct:0,
-sol:"Mass: 137 = A + 0 → A = 137. Atomic: 55 = Z + (−1) → Z = 56 (Ba). Daughter: ¹³⁷₅₆Ba.",
-expl:["CORRECT.","Z = 54 (Xe). Decreased Z — that's positron emission, not beta.","Lost a mass unit — wrong.","Z = 57. Increased Z by 2, not 1."]},
+{n:39,tier:"T8",granular:"t8-g12",stem:"Consider the following equilibrium reaction:\n\nN₂(g) + 3 H₂(g) ⇌ 2 NH₃(g)\n\nIf the volume of the reaction container is DECREASED (pressure increased) at constant temperature, what happens to the equilibrium?",
+opts:["Shifts to the left (toward reactants)","Shifts to the right (toward products)","No shift occurs","The equilibrium constant K decreases"],correct:1,
+sol:"Reactant side: 4 mol gas. Product side: 2 mol gas. ↑P (↓V) shifts to side with FEWER moles of gas → right.",
+expl:["Wrong direction. [Atomic gap: ↑P shifts to fewer-mol side]","CORRECT.","No shift only when mole counts equal both sides. [Atomic gap: mole-counting both sides]","K is constant at constant T regardless of P. [Atomic gap: P/V doesn't change K]"]},
 
-{n:49,tier:"T9",stem:"Carbon-14 decays into nitrogen-14 over time. What type of nuclear decay is this?",
-opts:["Alpha decay","Beta decay","Gamma emission","Positron emission"],correct:1,
-sol:"A: 14 → 14 (no change). Z: 6 → 7 (increased by 1). ΔA=0, ΔZ=+1 → beta decay (n → p + e⁻).",
-expl:["Alpha would decrease A by 4 and Z by 2.","CORRECT.","Gamma changes neither A nor Z.","Positron decreases Z by 1, not increases."]},
-
-{n:50,tier:"T9",stem:"Which of the following is sufficient to stop most alpha (α) particles?",
+{n:40,tier:"T9",granular:"t9-g02",stem:"Which of the following is sufficient to stop most alpha (α) particles?",
 opts:["Only several inches of concrete","Only thick lead shielding","A sheet of paper or the outer dead layer of skin","Alpha particles cannot be stopped by typical materials"],correct:2,
-sol:"Alpha particles have low penetrating power. They are stopped by paper, the outer dead layer of skin, or several cm of air.",
-expl:["Concrete is needed for gamma — overkill for alpha.","Lead is for gamma; alpha doesn't need it.","CORRECT.","Alpha is the EASIEST radiation to stop externally."]}
+sol:"Alpha particles (⁴He nuclei): large mass, +2 charge, low penetration. Stopped by paper or dead skin.",
+expl:["Concrete is for gamma. [Atomic gap: shielding ↔ radiation type]","Lead is for gamma. [Atomic gap: shielding ↔ radiation type]","CORRECT.","Alpha is the easiest to stop externally. [Atomic gap: penetration vs internal danger]"]},
+
+{n:41,tier:"T9",granular:"t9-g03",stem:"A radioactive isotope has a half-life of 12 hours. If you start with an 80 mg sample, how much time must pass for the sample to decay to 5.0 mg?",
+opts:["24 hr","36 hr","48 hr","60 hr"],correct:2,
+sol:"80 → 40 → 20 → 10 → 5 (4 half-lives). Time = 4 × 12 = 48 hr.",
+expl:["2 half-lives → 80 → 20 mg. [Atomic gap: count integer half-lives]","3 half-lives → 80 → 10 mg. [Atomic gap: count integer half-lives]","CORRECT.","5 half-lives → 80 → 2.5 mg. [Atomic gap: count integer half-lives]"]},
+
+{n:42,tier:"T9",granular:"t9-g04",stem:"Cesium-137 (¹³⁷₅₅Cs) undergoes beta decay. What is the daughter nuclide produced?\n\n¹³⁷₅₅Cs → ___ + ⁰₋₁e",
+opts:["¹³⁷₅₆Ba","¹³⁷₅₄Xe","¹³⁶₅₅Cs","¹³⁷₅₇La"],correct:0,
+sol:"Mass: 137 = A + 0 → A = 137. Z: 55 = Z + (−1) → Z = 56 (Ba). Daughter: ¹³⁷₅₆Ba.",
+expl:["CORRECT.","Z = 54 (Xe). Decreased Z — that's positron emission, not beta. [Atomic gap: Z change direction in beta]","Mass decreased by 1 — no decay mode does this. [Atomic gap: mass conservation]","Z = 57. Increased Z by 2, not 1. [Atomic gap: Z change magnitude]"]},
+
+{n:43,tier:"P",granular:"p-balance",stem:"Balance the following equation. What is the coefficient of H₂?\n\n___ N₂(g) + ___ H₂(g) → ___ NH₃(g)",
+opts:["1","2","3","6"],correct:2,
+sol:"N₂ + 3 H₂ → 2 NH₃. Coefficient of H₂ = 3.",
+expl:["Unbalanced — H gives 2 on left, 6 needed. [Atomic gap: balance H atoms]","Unbalanced — H gives 4, 6 needed. [Atomic gap: balance H atoms]","CORRECT.","Over-balance — would require 4 NH₃. [Atomic gap: scale equation correctly]"]},
+
+{n:44,tier:"P",granular:"p-molarity",stem:"What mass of NaCl (molar mass = 58.5 g/mol) is required to prepare 250 mL of a 0.50 M NaCl solution?",
+opts:["0.13 g","4.7 g","7.3 g","29 g"],correct:2,
+sol:"mol = M × V = 0.50 × 0.250 = 0.125 mol. Mass = 0.125 × 58.5 = 7.3 g.",
+expl:["Forgot to multiply by molar mass. [Atomic gap: mole→mass conversion]","Arithmetic slip or wrong volume conversion. [Atomic gap: mL → L]","CORRECT.","Used 250 × 0.50 directly — forgot M = mol/L. [Atomic gap: M definition (not g/L)]"]},
+
+{n:45,tier:"P",granular:"p-ph-clean",stem:"What is the pH of a solution with [H⁺] = 1 × 10⁻⁵ M?",
+opts:["1","5","9","14"],correct:1,
+sol:"pH = −log(10⁻⁵) = 5.",
+expl:["Random. [Atomic gap: log of 10ⁿ]","CORRECT.","14 − 5 = 9 (pH/pOH confusion). [Atomic gap: pH definition]","Used Kw exponent. [Atomic gap: pH definition]"]},
+
+{n:46,tier:"P",granular:"p-log-coeff",stem:"What is the value of log(3.0 × 10⁻⁴)?",
+opts:["−4.0","−3.52","−3.0","+3.52"],correct:1,
+sol:"log(3.0 × 10⁻⁴) = log(3.0) + log(10⁻⁴) = 0.477 + (−4) = −3.52.",
+expl:["Ignored the coefficient (took only the exponent). [Atomic gap: log of coefficient × 10ⁿ]","CORRECT.","Rounded the coefficient log to 0. [Atomic gap: log of coefficient]","Sign error — log of a fraction is negative. [Atomic gap: sign of log]"]},
+
+{n:47,tier:"P",granular:"p-temp-convert",stem:"Convert 75 °C to Kelvin.",
+opts:["75 K","198 K","348 K","198 °C"],correct:2,
+sol:"K = °C + 273. 75 + 273 = 348 K.",
+expl:["No conversion applied. [Atomic gap: °C ≠ K (must add 273)]","Wrong direction or random. [Atomic gap: T conversion direction]","CORRECT.","Wrong unit — the question asks for K. [Atomic gap: target unit]"]},
+
+{n:48,tier:"P",granular:"p-activity",stem:"Based on the activity series K > Na > Ca > Mg > Al > Zn > Fe > H > Cu > Ag > Au, which metal is the MOST reactive?",
+opts:["Au","Ag","Cu","K"],correct:3,
+sol:"Most active metals are on the left of the activity series. K is at the far left.",
+expl:["Au is least active (far right). [Atomic gap: read activity series direction]","Near the bottom (low activity). [Atomic gap: read activity series direction]","Below H (low activity). [Atomic gap: read activity series direction]","CORRECT."]},
+
+{n:49,tier:"P",granular:"p-keq-exp",stem:"Which of the following is the correct equilibrium constant expression for:\n\nN₂(g) + 3 H₂(g) ⇌ 2 NH₃(g)",
+opts:["K = [NH₃] / ([N₂][H₂])","K = [NH₃]² / ([N₂][H₂])","K = [NH₃]² / ([N₂][H₂]³)","K = 2[NH₃] / ([N₂] + 3[H₂])"],correct:2,
+sol:"Each species raised to its coefficient: NH₃ to 2, N₂ to 1, H₂ to 3.",
+expl:["All coefficients dropped. [Atomic gap: coefficients become exponents]","Missed H₂ exponent. [Atomic gap: apply coefficient to each species]","CORRECT.","Coefficients as multipliers, + instead of ×. [Atomic gap: multiply not add]"]},
+
+{n:50,tier:"P",granular:"p-egroups",stem:"How many electron groups (bonding pairs + lone pairs) surround the central nitrogen atom in ammonia (NH₃)?",
+opts:["2","3","4","5"],correct:2,
+sol:"N has 3 bonding pairs (to 3 H) + 1 lone pair = 4 electron groups.",
+expl:["Counted only some bonds. [Atomic gap: count all bonding regions + lone pairs]","Counted bonds, missed the lone pair on N. [Atomic gap: include lone pairs in e-group count]","CORRECT.","Over-counted. [Atomic gap: distinguish electron groups from total electrons]"]}
 ];
 
 // ============================================================
@@ -632,7 +647,9 @@ function renderQuestion(idx) {
   const card = $('questionCard');
   $('currentQNum').textContent = idx + 1;
 
-  let html = `<div class="q-meta"><span class="tier-tag">${q.tier}</span> Question ${q.n} of 50</div>`;
+  const tierClass = q.tier === 'P' ? 'tier-tag probe' : 'tier-tag';
+  const tierLabel = q.tier === 'P' ? 'BUILDING BLOCK' : q.tier;
+  let html = `<div class="q-meta"><span class="${tierClass}">${tierLabel}</span> Question ${q.n} of 50</div>`;
   html += `<div class="q-stem">${escapeHtml(q.stem)}</div>`;
   html += `<ul class="options">`;
   q.opts.forEach((opt, i) => {
@@ -703,17 +720,13 @@ function updateTimerDisplay() {
 // PROCTORING (Medium)
 // ============================================================
 function enableProctoring() {
-  // Disable right-click
   document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
-  // Disable copy/paste/cut
   document.addEventListener('copy', e => { e.preventDefault(); showWarning('Copy disabled', 'Copy/paste is disabled during the exam.'); });
   document.addEventListener('paste', e => { e.preventDefault(); });
   document.addEventListener('cut', e => { e.preventDefault(); });
-  // Tab switch detection
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && !state.submitted) {
       state.tabSwitchCount++;
-      // Show warning when they come back
       const timer = setInterval(() => {
         if (!document.hidden) {
           clearInterval(timer);
@@ -722,7 +735,6 @@ function enableProctoring() {
       }, 200);
     }
   });
-  // Warn before leaving
   window.addEventListener('beforeunload', e => {
     if (!state.submitted) {
       e.preventDefault();
@@ -751,9 +763,28 @@ function submitExam() {
   renderResults();
 }
 
+// Granular ID → human-readable skill name (for diagnostic report)
+const GRANULAR_NAMES = {
+  "t0-g03":"Reading lab measurement devices","t0-g05":"Dimensional analysis (multi-step)","t0-g06":"Density as conversion factor",
+  "t1-g01":"Particle-diagram interpretation","t1-g03":"Isotope identification","t1-g06":"Electron configuration (atoms)",
+  "t2-g01":"Bulk classification of matter","t2-g04":"Polyatomic ion recall","t2-g05":"Binary ionic formula writing","t2-g06":"Polyatomic ionic formula writing",
+  "t3-g01":"Properties of states of matter","t3-g02":"Bond type ID (ionic/covalent)","t3-g04":"Lewis structure error/critique","t3-g06":"Resonance structure enumeration","t3-g07":"VSEPR geometry & bond angles","t3-g11":"IMF strength ranking","t3-g12":"H-bond donor/acceptor",
+  "t4-g01":"Physical vs chemical change","t4-g04":"Reaction classification","t4-g06":"Activity series + SR",
+  "t5-g01":"Molar mass calculation","t5-g04":"Mass-to-mass stoichiometry","t5-g05":"Limiting reagent","t5-g06":"Percent yield",
+  "t6-g02":"Energy diagram interpretation",
+  "t7-g01":"KMT postulates","t7-g04":"Ideal gas law","t7-g09":"Percent w/v concentration","t7-g10":"Solubility prediction","t7-g12":"Osmosis direction",
+  "t8-g02":"Conjugate acid/base pair","t8-g04":"pH from [H⁺]","t8-g05":"pH from [OH⁻]","t8-g06":"Acid-base reaction recognition","t8-g07":"Neutralization products","t8-g08":"Rate factors / collision theory","t8-g09":"Keq expression","t8-g10":"Keq magnitude interpretation","t8-g12":"Le Chatelier — pressure/volume",
+  "t9-g02":"Radiation safety / shielding","t9-g03":"Half-life arithmetic","t9-g04":"Nuclear equation balancing",
+  "p-balance":"Building block: balancing equations","p-molarity":"Building block: molarity calculation","p-ph-clean":"Building block: pH from clean power of 10","p-log-coeff":"Building block: log of coefficient × 10ⁿ","p-temp-convert":"Building block: °C → K","p-activity":"Building block: reading activity series","p-keq-exp":"Building block: coefficients as exponents","p-egroups":"Building block: counting electron groups"
+};
+
+// Tier weight (for ordering skill focus list)
+const TIER_WEIGHT = { T8:18, T3:14, T7:12, T4:10, T2:10, T0:8, T1:8, T5:8, T9:8, T6:4, P:0 };
+
 function renderResults() {
   let correctCount = 0;
   const tierStats = {};
+  const missedGranulars = [];
   QUESTIONS.forEach((q, i) => {
     const tier = q.tier;
     if (!tierStats[tier]) tierStats[tier] = { correct: 0, total: 0 };
@@ -761,6 +792,8 @@ function renderResults() {
     if (state.answers[i] === q.correct) {
       correctCount++;
       tierStats[tier].correct++;
+    } else {
+      missedGranulars.push({ q: q.n, tier: q.tier, granular: q.granular, name: GRANULAR_NAMES[q.granular] || q.granular });
     }
   });
 
@@ -779,7 +812,7 @@ function renderResults() {
   // Tier breakdown
   const tierBreakdown = $('tierBreakdown');
   tierBreakdown.innerHTML = '';
-  ['T0','T1','T2','T3','T4','T5','T6','T7','T8','T9'].forEach(tier => {
+  ['T0','T1','T2','T3','T4','T5','T6','T7','T8','T9','P'].forEach(tier => {
     const ts = tierStats[tier];
     if (!ts) return;
     const div = document.createElement('div');
@@ -787,9 +820,24 @@ function renderResults() {
     div.className = 'tier-stat';
     if (tpct < 60) div.classList.add('weak');
     else if (tpct >= 80) div.classList.add('strong');
-    div.innerHTML = `<div class="label">${tier}</div><div class="value">${ts.correct}/${ts.total} <span style="font-size:13px;color:#888">(${tpct}%)</span></div>`;
+    const tierLabel = tier === 'P' ? 'Building Blocks' : tier;
+    div.innerHTML = `<div class="label">${tierLabel}</div><div class="value">${ts.correct}/${ts.total} <span style="font-size:13px;color:#888">(${tpct}%)</span></div>`;
     tierBreakdown.appendChild(div);
   });
+
+  // Skill focus list — sorted by exam weight (highest-impact first)
+  if (missedGranulars.length > 0) {
+    const focus = $('skillFocus');
+    focus.style.display = 'block';
+    const sorted = missedGranulars.slice().sort((a, b) => (TIER_WEIGHT[b.tier] || 0) - (TIER_WEIGHT[a.tier] || 0));
+    let body = '<p style="margin:4px 0 12px 0;font-size:14px;color:#555;">Ordered by exam weight (highest-impact first). Tiers with the most exam points appear first.</p><ul>';
+    sorted.forEach(g => {
+      const tierLabel = g.tier === 'P' ? 'Building Block' : g.tier;
+      body += `<li><b>[${tierLabel}]</b> ${escapeHtml(g.name)} <span style="color:#888;font-size:12px;">(Q${g.q}, ${escapeHtml(g.granular)})</span></li>`;
+    });
+    body += '</ul>';
+    $('skillFocusBody').innerHTML = body;
+  }
 
   // Question-by-question
   const list = $('resultsList');
@@ -804,14 +852,14 @@ function renderResults() {
     const letters = ['A','B','C','D'];
     const userLetter = isUnanswered ? '—' : letters[userAns];
     const correctLetter = letters[q.correct];
+    const tierLabel = q.tier === 'P' ? 'BUILDING BLOCK' : q.tier;
 
     let html = `<div class="q-header">
-      <strong>Question ${q.n} <span style="color:#888;font-weight:normal;">[${q.tier}]</span></strong>
+      <strong>Question ${q.n} <span style="color:#888;font-weight:normal;">[${tierLabel}]</span> <span style="color:#aaa;font-weight:normal;font-size:12px;">${escapeHtml(q.granular || '')}</span></strong>
       <span class="q-status ${isUnanswered ? 'unanswered' : (isCorrect ? 'correct' : 'incorrect')}">${isUnanswered ? 'Not answered' : (isCorrect ? '✓ Correct' : '✗ Incorrect')}</span>
     </div>`;
     html += `<div class="q-stem" style="font-size:15px;">${escapeHtml(q.stem)}</div>`;
 
-    // Show answer indicators
     if (!isUnanswered) {
       const userClass = isCorrect ? 'correct-answer' : 'your-answer wrong';
       html += `<div class="${userClass}">Your answer: (${userLetter}) ${escapeHtml(q.opts[userAns])}</div>`;
@@ -820,7 +868,6 @@ function renderResults() {
       html += `<div class="correct-answer">Correct answer: (${correctLetter}) ${escapeHtml(q.opts[q.correct])}</div>`;
     }
 
-    // Worked solution + per-option (only for incorrect/unanswered)
     if (!isCorrect) {
       html += `<div class="worked-solution">
         <h4>Worked Solution</h4>
@@ -853,6 +900,24 @@ function downloadSummary() {
   txt += `Score: ${correctCount}/50 (${pct}%)\n`;
   txt += `Time taken: ${formatTimeUsed()}\n`;
   txt += `Tab switches detected: ${state.tabSwitchCount}\n\n`;
+
+  // Skill focus section
+  const missed = [];
+  QUESTIONS.forEach((q, i) => {
+    if (state.answers[i] !== q.correct) {
+      missed.push({ q: q.n, tier: q.tier, granular: q.granular, name: GRANULAR_NAMES[q.granular] || q.granular });
+    }
+  });
+  if (missed.length > 0) {
+    missed.sort((a, b) => (TIER_WEIGHT[b.tier] || 0) - (TIER_WEIGHT[a.tier] || 0));
+    txt += `--- Skills to Focus On (sorted by exam weight) ---\n\n`;
+    missed.forEach(g => {
+      const tierLabel = g.tier === 'P' ? 'Building Block' : g.tier;
+      txt += `[${tierLabel}] ${g.name}  (Q${g.q}, ${g.granular})\n`;
+    });
+    txt += `\n`;
+  }
+
   txt += `--- Per-Question Results ---\n\n`;
   QUESTIONS.forEach((q, i) => {
     const userAns = state.answers[i];
@@ -860,10 +925,10 @@ function downloadSummary() {
     const userLetter = userAns === null ? '—' : letters[userAns];
     const correctLetter = letters[q.correct];
     const status = userAns === null ? 'NOT ANSWERED' : (correct ? 'CORRECT' : 'INCORRECT');
-    txt += `Q${q.n} [${q.tier}] — ${status}\n`;
+    const tierLabel = q.tier === 'P' ? 'BUILDING BLOCK' : q.tier;
+    txt += `Q${q.n} [${tierLabel}] ${q.granular || ''} — ${status}\n`;
     txt += `  Your answer: ${userLetter}    Correct: ${correctLetter}\n`;
   });
-  // Trigger download
   const blob = new Blob([txt], {type: 'text/plain'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -889,7 +954,6 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// Make selectAnswer and closeModal globally accessible
 window.selectAnswer = selectAnswer;
 window.closeModal = closeModal;
 window.downloadSummary = downloadSummary;
