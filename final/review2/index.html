@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHEM 3A — Mock Final 2 (Proctored)</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f4f6fa; color: #1a1a1a;
+  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+}
+body { min-height: 100vh; }
+.container { max-width: 900px; margin: 0 auto; padding: 24px; }
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+#lock-screen { padding-top: 60px; }
+.lock-card {
+  background: white; border-radius: 12px; padding: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  max-width: 500px; margin: 0 auto;
+}
+.lock-card h1 { margin-top: 0; color: #2a4d8a; font-size: 28px; }
+.lock-card .subtitle { color: #666; margin-bottom: 24px; }
+.lock-card label { display: block; margin-bottom: 6px; font-weight: 600; }
+.lock-card input[type="text"] {
+  width: 100%; padding: 12px; font-size: 16px;
+  border: 2px solid #d0d5dd; border-radius: 8px; margin-bottom: 16px;
+  -webkit-user-select: text; user-select: text;
+}
+.lock-card input[type="text"]:focus { border-color: #2a4d8a; outline: none; }
+.lock-card button {
+  width: 100%; padding: 14px; font-size: 16px; font-weight: 600;
+  background: #2a4d8a; color: white; border: none; border-radius: 8px;
+  cursor: pointer;
+}
+.lock-card button:hover { background: #1e3a6e; }
+.lock-card button:disabled { background: #aaa; cursor: not-allowed; }
+.lock-card .rules {
+  background: #fff8e1; border-left: 4px solid #f0a500;
+  padding: 12px 16px; margin-top: 24px; font-size: 14px; border-radius: 4px;
+}
+
+.exam-header {
+  background: white; padding: 16px 24px;
+  border-bottom: 2px solid #e0e4eb;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 100;
+}
+.exam-header .student-info { font-size: 14px; color: #666; }
+.exam-header .student-info b { color: #1a1a1a; }
+.timer { font-size: 24px; font-weight: 700; color: #2a4d8a; font-variant-numeric: tabular-nums; }
+.timer.warning { color: #d9534f; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity: 0.5; } }
+
+.exam-body { display: grid; grid-template-columns: 200px 1fr; gap: 24px; margin-top: 24px; }
+@media (max-width: 768px) { .exam-body { grid-template-columns: 1fr; } }
+
+.nav-panel {
+  background: white; border-radius: 8px; padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  height: fit-content; position: sticky; top: 80px;
+}
+.nav-panel h3 { margin: 0 0 12px 0; font-size: 14px; color: #666; }
+.nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.nav-btn {
+  padding: 8px 0; font-size: 12px; font-weight: 600;
+  background: #f0f2f5; border: 1px solid #d0d5dd; border-radius: 4px;
+  cursor: pointer; text-align: center;
+}
+.nav-btn.answered { background: #c8e6c9; border-color: #66bb6a; }
+.nav-btn.current { background: #2a4d8a; color: white; border-color: #2a4d8a; }
+
+.question-card {
+  background: white; border-radius: 8px; padding: 32px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.q-meta { font-size: 13px; color: #888; margin-bottom: 8px; }
+.q-meta .tier-tag {
+  display: inline-block; padding: 2px 8px; background: #e3f2fd;
+  color: #1565c0; border-radius: 4px; margin-right: 8px; font-weight: 600;
+}
+.q-meta .tier-tag.probe { background: #fff3e0; color: #e65100; }
+.q-stem { font-size: 17px; line-height: 1.6; margin-bottom: 24px; white-space: pre-line; }
+.options { list-style: none; padding: 0; margin: 0; }
+.option-item {
+  display: flex; align-items: flex-start; padding: 12px 16px;
+  border: 2px solid #e0e4eb; border-radius: 8px; margin-bottom: 10px;
+  cursor: pointer; transition: all 0.15s;
+}
+.option-item:hover { background: #f4f6fa; border-color: #2a4d8a; }
+.option-item.selected { background: #e3f2fd; border-color: #2a4d8a; }
+.option-item input[type="radio"] { margin: 4px 12px 0 0; cursor: pointer; }
+.option-item .option-letter { font-weight: 700; margin-right: 6px; }
+
+.exam-footer {
+  display: flex; justify-content: space-between; margin-top: 24px;
+}
+.btn {
+  padding: 12px 24px; font-size: 15px; font-weight: 600;
+  border: none; border-radius: 8px; cursor: pointer;
+}
+.btn-secondary { background: #e0e4eb; color: #1a1a1a; }
+.btn-secondary:hover { background: #d0d5dd; }
+.btn-secondary:disabled { background: #f0f2f5; color: #aaa; cursor: not-allowed; }
+.btn-primary { background: #2a4d8a; color: white; }
+.btn-primary:hover { background: #1e3a6e; }
+.btn-submit { background: #d9534f; color: white; }
+.btn-submit:hover { background: #c43d3d; }
+
+.results-summary {
+  background: white; border-radius: 12px; padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center;
+  margin-bottom: 24px;
+}
+.results-summary h1 { margin: 0 0 12px 0; color: #2a4d8a; }
+.results-summary .student-name { font-size: 18px; color: #555; margin-bottom: 16px; }
+.score-big { font-size: 64px; font-weight: 800; color: #2a4d8a; font-variant-numeric: tabular-nums; }
+.score-pct { font-size: 32px; color: #666; margin-left: 8px; }
+.tier-breakdown {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin-top: 24px;
+}
+.tier-stat { padding: 12px; background: #f4f6fa; border-radius: 8px; }
+.tier-stat .label { font-size: 12px; color: #666; }
+.tier-stat .value { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+.tier-stat.weak { background: #ffebee; }
+.tier-stat.strong { background: #e8f5e9; }
+
+.skill-focus {
+  background: #fff8e1; border: 2px solid #f0a500;
+  border-radius: 8px; padding: 16px; margin: 24px 0;
+}
+.skill-focus h3 { margin: 0 0 8px 0; color: #b87600; font-size: 16px; }
+.skill-focus ul { margin: 8px 0 0 0; padding-left: 20px; }
+.skill-focus li { margin: 4px 0; font-size: 14px; line-height: 1.5; }
+
+.results-actions { text-align: center; margin: 24px 0; }
+.results-actions .btn { margin: 0 8px; }
+
+.results-questions h2 { color: #2a4d8a; margin-top: 32px; border-bottom: 2px solid #e0e4eb; padding-bottom: 8px; }
+.result-question {
+  background: white; border-radius: 8px; padding: 24px;
+  margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.result-question.incorrect { border-left: 6px solid #d9534f; }
+.result-question.correct { border-left: 6px solid #5cb85c; opacity: 0.85; }
+.result-question .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.q-header .q-status { padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 600; }
+.q-status.correct { background: #c8e6c9; color: #2e7d32; }
+.q-status.incorrect { background: #ffcdd2; color: #c62828; }
+.q-status.unanswered { background: #fff3cd; color: #856404; }
+.your-answer, .correct-answer { padding: 8px 12px; margin: 8px 0; border-radius: 4px; font-size: 14px; }
+.your-answer.wrong { background: #ffebee; }
+.correct-answer { background: #e8f5e9; color: #2e7d32; font-weight: 600; }
+
+.worked-solution {
+  background: #f8f9fa; border-left: 4px solid #2a4d8a;
+  padding: 16px; margin: 16px 0; border-radius: 4px;
+}
+.worked-solution h4 { margin: 0 0 8px 0; color: #2a4d8a; font-size: 14px; }
+.worked-solution p { margin: 8px 0; line-height: 1.6; font-size: 14px; }
+.option-analysis { margin-top: 12px; }
+.option-analysis .opt-line { padding: 8px; margin: 4px 0; border-radius: 4px; font-size: 13px; }
+.opt-line.correct { background: #e8f5e9; }
+.opt-line.incorrect { background: #fce4ec; }
+
+.modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6); z-index: 1000;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: white; padding: 32px; border-radius: 12px; max-width: 450px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+}
+.modal h2 { margin-top: 0; color: #d9534f; }
+.modal button { margin-top: 16px; }
+
+@media print {
+  .nav-panel, .exam-footer, .exam-header, .results-actions { display: none !important; }
+  .result-question { page-break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<div id="lock-screen" class="screen active">
+  <div class="container">
+    <div class="lock-card">
+      <h1>CHEM 3A — Mock Final 2</h1>
+      <div class="subtitle">Spring 2026 · Prof. Gilley · Final Exam Review</div>
+      <label for="firstName">First name</label>
+      <input type="text" id="firstName" autocomplete="off" />
+      <label for="lastName">Last name</label>
+      <input type="text" id="lastName" autocomplete="off" />
+      <button id="beginBtn" disabled>Begin Exam</button>
+      <div class="rules">
+        <b>Exam Rules:</b><br>
+        • 50 multiple-choice questions, 90-minute time limit<br>
+        • One attempt per session — refreshing will reset progress<br>
+        • Right-click, copy/paste, and text selection are disabled<br>
+        • Tab-switching will trigger a warning<br>
+        • You must answer all questions before submitting<br>
+        • Submitting cannot be undone
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="exam-screen" class="screen">
+  <div class="exam-header">
+    <div class="student-info">
+      <b id="studentDisplay"></b><br>
+      Question <span id="currentQNum">1</span> of 50
+    </div>
+    <div class="timer" id="timer">90:00</div>
+  </div>
+  <div class="container">
+    <div class="exam-body">
+      <div class="nav-panel">
+        <h3>Questions</h3>
+        <div class="nav-grid" id="navGrid"></div>
+      </div>
+      <div class="question-card" id="questionCard"></div>
+    </div>
+    <div class="exam-footer">
+      <button class="btn btn-secondary" id="prevBtn">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn">Next →</button>
+      <button class="btn btn-submit" id="submitBtn">Submit Exam</button>
+    </div>
+  </div>
+</div>
+
+<div id="results-screen" class="screen">
+  <div class="container">
+    <div class="results-summary">
+      <h1>Exam Complete</h1>
+      <div class="student-name" id="resultsStudent"></div>
+      <div>
+        <span class="score-big" id="scoreBig">0/50</span>
+        <span class="score-pct" id="scorePct">(0%)</span>
+      </div>
+      <div id="scoreLetter" style="font-size: 18px; color: #666; margin-top: 8px;"></div>
+      <div class="tier-breakdown" id="tierBreakdown"></div>
+    </div>
+    <div class="skill-focus" id="skillFocus" style="display:none;">
+      <h3>Skills to Focus On</h3>
+      <div id="skillFocusBody"></div>
+    </div>
+    <div class="results-actions">
+      <button class="btn btn-primary" onclick="downloadSummary()">Download Summary</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print Results</button>
+    </div>
+    <div class="results-questions">
+      <h2>Review</h2>
+      <p style="color: #666;">Incorrect answers are expanded with full worked solutions. Correctly answered questions are shown collapsed below for reference.</p>
+      <div id="resultsList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="warningModal">
+  <div class="modal">
+    <h2 id="modalTitle">⚠ Warning</h2>
+    <p id="modalMessage"></p>
+    <button class="btn btn-primary" onclick="closeModal()">Got it</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// QUESTION DATA — MF2, 50 questions
+// Format: { n, tier, granular, stem, opts: [A,B,C,D], correct: index (0-3), sol, expl: [A,B,C,D] }
+// Q 1–42: v2-aligned (tier T0–T9). Q 43–50: building blocks (tier P).
+// ============================================================
+const QUESTIONS = [
+{n:1,tier:"T0",granular:"t0-g03",stem:"A buret is graduated in 0.1 mL increments. The bottom of the meniscus rests between the 23.6 mL and 23.7 mL marks, approximately one-third of the way past 23.6 mL. What volume should be recorded?",
+opts:["23.6 mL","23.7 mL","23.63 mL","23.633 mL"],correct:2,
+sol:"Read to one digit past the smallest graduation (0.01 mL). One-third past 23.6 → 23.63 mL.",
+expl:["Failed to estimate the uncertain digit beyond the smallest graduation. [Atomic gap: estimate uncertain digit]","Rounded to the wrong graduation. [Atomic gap: meniscus reading direction]","CORRECT.","Reports two digits past the smallest graduation, exceeding instrument precision. [Atomic gap: report to correct sig figs]"]},
+
+{n:2,tier:"T0",granular:"t0-g04",stem:"Which of the following volumes is the SMALLEST?",
+opts:["0.05 L","50 mL","500 μL","0.5 cL"],correct:2,
+sol:"Convert to mL: 0.05 L = 50 mL; 50 mL = 50 mL; 500 μL = 0.5 mL; 0.5 cL = 5 mL. Smallest = 500 μL.",
+expl:["= 50 mL. [Atomic gap: L → mL conversion]","Equal to (A). [Atomic gap: recognize equivalence]","CORRECT — 0.5 mL.","= 5 mL (cL = 10 mL). [Atomic gap: centi prefix]"]},
+
+{n:3,tier:"T0",granular:"t0-g05",stem:"A patient weighing 132 lb is prescribed a medication at 7.5 mg per kg of body weight, administered twice daily. What is the total daily dose, in grams? (1 kg = 2.205 lb)",
+opts:["0.450 g","0.900 g","1.98 g","0.0450 g"],correct:1,
+sol:"132 lb / 2.205 = 59.86 kg ≈ 60 kg. Per dose: 7.5 × 60 = 450 mg. Daily: 450 × 2 = 900 mg = 0.900 g.",
+expl:["Forgot the twice-daily multiplier. [Atomic gap: chain conversions]","CORRECT.","Used 132 lb directly without converting to kg. [Atomic gap: lb → kg conversion]","Misplaced decimal. [Atomic gap: mg → g conversion]"]},
+
+{n:4,tier:"T1",granular:"t1-g03",stem:"Which of the following statements about isotopes of an element is TRUE?",
+opts:["They have the same number of neutrons","They have the same number of protons but different numbers of electrons","They have the same atomic number but different mass numbers","They have the same mass number but different atomic numbers"],correct:2,
+sol:"Isotopes: same Z (same element), different A (different mass numbers, different neutron counts).",
+expl:["Isotopes have DIFFERENT neutron counts. [Atomic gap: isotope definition]","Different electrons would make them different ions. [Atomic gap: distinguish isotopes from ions]","CORRECT.","That defines isobars, not isotopes. [Atomic gap: isobar vs isotope]"]},
+
+{n:5,tier:"T1",granular:"t1-g04",stem:"Which of the following ions has the same number of electrons as the noble gas argon (Ar, Z = 18)?",
+opts:["Na⁺","Mg²⁺","Cl⁻","Br⁻"],correct:2,
+sol:"Ar has 18 e. Na⁺ = 10; Mg²⁺ = 10; Cl⁻ = 17 + 1 = 18 ✓; Br⁻ = 36.",
+expl:["10 e (isoelectronic with Ne). [Atomic gap: e count for cation]","10 e. [Atomic gap: e count for 2+ cation]","CORRECT.","36 e (isoelectronic with Kr). [Atomic gap: e count for anion]"]},
+
+{n:6,tier:"T1",granular:"t1-g06",stem:"What is the ground-state electron configuration of bromine (Br, Z = 35)?",
+opts:["[Ar] 4s² 4p⁵","[Ar] 4s² 3d¹⁰ 4p⁵","[Ar] 3d¹⁰ 4p⁵","[Ar] 4s² 3d¹⁰ 4p⁷"],correct:1,
+sol:"Br has 35 e. After [Ar] (18), 17 more: 4s² + 3d¹⁰ + 4p⁵ = 17.",
+expl:["Total = 25 ≠ 35. Skipped 3d. [Atomic gap: d-block insertion]","CORRECT.","Total = 33. Skipped 4s. [Atomic gap: 4s before 3d]","Total = 37. p subshell exceeds capacity (max 6). [Atomic gap: subshell capacity]"]},
+
+{n:7,tier:"T2",granular:"t2-g01",stem:"A bowl of fresh chicken noodle soup contains visible vegetables, noodles, and broth. Which best classifies this soup?",
+opts:["Element","Compound","Homogeneous mixture","Heterogeneous mixture"],correct:3,
+sol:"Visible separate phases (vegetables, noodles, broth) = different composition in different regions = heterogeneous mixture.",
+expl:["Multiple substances present. [Atomic gap: element vs mixture]","Not a single chemical compound. [Atomic gap: compound = fixed-ratio bonded]","Not uniform — visible separation. [Atomic gap: homo vs hetero]","CORRECT."]},
+
+{n:8,tier:"T2",granular:"t2-g03",stem:"Which of the following elements can form ions with MORE THAN ONE stable oxidation state?",
+opts:["Na","Ca","Fe","Mg"],correct:2,
+sol:"Na (1A): only Na⁺. Ca (2A): only Ca²⁺. Fe (transition): Fe²⁺ and Fe³⁺ ✓. Mg (2A): only Mg²⁺.",
+expl:["Group 1A — only +1. [Atomic gap: group 1A oxidation states]","Group 2A — only +2. [Atomic gap: group 2A oxidation states]","CORRECT — variable-charge transition metal.","Group 2A — only +2. [Atomic gap: group 2A oxidation states]"]},
+
+{n:9,tier:"T2",granular:"t2-g04",stem:"Which compound contains a polyatomic ion with a charge of 3−?",
+opts:["KNO₃","Na₂CO₃","K₃PO₄","NaClO₃"],correct:2,
+sol:"NO₃⁻ (1−); CO₃²⁻ (2−); PO₄³⁻ (3−) ✓; ClO₃⁻ (1−).",
+expl:["Nitrate is 1−. [Atomic gap: nitrate charge]","Carbonate is 2−. [Atomic gap: carbonate charge]","CORRECT — phosphate is 3−.","Chlorate is 1−. [Atomic gap: chlorate family]"]},
+
+{n:10,tier:"T2",granular:"t2-g06",stem:"What is the chemical formula for aluminum nitrate?",
+opts:["AlNO₃","Al₃NO₃","Al(NO₃)₃","Al(NO₃)₂"],correct:2,
+sol:"Al³⁺ + NO₃⁻ → 1 Al³⁺ + 3 NO₃⁻ → balanced. Formula: Al(NO₃)₃.",
+expl:["Charge imbalance (+3 ≠ −1). [Atomic gap: balance charges]","Subscripts swapped. [Atomic gap: cross-multiplication direction]","CORRECT.","Charge imbalance (+3 ≠ −2). [Atomic gap: balance charges]"]},
+
+{n:11,tier:"T3",granular:"t3-g01",stem:"Which of the following properties is characteristic of SOLIDS but NOT of gases?",
+opts:["Variable shape","High compressibility","Fixed shape and volume","Particles move freely at high speeds"],correct:2,
+sol:"Solids have fixed shape, fixed volume, low compressibility. Gases have variable shape and volume, high compressibility.",
+expl:["Gas trait, not solid. [Atomic gap: shape behavior by phase]","Gas trait. [Atomic gap: compressibility by phase]","CORRECT.","Gas behavior. [Atomic gap: particle motion by phase]"]},
+
+{n:12,tier:"T3",granular:"t3-g02",stem:"Which of the following compounds contains ONLY covalent bonds?",
+opts:["NaCl","CaO","H₂O","KBr"],correct:2,
+sol:"NaCl, CaO, KBr are all metal+nonmetal → ionic. H₂O is nonmetal+nonmetal → covalent.",
+expl:["Ionic (Na metal + Cl nonmetal). [Atomic gap: metal vs nonmetal]","Ionic. [Atomic gap: metal vs nonmetal]","CORRECT — both H and O are nonmetals.","Ionic. [Atomic gap: metal vs nonmetal]"]},
+
+{n:13,tier:"T3",granular:"t3-g04",stem:"A student draws ammonia (NH₃) with nitrogen single-bonded to three hydrogen atoms and TWO lone pairs on nitrogen, totaling 10 valence electrons. What is wrong with this structure?",
+opts:["The total number of valence electrons should be 8, not 10","Nitrogen needs another lone pair to satisfy the octet","Each hydrogen is missing a lone pair","The structure is correct as drawn"],correct:0,
+sol:"NH₃ has 5+3 = 8 valence e. Correct structure has 3 N-H bonds + 1 lone pair on N = 8 e. Student drew 2 lone pairs → 10 e, over-count.",
+expl:["CORRECT.","N would have 10 e if drawn — exceeds octet. [Atomic gap: per-atom octet]","H follows duet rule, no lone pairs. [Atomic gap: H duet rule]","Structure has wrong e count. [Atomic gap: comprehensive Lewis check]"]},
+
+{n:14,tier:"T3",granular:"t3-g06",stem:"How many resonance structures can be drawn for ozone (O₃)?",
+opts:["1","2","3","4"],correct:1,
+sol:"O₃: central O with one O=O double bond and one O-O single bond. Double bond can be on either of the 2 terminal O atoms → 2 resonance structures.",
+expl:["Misses delocalization. [Atomic gap: identify equivalent positions]","CORRECT.","Only 2 equivalent terminal O atoms. [Atomic gap: count equivalent positions]","Over-counts. [Atomic gap: count equivalent positions]"]},
+
+{n:15,tier:"T3",granular:"t3-g07",stem:"What is the bond angle in carbon dioxide (CO₂)?",
+opts:["90°","109.5°","120°","180°"],correct:3,
+sol:"CO₂: C has 2 double bonds, 0 lone pairs. 2 electron groups → linear → 180°.",
+expl:["Octahedral angle (6 e-groups). [Atomic gap: count electron groups]","Tetrahedral (4 e-groups). [Atomic gap: count electron groups]","Trigonal planar (3 e-groups). [Atomic gap: count electron groups]","CORRECT."]},
+
+{n:16,tier:"T3",granular:"t3-g11",stem:"Three substances exist as a solid, a liquid, and a gas at room temperature. Which phase has the STRONGEST intermolecular forces between its particles?",
+opts:["Solid","Liquid","Gas","All three have equal intermolecular forces"],correct:0,
+sol:"IMF strength: solid > liquid > gas. Strong IMF → particles held in lattice → solid.",
+expl:["CORRECT.","Intermediate IMF. [Atomic gap: rank IMF by phase]","Weakest IMF. [Atomic gap: IMF ↔ phase]","Phase depends on IMF. [Atomic gap: phase has IMF dependence]"]},
+
+{n:17,tier:"T3",granular:"t3-g12",stem:"Which of the following substances can form hydrogen bonds with water?",
+opts:["CH₃Cl","CH₃NH₂","CH₃CH₃","CHCl₃"],correct:1,
+sol:"Water H-bonds with N/O/F donors (H bonded to N/O/F) or acceptors (lone pair on N/O/F). CH₃NH₂ has N-H — both donor and acceptor.",
+expl:["No N/O/F donor; Cl not H-bond acceptor. [Atomic gap: H-bond restricted to N, O, F]","CORRECT.","No N/O/F. [Atomic gap: H-bond donor/acceptor]","No H-bond functional group. [Atomic gap: H-bond restricted to N, O, F]"]},
+
+{n:18,tier:"T4",granular:"t4-g04",stem:"Which type of reaction is represented by the following?\n\nMg(s) + Cl₂(g) → MgCl₂(s)",
+opts:["Combination","Decomposition","Single replacement","Double replacement"],correct:0,
+sol:"Two reactants → one product = combination reaction.",
+expl:["CORRECT.","Requires one reactant → multiple products. [Atomic gap: decomposition pattern]","Requires element + compound → different element + compound. [Atomic gap: SR pattern]","Requires two ionic compounds swapping. [Atomic gap: DR pattern]"]},
+
+{n:19,tier:"T4",granular:"t4-g05",stem:"What are the principal products when methane (CH₄) undergoes COMPLETE combustion?",
+opts:["CO₂ and H₂O","CO and H₂","CO₂ and H₂","O₂ and H₂O"],correct:0,
+sol:"Complete combustion of hydrocarbon: CₓHᵧ + O₂ → CO₂ + H₂O.",
+expl:["CORRECT.","CO is incomplete combustion. [Atomic gap: complete vs incomplete combustion]","H comes out as H₂O, not H₂. [Atomic gap: H in combustion → H₂O]","O₂ is a reactant, not a product. [Atomic gap: reactant vs product]"]},
+
+{n:20,tier:"T4",granular:"t4-g06",stem:"Using the activity series K > Ca > Mg > Al > Zn > Fe > H > Cu > Ag > Au, which of the following reactions will NOT occur?",
+opts:["Zn(s) + 2 HCl(aq) → ZnCl₂(aq) + H₂(g)","Mg(s) + CuSO₄(aq) → MgSO₄(aq) + Cu(s)","Cu(s) + 2 AgNO₃(aq) → Cu(NO₃)₂(aq) + 2 Ag(s)","Ag(s) + CuSO₄(aq) → Ag₂SO₄(aq) + Cu(s)"],correct:3,
+sol:"Reaction occurs when metal is ABOVE the cation. Ag is BELOW Cu — Ag cannot displace Cu²⁺.",
+expl:["Zn above H — occurs. [Atomic gap: activity series direction]","Mg above Cu — occurs. [Atomic gap: activity series direction]","Cu above Ag — occurs. [Atomic gap: activity series direction]","CORRECT — Ag is below Cu, cannot displace."]},
+
+{n:21,tier:"T5",granular:"t5-g01",stem:"Aspirin is the common name for acetylsalicylic acid (C₉H₈O₄). What is its molar mass?",
+opts:["144 g/mol","180 g/mol","200 g/mol","116 g/mol"],correct:1,
+sol:"C: 9 × 12 = 108. H: 8 × 1 = 8. O: 4 × 16 = 64. Total: 180 g/mol.",
+expl:["Off by ~36. Missed carbons or wrong O count. [Atomic gap: atom count from formula]","CORRECT.","Over-count. [Atomic gap: atom count]","Under-count. [Atomic gap: atom count]"]},
+
+{n:22,tier:"T5",granular:"t5-g04",stem:"What mass of CO₂ is produced when 24 g of carbon undergoes complete combustion in excess oxygen? (M: C = 12 g/mol; CO₂ = 44 g/mol)\n\nC(s) + O₂(g) → CO₂(g)",
+opts:["24 g","44 g","88 g","11 g"],correct:2,
+sol:"24/12 = 2 mol C × 1 mol CO₂/mol C × 44 g/mol = 88 g.",
+expl:["1:1 mass — no conversion. [Atomic gap: mass↔mole conversion]","Treated as 1 mol CO₂. [Atomic gap: mass→mole for C]","CORRECT.","Wrong direction or factor. [Atomic gap: mole↔mass direction]"]},
+
+{n:23,tier:"T5",granular:"t5-g05",stem:"When 8.0 g of methane (CH₄) reacts with 16 g of oxygen, which is the LIMITING reactant? (M: CH₄ = 16 g/mol; O₂ = 32 g/mol)\n\nCH₄(g) + 2 O₂(g) → CO₂(g) + 2 H₂O(g)",
+opts:["CH₄","O₂","Both","CO₂"],correct:1,
+sol:"mol CH₄ = 8/16 = 0.50; ÷ 1 = 0.50. mol O₂ = 16/32 = 0.50; ÷ 2 = 0.25. O₂ smaller → O₂ limits.",
+expl:["CH₄ is in excess. [Atomic gap: divide-by-coefficient]","CORRECT.","Only one can limit. [Atomic gap: LR definition]","CO₂ is product. [Atomic gap: reactant identification]"]},
+
+{n:24,tier:"T5",granular:"t5-g06",stem:"In a synthesis of ammonia, the theoretical yield is 25.0 g, but only 18.0 g is actually obtained. What is the percent yield?",
+opts:["28%","72%","138%","7.0%"],correct:1,
+sol:"% yield = (18.0/25.0) × 100 = 72%.",
+expl:["100 − 72 (computed loss). [Atomic gap: % yield formula]","CORRECT.","Reversed: 25/18 × 100. [Atomic gap: % yield direction]","Wrong division. [Atomic gap: % yield formula]"]},
+
+{n:25,tier:"T6",granular:"t6-g01",stem:"Which of the following processes is ENDOTHERMIC?",
+opts:["Combustion of propane in a barbecue","Freezing of water in an ice tray","Photosynthesis in a leaf","Condensation of water vapor on a cold glass"],correct:2,
+sol:"Endothermic = absorbs energy. Photosynthesis absorbs light energy. Combustion, freezing, condensation all release heat.",
+expl:["Exothermic. [Atomic gap: combustion is exo]","Exothermic (releases heat). [Atomic gap: freezing is exo]","CORRECT.","Exothermic. [Atomic gap: condensation is exo]"]},
+
+{n:26,tier:"T7",granular:"t7-g01",stem:"Which of the following statements IS part of the kinetic molecular theory of gases?",
+opts:["Gas particles experience strong attractive forces between each other","The volume of gas particles is significant relative to the container","Collisions between gas particles are perfectly elastic","The average kinetic energy of gas particles is independent of temperature"],correct:2,
+sol:"KMT: random motion, negligible particle volume, no IMF (ideal), elastic collisions, KE ∝ T(K).",
+expl:["KMT says NO attractive forces. [Atomic gap: KMT excludes IMF]","KMT says particle volume is negligible. [Atomic gap: KMT particle volume]","CORRECT.","KMT says KE proportional to T. [Atomic gap: KMT KE-T relationship]"]},
+
+{n:27,tier:"T7",granular:"t7-g04",stem:"What volume does 0.25 mol of an ideal gas occupy at 1.5 atm and 300 K? (R = 0.0821 L·atm/mol·K)",
+opts:["2.7 L","4.1 L","0.41 L","41 L"],correct:1,
+sol:"V = nRT/P = (0.25)(0.0821)(300)/1.5 = 6.158/1.5 = 4.1 L.",
+expl:["Possible T error. [Atomic gap: T in Kelvin]","CORRECT.","Decimal error. [Atomic gap: arithmetic precision]","Decimal error. [Atomic gap: arithmetic precision]"]},
+
+{n:28,tier:"T7",granular:"t7-g08",stem:"How many milliliters of 6.0 M HCl stock solution are needed to prepare 250 mL of 0.50 M HCl?",
+opts:["21 mL","42 mL","125 mL","3000 mL"],correct:0,
+sol:"M₁V₁ = M₂V₂. 6.0 × V₁ = 0.50 × 250. V₁ = 125/6.0 = 20.8 mL ≈ 21 mL.",
+expl:["CORRECT.","Off by factor of 2. [Atomic gap: rearrange M₁V₁=M₂V₂]","Forgot to divide by M₁. [Atomic gap: solve for V₁]","Reversed direction. [Atomic gap: rearrange formula]"]},
+
+{n:29,tier:"T7",granular:"t7-g09",stem:"How many grams of glucose are dissolved in 500 mL of a 3.0% (m/v) glucose solution?",
+opts:["15 g","30 g","7.5 g","1.5 g"],correct:0,
+sol:"3.0% m/v = 3.0 g/100 mL. (3.0/100) × 500 = 15 g.",
+expl:["CORRECT.","Off by factor of 2. [Atomic gap: volume scaling]","Half of correct. [Atomic gap: % m/v interpretation]","Off by factor of 10. [Atomic gap: % m/v formula]"]},
+
+{n:30,tier:"T7",granular:"t7-g12",stem:"A red blood cell is placed in a beaker containing a concentrated salt solution (much more concentrated than the inside of the cell). Which of the following best describes what happens?",
+opts:["Water moves out of the cell, causing it to shrink","Water moves into the cell, causing it to swell","Salt moves into the cell to equalize concentration","No movement occurs because the membrane is impermeable"],correct:0,
+sol:"Water moves from low-solute (inside cell) to high-solute (outside). Cell shrinks (crenation).",
+expl:["CORRECT.","Wrong direction. [Atomic gap: osmosis direction]","Semipermeable membrane passes solvent, not solute. [Atomic gap: semipermeable membrane]","Concentration gradient drives osmosis. [Atomic gap: osmosis across gradient]"]},
+
+{n:31,tier:"T8",granular:"t8-g02",stem:"What is the conjugate BASE of the bicarbonate ion (HCO₃⁻)?",
+opts:["H₂CO₃","CO₃²⁻","OH⁻","H₃O⁺"],correct:1,
+sol:"Conjugate base = remove H⁺. HCO₃⁻ − H⁺ → CO₃²⁻.",
+expl:["This is the conjugate ACID. [Atomic gap: conjugate acid vs base direction]","CORRECT.","Unrelated. [Atomic gap: identify right molecule]","Conjugate acid of water. [Atomic gap: identify right molecule]"]},
+
+{n:32,tier:"T8",granular:"t8-g04",stem:"What is the pH of a solution with [H⁺] = 6.0 × 10⁻⁹ M?",
+opts:["9.0","8.22","5.78","8.0"],correct:1,
+sol:"pH = −log(6.0 × 10⁻⁹) = 9 − log(6) = 9 − 0.778 = 8.22. Basic solution.",
+expl:["Used only the exponent. [Atomic gap: log of coefficient × 10ⁿ]","CORRECT.","Subtracted from 14 (treated as pOH). [Atomic gap: pH vs pOH]","Rounded too aggressively. [Atomic gap: log of coefficient]"]},
+
+{n:33,tier:"T8",granular:"t8-g05",stem:"What is the pH of a solution with [OH⁻] = 2.0 × 10⁻³ M?",
+opts:["2.70","11.30","11.70","2.30"],correct:1,
+sol:"pOH = −log(2.0 × 10⁻³) = 2.70. pH = 14 − 2.70 = 11.30.",
+expl:["This is pOH, not pH. [Atomic gap: pH + pOH = 14]","CORRECT.","Wrong log of coefficient. [Atomic gap: log of coefficient]","Sign error. [Atomic gap: sign of log]"]},
+
+{n:34,tier:"T8",granular:"t8-g06",stem:"Which of the following reactions is best classified as an ACID-BASE reaction?",
+opts:["Cu(s) + 2 AgNO₃(aq) → Cu(NO₃)₂(aq) + 2 Ag(s)","KOH(aq) + HCl(aq) → KCl(aq) + H₂O(l)","Pb(NO₃)₂(aq) + 2 KI(aq) → PbI₂(s) + 2 KNO₃(aq)","CaCO₃(s) → CaO(s) + CO₂(g)"],correct:1,
+sol:"Acid + base → salt + water signature. Only KOH + HCl matches.",
+expl:["Single replacement / redox. [Atomic gap: distinguish acid-base from redox]","CORRECT.","Precipitation (PbI₂ insoluble). [Atomic gap: distinguish from precipitation]","Decomposition. [Atomic gap: distinguish from decomp]"]},
+
+{n:35,tier:"T8",granular:"t8-g07",stem:"What are the products when sulfuric acid (H₂SO₄) reacts with sodium hydroxide (NaOH) in a complete neutralization?",
+opts:["NaSO₄(aq) + H₂O(l)","Na₂SO₄(aq) + 2 H₂O(l)","NaH₂(SO₄)(aq) + Na₂O(s)","Na(OH)SO₄(aq) + H₂(g)"],correct:1,
+sol:"H₂SO₄ is diprotic. H₂SO₄ + 2 NaOH → Na₂SO₄ + 2 H₂O.",
+expl:["NaSO₄ has charge imbalance. [Atomic gap: salt charge balance]","CORRECT.","Wrong products entirely. [Atomic gap: cation from base, anion from acid]","H₂ gas signals SR, not neutralization. [Atomic gap: distinguish from SR]"]},
+
+{n:36,tier:"T8",granular:"t8-g08",stem:"Which of the following changes will SLOW DOWN a chemical reaction?",
+opts:["Adding a catalyst","Increasing reactant concentration","Grinding a solid reactant into a fine powder","Decreasing the temperature"],correct:3,
+sol:"Catalyst, T, concentration, surface area all increase rate. To slow: decrease one of these → decrease T.",
+expl:["Catalyst speeds up. [Atomic gap: catalyst effect]","Higher concentration speeds up. [Atomic gap: concentration effect]","Higher surface area speeds up. [Atomic gap: surface area effect]","CORRECT."]},
+
+{n:37,tier:"T8",granular:"t8-g09",stem:"What is the correct equilibrium constant expression for the following reaction?\n\n2 SO₂(g) + O₂(g) ⇌ 2 SO₃(g)",
+opts:["K = [SO₃] / ([SO₂][O₂])","K = [SO₃]² / ([SO₂]²[O₂])","K = [SO₂]²[O₂] / [SO₃]²","K = 2[SO₃] / (2[SO₂] + [O₂])"],correct:1,
+sol:"K = [products]^coef / [reactants]^coef. Coefficients become exponents.",
+expl:["Coefficients dropped. [Atomic gap: coefficients as exponents]","CORRECT.","Reactants and products swapped. [Atomic gap: products on top]","Coefficients as multipliers, + instead of ×. [Atomic gap: multiply not add]"]},
+
+{n:38,tier:"T8",granular:"t8-g10",stem:"For the reaction X(g) + Y(g) ⇌ Z(g), the equilibrium constant is K = 3 × 10⁻⁴. What does this tell you about the position of equilibrium?",
+opts:["Reactants are strongly favored at equilibrium","Products are strongly favored at equilibrium","Reactants and products are present in roughly equal amounts","The reaction has not yet reached equilibrium"],correct:0,
+sol:"K << 1 → reactants favored. K = 3 × 10⁻⁴ is very small.",
+expl:["CORRECT.","Reverses K interpretation. [Atomic gap: K direction]","K ≈ 1 means equal; here it's 3 × 10⁻⁴. [Atomic gap: K magnitude]","K is defined only at equilibrium. [Atomic gap: K definition]"]},
+
+{n:39,tier:"T8",granular:"t8-g12",stem:"Consider the following equilibrium reaction:\n\n2 NO₂(g) ⇌ N₂O₄(g)\n\nIf the volume of the reaction container is INCREASED (pressure decreased) at constant temperature, what happens to the equilibrium?",
+opts:["Shifts to the right (toward products)","Shifts to the left (toward reactants)","No shift occurs","The equilibrium constant K decreases"],correct:1,
+sol:"Reactant side: 2 mol gas. Product side: 1 mol gas. ↓P (↑V) shifts toward MORE moles of gas → reactants (left).",
+expl:["Wrong direction — ↓P shifts to more mol gas. [Atomic gap: ↓P direction]","CORRECT.","Mole counts differ on each side. [Atomic gap: mole-counting]","K is constant at constant T. [Atomic gap: P/V doesn't change K]"]},
+
+{n:40,tier:"T9",granular:"t9-g03",stem:"Iodine-131 has a half-life of 8.0 days. If a hospital starts with a 200 mg sample, how much remains after 24 days?",
+opts:["50 mg","25 mg","12.5 mg","67 mg"],correct:1,
+sol:"24/8 = 3 half-lives. 200 → 100 → 50 → 25 mg.",
+expl:["2 half-lives only (gives 50 mg, but only after 16 days). [Atomic gap: count half-lives]","CORRECT.","4 half-lives. [Atomic gap: count half-lives]","Random arithmetic. [Atomic gap: half-life formula]"]},
+
+{n:41,tier:"T9",granular:"t9-g04",stem:"What particle is emitted in the following nuclear decay?\n\n²³⁵₉₂U → ²³¹₉₀Th + ___",
+opts:["Beta particle (⁰₋₁e)","Alpha particle (⁴₂He)","Gamma ray (⁰₀γ)","Neutron (¹₀n)"],correct:1,
+sol:"Mass: 235 − 231 = 4. Atomic: 92 − 90 = 2. Particle: ⁴₂He (alpha).",
+expl:["Beta is ⁰₋₁e — doesn't balance A=4, Z=+2. [Atomic gap: beta A/Z]","CORRECT.","Gamma is ⁰₀γ — wrong A and Z. [Atomic gap: gamma A/Z]","Neutron is ¹₀n — wrong A. [Atomic gap: neutron A/Z]"]},
+
+{n:42,tier:"T9",granular:"t9-g05",stem:"Polonium-210 (²¹⁰₈₄Po) undergoes alpha decay. What is the resulting daughter nuclide?",
+opts:["²⁰⁶₈₂Pb","²⁰⁶₈₃Bi","²¹⁰₈₂Pb","²¹⁰₈₅At"],correct:0,
+sol:"Alpha decay: A − 4, Z − 2. 210 − 4 = 206; 84 − 2 = 82 (Pb).",
+expl:["CORRECT.","Z = 83 (should be 82). [Atomic gap: alpha decreases Z by 2]","A unchanged (should decrease by 4). [Atomic gap: alpha decreases A by 4]","A unchanged + Z increased. [Atomic gap: alpha decay A/Z]"]},
+
+{n:43,tier:"P",granular:"p-balance",stem:"Balance the following equation. What is the coefficient of Al?\n\n___ Al(s) + ___ O₂(g) → ___ Al₂O₃(s)",
+opts:["1","2","3","4"],correct:3,
+sol:"4 Al + 3 O₂ → 2 Al₂O₃. Coefficient of Al = 4.",
+expl:["Unbalanced. [Atomic gap: balance Al atoms]","Unbalanced. [Atomic gap: balance Al atoms]","Unbalanced. [Atomic gap: balance Al atoms]","CORRECT."]},
+
+{n:44,tier:"P",granular:"p-molarity",stem:"What mass of glucose (molar mass = 180 g/mol) is required to prepare 500 mL of a 0.10 M glucose solution?",
+opts:["0.18 g","9.0 g","18 g","90 g"],correct:1,
+sol:"mol = M × V = 0.10 × 0.500 = 0.050 mol. Mass = 0.050 × 180 = 9.0 g.",
+expl:["Forgot volume scaling. [Atomic gap: scale by volume]","CORRECT.","Off by factor of 2. [Atomic gap: mL → L conversion]","Off by factor of 10. [Atomic gap: molarity definition]"]},
+
+{n:45,tier:"P",granular:"p-ph-clean",stem:"What is the pH of a solution with [H⁺] = 1 × 10⁻⁸ M?",
+opts:["6","8","4","14"],correct:1,
+sol:"pH = −log(10⁻⁸) = 8.",
+expl:["Used 14 − 8. [Atomic gap: pH/pOH confusion]","CORRECT.","Random. [Atomic gap: log of 10ⁿ]","Used Kw exponent. [Atomic gap: pH definition]"]},
+
+{n:46,tier:"P",granular:"p-log-coeff",stem:"What is the value of log(5.0 × 10⁻³)?",
+opts:["−3.0","−2.30","−2.0","+2.30"],correct:1,
+sol:"log(5.0) + log(10⁻³) = 0.699 + (−3) = −2.30.",
+expl:["Ignored coefficient. [Atomic gap: log of coefficient × 10ⁿ]","CORRECT.","Rounded coefficient log to 1. [Atomic gap: log of coefficient]","Sign error. [Atomic gap: sign of log]"]},
+
+{n:47,tier:"P",granular:"p-temp-convert",stem:"Convert 100 °C to Kelvin.",
+opts:["100 K","273 K","373 K","473 K"],correct:2,
+sol:"K = °C + 273. 100 + 273 = 373 K (boiling point of water).",
+expl:["No conversion applied. [Atomic gap: °C ≠ K]","Used °C value as offset only. [Atomic gap: conversion formula]","CORRECT.","Added 373 instead of 273. [Atomic gap: conversion constant]"]},
+
+{n:48,tier:"P",granular:"p-activity",stem:"Based on the activity series K > Ca > Mg > Al > Zn > Fe > H > Cu > Ag > Au, which metal is the LEAST reactive?",
+opts:["K","Mg","Fe","Au"],correct:3,
+sol:"Most active on left, least active on right. Au is rightmost.",
+expl:["Most reactive (far left). [Atomic gap: activity series direction]","Above middle. [Atomic gap: activity series direction]","Middle-low. [Atomic gap: activity series direction]","CORRECT."]},
+
+{n:49,tier:"P",granular:"p-keq-exp",stem:"Which of the following is the correct equilibrium constant expression for:\n\nCH₄(g) + 2 O₂(g) ⇌ CO₂(g) + 2 H₂O(g)",
+opts:["K = [CO₂][H₂O] / ([CH₄][O₂])","K = [CO₂][H₂O]² / ([CH₄][O₂]²)","K = [CH₄][O₂]² / ([CO₂][H₂O]²)","K = ([CO₂] + 2[H₂O]) / ([CH₄] + 2[O₂])"],correct:1,
+sol:"Each species raised to its coefficient: CO₂ to 1, H₂O to 2, CH₄ to 1, O₂ to 2.",
+expl:["All coefficients dropped. [Atomic gap: coefficients as exponents]","CORRECT.","Reactants and products inverted. [Atomic gap: products on top]","Coefficients as multipliers, + instead of ×. [Atomic gap: multiply not add]"]},
+
+{n:50,tier:"P",granular:"p-egroups",stem:"How many electron groups (bonding regions + lone pairs) surround the central carbon atom in carbon dioxide (CO₂)?",
+opts:["1","2","3","4"],correct:1,
+sol:"C has 2 double bonds (to 2 O atoms), no lone pairs. Each double bond = 1 e-group. Total = 2.",
+expl:["Forgot to count both bonds. [Atomic gap: count all bonding regions]","CORRECT.","Treated each double bond as 2 groups. [Atomic gap: double bond = 1 e-group]","Over-counted. [Atomic gap: distinguish e-groups from bonds]"]}
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  firstName: "", lastName: "", currentQ: 0,
+  answers: new Array(50).fill(null),
+  timeRemaining: 90 * 60, timerInterval: null,
+  submitted: false, tabSwitchCount: 0
+};
+
+const $ = id => document.getElementById(id);
+const screens = { lock: $('lock-screen'), exam: $('exam-screen'), results: $('results-screen') };
+function showScreen(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+}
+
+const firstNameInput = $('firstName');
+const lastNameInput = $('lastName');
+const beginBtn = $('beginBtn');
+function checkNames() {
+  const f = firstNameInput.value.trim();
+  const l = lastNameInput.value.trim();
+  beginBtn.disabled = !(f && l);
+}
+firstNameInput.addEventListener('input', checkNames);
+lastNameInput.addEventListener('input', checkNames);
+beginBtn.addEventListener('click', () => {
+  state.firstName = firstNameInput.value.trim();
+  state.lastName = lastNameInput.value.trim();
+  $('studentDisplay').textContent = state.firstName + ' ' + state.lastName;
+  startExam();
+});
+
+function startExam() {
+  showScreen('exam');
+  buildNavGrid();
+  renderQuestion(0);
+  startTimer();
+  enableProctoring();
+}
+function buildNavGrid() {
+  const grid = $('navGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 50; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn';
+    btn.textContent = i + 1;
+    btn.dataset.idx = i;
+    btn.addEventListener('click', () => renderQuestion(i));
+    grid.appendChild(btn);
+  }
+}
+function updateNavGrid() {
+  const buttons = document.querySelectorAll('.nav-btn');
+  buttons.forEach((btn, i) => {
+    btn.classList.toggle('answered', state.answers[i] !== null);
+    btn.classList.toggle('current', i === state.currentQ);
+  });
+}
+function renderQuestion(idx) {
+  state.currentQ = idx;
+  const q = QUESTIONS[idx];
+  const card = $('questionCard');
+  $('currentQNum').textContent = idx + 1;
+  const tierClass = q.tier === 'P' ? 'tier-tag probe' : 'tier-tag';
+  const tierLabel = q.tier === 'P' ? 'BUILDING BLOCK' : q.tier;
+  let html = `<div class="q-meta"><span class="${tierClass}">${tierLabel}</span> Question ${q.n} of 50</div>`;
+  html += `<div class="q-stem">${escapeHtml(q.stem)}</div>`;
+  html += `<ul class="options">`;
+  q.opts.forEach((opt, i) => {
+    const letter = ['A', 'B', 'C', 'D'][i];
+    const checked = state.answers[idx] === i ? 'checked' : '';
+    const selectedClass = state.answers[idx] === i ? 'selected' : '';
+    html += `
+      <li class="option-item ${selectedClass}" onclick="selectAnswer(${i})">
+        <input type="radio" name="opt" value="${i}" ${checked} onclick="event.stopPropagation();selectAnswer(${i})">
+        <div><span class="option-letter">(${letter})</span> ${escapeHtml(opt)}</div>
+      </li>`;
+  });
+  html += `</ul>`;
+  card.innerHTML = html;
+  $('prevBtn').disabled = idx === 0;
+  $('nextBtn').disabled = idx === 49;
+  updateNavGrid();
+}
+function selectAnswer(i) {
+  state.answers[state.currentQ] = i;
+  renderQuestion(state.currentQ);
+}
+$('prevBtn').addEventListener('click', () => {
+  if (state.currentQ > 0) renderQuestion(state.currentQ - 1);
+});
+$('nextBtn').addEventListener('click', () => {
+  if (state.currentQ < 49) renderQuestion(state.currentQ + 1);
+});
+$('submitBtn').addEventListener('click', () => {
+  const unanswered = state.answers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    if (!confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) return;
+  } else {
+    if (!confirm("Submit your exam? This cannot be undone.")) return;
+  }
+  submitExam();
+});
+
+function startTimer() {
+  updateTimerDisplay();
+  state.timerInterval = setInterval(() => {
+    state.timeRemaining--;
+    updateTimerDisplay();
+    if (state.timeRemaining <= 0) {
+      clearInterval(state.timerInterval);
+      alert("Time's up! Your exam will be submitted automatically.");
+      submitExam();
+    }
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const m = Math.floor(state.timeRemaining / 60);
+  const s = state.timeRemaining % 60;
+  const t = $('timer');
+  t.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  t.classList.toggle('warning', state.timeRemaining < 300);
+}
+
+function enableProctoring() {
+  document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
+  document.addEventListener('copy', e => { e.preventDefault(); showWarning('Copy disabled', 'Copy/paste is disabled during the exam.'); });
+  document.addEventListener('paste', e => { e.preventDefault(); });
+  document.addEventListener('cut', e => { e.preventDefault(); });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !state.submitted) {
+      state.tabSwitchCount++;
+      const timer = setInterval(() => {
+        if (!document.hidden) {
+          clearInterval(timer);
+          showWarning('Tab switch detected', `You switched away from this exam ${state.tabSwitchCount} time(s). Continued switching may be flagged.`);
+        }
+      }, 200);
+    }
+  });
+  window.addEventListener('beforeunload', e => {
+    if (!state.submitted) {
+      e.preventDefault();
+      e.returnValue = 'Leaving will reset your exam progress.';
+      return e.returnValue;
+    }
+  });
+}
+function showWarning(title, msg) {
+  $('modalTitle').textContent = '⚠ ' + title;
+  $('modalMessage').textContent = msg;
+  $('warningModal').classList.add('show');
+}
+function closeModal() {
+  $('warningModal').classList.remove('show');
+}
+
+function submitExam() {
+  state.submitted = true;
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  showScreen('results');
+  renderResults();
+}
+
+const GRANULAR_NAMES = {
+  "t0-g03":"Reading lab measurement devices","t0-g04":"SI units & metric prefixes","t0-g05":"Dimensional analysis (multi-step)",
+  "t1-g03":"Isotope identification","t1-g04":"Isoelectronic species","t1-g06":"Electron configuration (atoms)",
+  "t2-g01":"Bulk classification of matter","t2-g03":"Variable-charge metal recognition","t2-g04":"Polyatomic ion recall","t2-g06":"Polyatomic ionic formula writing","t2-g11":"Common-name → systematic mapping",
+  "t3-g01":"Properties of states of matter","t3-g02":"Bond type ID (ionic/covalent)","t3-g04":"Lewis structure error/critique","t3-g06":"Resonance structure enumeration","t3-g07":"VSEPR geometry & bond angles","t3-g11":"IMF strength ranking","t3-g12":"H-bond donor/acceptor",
+  "t4-g04":"Reaction classification","t4-g05":"Combustion product prediction","t4-g06":"Activity series + SR",
+  "t5-g01":"Molar mass calculation","t5-g04":"Mass-to-mass stoichiometry","t5-g05":"Limiting reagent","t5-g06":"Percent yield",
+  "t6-g01":"Endo/exo identification",
+  "t7-g01":"KMT postulates","t7-g04":"Ideal gas law","t7-g08":"Dilution (M₁V₁=M₂V₂)","t7-g09":"Percent w/v concentration","t7-g12":"Osmosis direction",
+  "t8-g02":"Conjugate acid/base pair","t8-g04":"pH from [H⁺]","t8-g05":"pH from [OH⁻]","t8-g06":"Acid-base reaction recognition","t8-g07":"Neutralization products","t8-g08":"Rate factors / collision theory","t8-g09":"Keq expression","t8-g10":"Keq magnitude interpretation","t8-g12":"Le Chatelier — pressure/volume",
+  "t9-g03":"Half-life arithmetic","t9-g04":"Nuclear equation balancing","t9-g05":"Decay product prediction",
+  "p-balance":"Building block: balancing equations","p-molarity":"Building block: molarity calculation","p-ph-clean":"Building block: pH from clean power of 10","p-log-coeff":"Building block: log of coefficient × 10ⁿ","p-temp-convert":"Building block: °C → K","p-activity":"Building block: reading activity series","p-keq-exp":"Building block: coefficients as exponents","p-egroups":"Building block: counting electron groups"
+};
+
+const TIER_WEIGHT = { T8:18, T3:14, T7:12, T4:10, T2:10, T0:8, T1:8, T5:8, T9:8, T6:4, P:0 };
+
+function renderResults() {
+  let correctCount = 0;
+  const tierStats = {};
+  const missedGranulars = [];
+  QUESTIONS.forEach((q, i) => {
+    const tier = q.tier;
+    if (!tierStats[tier]) tierStats[tier] = { correct: 0, total: 0 };
+    tierStats[tier].total++;
+    if (state.answers[i] === q.correct) {
+      correctCount++;
+      tierStats[tier].correct++;
+    } else {
+      missedGranulars.push({ q: q.n, tier: q.tier, granular: q.granular, name: GRANULAR_NAMES[q.granular] || q.granular });
+    }
+  });
+
+  $('resultsStudent').textContent = state.firstName + ' ' + state.lastName;
+  $('scoreBig').textContent = correctCount + '/50';
+  const pct = Math.round((correctCount / 50) * 100);
+  $('scorePct').textContent = '(' + pct + '%)';
+  let letter = '';
+  if (pct >= 90) letter = 'A range';
+  else if (pct >= 80) letter = 'B range';
+  else if (pct >= 70) letter = 'C range';
+  else if (pct >= 60) letter = 'D range';
+  else letter = 'Needs intensive review';
+  $('scoreLetter').textContent = letter;
+
+  const tierBreakdown = $('tierBreakdown');
+  tierBreakdown.innerHTML = '';
+  ['T0','T1','T2','T3','T4','T5','T6','T7','T8','T9','P'].forEach(tier => {
+    const ts = tierStats[tier];
+    if (!ts) return;
+    const div = document.createElement('div');
+    const tpct = Math.round((ts.correct / ts.total) * 100);
+    div.className = 'tier-stat';
+    if (tpct < 60) div.classList.add('weak');
+    else if (tpct >= 80) div.classList.add('strong');
+    const tierLabel = tier === 'P' ? 'Building Blocks' : tier;
+    div.innerHTML = `<div class="label">${tierLabel}</div><div class="value">${ts.correct}/${ts.total} <span style="font-size:13px;color:#888">(${tpct}%)</span></div>`;
+    tierBreakdown.appendChild(div);
+  });
+
+  if (missedGranulars.length > 0) {
+    const focus = $('skillFocus');
+    focus.style.display = 'block';
+    const sorted = missedGranulars.slice().sort((a, b) => (TIER_WEIGHT[b.tier] || 0) - (TIER_WEIGHT[a.tier] || 0));
+    let body = '<p style="margin:4px 0 12px 0;font-size:14px;color:#555;">Ordered by exam weight (highest-impact first). Tiers with the most exam points appear first.</p><ul>';
+    sorted.forEach(g => {
+      const tierLabel = g.tier === 'P' ? 'Building Block' : g.tier;
+      body += `<li><b>[${tierLabel}]</b> ${escapeHtml(g.name)} <span style="color:#888;font-size:12px;">(Q${g.q}, ${escapeHtml(g.granular)})</span></li>`;
+    });
+    body += '</ul>';
+    $('skillFocusBody').innerHTML = body;
+  }
+
+  const list = $('resultsList');
+  list.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const userAns = state.answers[i];
+    const isCorrect = userAns === q.correct;
+    const isUnanswered = userAns === null;
+    const div = document.createElement('div');
+    div.className = 'result-question ' + (isCorrect ? 'correct' : 'incorrect');
+    const letters = ['A','B','C','D'];
+    const userLetter = isUnanswered ? '—' : letters[userAns];
+    const correctLetter = letters[q.correct];
+    const tierLabel = q.tier === 'P' ? 'BUILDING BLOCK' : q.tier;
+    let html = `<div class="q-header">
+      <strong>Question ${q.n} <span style="color:#888;font-weight:normal;">[${tierLabel}]</span> <span style="color:#aaa;font-weight:normal;font-size:12px;">${escapeHtml(q.granular || '')}</span></strong>
+      <span class="q-status ${isUnanswered ? 'unanswered' : (isCorrect ? 'correct' : 'incorrect')}">${isUnanswered ? 'Not answered' : (isCorrect ? '✓ Correct' : '✗ Incorrect')}</span>
+    </div>`;
+    html += `<div class="q-stem" style="font-size:15px;">${escapeHtml(q.stem)}</div>`;
+    if (!isUnanswered) {
+      const userClass = isCorrect ? 'correct-answer' : 'your-answer wrong';
+      html += `<div class="${userClass}">Your answer: (${userLetter}) ${escapeHtml(q.opts[userAns])}</div>`;
+    }
+    if (!isCorrect) {
+      html += `<div class="correct-answer">Correct answer: (${correctLetter}) ${escapeHtml(q.opts[q.correct])}</div>`;
+      html += `<div class="worked-solution">
+        <h4>Worked Solution</h4>
+        <p>${escapeHtml(q.sol)}</p>
+        <div class="option-analysis">
+          <h4 style="margin-top:16px;">Why each option is right or wrong:</h4>`;
+      q.opts.forEach((opt, idx) => {
+        const optClass = idx === q.correct ? 'correct' : 'incorrect';
+        html += `<div class="opt-line ${optClass}"><b>(${letters[idx]}) ${escapeHtml(opt)}:</b> ${escapeHtml(q.expl[idx])}</div>`;
+      });
+      html += `</div></div>`;
+    }
+    div.innerHTML = html;
+    list.appendChild(div);
+  });
+}
+
+function downloadSummary() {
+  let correctCount = state.answers.filter((a, i) => a === QUESTIONS[i].correct).length;
+  const pct = Math.round((correctCount / 50) * 100);
+  const letters = ['A','B','C','D'];
+  let txt = `CHEM 3A — Mock Final 2 Results\n`;
+  txt += `==============================\n\n`;
+  txt += `Student: ${state.firstName} ${state.lastName}\n`;
+  txt += `Date: ${new Date().toLocaleString()}\n`;
+  txt += `Score: ${correctCount}/50 (${pct}%)\n`;
+  txt += `Time taken: ${formatTimeUsed()}\n`;
+  txt += `Tab switches detected: ${state.tabSwitchCount}\n\n`;
+  const missed = [];
+  QUESTIONS.forEach((q, i) => {
+    if (state.answers[i] !== q.correct) {
+      missed.push({ q: q.n, tier: q.tier, granular: q.granular, name: GRANULAR_NAMES[q.granular] || q.granular });
+    }
+  });
+  if (missed.length > 0) {
+    missed.sort((a, b) => (TIER_WEIGHT[b.tier] || 0) - (TIER_WEIGHT[a.tier] || 0));
+    txt += `--- Skills to Focus On (sorted by exam weight) ---\n\n`;
+    missed.forEach(g => {
+      const tierLabel = g.tier === 'P' ? 'Building Block' : g.tier;
+      txt += `[${tierLabel}] ${g.name}  (Q${g.q}, ${g.granular})\n`;
+    });
+    txt += `\n`;
+  }
+  txt += `--- Per-Question Results ---\n\n`;
+  QUESTIONS.forEach((q, i) => {
+    const userAns = state.answers[i];
+    const correct = userAns === q.correct;
+    const userLetter = userAns === null ? '—' : letters[userAns];
+    const correctLetter = letters[q.correct];
+    const status = userAns === null ? 'NOT ANSWERED' : (correct ? 'CORRECT' : 'INCORRECT');
+    const tierLabel = q.tier === 'P' ? 'BUILDING BLOCK' : q.tier;
+    txt += `Q${q.n} [${tierLabel}] ${q.granular || ''} — ${status}\n`;
+    txt += `  Your answer: ${userLetter}    Correct: ${correctLetter}\n`;
+  });
+  const blob = new Blob([txt], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const safeName = (state.firstName + '_' + state.lastName).replace(/[^a-zA-Z0-9_]/g, '');
+  a.href = url; a.download = `MF2_${safeName}_results.txt`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function formatTimeUsed() {
+  const used = (90 * 60) - state.timeRemaining;
+  const m = Math.floor(used / 60);
+  const s = used % 60;
+  return `${m} min ${s} sec`;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+window.selectAnswer = selectAnswer;
+window.closeModal = closeModal;
+window.downloadSummary = downloadSummary;
+</script>
+</body>
+</html>
